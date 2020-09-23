@@ -1,5 +1,5 @@
-export const API_ENDPOINT = "http://122.248.226.220";
-// export const API_ENDPOINT = "https://catback.vn";
+export const API_ENDPOINT =
+  "http://ec2-54-179-140-200.ap-southeast-1.compute.amazonaws.com";
 export const STATUS_CODE = {
   SUCCESS: 200,
   CREATED: 201,

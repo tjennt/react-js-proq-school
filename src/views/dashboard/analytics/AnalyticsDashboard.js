@@ -6,7 +6,6 @@ import OrdersReceived from "../../pages/ui-elements/cards/statistics/OrdersRecei
 import MoneyReceivedCard from "../../pages/ui-elements/cards/statistics/MoneyReceived";
 import "../../../assets/scss/pages/dashboard-analytics.scss";
 import { DatePicker, Space } from "antd";
-import "antd/dist/antd.css";
 import { Button } from "antd";
 import moment from "moment";
 import "../../../assets/scss/plugins/extensions/recharts.scss";

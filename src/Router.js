@@ -6,87 +6,28 @@ import Spinner from "./components/@vuexy/spinner/Loading-spinner";
 import { ContextLayout } from "./utility/context/Layout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// Route-based code splitting
 const dashboard = lazy(() =>
   import("./views/dashboard/analytics/AnalyticsDashboard")
 );
-const ListViewSale = lazy(() =>
-  import("./views/pages/ui-elements/data-list/dataListSale/ListViewSale")
+//assistant
+const studentAssistant = lazy(() =>
+  import("./views/pages/ui-elements/data-list/ProQAsisstants/student/student")
 );
-const ThumbViewDataListFCM = lazy(() =>
+const teacherAssistant = lazy(() =>
+  import("./views/pages/ui-elements/data-list/ProQAsisstants/teacher/teacher")
+);
+const searchStudent = lazy(() =>
   import(
-    "./views/pages/ui-elements/data-list/dataListPushFCM/ThumbViewDataListFCM"
+    "./views/pages/ui-elements/data-list/ProQAsisstants/SearchStudentProQ/SearchProQ"
   )
 );
-const ThumbViewDataListBlog = lazy(() =>
-  import(
-    "./views/pages/ui-elements/data-list/dataListBlog/ThumbViewBlogDataList"
-  )
+const classAssi = lazy(() =>
+  import("./views/pages/ui-elements/data-list/ProQAsisstants/class/class")
 );
-const ListViewCoun = lazy(() =>
-  import("./views/pages/ui-elements/data-list/dataListCounpons/ListViewCoun")
+const subject = lazy(() =>
+  import("./views/pages/ui-elements/data-list/ProQAsisstants/subject/subject")
 );
-const ListViewUser = lazy(() =>
-  import("./views/pages/ui-elements/data-list/dataListUser/ListViewUser")
-);
-const ListViewTransac = lazy(() =>
-  import(
-    "./views/pages/ui-elements/data-list/dataListTransaction/ListViewTransac"
-  )
-);
-const ThumbViewHotDeal = lazy(() =>
-  import("./views/pages/ui-elements/data-list/dataListHotDeal/ThumbViewHotDeal")
-);
-const ListViewTags = lazy(() =>
-  import("./views/pages/ui-elements/data-list/dataListTags/ListViewTags")
-);
-const ListShop = lazy(() =>
-  import(
-    "./views/pages/ui-elements/data-list/dataListShop/ThumbViewDataListShop"
-  )
-);
-const ThumbViewDataListAdmin = lazy(() =>
-  import(
-    "./views/pages/ui-elements/data-list/dataListAdmin/ThumbViewDataListAdmin"
-  )
-);
-const ListViewVoteApp = lazy(() =>
-  import("./views/pages/ui-elements/data-list/dataListVoteApp/ListViewVoteApp")
-);
-const listViewReward = lazy(() =>
-  import("./views/pages/ui-elements/data-list/dataListReward/ListViewReward")
-);
-// const ListViewReportOrder = lazy(() =>
-//   import(
-//     "./views/pages/ui-elements/data-list/dataListReportOrder/ListViewReportOrder"
-//   )
-// );
-// const ListViewReporDebt = lazy(() =>
-//   import(
-//     "./views/pages/ui-elements/data-list/dataListReportDebt/ListViewReporDebt"
-//   )
-// );
-// const accountantReportMoneyUser = lazy(() =>
-//   import(
-//     "./views/pages/ui-elements/data-list/dataListReportMoU/ListViewReporMoU"
-//   )
-// );
-// const ListViewReporSOU = lazy(() =>
-//   import(
-//     "./views/pages/ui-elements/data-list/dataListReportSOU/ListViewReporSOU"
-//   )
-// );
-const ListViewCategory = lazy(() =>
-  import(
-    "./views/pages/ui-elements/data-list/dataListCategory/ListViewCategory"
-  )
-);
-const ListViewCategoryShop = lazy(() =>
-  import(
-    "./views/pages/ui-elements/data-list/dataListShopCategory/ListViewCategoryShop"
-  )
-);
-const commingSoon = lazy(() => import("./views/pages/misc/ComingSoon"));
+// const commingSoon = lazy(() => import("./views/pages/misc/ComingSoon"));
 const login = lazy(() => import("./views/pages/authentication/login/Login"));
 
 // Set Layout and Component Using App Route
@@ -130,26 +71,20 @@ class AppRouter extends React.Component {
         <ToastContainer />
         <Switch>
           <AppRoute exact path="/login" component={login} fullLayout />
-          <AppRoute path="/transaction" component={ListViewTransac} />
-          <AppRoute path="/sale" component={ListViewSale} />
-          <AppRoute path="/pushFCM" component={ThumbViewDataListFCM} />
-          <AppRoute path="/accountantOrder" component={commingSoon} />
-          <AppRoute path="/blog" component={ThumbViewDataListBlog} />
-          <AppRoute path="/user" component={ListViewUser} />
-          <AppRoute path="/hotdeal" component={ThumbViewHotDeal} />
-          <AppRoute path="/listcounpons" component={ListViewCoun} />
-          <AppRoute path="/tags" component={ListViewTags} />
-          <AppRoute path="/reward" component={listViewReward} />
-          <AppRoute path="/listShop" component={ListShop} />
-          <AppRoute path="/category" component={ListViewCategory} />
-          <AppRoute path="/voteApp" component={ListViewVoteApp} />
-          <AppRoute path="/moneyUser" component={commingSoon} />
-          <AppRoute path="/accountantDebt" component={commingSoon} />
-          <AppRoute path="/shopCategory" component={ListViewCategoryShop} />
-          <AppRoute path="/accountantReportMoneyUser" component={commingSoon} />
-          <AppRoute path="/banner" component={commingSoon} />
-          <AppRoute path="/accountAdmin" component={ThumbViewDataListAdmin} />
-          <AppRoute path="/" component={dashboard} />
+          <AppRoute path="/assistTant" component={dashboard} />
+          <AppRoute path="/assistant/search" component={searchStudent} />
+          <AppRoute
+            path="/assistant/list/student"
+            component={studentAssistant}
+          />
+          <AppRoute
+            path="/assistant/list/teacher"
+            component={teacherAssistant}
+          />
+          <AppRoute path="/assistant/list/class" component={classAssi} />
+          <AppRoute path="/assistant/list/subject" component={subject} />
+          <AppRoute path="/department" component={dashboard} />
+
           <AppRoute component={login} fullLayout />
         </Switch>
       </Router>

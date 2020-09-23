@@ -1,12 +1,14 @@
 import { takeLatest } from "redux-saga/effects";
 import * as authType from "../constants/auth";
 import * as trancType from "../constants/tranc";
+import * as assType from "../constants/assistant";
 import { loginActionSaga, logoutSaga } from "./authSaga/authSaga";
 import {
   getActionSaga,
   searchActionSaga,
   updateApprovedAcceptSaga,
 } from "./trancSaga/trancSaga";
+import { getStudentActionSaga } from "./assistant/student";
 function* rootSaga() {
   //login //auth
   yield takeLatest(authType.LOGIN, loginActionSaga);
@@ -18,5 +20,7 @@ function* rootSaga() {
     trancType.UPDATE_STATUS_TRANSACTION_APPROVED,
     updateApprovedAcceptSaga
   );
+  //assistant
+  yield takeLatest(assType.GET_DATA_STUDENT_ASS, getStudentActionSaga);
 }
 export default rootSaga;
