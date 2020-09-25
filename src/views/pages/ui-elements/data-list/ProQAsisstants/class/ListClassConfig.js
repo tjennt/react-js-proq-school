@@ -1,37 +1,18 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
-import ReactPaginate from "react-paginate";
 import { history } from "../../../../../../history";
-import {
-  Edit,
-  ChevronLeft,
-  ChevronRight,
-  Plus,
-  RefreshCw,
-} from "react-feather";
+import { Edit, Plus, RefreshCw } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import { getData } from "../../../../../../redux/actions/dataListAssistance/index";
+import { getDataClass } from "../../../../../../redux/actions/dataListAssistance/index";
 import Sidebar from "./DataListClassSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import { Button } from "reactstrap";
+import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 import Chip from "../../../../../../components/@vuexy/chips/ChipComponent";
 import { Popconfirm, message } from "antd";
-const selectedStyle = {
-  rows: {
-    selectedHighlighStyle: {
-      backgroundColor: "rgba(115,103,240,.05)",
-      color: "#7367F0 !important",
-      boxShadow: "0 0 1px 0 #7367F0 !important",
-      "&:hover": {
-        transform: "translateY(0px) !important",
-      },
-    },
-  },
-};
 const ActionsComponent = (props) => {
   function confirm(e) {
     props.changeStatus(props.row);
@@ -81,14 +62,12 @@ const CustomHeader = (props) => {
 
 class ListClassConfig extends Component {
   static getDerivedStateFromProps(props, state) {
-    var result = Object.values(props.dataList.data);
     if (
-      result !== state.data.length ||
+      props.dataList.dataschedules !== state.data.length ||
       state.currentPage !== props.parsedFilter.page
     ) {
       return {
-        data: result,
-        // allData: props.dataList.filteredData,
+        data: props.dataList.dataschedules,
         totalPages: props.dataList.totalPages,
         currentPage: parseInt(props.parsedFilter.page) - 1,
         rowsPerPage: parseInt(props.parsedFilter.perPage),
@@ -111,8 +90,8 @@ class ListClassConfig extends Component {
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
-            {row.fullname}
+          <p title={row.classCode} className="text-truncate text-bold-500 mb-0">
+            {row.classCode}
           </p>
         ),
       },
@@ -195,7 +174,7 @@ class ListClassConfig extends Component {
   thumbView = this.props.thumbView;
 
   componentDidMount() {
-    this.props.getData(this.props.parsedFilter);
+    this.props.getDataClass();
   }
   handleFilter = (e) => {
     this.setState({ value: e.target.value });
@@ -241,68 +220,36 @@ class ListClassConfig extends Component {
   };
 
   render() {
-    let {
-      columns,
-      data,
-      allData,
-      totalPages,
-      value,
-      rowsPerPage,
-      currentData,
-      sidebar,
-      totalRecords,
-      sortIndex,
-    } = this.state;
+    let { columns, data, value, currentData, sidebar } = this.state;
     return (
-      <div
-        className={`data-list ${
-          this.props.thumbView ? "thumb-view" : "list-view"
-        }`}
-      >
-        <DataTable
-          columns={columns}
-          data={value.length ? allData : data}
-          pagination
-          paginationServer
-          paginationComponent={() => (
-            <ReactPaginate
-              previousLabel={<ChevronLeft size={15} />}
-              nextLabel={<ChevronRight size={15} />}
-              breakLabel="..."
-              breakClassName="break-me"
-              pageCount={totalPages}
-              containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
-              activeClassName="active"
-              forcePage={
-                this.props.parsedFilter.page
-                  ? parseInt(this.props.parsedFilter.page - 1)
-                  : 0
+      <div className="data-list">
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-large-1 text-primary">
+              {this.props.TitleTable}
+            </CardTitle>
+          </CardHeader>
+          <CardBody className="rdt_Wrapper">
+            <DataTable
+              className="dataTable-custom"
+              data={value.length ? "" : data}
+              columns={columns}
+              noHeader
+              pagination
+              subHeader
+              subHeaderComponent={
+                <CustomHeader
+                  value={value}
+                  handleSidebar={this.handleSidebar}
+                  handleFilter={this.handleFilter}
+                />
               }
-              onPageChange={(page) => this.handlePagination(page)}
+              expandableRows
+              expandOnRowClicked
+              // expandableRowsComponent={<ExpandableTable />}
             />
-          )}
-          noHeader
-          subHeader
-          selectableRows
-          responsive
-          pointerOnHover
-          selectableRowsHighlight
-          onSelectedRowsChange={(data) =>
-            this.setState({ selected: data.selectedRows })
-          }
-          customStyles={selectedStyle}
-          subHeaderComponent={
-            <CustomHeader
-              handleSidebar={this.handleSidebar}
-              handleFilter={this.handleFilter}
-              handleRowsPerPage={this.handleRowsPerPage}
-              rowsPerPage={rowsPerPage}
-              total={totalRecords}
-              index={sortIndex}
-            />
-          }
-        />
-        {/* <BasicSweetCallback /> */}
+          </CardBody>
+        </Card>
         <Sidebar
           show={sidebar}
           data={currentData}
@@ -327,10 +274,10 @@ class ListClassConfig extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    dataList: state.dataListAdmin,
+    dataList: state.assistantData,
   };
 };
 
 export default connect(mapStateToProps, {
-  getData,
+  getDataClass,
 })(ListClassConfig);

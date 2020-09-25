@@ -9,6 +9,9 @@ import {
   updateApprovedAcceptSaga,
 } from "./trancSaga/trancSaga";
 import { getStudentActionSaga } from "./assistant/student";
+import { getTeacherActionSaga } from "./assistant/teacher";
+import { getClassActionSaga } from "./assistant/class";
+import { getSubjectActionSaga } from "./assistant/subject";
 function* rootSaga() {
   //login //auth
   yield takeLatest(authType.LOGIN, loginActionSaga);
@@ -22,5 +25,8 @@ function* rootSaga() {
   );
   //assistant
   yield takeLatest(assType.GET_DATA_STUDENT_ASS, getStudentActionSaga);
+  yield takeLatest(assType.GET_DATA_TEACHER_ASS, getTeacherActionSaga);
+  yield takeLatest(assType.GET_DATA_CLASS_ASS, getClassActionSaga);
+  yield takeLatest(assType.GET_DATA_SUBJECT_ASS, getSubjectActionSaga);
 }
 export default rootSaga;

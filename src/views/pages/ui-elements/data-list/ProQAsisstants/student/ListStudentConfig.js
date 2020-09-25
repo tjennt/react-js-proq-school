@@ -87,7 +87,6 @@ class ListStudentConfig extends Component {
     ) {
       return {
         data: props.dataList.data,
-        // allData: props.dataList.filteredData,
         totalPages: props.dataList.totalPages,
         currentPage: parseInt(props.parsedFilter.page) - 1,
         rowsPerPage: parseInt(props.parsedFilter.perPage),
