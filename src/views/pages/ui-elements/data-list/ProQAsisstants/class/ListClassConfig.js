@@ -10,7 +10,15 @@ import Sidebar from "./DataListClassSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
+import Moment from "react-moment";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  CardTitle,
+  Table,
+} from "reactstrap";
 import Chip from "../../../../../../components/@vuexy/chips/ChipComponent";
 import { Popconfirm, message } from "antd";
 const ActionsComponent = (props) => {
@@ -85,8 +93,22 @@ class ListClassConfig extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Tên",
-        selector: "name",
+        name: "Sinh viên",
+        selector: "student",
+        sortable: true,
+        minWidth: "200px",
+        cell: (row) => (
+          <p
+            title={row.nameStudent}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.nameStudent}
+          </p>
+        ),
+      },
+      {
+        name: "Lớp",
+        selector: "class",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
@@ -96,25 +118,26 @@ class ListClassConfig extends Component {
         ),
       },
       {
-        name: "Email",
-        selector: "email",
+        name: "Môn học",
+        selector: "subject",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "200px",
         cell: (row) => (
-          <p title={row.email} className="text-truncate text-bold-500 mb-0">
-            {row.email}
+          <p
+            title={row.nameSubject}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.nameSubject}
           </p>
         ),
       },
       {
-        name: "Quyền",
-        selector: "role",
+        name: "Ngày tạo",
+        selector: "dateCreate",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.role} className="text-truncate text-bold-500 mb-0">
-            {row.role}
-          </p>
+          <Moment format="DD/MM/YYYY">{row.dateCreateClass}</Moment>
         ),
       },
       {
@@ -126,39 +149,25 @@ class ListClassConfig extends Component {
           <Chip
             onClick={this.changeStatus}
             className="m-0"
-            color={row.active ? "success" : "danger"}
-            text={row.active ? "Kích hoạt" : "Chưa kích hoạt"}
+            color={row.statusDay ? "success" : "danger"}
+            text={row.statusDay ? "Điểm danh" : "Chưa điểm danh"}
           />
         ),
       },
-      {
-        name: " Ngày Tạo ",
-        selector: "date",
-        sortable: true,
-        // minWidth: "300px",
-        cell: (row) => (
-          <p
-            title={row.created_at}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.created_at}
-          </p>
-        ),
-      },
-      {
-        name: "Thao tác",
-        sortable: true,
-        cell: (row) => (
-          <ActionsComponent
-            row={row}
-            getData={this.props.getData}
-            parsedFilter={this.props.parsedFilter}
-            currentData={this.handleCurrentData}
-            deleteRow={this.handleDelete}
-            changeStatus={(row) => this.changeStatus(row)}
-          />
-        ),
-      },
+      // {
+      //   name: "Thao tác",
+      //   sortable: true,
+      //   cell: (row) => (
+      //     <ActionsComponent
+      //       row={row}
+      //       getData={this.props.getData}
+      //       parsedFilter={this.props.parsedFilter}
+      //       currentData={this.handleCurrentData}
+      //       deleteRow={this.handleDelete}
+      //       changeStatus={(row) => this.changeStatus(row)}
+      //     />
+      //   ),
+      // },
     ],
     allData: [],
     value: "",
@@ -246,7 +255,7 @@ class ListClassConfig extends Component {
               }
               expandableRows
               expandOnRowClicked
-              // expandableRowsComponent={<ExpandableTable />}
+              expandableRowsComponent={<ExpandableTable />}
             />
           </CardBody>
         </Card>
@@ -271,7 +280,28 @@ class ListClassConfig extends Component {
     );
   }
 }
-
+const ExpandableTable = ({ data }) => {
+  return (
+    <Table responsive>
+      <thead>
+        <tr>
+          <th>Thông tin Chi tiết</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Name</td>
+          <td>{data.name}</td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td>{data.email}</td>
+        </tr>
+      </tbody>
+    </Table>
+  );
+};
 const mapStateToProps = (state) => {
   return {
     dataList: state.assistantData,

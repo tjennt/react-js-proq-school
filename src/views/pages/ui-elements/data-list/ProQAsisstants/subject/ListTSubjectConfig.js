@@ -12,6 +12,8 @@ import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 import Chip from "../../../../../../components/@vuexy/chips/ChipComponent";
+import Moment from "react-moment";
+
 import { Popconfirm, message } from "antd";
 const ActionsComponent = (props) => {
   function confirm(e) {
@@ -85,50 +87,39 @@ class ListTSubjectConfig extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Tên",
-        selector: "name",
+        name: "ID",
+        selector: "id",
+        sortable: true,
+        minWidth: "250px",
+        cell: (row) => (
+          <p title={row._id} className="text-truncate text-bold-500 mb-0">
+            {row._id}
+          </p>
+        ),
+      },
+      {
+        name: "Môn học",
+        selector: "subject",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
-            {row.fullname}
+          <p title={row.name} className="text-truncate text-bold-500 mb-0">
+            {row.name}
           </p>
         ),
       },
       {
-        name: "Email",
-        selector: "email",
+        name: "Mã môn học",
+        selector: "subjectCode",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.email} className="text-truncate text-bold-500 mb-0">
-            {row.email}
+          <p
+            title={row.subjectCode}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.subjectCode}
           </p>
-        ),
-      },
-      {
-        name: "Quyền",
-        selector: "role",
-        sortable: true,
-        // minWidth: "300px",
-        cell: (row) => (
-          <p title={row.role} className="text-truncate text-bold-500 mb-0">
-            {row.role}
-          </p>
-        ),
-      },
-      {
-        name: "Trạng thái ",
-        selector: "type",
-        maxWidth: "140px",
-        sortable: true,
-        cell: (row) => (
-          <Chip
-            onClick={this.changeStatus}
-            className="m-0"
-            color={row.active ? "success" : "danger"}
-            text={row.active ? "Kích hoạt" : "Chưa kích hoạt"}
-          />
         ),
       },
       {
@@ -136,28 +127,7 @@ class ListTSubjectConfig extends Component {
         selector: "date",
         sortable: true,
         // minWidth: "300px",
-        cell: (row) => (
-          <p
-            title={row.created_at}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.created_at}
-          </p>
-        ),
-      },
-      {
-        name: "Thao tác",
-        sortable: true,
-        cell: (row) => (
-          <ActionsComponent
-            row={row}
-            getData={this.props.getData}
-            parsedFilter={this.props.parsedFilter}
-            currentData={this.handleCurrentData}
-            deleteRow={this.handleDelete}
-            changeStatus={(row) => this.changeStatus(row)}
-          />
-        ),
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.created_at}</Moment>,
       },
     ],
     allData: [],
@@ -244,9 +214,6 @@ class ListTSubjectConfig extends Component {
                   handleFilter={this.handleFilter}
                 />
               }
-              expandableRows
-              expandOnRowClicked
-              // expandableRowsComponent={<ExpandableTable />}
             />
           </CardBody>
         </Card>

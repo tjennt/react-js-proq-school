@@ -106,31 +106,31 @@ class ListTeacherConfig extends Component {
           </p>
         ),
       },
-      {
-        name: "Quyền",
-        selector: "role",
-        sortable: true,
-        // minWidth: "300px",
-        cell: (row) => (
-          <p title={row.role} className="text-truncate text-bold-500 mb-0">
-            {row.role}
-          </p>
-        ),
-      },
-      {
-        name: "Trạng thái ",
-        selector: "type",
-        maxWidth: "140px",
-        sortable: true,
-        cell: (row) => (
-          <Chip
-            onClick={this.changeStatus}
-            className="m-0"
-            color={row.active ? "success" : "danger"}
-            text={row.active ? "Kích hoạt" : "Chưa kích hoạt"}
-          />
-        ),
-      },
+      // {
+      //   name: "Quyền",
+      //   selector: "role",
+      //   sortable: true,
+      //   // minWidth: "300px",
+      //   cell: (row) => (
+      //     <p title={row.role} className="text-truncate text-bold-500 mb-0">
+      //       {row.role}
+      //     </p>
+      //   ),
+      // },
+      // {
+      //   name: "Trạng thái ",
+      //   selector: "type",
+      //   maxWidth: "140px",
+      //   sortable: true,
+      //   cell: (row) => (
+      //     <Chip
+      //       onClick={this.changeStatus}
+      //       className="m-0"
+      //       color={row.active ? "success" : "danger"}
+      //       text={row.active ? "Kích hoạt" : "Chưa kích hoạt"}
+      //     />
+      //   ),
+      // },
       {
         name: " Ngày Tạo ",
         selector: "date",

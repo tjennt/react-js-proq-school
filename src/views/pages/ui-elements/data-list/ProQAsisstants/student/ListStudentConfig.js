@@ -115,39 +115,25 @@ class ListStudentConfig extends Component {
         ),
       },
       {
-        name: "Email",
-        selector: "email",
+        name: "Mã sinh viên",
+        selector: "idST",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.email} className="text-truncate text-bold-500 mb-0">
-            {row.email}
+          <p title={row.code} className="text-truncate text-bold-500 mb-0">
+            {row.code}
           </p>
         ),
       },
       {
-        name: "Quyền",
-        selector: "role",
+        name: "Lớp",
+        selector: "classCode",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.role} className="text-truncate text-bold-500 mb-0">
-            {row.role}
+          <p title={row.classCode} className="text-truncate text-bold-500 mb-0">
+            {row.classCode}
           </p>
-        ),
-      },
-      {
-        name: "Trạng thái ",
-        selector: "type",
-        maxWidth: "140px",
-        sortable: true,
-        cell: (row) => (
-          <Chip
-            onClick={this.changeStatus}
-            className="m-0"
-            color={row.active ? "success" : "danger"}
-            text={row.active ? "Kích hoạt" : "Chưa kích hoạt"}
-          />
         ),
       },
       {
@@ -164,20 +150,20 @@ class ListStudentConfig extends Component {
           </p>
         ),
       },
-      {
-        name: "Thao tác",
-        sortable: true,
-        cell: (row) => (
-          <ActionsComponent
-            row={row}
-            getData={this.props.getData}
-            parsedFilter={this.props.parsedFilter}
-            currentData={this.handleCurrentData}
-            deleteRow={this.handleDelete}
-            changeStatus={(row) => this.changeStatus(row)}
-          />
-        ),
-      },
+      // {
+      //   name: "Thao tác",
+      //   sortable: true,
+      //   cell: (row) => (
+      //     <ActionsComponent
+      //       row={row}
+      //       getData={this.props.getData}
+      //       parsedFilter={this.props.parsedFilter}
+      //       currentData={this.handleCurrentData}
+      //       deleteRow={this.handleDelete}
+      //       changeStatus={(row) => this.changeStatus(row)}
+      //     />
+      //   ),
+      // },
     ],
     allData: [],
     value: "",
