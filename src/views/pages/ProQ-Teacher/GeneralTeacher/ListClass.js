@@ -33,7 +33,7 @@ class ListClass extends React.Component {
         sortable: true,
         minWidth: "200px",
         cell: row => (
-          <div className="d-flex flex-xl-row flex-column align-items-xl-center align-items-start py-xl-0 py-1">
+          <div onClick={this.textRowClickedHandel} className="d-flex flex-xl-row flex-column align-items-xl-center align-items-start py-xl-0 py-1">
             <div className="user-info text-truncate ml-xl-50 ml-0">
               <span
                 className="d-block text-bold-500 text-truncate mb-0">
@@ -48,7 +48,7 @@ class ListClass extends React.Component {
         selector: "date",
         sortable: true,
         cell: row => (
-          <p className="text-bold-500 text-truncate mb-0">{row.date}</p>
+          <p onClick={this.textRowClickedHandel} className="text-bold-500 text-truncate mb-0">{row.date}</p>
         )
       },
       {
@@ -56,7 +56,8 @@ class ListClass extends React.Component {
         selector: "status",
         sortable: true,
         cell: row => (
-          <Badge
+          <Badge 
+            onClick={this.textRowClickedHandel}
             color={row.status === "inactive" ? "light-danger" : "light-success"}
             pill>
             {row.status}
@@ -67,7 +68,7 @@ class ListClass extends React.Component {
         name: "Số lượng sinh viên",
         selector: "revenue",
         sortable: true,
-        cell: row => <p className="text-bold-500 mb-0">{row.revenue}</p>
+        cell: row => <p onClick={this.textRowClickedHandel} className="text-bold-500 mb-0">{row.revenue}</p>
       },
       {
         name: "Feedback",
@@ -75,7 +76,7 @@ class ListClass extends React.Component {
         sortable: true,
         cell: row => {
           return (
-            <div className="d-flex flex-column align-items-center">
+            <div onClick={this.textRowClickedHandel} className="d-flex flex-column align-items-center">
               <ul className="list-inline mb-0">
                 <li className="list-inline-item">
                   <Star size="20" className="text-warning" />
@@ -390,7 +391,7 @@ class ListClass extends React.Component {
     filteredData: [],
     value: ""
   }
-
+    
   handleFilter = e => {
     let value = e.target.value
     let data = this.state.data
@@ -425,6 +426,9 @@ class ListClass extends React.Component {
   rowClickedHandel = (row) => {
     this.props.history.push("/teacher/listClass/" + row.name);
   };
+  textRowClickedHandel = (e) => { 
+    e.target.parentNode.parentNode.parentNode.click()
+  }
 
   render() {
     let { data, columns, value, filteredData } = this.state
