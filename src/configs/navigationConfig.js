@@ -139,15 +139,7 @@ const navigationConfig = [
     type: "item",
     icon: <Icon.Circle size={12} />,
     permissions: ["ADMIN", "teacher"],
-    navLink: "/teacher",
-  },
-  {
-    id: "ListLiableClasses",
-    title: "Ds.Lớp phụ trách",
-    type: "item",
-    icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "teacher"],
-    navLink: "/teacher/list/class",
+    navLink: "/teacher/listClass",
   },
   {
     id: "attendance",

@@ -27,8 +27,27 @@ const classAssi = lazy(() =>
 const subject = lazy(() =>
   import("./views/pages/ui-elements/data-list/ProQAsisstants/subject/subject")
 );
-// const commingSoon = lazy(() => import("./views/pages/misc/ComingSoon"));
+const commingSoon = lazy(() => import("./views/pages/misc/ComingSoon"));
+
 const login = lazy(() => import("./views/pages/authentication/login/Login"));
+
+// Teacher ----------
+const GeneralTeacher = lazy(()=>
+  import("./views/pages/ProQ-Teacher/GeneralTeacher/ListView")
+) 
+const ListClassTeacher = lazy(()=>
+  import('./views/pages/ProQ-Teacher/GeneralTeacher/ListView')
+)
+  
+const Attendance = lazy(()=>
+  import("./views/pages/ProQ-Teacher/Attendance/Attendance")
+)
+const EmailTeacher = lazy(()=>
+  import("./views/pages/ProQ-Teacher/EmailTeacher/Email")
+)
+const LiveStreamTeacher = lazy(()=>
+  import('./views/pages/ProQ-Teacher/LiveStream/Chat')
+)
 
 // Set Layout and Component Using App Route
 const RouteConfig = ({ component: Component, fullLayout, ...rest }) => (
@@ -71,7 +90,7 @@ class AppRouter extends React.Component {
         <ToastContainer />
         <Switch>
           <AppRoute exact path="/login" component={login} fullLayout />
-          <AppRoute path="/assistTant" component={dashboard} />
+          <AppRoute path="/assisttant" component={dashboard} />
           <AppRoute path="/assistant/search" component={searchStudent} />
           <AppRoute
             path="/assistant/list/student"
@@ -85,6 +104,13 @@ class AppRouter extends React.Component {
           <AppRoute path="/assistant/list/subject" component={subject} />
           <AppRoute path="/department" component={dashboard} />
 
+          {/* teacher */}
+          <AppRoute exact path='/teacher/listClass' component={GeneralTeacher} /> 
+          <AppRoute path='/teacher/listClass/:id' component={ListClassTeacher} /> 
+          <AppRoute path='/teacher/attendance' component={Attendance} />
+          <AppRoute path='/teacher/email' component={commingSoon} />
+          <AppRoute path='/teacher/liveStream' component={commingSoon} />
+          
           <AppRoute component={login} fullLayout />
         </Switch>
       </Router>
