@@ -19,10 +19,11 @@ export function* loginActionSaga({ payload }) {
     const res = yield call(loginJWt, authData);
     const { status: statusCode, data } = res;
     if (statusCode === STATUS_CODE.SUCCESS) {
-      yield put(loginSuccess(data.data));
-      setUserCookie(data.data.token);
+      console.log(data);
+      // yield put(loginSuccess(data.data));
+      // setUserCookie(data.data.token);
       yield put(changeRole(data.data.role));
-      history.push("/");
+      // history.push("/");
       toastSuccess(`Xin chào ${data.data.role}...`);
     }
   } catch (error) {
