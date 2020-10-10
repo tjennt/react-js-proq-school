@@ -65,15 +65,15 @@ class AnalyticsDashboard extends React.Component {
       getDataTotalUser,
       getDataTotalUserLogin,
     } = this.props;
-    if (!token) {
-      logoutWithJWT();
-    } else {
-      getDataDashboard();
-      getDataTotalProduct();
-      getDataTotaMony();
-      getDataTotalUser();
-      getDataTotalUserLogin();
-    }
+    // if (!token) {
+    //   logoutWithJWT();
+    // } else {
+    getDataDashboard();
+    getDataTotalProduct();
+    getDataTotaMony();
+    getDataTotalUser();
+    getDataTotalUserLogin();
+    // }
   }
   onChangeValue = (dates, dateStrings) => {
     this.setState({

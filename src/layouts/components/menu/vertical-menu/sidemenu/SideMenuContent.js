@@ -107,11 +107,6 @@ class SideMenuContent extends React.Component {
 
   componentDidMount() {
     this.initRender(this.parentArr[0] ? this.parentArr[0] : []);
-    let token = getToken();
-    if (!token) {
-      this.props.logoutWithJWT();
-      return false;
-    }
   }
 
   componentDidUpdate(prevProps, prevState) {

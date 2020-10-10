@@ -8,11 +8,11 @@ import { connect } from "react-redux";
 import { logoutWithJWT } from "../../../../../../redux/actions/auth/loginActions";
 class student extends React.Component {
   componentDidMount() {
-    let token = getToken();
-    if (!token) {
-      this.props.logoutWithJWT();
-      return false;
-    }
+    // let token = getToken();
+    // if (!token) {
+    //   this.props.logoutWithJWT();
+    //   return false;
+    // }
   }
   render() {
     return (
