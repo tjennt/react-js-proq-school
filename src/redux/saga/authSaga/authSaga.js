@@ -20,10 +20,10 @@ export function* loginActionSaga({ payload }) {
     const { status: statusCode, data } = res;
     if (statusCode === STATUS_CODE.SUCCESS) {
       console.log(data);
-      // yield put(loginSuccess(data.data));
-      // setUserCookie(data.data.token);
+      yield put(loginSuccess(data.data));
+      setUserCookie(data.data.token);
       yield put(changeRole(data.data.role));
-      // history.push("/");
+      history.push("/");
       toastSuccess(`Xin chào ${data.data.role}...`);
     }
   } catch (error) {

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Edit, Plus, RefreshCw } from "react-feather";
+import { Plus } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getData } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -19,7 +19,7 @@ import {
   Table,
 } from "reactstrap";
 import Chip from "../../../../../../components/@vuexy/chips/ChipComponent";
-import { Popconfirm, message } from "antd";
+// import { Popconfirm, message } from "antd";
 // const selectedStyle = {
 //   rows: {
 //     selectedHighlighStyle: {
@@ -32,34 +32,34 @@ import { Popconfirm, message } from "antd";
 //     },
 //   },
 // };
-const ActionsComponent = (props) => {
-  function confirm(e) {
-    props.changeStatus(props.row);
-  }
-  function cancel(e) {
-    message.error("Hủy thay đổi trạng thái  !");
-  }
-  return (
-    <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-      <Popconfirm
-        title="Bạn có chắc chắn thay đổi trạng thái?"
-        onConfirm={confirm}
-        onCancel={cancel}
-        okText="Có "
-        cancelText="Không "
-      >
-        <RefreshCw className="cursor-pointer" size={20} />
-      </Popconfirm>
-    </div>
-  );
-};
+// const ActionsComponent = (props) => {
+//   function confirm(e) {
+//     props.changeStatus(props.row);
+//   }
+//   function cancel(e) {
+//     message.error("Hủy thay đổi trạng thái  !");
+//   }
+//   return (
+//     <div className="data-list-action">
+//       <Edit
+//         className="cursor-pointer mr-1"
+//         size={20}
+//         onClick={() => {
+//           return props.currentData(props.row);
+//         }}
+//       />
+//       <Popconfirm
+//         title="Bạn có chắc chắn thay đổi trạng thái?"
+//         onConfirm={confirm}
+//         onCancel={cancel}
+//         okText="Có "
+//         cancelText="Không "
+//       >
+//         <RefreshCw className="cursor-pointer" size={20} />
+//       </Popconfirm>
+//     </div>
+//   );
+// };
 
 const CustomHeader = (props) => {
   return (
@@ -104,6 +104,17 @@ class ListStudentConfig extends Component {
     currentPage: 0,
     columns: [
       {
+        name: "Avatar",
+        selector: "name",
+        sortable: true,
+        minWidth: "200px",
+        cell: (row) => (
+          <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
+            {row.fullname}
+          </p>
+        ),
+      },
+      {
         name: "Tên",
         selector: "name",
         sortable: true,
@@ -146,7 +157,8 @@ class ListStudentConfig extends Component {
             title={row.created_at}
             className="text-truncate text-bold-500 mb-0"
           >
-            {row.created_at}
+            {/* {row.created_at} */}
+            11/10/2020
           </p>
         ),
       },
@@ -230,26 +242,13 @@ class ListStudentConfig extends Component {
     return (
       <div className="data-list">
         <Card>
-          <CardHeader>
-            <CardTitle className="font-large-1 text-primary">
-              {this.props.TitleTable}
-            </CardTitle>
-          </CardHeader>
-          <CardBody className="rdt_Wrapper">
+          <CardBody>
             <DataTable
               className="dataTable-custom"
               data={value.length ? "" : data}
               columns={columns}
               noHeader
               pagination
-              subHeader
-              subHeaderComponent={
-                <CustomHeader
-                  value={value}
-                  handleSidebar={this.handleSidebar}
-                  handleFilter={this.handleFilter}
-                />
-              }
               expandableRows
               expandOnRowClicked
               expandableRowsComponent={<ExpandableTable />}
@@ -282,18 +281,16 @@ const ExpandableTable = ({ data }) => {
     <Table responsive striped>
       <thead>
         <tr>
-          <th>Thông tin Chi tiết</th>
-          <th>Value</th>
+          <th>Email </th>
+          <th>Ngày sinh</th>
+          <th>Chuyên ngành</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Name</td>
-          <td>{data.name}</td>
-        </tr>
-        <tr>
-          <td>Email</td>
-          <td>{data.email}</td>
+          <td>Chaulinh0302cr7@gmail.com</td>
+          <td> 03/02/200</td>
+          <td>Lập trình web </td>
         </tr>
       </tbody>
     </Table>

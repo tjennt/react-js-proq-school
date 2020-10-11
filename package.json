@@ -60,6 +60,7 @@
     "react-feather": "~2.0.3",
     "react-final-form": "^6.5.1",
     "react-flatpickr": "^3.9.1",
+    "react-google-login": "^5.1.21",
     "react-hammerjs": "^1.0.1",
     "react-id-swiper": "~2.4.0",
     "react-input-mask": "~2.0.4",
@@ -97,7 +98,7 @@
     "yup": "^0.28.1"
   },
   "scripts": {
-    "start": "SET PORT=3000 && react-app-rewired start",
+    "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"

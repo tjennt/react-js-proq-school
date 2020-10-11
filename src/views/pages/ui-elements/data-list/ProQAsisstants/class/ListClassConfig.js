@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Edit, Plus, RefreshCw } from "react-feather";
+import { Plus } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataClass } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -11,63 +11,7 @@ import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import Moment from "react-moment";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Table,
-} from "reactstrap";
-import Chip from "../../../../../../components/@vuexy/chips/ChipComponent";
-import { Popconfirm, message } from "antd";
-const ActionsComponent = (props) => {
-  function confirm(e) {
-    props.changeStatus(props.row);
-  }
-  function cancel(e) {
-    message.error("Hủy thay đổi trạng thái  !");
-  }
-  return (
-    <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-      <Popconfirm
-        title="Bạn có chắc chắn thay đổi trạng thái?"
-        onConfirm={confirm}
-        onCancel={cancel}
-        okText="Có "
-        cancelText="Không "
-      >
-        <RefreshCw className="cursor-pointer" size={20} />
-      </Popconfirm>
-    </div>
-  );
-};
-
-const CustomHeader = (props) => {
-  return (
-    <div className="data-list-header d-flex justify-content-between flex-wrap">
-      <div className="actions-left d-flex flex-wrap">
-        <Button
-          className="add-new-btn"
-          color="primary"
-          onClick={() => props.handleSidebar(true, true)}
-          outline
-        >
-          <Plus size={15} />
-          <span className="align-middle">Tạo mới</span>
-        </Button>
-      </div>
-    </div>
-  );
-};
-
+import { Card, CardBody, CardHeader, CardTitle, Table } from "reactstrap";
 class ListClassConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
@@ -92,20 +36,20 @@ class ListClassConfig extends Component {
     totalPages: 0,
     currentPage: 0,
     columns: [
-      {
-        name: "Sinh viên",
-        selector: "student",
-        sortable: true,
-        minWidth: "200px",
-        cell: (row) => (
-          <p
-            title={row.nameStudent}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.nameStudent}
-          </p>
-        ),
-      },
+      // {
+      //   name: "Sinh viên",
+      //   selector: "student",
+      //   sortable: true,
+      //   minWidth: "200px",
+      //   cell: (row) => (
+      //     <p
+      //       title={row.nameStudent}
+      //       className="text-truncate text-bold-500 mb-0"
+      //     >
+      //       {row.nameStudent}
+      //     </p>
+      //   ),
+      // },
       {
         name: "Lớp",
         selector: "class",
@@ -118,21 +62,32 @@ class ListClassConfig extends Component {
         ),
       },
       {
-        name: "Môn học",
-        selector: "subject",
+        name: "Mã Lớp",
+        selector: "class",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p
-            title={row.nameSubject}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.nameSubject}
+          <p title={row.classCode} className="text-truncate text-bold-500 mb-0">
+            {row.classCode}
           </p>
         ),
       },
+      // {
+      //   name: "Môn học",
+      //   selector: "subject",
+      //   sortable: true,
+      //   minWidth: "200px",
+      //   cell: (row) => (
+      //     <p
+      //       title={row.nameSubject}
+      //       className="text-truncate text-bold-500 mb-0"
+      //     >
+      //       {row.nameSubject}
+      //     </p>
+      //   ),
+      // },
       {
-        name: "Ngày tạo",
+        name: "Thời gian bắt đầu",
         selector: "dateCreate",
         sortable: true,
         // minWidth: "300px",
@@ -141,19 +96,28 @@ class ListClassConfig extends Component {
         ),
       },
       {
-        name: "Trạng thái ",
-        selector: "type",
-        maxWidth: "140px",
+        name: "Thời gian kết thúc",
+        selector: "dateCreate",
         sortable: true,
+        // minWidth: "300px",
         cell: (row) => (
-          <Chip
-            onClick={this.changeStatus}
-            className="m-0"
-            color={row.statusDay ? "success" : "danger"}
-            text={row.statusDay ? "Điểm danh" : "Chưa điểm danh"}
-          />
+          <Moment format="DD/MM/YYYY">{row.dateCreateClass}</Moment>
         ),
       },
+      // {
+      //   name: "Trạng thái ",
+      //   selector: "type",
+      //   maxWidth: "140px",
+      //   sortable: true,
+      //   cell: (row) => (
+      //     <Chip
+      //       onClick={this.changeStatus}
+      //       className="m-0"
+      //       color={row.statusDay ? "success" : "danger"}
+      //       text={row.statusDay ? "Điểm danh" : "Chưa điểm danh"}
+      //     />
+      //   ),
+      // },
       // {
       //   name: "Thao tác",
       //   sortable: true,
@@ -246,16 +210,6 @@ class ListClassConfig extends Component {
               noHeader
               pagination
               subHeader
-              subHeaderComponent={
-                <CustomHeader
-                  value={value}
-                  handleSidebar={this.handleSidebar}
-                  handleFilter={this.handleFilter}
-                />
-              }
-              expandableRows
-              expandOnRowClicked
-              expandableRowsComponent={<ExpandableTable />}
             />
           </CardBody>
         </Card>

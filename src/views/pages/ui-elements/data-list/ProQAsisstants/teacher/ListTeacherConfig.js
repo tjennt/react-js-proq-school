@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Edit, Plus, RefreshCw } from "react-feather";
+import { Plus } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataTeacher } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -11,36 +11,6 @@ import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
-import Chip from "../../../../../../components/@vuexy/chips/ChipComponent";
-import { Popconfirm, message } from "antd";
-const ActionsComponent = (props) => {
-  function confirm(e) {
-    props.changeStatus(props.row);
-  }
-  function cancel(e) {
-    message.error("Hủy thay đổi trạng thái  !");
-  }
-  return (
-    <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-      <Popconfirm
-        title="Bạn có chắc chắn thay đổi trạng thái?"
-        onConfirm={confirm}
-        onCancel={cancel}
-        okText="Có "
-        cancelText="Không "
-      >
-        <RefreshCw className="cursor-pointer" size={20} />
-      </Popconfirm>
-    </div>
-  );
-};
 
 const CustomHeader = (props) => {
   return (
@@ -85,6 +55,17 @@ class ListTeacherConfig extends Component {
     currentPage: 0,
     columns: [
       {
+        name: "Avatar",
+        selector: "name",
+        sortable: true,
+        minWidth: "200px",
+        cell: (row) => (
+          <p title={row.fullName} className="text-truncate text-bold-500 mb-0">
+            {row.fullName}
+          </p>
+        ),
+      },
+      {
         name: "Tên",
         selector: "name",
         sortable: true,
@@ -102,35 +83,35 @@ class ListTeacherConfig extends Component {
         // minWidth: "300px",
         cell: (row) => (
           <p title={row.email} className="text-truncate text-bold-500 mb-0">
-            {row.email}
+            {/* {row.email} */}
+            chaulinh0302cr7@gmail.com
           </p>
         ),
       },
-      // {
-      //   name: "Quyền",
-      //   selector: "role",
-      //   sortable: true,
-      //   // minWidth: "300px",
-      //   cell: (row) => (
-      //     <p title={row.role} className="text-truncate text-bold-500 mb-0">
-      //       {row.role}
-      //     </p>
-      //   ),
-      // },
-      // {
-      //   name: "Trạng thái ",
-      //   selector: "type",
-      //   maxWidth: "140px",
-      //   sortable: true,
-      //   cell: (row) => (
-      //     <Chip
-      //       onClick={this.changeStatus}
-      //       className="m-0"
-      //       color={row.active ? "success" : "danger"}
-      //       text={row.active ? "Kích hoạt" : "Chưa kích hoạt"}
-      //     />
-      //   ),
-      // },
+      {
+        name: "Chuyên ngành",
+        selector: "cn",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p title={row.email} className="text-truncate text-bold-500 mb-0">
+            {/* {row.email} */}
+            Dạy php
+          </p>
+        ),
+      },
+      {
+        name: "Số điện thoại",
+        selector: "phone",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p title={row.email} className="text-truncate text-bold-500 mb-0">
+            {/* {row.email} */}
+            0399172329
+          </p>
+        ),
+      },
       {
         name: " Ngày Tạo ",
         selector: "date",
@@ -141,22 +122,9 @@ class ListTeacherConfig extends Component {
             title={row.created_at}
             className="text-truncate text-bold-500 mb-0"
           >
-            {row.created_at}
+            {/* {row.created_at} */}
+            11/10/2020
           </p>
-        ),
-      },
-      {
-        name: "Thao tác",
-        sortable: true,
-        cell: (row) => (
-          <ActionsComponent
-            row={row}
-            getData={this.props.getData}
-            parsedFilter={this.props.parsedFilter}
-            currentData={this.handleCurrentData}
-            deleteRow={this.handleDelete}
-            changeStatus={(row) => this.changeStatus(row)}
-          />
         ),
       },
     ],
@@ -225,27 +193,13 @@ class ListTeacherConfig extends Component {
     return (
       <div className="data-list">
         <Card>
-          <CardHeader>
-            <CardTitle className="font-large-1 text-primary">
-              {this.props.TitleTable}
-            </CardTitle>
-          </CardHeader>
-          <CardBody className="rdt_Wrapper">
+          <CardBody>
             <DataTable
               className="dataTable-custom"
               data={value.length ? "" : data}
               columns={columns}
-              noHeader
               pagination
-              subHeader
-              subHeaderComponent={
-                <CustomHeader
-                  value={value}
-                  handleSidebar={this.handleSidebar}
-                  handleFilter={this.handleFilter}
-                />
-              }
-              expandableRows
+              // expandableRows
               expandOnRowClicked
             />
           </CardBody>
