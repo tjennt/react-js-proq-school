@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Edit, Plus, RefreshCw } from "react-feather";
+import { Plus } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataSubject } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -11,56 +11,7 @@ import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
-import Chip from "../../../../../../components/@vuexy/chips/ChipComponent";
 import Moment from "react-moment";
-
-import { Popconfirm, message } from "antd";
-const ActionsComponent = (props) => {
-  function confirm(e) {
-    props.changeStatus(props.row);
-  }
-  function cancel(e) {
-    message.error("Hủy thay đổi trạng thái  !");
-  }
-  return (
-    <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-      <Popconfirm
-        title="Bạn có chắc chắn thay đổi trạng thái?"
-        onConfirm={confirm}
-        onCancel={cancel}
-        okText="Có "
-        cancelText="Không "
-      >
-        <RefreshCw className="cursor-pointer" size={20} />
-      </Popconfirm>
-    </div>
-  );
-};
-
-const CustomHeader = (props) => {
-  return (
-    <div className="data-list-header d-flex justify-content-between flex-wrap">
-      <div className="actions-left d-flex flex-wrap">
-        <Button
-          className="add-new-btn"
-          color="primary"
-          onClick={() => props.handleSidebar(true, true)}
-          outline
-        >
-          <Plus size={15} />
-          <span className="align-middle">Tạo mới</span>
-        </Button>
-      </div>
-    </div>
-  );
-};
 
 class ListTSubjectConfig extends Component {
   static getDerivedStateFromProps(props, state) {
@@ -119,6 +70,20 @@ class ListTSubjectConfig extends Component {
             className="text-truncate text-bold-500 mb-0"
           >
             {row.subjectCode}
+          </p>
+        ),
+      },
+      {
+        name: "Faild điểm danh",
+        selector: "attendant",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p
+            title={row.subjectCode}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            5
           </p>
         ),
       },
@@ -204,16 +169,7 @@ class ListTSubjectConfig extends Component {
               className="dataTable-custom"
               data={value.length ? "" : data}
               columns={columns}
-              noHeader
               pagination
-              subHeader
-              subHeaderComponent={
-                <CustomHeader
-                  value={value}
-                  handleSidebar={this.handleSidebar}
-                  handleFilter={this.handleFilter}
-                />
-              }
             />
           </CardBody>
         </Card>

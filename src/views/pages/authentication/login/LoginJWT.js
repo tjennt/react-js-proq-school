@@ -28,6 +28,7 @@ class LoginJWT extends React.Component {
   responseGoogle = (res) => {
     console.log(res);
     console.log(res.profileObj);
+    this.props.loginWithJWT(res);
   };
   render() {
     return (
