@@ -9,7 +9,7 @@ import {
 } from "../../../../redux/actions/auth/loginActions";
 import { connect } from "react-redux";
 import { history } from "../../../../history";
-
+import GoogleLogin from "react-google-login";
 class LoginJWT extends React.Component {
   state = {
     email: "",
@@ -24,6 +24,10 @@ class LoginJWT extends React.Component {
   handleLogin = (e) => {
     e.preventDefault();
     this.props.loginWithJWT(this.state);
+  };
+  responseGoogle = (res) => {
+    console.log(res);
+    console.log(res.profileObj);
   };
   render() {
     return (
@@ -66,17 +70,13 @@ class LoginJWT extends React.Component {
                 </div>
                 <Label>Mật khẩu</Label>
               </FormGroup>
-              {/* <FormGroup className="d-flex justify-content-between align-items-center"></FormGroup> */}
               <div className="d-flex justify-content-between">
-                <Button.Ripple
-                  color="primary"
-                  outline
-                  onClick={() => {
-                    history.push("/register");
-                  }}
-                >
-                  Đăng kí
-                </Button.Ripple>
+                <GoogleLogin
+                  clientId="1038607072813-rdjohk5kccvju3891r4vj73b9o0knphu.apps.googleusercontent.com"
+                  onSuccess={this.responseGoogle}
+                  onFailure={this.onFailure}
+                  cookiePolicy={"single_host_origin"}
+                />
                 <Button.Ripple color="primary" type="submit">
                   Đăng nhập
                 </Button.Ripple>
