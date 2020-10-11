@@ -53,6 +53,7 @@ const LiveStreamTeacher = lazy(() =>
 
 // Set Layout and Component Using App Route
 const RouteConfig = ({ component: Component, fullLayout, ...rest }) => (
+ 
   <Route
     {...rest}
     render={(props) => {

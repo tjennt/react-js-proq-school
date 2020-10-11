@@ -4,6 +4,6 @@ const url = "students";
 
 export const getDataStudentApi = () => {
   return axiosService.get(
-    `https://mockapi.io/clone/5f817fec5b1f3f00161a6a92/student`
+    `https://mockapi.io/projects/5f7ec86c094b670016b76782`
   );
 };
