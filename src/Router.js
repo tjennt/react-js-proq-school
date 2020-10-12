@@ -50,7 +50,27 @@ const EmailTeacher = lazy(() =>
 const LiveStreamTeacher = lazy(() =>
   import("./views/pages/ProQ-Teacher/LiveStream/Chat")
 );
-
+// Educate
+const ClassEducate = lazy(() =>
+  import(
+    "./views/pages/ui-elements/data-list/ProQEducate/ListClassEducate/class"
+  )
+);
+const SubjectEducate = lazy(() =>
+  import(
+    "./views/pages/ui-elements/data-list/ProQEducate/ListSubjectEducate/subject"
+  )
+);
+const StudentEducate = lazy(() =>
+  import(
+    "./views/pages/ui-elements/data-list/ProQEducate/ListStudentEducate/student"
+  )
+);
+const TeacherEducate = lazy(() =>
+  import(
+    "./views/pages/ui-elements/data-list/ProQEducate/ListTeacherEducate/EducationTeacher"
+  )
+);
 // Set Layout and Component Using App Route
 const RouteConfig = ({ component: Component, fullLayout, ...rest }) => (
   <Route
@@ -106,7 +126,11 @@ class AppRouter extends React.Component {
           <AppRoute path="/assistant/list/class" component={classAssi} />
           <AppRoute path="/assistant/list/subject" component={subject} />
           <AppRoute path="/department" component={dashboard} />
-
+          {/* Educate */}
+          <AppRoute exact path="/education/class" component={ClassEducate} />
+          <AppRoute path="/education/subject" component={SubjectEducate} />
+          <AppRoute path="/education/student" component={StudentEducate} />
+          <AppRoute path="/education/teacher" component={TeacherEducate} />
           {/* teacher */}
           <AppRoute
             exact

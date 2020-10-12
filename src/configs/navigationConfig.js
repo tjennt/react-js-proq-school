@@ -109,7 +109,7 @@ const navigationConfig = [
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["ADMIN", "department"],
-        navLink: "/department/list/student",
+        navLink: "/education/student",
       },
       {
         id: "listTeacherDepartment",
@@ -117,7 +117,7 @@ const navigationConfig = [
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["ADMIN", "department"],
-        navLink: "/department/list/teacher",
+        navLink: "/education/teacher",
       },
       {
         id: "listClassDepartment",
@@ -125,7 +125,7 @@ const navigationConfig = [
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["ADMIN", "department"],
-        navLink: "/department/list/class",
+        navLink: "/education/class",
       },
       {
         id: "listSubjectDepartment",
@@ -133,7 +133,7 @@ const navigationConfig = [
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["ADMIN", "department"],
-        navLink: "/department/list/subject",
+        navLink: "/education/subject",
       },
     ],
   },
