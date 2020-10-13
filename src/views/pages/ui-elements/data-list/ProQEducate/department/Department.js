@@ -1,30 +1,22 @@
 import React from "react";
 import { Row, Col } from "reactstrap";
 import Breadcrumbs from "../../../../../../components/@vuexy/breadCrumbs/BreadCrumb";
-import ListStudentConfig from "./ListStudentConfig";
+import ListClassConfig from "./ListClassConfig";
 import queryString from "query-string";
-import { getToken } from "../../../../../../utility/auth/setAuthToken";
 import { connect } from "react-redux";
 import { logoutWithJWT } from "../../../../../../redux/actions/auth/loginActions";
-class studentEducation extends React.Component {
-  // componentDidMount() {
-  //   let token = getToken();
-  //   if (!token) {
-  //     this.props.logoutWithJWT();
-  //     return false;
-  //   }
-  // }
+class Department extends React.Component {
   render() {
     return (
       <React.Fragment>
         <Breadcrumbs
           breadCrumbTitle="Phòng đào tạo "
           breadCrumbParent="Danh sách"
-          breadCrumbActive="Danh sách sinh viên"
+          breadCrumbActive="Danh sách phân lớp"
         />
         <Row>
           <Col sm="12">
-            <ListStudentConfig
+            <ListClassConfig
               thumbView={true}
               parsedFilter={queryString.parse(this.props.location.search)}
             />
@@ -35,4 +27,4 @@ class studentEducation extends React.Component {
   }
 }
 
-export default connect(null, { logoutWithJWT })(studentEducation);
+export default connect(null, { logoutWithJWT })(Department);

@@ -19,7 +19,6 @@ class axiosService {
     return axios.get(url);
   }
   post(url, body) {
-    this.getHeaders();
     return axios.post(url, body);
   }
   put(url, body) {
