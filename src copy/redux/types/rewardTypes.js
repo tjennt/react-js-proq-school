@@ -1,2 +1,0 @@
-export const GET_DATA_REWARD = "GET_DATA_REWARD";
-export const UPDATE_DATA_REWARD = "UPDATE_DATA_REWARD";

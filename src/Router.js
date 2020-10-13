@@ -71,6 +71,11 @@ const TeacherEducate = lazy(() =>
     "./views/pages/ui-elements/data-list/ProQEducate/ListTeacherEducate/EducationTeacher"
   )
 );
+const Department = lazy(() =>
+  import(
+    "./views/pages/ui-elements/data-list/ProQEducate/department/Department"
+  )
+);
 // Set Layout and Component Using App Route
 const RouteConfig = ({ component: Component, fullLayout, ...rest }) => (
   <Route
@@ -125,7 +130,7 @@ class AppRouter extends React.Component {
           />
           <AppRoute path="/assistant/list/class" component={classAssi} />
           <AppRoute path="/assistant/list/subject" component={subject} />
-          <AppRoute path="/department" component={dashboard} />
+          <AppRoute path="/department" component={Department} />
           {/* Educate */}
           <AppRoute exact path="/education/class" component={ClassEducate} />
           <AppRoute path="/education/subject" component={SubjectEducate} />

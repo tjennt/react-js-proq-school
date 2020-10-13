@@ -90,7 +90,7 @@ const navigationConfig = [
   },
   {
     id: "generalDepartment",
-    title: "Tổng hợp",
+    title: "Phân lớp",
     type: "item",
     icon: <Icon.Circle size={12} />,
     permissions: ["ADMIN", "ACCOUNT1", "ACCOUNT2"],

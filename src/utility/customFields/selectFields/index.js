@@ -46,6 +46,7 @@ function SelectField(props) {
         id={name}
         {...field}
         value={selectedOption}
+        isClearable={true}
         onChange={handleSelectedOptionChange}
         placeholder={placeholder}
         // isdisabled={disabled}
