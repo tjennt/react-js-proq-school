@@ -12,6 +12,7 @@ class DepartmentSidebar extends Component {
     start_time: "",
     ca: 1,
     end_time: "",
+    teacher: null,
   };
 
   handleSubmit = (values, { resetForm }) => {

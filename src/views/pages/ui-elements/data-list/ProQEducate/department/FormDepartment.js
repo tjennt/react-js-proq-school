@@ -35,6 +35,12 @@ function FormDepartment(props) {
     { value: 8, label: "ca 9" },
     { value: 9, label: "ca 10" },
   ];
+  const optionsTeacher = [
+    { value: 1, label: "Nguyễn Văn A" },
+    { value: 2, label: "Nguyễn Văn B" },
+    { value: 3, label: "Nguyễn Văn C" },
+    { value: 4, label: "Nguyễn Văn D" },
+  ];
   return (
     <Formik
       enableReinitialize="true"
@@ -92,6 +98,14 @@ function FormDepartment(props) {
               value={initialValues.ca}
               component={SelectField}
               options={optionCa}
+            />
+            <Field
+              name="teacher"
+              placeholder="Vui lòng giảng viên "
+              label="Giảng viên"
+              value={initialValues.teacher}
+              component={SelectField}
+              options={optionsTeacher}
             />
             <FormGroup>
               <Button disabled={!isValid} color="primary" type="submit">
