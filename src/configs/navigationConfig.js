@@ -89,6 +89,14 @@ const navigationConfig = [
     permissions: ["ADMIN", "ACCOUNT1", "ACCOUNT2"],
   },
   {
+    id: "totalDepartment",
+    title: "Tổng hợp",
+    type: "item",
+    icon: <Icon.Circle size={12} />,
+    permissions: ["ADMIN", "ACCOUNT1", "ACCOUNT2"],
+    navLink: "/education/totalDepartment",
+  },
+  {
     id: "generalDepartment",
     title: "Phân lớp",
     type: "item",
@@ -136,14 +144,6 @@ const navigationConfig = [
         navLink: "/education/subject",
       },
     ],
-  },
-  {
-    id: "searchGeneralDepartment",
-    title: "Tra cứu",
-    type: "item",
-    icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "assistant"],
-    navLink: "/department/search",
   },
   {
     id: "groupheader5",
