@@ -4,3 +4,4 @@
 [0909/174040.803:ERROR:exception_snapshot_win.cc(99)] thread ID 15456 not found in process
 [0909/174040.803:ERROR:exception_snapshot_win.cc(99)] thread ID 21224 not found in process
 [0909/174040.803:ERROR:exception_snapshot_win.cc(99)] thread ID 11956 not found in process
+[1014/200451.858:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
