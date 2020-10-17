@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
-import { history } from "../../../../../history";
-import { Switch } from "antd";
+import { history } from "../../../../history";
+import { Eye } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import queryString from "query-string";
-import { getData } from "../../../../../redux/actions/dataListAssistance/index";
-import "../../../../../assets/scss/plugins/extensions/react-paginate.scss";
-import "../../../../../assets/scss/pages/data-list.scss";
-import "../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import Chip from "../../../../../components/@vuexy/chips/ChipComponent";
+// import { getData } from "./../../../../../redux/actions/dataListAssistance/index";
+import { getData } from "../../../../redux/actions/dataListAssistance/index";
+import "../../../../assets/scss/plugins/extensions/react-paginate.scss";
+import "../../../../assets/scss/pages/data-list.scss";
+import "../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
+import Chip from "../../../../components/@vuexy/chips/ChipComponent";
 // import { Popconfirm, message } from "antd";
 const selectedStyle = {
   rows: {
@@ -24,15 +25,9 @@ const selectedStyle = {
   },
 };
 const ActionsComponent = (props) => {
-  function onChange(checked) {
-    props.switchAtten(checked);
-  }
   return (
     <div className="data-list-action">
-      <Switch
-        defaultChecked={props.switch ? true : false}
-        // checked={props.switch}
-        onChange={onChange}
+      <Eye
         className="cursor-pointer mr-1"
         size={20}
         onClick={() => {
@@ -62,43 +57,64 @@ class ListStudentEducation extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Ảnh",
-        selector: "img",
-        minWidth: "220px",
-        // cell: (row) => <img src={row.img} height="100" alt={row.name} />,
-      },
-      {
-        name: "Mã số sinh viên",
+        name: "ID",
         selector: "id",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
           <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
-            {/* {row.fullname} */}Ps09912
+            {/* {row.fullname} */}1
           </p>
         ),
       },
       {
-        name: "Họ và Tên",
-        selector: "student",
+        name: "Tên lớp",
+        selector: "class",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
           <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
             {/* {row.fullname} */}
-            Châu Thế Linh
+            WD14301
           </p>
         ),
       },
       {
-        name: "Ghi chú",
-        selector: "note",
+        name: "Phòng",
+        selector: "rooms",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
           <p title={row.code} className="text-truncate text-bold-500 mb-0">
             {/* {row.code} */}
-            Abcxyz
+            504P
+          </p>
+        ),
+      },
+      {
+        name: "Sỉ số",
+        selector: "classCode",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p title={row.classCode} className="text-truncate text-bold-500 mb-0">
+            {/* {row.classCode} */}
+            40
+          </p>
+        ),
+      },
+      {
+        name: "Hiện diện/vắng",
+        selector: "date",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p
+            title={row.created_at}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {/* {row.created_at} */}
+            22/30
           </p>
         ),
       },
@@ -108,10 +124,12 @@ class ListStudentEducation extends Component {
         cell: (row) => (
           <ActionsComponent
             row={row}
-            switch={this.state.switch}
-            switchAtten={this.switchAtten}
-            onRowClicked={this.onRowClicked}
+            getData={this.props.getData}
+            parsedFilter={this.props.parsedFilter}
+            dataId={this.state.currentData}
             currentData={this.handleCurrentData}
+            deleteRow={this.handleDelete}
+            changeStatus={(row) => this.changeStatus(row)}
           />
         ),
       },
@@ -119,9 +137,12 @@ class ListStudentEducation extends Component {
     allData: [],
     value: "",
     rowsPerPage: 4,
+    sidebar: false,
     currentData: null,
-    switch: false,
+    selected: [],
+    visible: false,
     totalRecords: 0,
+    sortIndex: [],
     selectedRows: null,
     addNew: "",
   };
@@ -139,6 +160,10 @@ class ListStudentEducation extends Component {
     this.setState({ sidebar: boolean });
     if (addNew === true) this.setState({ currentData: null, addNew: true });
   };
+  changeStatus = (row) => {
+    this.props.updateStatus(row, this.props.parsedFilter);
+    this.props.getData(this.props.parsedFilter);
+  };
   handleDelete = (row) => {
     this.props.deleteData(row);
     this.props.getData(this.props.parsedFilter);
@@ -154,23 +179,27 @@ class ListStudentEducation extends Component {
       });
     }
   };
-  switchAtten = (value) => {
-    console.log(value);
+  showModal = () => {
     this.setState({
-      ...this.state,
-      switch: value,
+      visible: true,
     });
   };
-  onRowClicked = (value) => {
-    console.log(value);
+  handleOk = (e) => {
     this.setState({
       ...this.state,
-      switch: true,
+      visible: false,
+    });
+  };
+
+  handleCancel = (e) => {
+    this.setState({
+      visible: false,
+      excel: null,
     });
   };
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
-    console.log(obj);
+    history.push(`${this.props.match.url}/${obj._id}`);
     this.handleSidebar(true);
   };
 
@@ -182,13 +211,14 @@ class ListStudentEducation extends Component {
     getData({ page: page.selected + 1, perPage: perPage });
     this.setState({ currentPage: page.selected });
   };
-
-  onSelectedRowsChange = (data) => {
-    console.log(data);
+  updateState = (state) => {
+    this.setState({ selectedRows: state.selectedRows }); // triggers MyComponent to re-render with new state
+  };
+  onRowClicked = (state) => {
+    history.push(`${this.props.match.url}/${state._id}`);
   };
   render() {
     let { columns, value, currentData, sidebar, data } = this.state;
-
     return (
       <div className="data-list">
         <DataTable
@@ -196,10 +226,12 @@ class ListStudentEducation extends Component {
           data={value.length ? "" : data}
           columns={columns}
           noHeader
+          pagination
           subHeader
           pointerOnHover
-          selectableRowsHighlight
-          onSelectedRowsChange={this.onSelectedRowsChange}
+          onSelectedRowsChange={this.updateState}
+          selectableRows
+          onRowClicked={this.onRowClicked}
           highlightOnHover
           customStyles={selectedStyle}
         />
