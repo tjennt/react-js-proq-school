@@ -86,6 +86,23 @@ const Schedules = lazy(() =>
     "./views/pages/ui-elements/data-list/ProQEducate/TotalDepartment/ItemTotalDepartment/Schedules"
   )
 );
+//student
+const StudyStudent = lazy(() => import("./views/pages/Student/Study"));
+const markStudent = lazy(() =>
+  import("./views/pages/Student/MarkStudent/markStudent")
+);
+const scheduleStudent = lazy(() =>
+  import("./views/pages/Student/Schedule/ScheduleStudent")
+);
+const AttendanceStudent = lazy(() =>
+  import("./views/pages/Student/Attendance/AttendanceStudent")
+);
+//acount admin
+const AccountAdminTeacher = lazy(() =>
+  import(
+    "./views/pages/ui-elements/data-list/ProQAdmin/adminTeachers/AdminTeacher"
+  )
+);
 // Set Layout and Component Using App Route
 const RouteConfig = ({ component: Component, fullLayout, ...rest }) => (
   <Route
@@ -168,7 +185,16 @@ class AppRouter extends React.Component {
           <AppRoute path="/teacher/attendance" component={Attendance} />
           <AppRoute path="/teacher/email" component={commingSoon} />
           <AppRoute path="/teacher/liveStream" component={commingSoon} />
-
+          {/* student */}
+          <AppRoute path="/student/news" component={StudyStudent} />
+          <AppRoute path="/student/score" component={markStudent} />
+          <AppRoute path="/student/schedule" component={scheduleStudent} />
+          <AppRoute path="/student/attendance" component={AttendanceStudent} />
+          {/* Admin */}
+          <AppRoute
+            path="/admin/account/teacher"
+            component={AccountAdminTeacher}
+          />
           <AppRoute component={login} fullLayout />
         </Switch>
       </Router>

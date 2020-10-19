@@ -199,7 +199,7 @@ const navigationConfig = [
     type: "item",
     icon: <Icon.Circle size={12} />,
     permissions: ["ADMIN", "student"],
-    navLink: "/student/news/",
+    navLink: "/student/news",
   },
   {
     id: "scoreStudent",
@@ -249,6 +249,35 @@ const navigationConfig = [
         navLink: "/student/livestream",
       },
     ],
+  },
+  {
+    type: "groupHeader",
+    groupTitle: "Admin",
+    permissions: ["ADMIN"],
+  },
+  {
+    id: "accountTeacher",
+    title: "Tài khoản giáo viên",
+    type: "item",
+    icon: <Icon.Circle size={12} />,
+    permissions: ["ADMIN", "student"],
+    navLink: "/admin/account/teacher",
+  },
+  {
+    id: "accountDaotao",
+    title: "Tài khoản đào tạo",
+    type: "item",
+    icon: <Icon.Circle size={12} />,
+    permissions: ["ADMIN", "student"],
+    navLink: "/admin/account/educate",
+  },
+  {
+    id: "accountSupportStudent",
+    title: "Tài khoản CTSV",
+    type: "item",
+    icon: <Icon.Circle size={12} />,
+    permissions: ["ADMIN", "student"],
+    navLink: "/admin/account/suport",
   },
 ];
 
