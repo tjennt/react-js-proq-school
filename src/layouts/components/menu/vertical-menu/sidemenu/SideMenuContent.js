@@ -6,7 +6,6 @@ import SideMenuGroup from "./SideMenuGroup";
 import { Badge } from "reactstrap";
 import { ChevronRight } from "react-feather";
 import { history } from "../../../../../history";
-import { getToken } from "../../../../../utility/auth/setAuthToken";
 import { logoutWithJWT } from "../../../../../redux/actions/auth/loginActions";
 import { connect } from "react-redux";
 class SideMenuContent extends React.Component {

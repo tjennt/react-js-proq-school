@@ -3,7 +3,6 @@ import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 import DataTable from "react-data-table-component";
 import { getDataClass } from "../../../../../../../redux/actions/dataListAssistance/index";
 import { connect } from "react-redux";
-import Moment from "react-moment";
 import { Edit } from "react-feather";
 import { Modal } from "antd";
 import Select from "react-select";

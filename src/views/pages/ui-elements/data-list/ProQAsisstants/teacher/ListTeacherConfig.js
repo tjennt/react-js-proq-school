@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Plus } from "react-feather";
+// import { Plus } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataTeacher } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -10,25 +10,7 @@ import Sidebar from "./DataListTeachertSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
-
-const CustomHeader = (props) => {
-  return (
-    <div className="data-list-header d-flex justify-content-between flex-wrap">
-      <div className="actions-left d-flex flex-wrap">
-        <Button
-          className="add-new-btn"
-          color="primary"
-          onClick={() => props.handleSidebar(true, true)}
-          outline
-        >
-          <Plus size={15} />
-          <span className="align-middle">Tạo mới</span>
-        </Button>
-      </div>
-    </div>
-  );
-};
+import { Card, CardBody } from "reactstrap";
 
 class ListTeacherConfig extends Component {
   static getDerivedStateFromProps(props, state) {

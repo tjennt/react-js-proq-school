@@ -3,7 +3,6 @@ import { Row, Col } from "reactstrap";
 import Breadcrumbs from "./../../../../components/@vuexy/breadCrumbs/BreadCrumb";
 import ListAttendanceStudent from "./ListAttendanceStudent";
 import queryString from "query-string";
-import { getToken } from "./../../../../utility/auth/setAuthToken";
 import { connect } from "react-redux";
 import { logoutWithJWT } from "./../../../../redux/actions/auth/loginActions";
 class AttendanceStudent extends React.Component {

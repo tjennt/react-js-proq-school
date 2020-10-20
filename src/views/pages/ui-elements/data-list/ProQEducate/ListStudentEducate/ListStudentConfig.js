@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Download, Edit, Plus, RefreshCw, Trash } from "react-feather";
+import { Download, Edit, Plus, Trash } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getData } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -10,29 +10,9 @@ import Sidebar from "./DataListStudentSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Table,
-} from "reactstrap";
-import Chip from "../../../../../../components/@vuexy/chips/ChipComponent";
+import { Button, Card, CardBody, Table } from "reactstrap";
 import { Popconfirm, message, Modal, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-const selectedStyle = {
-  rows: {
-    selectedHighlighStyle: {
-      backgroundColor: "rgba(115,103,240,.05)",
-      color: "#7367F0 !important",
-      boxShadow: "0 0 1px 0 #7367F0 !important",
-      "&:hover": {
-        transform: "translateY(0px) !important",
-      },
-    },
-  },
-};
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {

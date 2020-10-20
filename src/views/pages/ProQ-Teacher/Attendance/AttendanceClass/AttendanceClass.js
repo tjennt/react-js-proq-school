@@ -9,7 +9,6 @@ import { getData } from "../../../../../redux/actions/dataListAssistance/index";
 import "../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import Chip from "../../../../../components/@vuexy/chips/ChipComponent";
 // import { Popconfirm, message } from "antd";
 const selectedStyle = {
   rows: {
@@ -187,7 +186,7 @@ class ListStudentEducation extends Component {
     console.log(data);
   };
   render() {
-    let { columns, value, currentData, sidebar, data } = this.state;
+    let { columns, value, data } = this.state;
 
     return (
       <div className="data-list">

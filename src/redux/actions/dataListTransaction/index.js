@@ -1,9 +1,5 @@
-import axios from "axios";
-import setAuthToken, { getToken } from "../../../utility/auth/setAuthToken";
-import { baseUrl } from "../../../utility/config";
 import * as tranType from "../../constants/tranc";
-import { toastSuccess } from "../../../utility/toast/toastHelper";
-const baseUrlTest = `${baseUrl}/web/admin/transaction`;
+
 export const getData = (params) => ({
   type: tranType.GET_DATA_TRANSACTION,
   payload: {

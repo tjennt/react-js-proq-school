@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Plus } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataClass } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -11,7 +10,7 @@ import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import Moment from "react-moment";
-import { Card, CardBody, CardHeader, CardTitle, Table } from "reactstrap";
+import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 class ListClassConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
@@ -234,28 +233,7 @@ class ListClassConfig extends Component {
     );
   }
 }
-const ExpandableTable = ({ data }) => {
-  return (
-    <Table responsive>
-      <thead>
-        <tr>
-          <th>Thông tin Chi tiết</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Name</td>
-          <td>{data.name}</td>
-        </tr>
-        <tr>
-          <td>Email</td>
-          <td>{data.email}</td>
-        </tr>
-      </tbody>
-    </Table>
-  );
-};
+
 const mapStateToProps = (state) => {
   return {
     dataList: state.assistantData,

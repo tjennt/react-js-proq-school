@@ -6,10 +6,10 @@ import Spinner from "./components/@vuexy/spinner/Loading-spinner";
 import { ContextLayout } from "./utility/context/Layout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+//assistant
 const dashboard = lazy(() =>
   import("./views/dashboard/analytics/AnalyticsDashboard")
 );
-//assistant
 const studentAssistant = lazy(() =>
   import("./views/pages/ui-elements/data-list/ProQAsisstants/student/student")
 );
@@ -44,12 +44,12 @@ const ListClassTeacher = lazy(() =>
 const Attendance = lazy(() =>
   import("./views/pages/ProQ-Teacher/Attendance/Attendance")
 );
-const EmailTeacher = lazy(() =>
-  import("./views/pages/ProQ-Teacher/EmailTeacher/Email")
-);
-const LiveStreamTeacher = lazy(() =>
-  import("./views/pages/ProQ-Teacher/LiveStream/Chat")
-);
+// const EmailTeacher = lazy(() =>
+//   import("./views/pages/ProQ-Teacher/EmailTeacher/Email")
+// );
+// const LiveStreamTeacher = lazy(() =>
+//   import("./views/pages/ProQ-Teacher/LiveStream/Chat")
+// );
 // Educate
 const ClassEducate = lazy(() =>
   import(
@@ -145,7 +145,7 @@ class AppRouter extends React.Component {
         <Switch>
           <AppRoute exact path="/login" component={login} fullLayout />
           <AppRoute exact path="/register" component={register} fullLayout />
-          <AppRoute path="/assisttant" component={dashboard} />
+          <AppRoute exact path="/assistTant" component={dashboard} />
           <AppRoute path="/assistant/search" component={searchStudent} />
           <AppRoute
             path="/assistant/list/student"

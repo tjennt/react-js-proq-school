@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Edit, Eye, Plus, Trash } from "react-feather";
+import { Eye } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataClass } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -12,7 +12,6 @@ import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 // import history from "../../../../../../history"
 import Moment from "react-moment";
 // import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
-import { message } from "antd";
 
 const ActionsComponent = (props) => {
   function redirect() {

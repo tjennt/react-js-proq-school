@@ -10,7 +10,7 @@ import Sidebar from "./DataListTeachertSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
+import { Button, Card, CardBody } from "reactstrap";
 import { message, Modal, Popconfirm, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 const { Dragger } = Upload;
@@ -182,7 +182,6 @@ class ListTeacherConfig extends Component {
     allData: [],
     value: "",
     rowsPerPage: 4,
-    sidebar: false,
     sidebar: false,
     currentData: null,
     selected: [],

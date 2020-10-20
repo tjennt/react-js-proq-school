@@ -16,7 +16,7 @@ class DepartmentSidebar extends Component {
   };
 
   handleSubmit = (values, { resetForm }) => {
-    const { addData, handleSidebar, data, updateData } = this.props;
+    const { handleSidebar, data } = this.props;
     if (!data) {
       // addData(values);
       // handleSidebar(false, true);

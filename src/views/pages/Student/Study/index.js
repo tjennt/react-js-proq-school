@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "reactstrap";
+// import { Row, Col } from "reactstrap";
 import Breadcrumbs from "../../../../components/@vuexy/breadCrumbs/BreadCrumb";
 import AboutCard from "./ListStudy";
 class Study extends React.Component {

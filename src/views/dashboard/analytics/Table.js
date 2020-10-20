@@ -1,15 +1,18 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
-import classnames from "classnames";
-import { history } from "./../../../../history";
+import { history } from "./../../../history";
 import { Download } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import { getData } from "./../../../../redux/actions/dataListAssistance/index";
-import "./../../../../assets/scss/plugins/extensions/react-paginate.scss";
-import "./../../../../assets/scss/pages/data-list.scss";
-import { Button, Card, CardBody, Input } from "reactstrap";
-import { Modal } from "antd";
+import { getData } from "./../../../redux/actions/dataListAssistance/index";
+import "./../../../assets/scss/plugins/extensions/react-paginate.scss";
+import "./../../../assets/scss/pages/data-list.scss";
+import "./../../../assets/scss/plugins/extensions/sweet-alerts.scss";
+import { Button, Card, CardBody } from "reactstrap";
+import { Modal, Upload } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
+
+const { Dragger } = Upload;
 
 const CustomHeader = (props) => {
   const showModal = () => {
@@ -19,26 +22,19 @@ const CustomHeader = (props) => {
     <div className="data-list-header d-flex justify-content-between flex-wrap">
       <div className="actions-left d-flex flex-wrap">
         <Button onClick={showModal} className=" ml-2" color="danger">
-          <Download size={15} /> Export excel
+          <Download size={15} /> Export Excel
         </Button>
       </div>
     </div>
   );
 };
 
-class ListMarkStudentEducation extends Component {
+class TableTotal extends Component {
   static getDerivedStateFromProps(props, state) {
-    if (
-      props.dataList.data !== state.data.length ||
-      state.currentPage !== props.parsedFilter.page
-    ) {
+    if (props.dataList.data !== state.data.length) {
       return {
         data: props.dataList.data,
         totalPages: props.dataList.totalPages,
-        currentPage: parseInt(props.parsedFilter.page) - 1,
-        rowsPerPage: parseInt(props.parsedFilter.perPage),
-        totalRecords: props.dataList.totalRecords,
-        sortIndex: props.dataList.sortIndex,
       };
     }
 
@@ -51,90 +47,78 @@ class ListMarkStudentEducation extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "STT",
-        selector: "stt",
-        sortable: true,
-        minWidth: "200px",
-        cell: (row) => (
-          <p title={row.stt} className="text-truncate text-bold-500 mb-0">
-            1
-          </p>
-        ),
-      },
-      {
-        name: "Kì thứ ",
-        selector: "semester",
-        sortable: true,
-        minWidth: "200px",
-        cell: (row) => (
-          <p title={row.semester} className="text-truncate text-bold-500 mb-0">
-            Kì thứ 1
-          </p>
-        ),
-      },
-      {
         name: "Môn",
         selector: "subject",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "200px",
         cell: (row) => (
           <p title={row.subject} className="text-truncate text-bold-500 mb-0">
-            Lập trình PHP
+            PHP
           </p>
         ),
       },
       {
-        name: "Mã môn",
-        selector: "id_subject",
+        name: "Lớp",
+        selector: "class",
+        sortable: true,
+        minWidth: "200px",
+        cell: (row) => (
+          <p title={row.class} className="text-truncate text-bold-500 mb-0">
+            WD14305
+          </p>
+        ),
+      },
+      {
+        name: "Số lượng SV Vắng",
+        selector: "studentFail",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
           <p
-            title={row.id_subject}
+            title={row.studentFail}
             className="text-truncate text-bold-500 mb-0"
           >
-            PHP303
+            20
           </p>
         ),
       },
       {
-        name: "Điểm",
-        selector: "mark",
+        name: "Sỉ số",
+        selector: "total",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p
-            title={row.created_at}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {/* {row.created_at} */}
-            7.7
+          <p title={row.total} className="text-truncate text-bold-500 mb-0">
+            50
           </p>
         ),
       },
       {
-        name: "Trạng thái",
-        selector: "status",
+        name: "Giảng viên ",
+        selector: "teacher",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.status} className="text-truncate text-bold-500 mb-0">
+          <p title={row.teacher} className="text-truncate text-bold-500 mb-0">
             {/* {row.created_at} */}
-            Đạt
+            Mua TC
+          </p>
+        ),
+      },
+      {
+        name: "Ngày",
+        selector: "date",
+        cell: (row) => (
+          <p title={row.dae} className="text-truncate text-bold-500 mb-0">
+            {/* {row.created_at} */}
+            20/10/2020
           </p>
         ),
       },
     ],
     allData: [],
-    value: "",
     rowsPerPage: 4,
-    sidebar: false,
-    currentData: null,
-    selected: [],
     visible: false,
-    totalRecords: 0,
-    sortIndex: [],
-    addNew: "",
   };
 
   thumbView = this.props.thumbView;
@@ -146,25 +130,7 @@ class ListMarkStudentEducation extends Component {
     this.setState({ value: e.target.value });
     this.props.filterData(e.target.value);
   };
-  changeStatus = (row) => {
-    this.props.updateStatus(row, this.props.parsedFilter);
-    this.props.getData(this.props.parsedFilter);
-  };
-  handleDelete = (row) => {
-    this.props.deleteData(row);
-    this.props.getData(this.props.parsedFilter);
-    if (this.state.data.length - 1 === 0) {
-      history.push(
-        `/accountAdmin?page=${parseInt(
-          this.props.parsedFilter.page - 1
-        )}&perPage=${this.props.parsedFilter.perPage}`
-      );
-      this.props.getData({
-        page: this.props.parsedFilter.page - 1,
-        perPage: this.props.parsedFilter.perPage,
-      });
-    }
-  };
+
   showModal = () => {
     this.setState({
       visible: true,
@@ -183,11 +149,6 @@ class ListMarkStudentEducation extends Component {
       excel: null,
     });
   };
-  handleCurrentData = (obj) => {
-    this.setState({ currentData: obj });
-    this.handleSidebar(true);
-  };
-
   handlePagination = (page) => {
     let { parsedFilter, getData } = this.props;
     let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 4;
@@ -198,24 +159,34 @@ class ListMarkStudentEducation extends Component {
   };
 
   render() {
-    let { columns, value, sidebar, data } = this.state;
+    let { columns, data } = this.state;
     console.log(data);
     return (
       <div className="data-list">
         <Modal
           destroyOnClose={true}
-          title="Đặt tên cho file excel"
+          title="Thêm dữ liệu từ file excel"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <Input placeholder="Bạn có thể đặt tên cho file excel" />
+          <Dragger
+            onChange={this.onChangeExcel}
+            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          >
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined />
+            </p>
+            <p className="ant-upload-hint">
+              Click vào đây để chọn file excel hoặc kéo thả từ máy tính của bạn
+            </p>
+          </Dragger>
         </Modal>
         <Card>
           <CardBody>
             <DataTable
               className="dataTable-custom"
-              data={value.length ? "" : data}
+              data={data}
               columns={columns}
               noHeader
               pagination
@@ -231,12 +202,6 @@ class ListMarkStudentEducation extends Component {
             />
           </CardBody>
         </Card>
-        <div
-          className={classnames("data-list-overlay", {
-            show: sidebar,
-          })}
-          onClick={() => this.handleSidebar(false, true)}
-        />
       </div>
     );
   }
@@ -249,4 +214,4 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getData,
-})(ListMarkStudentEducation);
+})(TableTotal);

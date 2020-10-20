@@ -8,7 +8,7 @@ import {
   changeRole,
 } from "../../../../redux/actions/auth/loginActions";
 import { connect } from "react-redux";
-import { history } from "../../../../history";
+// import { history } from "../../../../history";
 import GoogleLogin from "react-google-login";
 class LoginJWT extends React.Component {
   state = {

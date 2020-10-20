@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Plus } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataSubject } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -10,7 +9,7 @@ import Sidebar from "./DataListSubjectSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
+import { Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 import Moment from "react-moment";
 
 class ListTSubjectConfig extends Component {

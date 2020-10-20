@@ -22,10 +22,10 @@ datePickerField.defaultProps = {
 };
 
 function datePickerField(props) {
-  const { field, form, label, disable } = props;
-  const { name, value } = field;
-  const { errors, touched } = form;
-  const showError = errors[name] && touched[name];
+  const { field, form, label } = props;
+  const { name } = field;
+  // const { errors, touched } = form;
+  // const showError = errors[name] && touched[name];
 
   const onChangeValue = (date) => {
     form.setFieldValue(name, date);

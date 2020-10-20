@@ -11,7 +11,6 @@ import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 
-import Moment from "react-moment";
 import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 import { message, Popconfirm } from "antd";
 

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../history";
-import { Download, Edit, Plus, RefreshCw, Trash } from "react-feather";
+import { Download } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getData } from "../../../../redux/actions/dataListAssistance/index";
