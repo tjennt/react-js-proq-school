@@ -2,7 +2,15 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Download, Edit, Plus, Trash } from "react-feather";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  Edit,
+  Plus,
+  Trash,
+} from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataClass } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -12,9 +20,18 @@ import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 
 import Moment from "react-moment";
-import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
+import {
+  Button,
+  Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Row,
+  UncontrolledDropdown,
+} from "reactstrap";
 import { message, Modal, Popconfirm, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
+import ReactPaginate from "react-paginate";
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
@@ -46,41 +63,20 @@ const ActionsComponent = (props) => {
     </div>
   );
 };
-const CustomHeader = (props) => {
-  const showModal = () => {
-    props.showModal();
-  };
-  return (
-    <div className="data-list-header d-flex justify-content-between flex-wrap">
-      <div className="actions-left d-flex flex-wrap">
-        <Button
-          color="primary"
-          onClick={() => props.handleSidebar(true, true)}
-          outline="true"
-        >
-          <Plus size={15} />
-          <span className="align-middle">Tạo mới</span>
-        </Button>
-        <Button onClick={showModal} className=" ml-2" color="primary">
-          <Download size={15} /> Import
-        </Button>
-      </div>
-    </div>
-  );
-};
+
 class ListClassEducateConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
-      props.dataList.dataschedules !== state.data.length ||
+      props.dataList.dataClass !== state.data.length ||
       state.currentPage !== props.parsedFilter.page
     ) {
       return {
-        data: props.dataList.dataschedules,
-        totalPages: props.dataList.totalPages,
-        currentPage: parseInt(props.parsedFilter.page) - 1,
-        rowsPerPage: parseInt(props.parsedFilter.perPage),
-        totalRecords: props.dataList.totalRecords,
-        sortIndex: props.dataList.sortIndex,
+        data: props.dataList.dataClass,
+        totalPages: props.dataList.total_page_class,
+        // currentPage: parseInt(props.parsedFilter.page) - 1,
+        // rowsPerPage: parseInt(props.parsedFilter.perPage),
+        totalRecords: props.dataList.total_record_class,
+        // sortIndex: props.dataList.sortIndex,
       };
     }
 
@@ -93,28 +89,14 @@ class ListClassEducateConfig extends Component {
     visible: false,
     currentPage: 0,
     columns: [
-      // {
-      //   name: "Sinh viên",
-      //   selector: "student",
-      //   sortable: true,
-      //   minWidth: "200px",
-      //   cell: (row) => (
-      //     <p
-      //       title={row.nameStudent}
-      //       className="text-truncate text-bold-500 mb-0"
-      //     >
-      //       {row.nameStudent}
-      //     </p>
-      //   ),
-      // },
       {
         name: "Lớp",
         selector: "class",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.classCode} className="text-truncate text-bold-500 mb-0">
-            {row.classCode}
+          <p title={row.className} className="text-truncate text-bold-500 mb-0">
+            {row.className}
           </p>
         ),
       },
@@ -124,25 +106,15 @@ class ListClassEducateConfig extends Component {
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.classCode} className="text-truncate text-bold-500 mb-0">
-            {row.classCode}
+          <p
+            title={row.searchString}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.searchString}
           </p>
         ),
       },
-      // {
-      //   name: "Môn học",
-      //   selector: "subject",
-      //   sortable: true,
-      //   minWidth: "200px",
-      //   cell: (row) => (
-      //     <p
-      //       title={row.nameSubject}
-      //       className="text-truncate text-bold-500 mb-0"
-      //     >
-      //       {row.nameSubject}
-      //     </p>
-      //   ),
-      // },
+
       {
         name: "Thời gian bắt đầu",
         selector: "dateCreate",
@@ -161,20 +133,6 @@ class ListClassEducateConfig extends Component {
           <Moment format="DD/MM/YYYY">{row.dateCreateClass}</Moment>
         ),
       },
-      // {
-      //   name: "Trạng thái ",
-      //   selector: "type",
-      //   maxWidth: "140px",
-      //   sortable: true,
-      //   cell: (row) => (
-      //     <Chip
-      //       onClick={this.changeStatus}
-      //       className="m-0"
-      //       color={row.statusDay ? "success" : "danger"}
-      //       text={row.statusDay ? "Điểm danh" : "Chưa điểm danh"}
-      //     />
-      //   ),
-      // },
       {
         name: "Thao tác",
         sortable: true,
@@ -204,7 +162,14 @@ class ListClassEducateConfig extends Component {
   thumbView = this.props.thumbView;
 
   componentDidMount() {
-    this.props.getDataClass();
+    const { parsedFilter } = this.props;
+
+    const paginate = {
+      page: 1,
+      limit: 10,
+    };
+    let limit = parsedFilter || paginate;
+    this.props.getDataClass(limit);
   }
   handleFilter = (e) => {
     this.setState({ value: e.target.value });
@@ -237,21 +202,21 @@ class ListClassEducateConfig extends Component {
     this.props.updateStatus(row, this.props.parsedFilter);
     this.props.getData(this.props.parsedFilter);
   };
-  handleDelete = (row) => {
-    this.props.deleteData(row);
-    this.props.getData(this.props.parsedFilter);
-    if (this.state.data.length - 1 === 0) {
-      history.push(
-        `/accountAdmin?page=${parseInt(
-          this.props.parsedFilter.page - 1
-        )}&perPage=${this.props.parsedFilter.perPage}`
-      );
-      this.props.getData({
-        page: this.props.parsedFilter.page - 1,
-        perPage: this.props.parsedFilter.perPage,
-      });
-    }
-  };
+  // handleDelete = (row) => {
+  //   this.props.deleteData(row);
+  //   this.props.getData(this.props.parsedFilter);
+  //   if (this.state.data.length - 1 === 0) {
+  //     history.push(
+  //       `/accountAdmin?page=${parseInt(
+  //         this.props.parsedFilter.page - 1
+  //       )}&perPage=${this.props.parsedFilter.perPage}`
+  //     );
+  //     this.props.getData({
+  //       page: this.props.parsedFilter.page - 1,
+  //       perPage: this.props.parsedFilter.perPage,
+  //     });
+  //   }
+  // };
 
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
@@ -259,14 +224,21 @@ class ListClassEducateConfig extends Component {
   };
 
   handlePagination = (page) => {
-    let { parsedFilter, getData } = this.props;
-    let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 4;
-
-    history.push(`/accountAdmin?page=${page.selected + 1}&perPage=${perPage}`);
-    getData({ page: page.selected + 1, perPage: perPage });
+    let { parsedFilter, getDataClass } = this.props;
+    const { limit } = parsedFilter;
+    let perPage = limit || 10;
+    history.push(`/education/class?page=${page.selected + 1}&limit=${perPage}`);
+    getDataClass({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
+  handleRowsPerPage = (value) => {
+    let { parsedFilter, getDataClass } = this.props;
 
+    let page = parsedFilter.page !== undefined ? parsedFilter.page : 10;
+    history.push(`/education/class?page=${page}&limit=${value}`);
+    this.setState({ rowsPerPage: value });
+    getDataClass({ page: parsedFilter.page, limit: value });
+  };
   render() {
     let { columns, data, value, currentData, sidebar } = this.state;
     return (
@@ -290,31 +262,102 @@ class ListClassEducateConfig extends Component {
             </p>
           </Dragger>
         </Modal>
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-large-1 text-primary">
-              {this.props.TitleTable}
-            </CardTitle>
-          </CardHeader>
-          <CardBody className="rdt_Wrapper">
-            <DataTable
-              className="dataTable-custom"
-              data={value.length ? "" : data}
-              columns={columns}
-              noHeader
-              pagination
-              subHeader
-              subHeaderComponent={
-                <CustomHeader
-                  handleSidebar={this.handleSidebar}
-                  showModal={this.showModal}
-                  handleFilter={this.handleFilter}
-                  handleRowsPerPage={this.handleRowsPerPage}
-                />
+        <Col lg="12">
+          <Row>
+            <Col lg="3">
+              <Button
+                color="primary"
+                onClick={() => this.handleSidebar(true, true)}
+                outline={true}
+              >
+                <Plus size={15} />
+                <span className="align-middle">Tạo mới</span>
+              </Button>
+              <Button onClick={this.showModal} className=" ml-2" color="danger">
+                <Download size={15} /> Import
+              </Button>
+            </Col>
+            <Col lg="9">
+              <UncontrolledDropdown
+                style={{ backgroundColor: "#fff", borderRadius: "20px" }}
+                className="data-list-rows-dropdown  d-md-block d-none"
+              >
+                <DropdownToggle
+                  className="sort-dropdown"
+                  style={{
+                    float: "right",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <span className="align-middle mx-50">{`${
+                    this.props.parsedFilter.page
+                      ? this.props.parsedFilter.page
+                      : 1
+                  } of ${this.state.totalRecords}`}</span>
+                  <ChevronDown size={15} />
+                </DropdownToggle>
+                <DropdownMenu tag="div" right>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(10)}
+                  >
+                    10
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(20)}
+                  >
+                    20
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(30)}
+                  >
+                    30
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(50)}
+                  >
+                    50
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(100)}
+                  >
+                    100
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Col>
+          </Row>
+        </Col>
+        <DataTable
+          className="dataTable-custom"
+          data={value.length ? "" : data}
+          columns={columns}
+          noHeader
+          pagination
+          paginationServer
+          paginationComponent={() => (
+            <ReactPaginate
+              previousLabel={<ChevronLeft size={15} />}
+              nextLabel={<ChevronRight size={15} />}
+              breakLabel="..."
+              breakClassName="break-me"
+              pageCount={this.state.totalPages}
+              containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+              activeClassName="active"
+              forcePage={
+                this.props.parsedFilter.page
+                  ? parseInt(this.props.parsedFilter.page - 1)
+                  : 0
               }
+              onPageChange={(page) => this.handlePagination(page)}
             />
-          </CardBody>
-        </Card>
+          )}
+          subHeader
+        />
         <Sidebar
           show={sidebar}
           data={currentData}

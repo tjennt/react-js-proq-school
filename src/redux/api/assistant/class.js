@@ -1,8 +1,8 @@
 import axiosService from "../../../utility/axiosService/axiosService";
 import { API_ENDPOINT } from "../../constants/index";
 
-const url = `schedules`;
+const url = `staff/class`;
 
-export const getDataAssClassApi = () => {
-  return axiosService.get(`${API_ENDPOINT}/${url}`);
+export const getDataAssClassApi = (params) => {
+  return axiosService.get(`${API_ENDPOINT}/${url}`, { params });
 };

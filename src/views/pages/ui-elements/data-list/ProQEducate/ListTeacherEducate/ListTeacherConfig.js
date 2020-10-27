@@ -54,7 +54,7 @@ const CustomHeader = (props) => {
         <Button
           color="primary"
           onClick={() => props.handleSidebar(true, true)}
-          outline="true"
+          outline={true}
         >
           <Plus size={15} />
           <span className="align-middle">Tạo mới</span>

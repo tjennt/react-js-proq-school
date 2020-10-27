@@ -2,13 +2,18 @@ import * as assisType from "../../constants/assistant";
 /**
  * assistant student
  */
-export const getData = () => ({
+export const getData = (params) => ({
   type: assisType.GET_DATA_STUDENT_ASS,
+  payload: {
+    params,
+  },
 });
-export const getDataSuccess = (data) => ({
+export const getDataSuccess = (data, total_page, total_record) => ({
   type: assisType.GET_DATA_STUDENT_ASS_SUCCE,
   payload: {
     data,
+    total_page,
+    total_record,
   },
 });
 export const getDataFaild = (error) => ({
@@ -38,13 +43,18 @@ export const getDataTeacherFaild = (error) => ({
 /**
  * assistant class
  */
-export const getDataClass = () => ({
+export const getDataClass = (params) => ({
   type: assisType.GET_DATA_CLASS_ASS,
+  payload: {
+    params,
+  },
 });
-export const getDataClassSuccess = (data) => ({
+export const getDataClassSuccess = (data, total_page, total_record) => ({
   type: assisType.GET_DATA_CLASS_ASS_SUCCESS,
   payload: {
     data,
+    total_page,
+    total_record,
   },
 });
 export const getDataClassFaild = (error) => ({

@@ -7,3 +7,5 @@ export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 
 export const CHANGE_ROLE = "CHANGEROLE";
 export const CHANGE_ROLE_SUCCESS = "CHANGE_ROLE_SUCCESS";
+
+export const LOGIN_GOOGLE = "LOGIN_GOOGLE";

@@ -2,35 +2,17 @@ import React from "react";
 import * as Icon from "react-feather";
 const navigationConfig = [
   {
-    id: "register",
-    title: "Register",
-    type: "item",
-    icon: <Icon.Circle size={12} />,
-    permissions: ["admin", "editor"],
-    navLink: "/register",
-    newTab: true,
-  },
-  {
-    id: "login",
-    title: "login",
-    type: "item",
-    icon: <Icon.Circle size={12} />,
-    permissions: ["admin", "editor"],
-    navLink: "/login",
-    newTab: true,
-  },
-  {
     id: "groupheader5",
     type: "groupHeader",
     groupTitle: "PHÒNG CÔNG TÁC ",
-    permissions: ["ADMIN", "ACCOUNT1", "ACCOUNT2"],
+    permissions: ["admin", "ACCOUNT1", "ACCOUNT2"],
   },
   {
     id: "totalSupport",
     title: "Tổng hợp",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "ACCOUNT1", "ACCOUNT2", "MARKETING"],
+    permissions: ["admin", "ACCOUNT1", "ACCOUNT2", "MARKETING"],
     navLink: "/assistTant",
   },
   {
@@ -38,7 +20,7 @@ const navigationConfig = [
     title: "Tra cứu",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "assistant"],
+    permissions: ["admin", "assistant"],
     navLink: "/assistant/search",
   },
   {
@@ -46,14 +28,14 @@ const navigationConfig = [
     title: "Danh sách ",
     type: "collapse",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "ACCOUNT1", "ACCOUNT2", "MARKETING"],
+    permissions: ["admin", "ACCOUNT1", "ACCOUNT2", "MARKETING"],
     children: [
       {
         id: "listStudentAssistant",
         title: "Ds.Sinh viên",
         type: "item",
         icon: <Icon.FileText size={18} />,
-        permissions: ["ADMIN", "assistant"],
+        permissions: ["admin", "assistant"],
         navLink: "/assistant/list/student",
       },
       {
@@ -61,7 +43,7 @@ const navigationConfig = [
         title: "Ds.Giáo viên",
         type: "item",
         icon: <Icon.FileText size={18} />,
-        permissions: ["ADMIN", "assistant"],
+        permissions: ["admin", "assistant"],
         navLink: "/assistant/list/teacher",
       },
       {
@@ -69,7 +51,7 @@ const navigationConfig = [
         title: "Ds.Lớp",
         type: "item",
         icon: <Icon.FileText size={18} />,
-        permissions: ["ADMIN", "assistant"],
+        permissions: ["admin", "assistant"],
         navLink: "/assistant/list/class",
       },
       {
@@ -77,7 +59,7 @@ const navigationConfig = [
         title: "Ds.Môn",
         type: "item",
         icon: <Icon.FileText size={18} />,
-        permissions: ["ADMIN", "assistant"],
+        permissions: ["admin", "assistant"],
         navLink: "/assistant/list/subject",
       },
     ],
@@ -86,14 +68,14 @@ const navigationConfig = [
     id: "groupheader1",
     type: "groupHeader",
     groupTitle: "Phòng đào tạo",
-    permissions: ["ADMIN", "ACCOUNT1", "ACCOUNT2"],
+    permissions: ["admin", "ACCOUNT1", "ACCOUNT2"],
   },
   {
     id: "totalDepartment",
     title: "Tổng hợp",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "ACCOUNT1", "ACCOUNT2"],
+    permissions: ["admin", "ACCOUNT1", "ACCOUNT2"],
     navLink: "/education/totalDepartment",
   },
   {
@@ -101,7 +83,7 @@ const navigationConfig = [
     title: "Phân lớp",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "ACCOUNT1", "ACCOUNT2"],
+    permissions: ["admin", "ACCOUNT1", "ACCOUNT2"],
     navLink: "/department",
   },
   {
@@ -109,14 +91,14 @@ const navigationConfig = [
     title: "Danh sách",
     type: "collapse",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "ACCOUNT1", "ACCOUNT2"],
+    permissions: ["admin", "ACCOUNT1", "ACCOUNT2"],
     children: [
       {
         id: "listStudentDepartment",
         title: "Ds.Sinh viên",
         type: "item",
         icon: <Icon.FileText size={18} />,
-        permissions: ["ADMIN", "department"],
+        permissions: ["admin", "department"],
         navLink: "/education/student",
       },
       {
@@ -124,7 +106,7 @@ const navigationConfig = [
         title: "Ds.Giảng viên",
         type: "item",
         icon: <Icon.FileText size={18} />,
-        permissions: ["ADMIN", "department"],
+        permissions: ["admin", "department"],
         navLink: "/education/teacher",
       },
       {
@@ -132,7 +114,7 @@ const navigationConfig = [
         title: "Ds.Lớp",
         type: "item",
         icon: <Icon.FileText size={18} />,
-        permissions: ["ADMIN", "department"],
+        permissions: ["admin", "department"],
         navLink: "/education/class",
       },
       {
@@ -140,7 +122,7 @@ const navigationConfig = [
         title: "Ds.Môn ",
         type: "item",
         icon: <Icon.FileText size={18} />,
-        permissions: ["ADMIN", "department"],
+        permissions: ["admin", "department"],
         navLink: "/education/subject",
       },
     ],
@@ -149,14 +131,14 @@ const navigationConfig = [
     id: "groupheader5",
     type: "groupHeader",
     groupTitle: "Giảng viên",
-    permissions: ["ADMIN", "teacher"],
+    permissions: ["admin", "teacher"],
   },
   {
     id: "generalTeacher",
     title: "Lớp dạy",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "teacher"],
+    permissions: ["admin", "teacher"],
     navLink: "/teacher/listClass",
   },
   {
@@ -164,7 +146,7 @@ const navigationConfig = [
     title: "Điểm danh",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "teacher"],
+    permissions: ["admin", "teacher"],
     navLink: "/teacher/attendance",
   },
   {
@@ -172,7 +154,7 @@ const navigationConfig = [
     title: "Hộp thư GV",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "teacher"],
+    permissions: ["admin", "teacher"],
     navLink: "/teacher/email",
   },
   {
@@ -180,7 +162,7 @@ const navigationConfig = [
     title: "Học trực tuyến",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "teacher"],
+    permissions: ["admin", "teacher"],
     navLink: "/teacher/liveStream",
   },
 
@@ -191,14 +173,14 @@ const navigationConfig = [
   {
     type: "groupHeader",
     groupTitle: "Sinh viên",
-    permissions: ["ADMIN", "student"],
+    permissions: ["admin", "student"],
   },
   {
     id: "generalStudent",
     title: "Thông báo chung",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "student"],
+    permissions: ["admin", "student"],
     navLink: "/student/news",
   },
   {
@@ -206,7 +188,7 @@ const navigationConfig = [
     title: "Điểm học",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "student"],
+    permissions: ["admin", "student"],
     navLink: "/student/score",
   },
   {
@@ -214,7 +196,7 @@ const navigationConfig = [
     title: "Lịch học",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "student"],
+    permissions: ["admin", "student"],
     navLink: "/student/schedule",
   },
   {
@@ -222,7 +204,7 @@ const navigationConfig = [
     title: "Điểm danh",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "student"],
+    permissions: ["admin", "student"],
     navLink: "/student/attendance",
   },
   {
@@ -230,14 +212,14 @@ const navigationConfig = [
     title: "Học trực tuyến",
     type: "collapse",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "student"],
+    permissions: ["admin", "student"],
     children: [
       {
         id: "documentStudent",
         title: "Tài liệu và bài tập",
         type: "item",
         icon: <Icon.Download size={15} />,
-        permissions: ["ADMIN", "student"],
+        permissions: ["admin", "student"],
         navLink: "/student/document",
       },
       {
@@ -245,22 +227,22 @@ const navigationConfig = [
         title: "Điểm danh",
         type: "item",
         icon: <Icon.Airplay size={15} />,
-        permissions: ["ADMIN", "student"],
+        permissions: ["admin", "student"],
         navLink: "/student/livestream",
       },
     ],
   },
   {
     type: "groupHeader",
-    groupTitle: "Admin",
-    permissions: ["ADMIN"],
+    groupTitle: "admin",
+    permissions: ["admin"],
   },
   {
     id: "accountTeacher",
     title: "Tài khoản giáo viên",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "student"],
+    permissions: ["admin", "student"],
     navLink: "/admin/account/teacher",
   },
   {
@@ -268,7 +250,7 @@ const navigationConfig = [
     title: "Tài khoản đào tạo",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "student"],
+    permissions: ["admin", "student"],
     navLink: "/admin/account/educate",
   },
   {
@@ -276,7 +258,7 @@ const navigationConfig = [
     title: "Tài khoản CTSV",
     type: "item",
     icon: <Icon.Circle size={12} />,
-    permissions: ["ADMIN", "student"],
+    permissions: ["admin", "student"],
     navLink: "/admin/account/suport",
   },
 ];
