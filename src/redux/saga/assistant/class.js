@@ -5,8 +5,8 @@ export function* getClassActionSaga({ payload }) {
   const { params } = payload;
 
   const param = {
-    page: params.page,
-    limit: params.limit,
+    page: params.page || "",
+    limit: params.limit || "",
   };
   try {
     const res = yield call(getDataAssClassApi, param);

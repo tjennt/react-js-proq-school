@@ -1,7 +1,6 @@
 import React from "react";
 // import { Link } from "react-router-dom";
-import { CardBody, FormGroup, Form, Button, Label } from "reactstrap";
-import { AvForm, AvField } from "availity-reactstrap-validation";
+import { CardBody, FormGroup, Form, Button, Label, Input } from "reactstrap";
 import { Mail, Lock } from "react-feather";
 import {
   loginWithJWT,
@@ -34,54 +33,42 @@ class LoginJWT extends React.Component {
       <React.Fragment>
         <CardBody className="pt-1">
           <Form action="/" onSubmit={this.handleLogin}>
-            <AvForm>
-              <FormGroup className="form-label-group position-relative has-icon-left">
-                <AvField
-                  type="email"
-                  name="email"
-                  // label="Name (default error message)"
-                  placeholder="Tài khoản"
-                  value={this.state.email}
-                  errorMessage="Thông tin không được để trống"
-                  onChange={(e) => this.setState({ email: e.target.value })}
-                  validate={{
-                    required: { value: true },
-                  }}
-                />
-                <div className="form-control-position">
-                  <Mail size={15} />
-                </div>
-                <Label>Tài khoản</Label>
-              </FormGroup>
-              <FormGroup className="form-label-group position-relative has-icon-left">
-                <AvField
-                  type="password"
-                  name="password"
-                  errorMessage="Thông tin không được để trống"
-                  placeholder="Mật khẩu"
-                  value={this.state.password}
-                  onChange={(e) => this.setState({ password: e.target.value })}
-                  validate={{
-                    required: { value: true },
-                  }}
-                />
-                <div className="form-control-position">
-                  <Lock size={15} />
-                </div>
-                <Label>Mật khẩu</Label>
-              </FormGroup>
-              <div className="d-flex justify-content-between">
-                <GoogleLogin
-                  clientId="1038607072813-rdjohk5kccvju3891r4vj73b9o0knphu.apps.googleusercontent.com"
-                  onSuccess={this.responseGoogle}
-                  onFailure={this.onFailure}
-                  cookiePolicy={"single_host_origin"}
-                />
-                <Button.Ripple color="primary" type="submit">
-                  Đăng nhập
-                </Button.Ripple>
+            <FormGroup className="form-label-group position-relative has-icon-left">
+              <Input
+                type="username"
+                name="email"
+                placeholder="Tài khoản"
+                onChange={(e) => this.setState({ email: e.target.value })}
+              />
+              <div className="form-control-position">
+                <Mail size={15} />
               </div>
-            </AvForm>
+              <Label>Tài khoản</Label>
+            </FormGroup>
+            <FormGroup className="form-label-group position-relative has-icon-left">
+              <Input
+                type="password"
+                name="password"
+                placeholder="Mật khẩu"
+                value={this.state.password}
+                onChange={(e) => this.setState({ password: e.target.value })}
+              />
+              <div className="form-control-position">
+                <Lock size={15} />
+              </div>
+              <Label>Mật khẩu</Label>
+            </FormGroup>
+            <div className="d-flex justify-content-between">
+              <GoogleLogin
+                clientId="1038607072813-rdjohk5kccvju3891r4vj73b9o0knphu.apps.googleusercontent.com"
+                onSuccess={this.responseGoogle}
+                onFailure={this.onFailure}
+                cookiePolicy={"single_host_origin"}
+              />
+              <Button.Ripple color="primary" type="submit">
+                Đăng nhập
+              </Button.Ripple>
+            </div>
           </Form>
         </CardBody>
       </React.Fragment>

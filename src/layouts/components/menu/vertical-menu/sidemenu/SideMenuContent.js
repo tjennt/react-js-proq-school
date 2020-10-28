@@ -6,6 +6,7 @@ import SideMenuGroup from "./SideMenuGroup";
 import { Badge } from "reactstrap";
 import { ChevronRight } from "react-feather";
 import { history } from "../../../../../history";
+import { getToken } from "../../../../../utility/auth/setAuthToken";
 import { logoutWithJWT } from "../../../../../redux/actions/auth/loginActions";
 import { connect } from "react-redux";
 class SideMenuContent extends React.Component {
@@ -106,6 +107,11 @@ class SideMenuContent extends React.Component {
 
   componentDidMount() {
     this.initRender(this.parentArr[0] ? this.parentArr[0] : []);
+    let token = getToken();
+    if (!token) {
+      this.props.logoutWithJWT();
+      return false;
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -255,12 +261,16 @@ class SideMenuContent extends React.Component {
       }
 
       if (
-        item.type === "collapse" ||
         item.type === "external-link" ||
         (item.type === "item" &&
           item.permissions &&
           item.permissions.includes(this.props.currentUser)) ||
         item.permissions === undefined
+      ) {
+        return renderItem;
+      } else if (
+        item.type === "collapse" &&
+        item.permissions.includes(this.props.currentUser)
       ) {
         return renderItem;
       } else if (

@@ -6,10 +6,9 @@ export function* getStudentActionSaga({ payload }) {
   const { params } = payload;
   console.log(params);
   const param = {
-    page: params.page,
-    limit: params.limit,
+    page: params ? params.page : "",
+    limit: params ? params.limit : "",
   };
-  console.log(param);
   try {
     const res = yield call(getDataStudentApi, param);
     const { data } = res;

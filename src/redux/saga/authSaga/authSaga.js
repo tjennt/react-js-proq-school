@@ -33,27 +33,23 @@ export function* loginActionSaga({ payload }) {
 }
 export function* loginWithGoogleSaga({ payload }) {
   const { user } = payload;
-  console.log(user);
   const authData = {
     tokenId: user,
   };
   try {
     const res = yield call(loginWithGoogle, authData);
-    console.log(res);
     const { data } = res;
-    console.log(data);
     if (data.success === true) {
       setUserCookie(data.payload.token);
-      yield put(changeRole(data.payload.role.name));
-      // history.push("/");
-      switch (data.payload.role.name) {
-        case "admin":
-          history.push("/assistTant");
+      yield put(changeRole(data.payload.access));
+      switch (data.payload.access) {
+        case "student":
+          history.push("/student/news");
           break;
         default:
           return false;
       }
-      toastSuccess(`Xin chào ${data.payload.role.name} ...`);
+      toastSuccess(`Xin chào ${data.payload.access} ...`);
     }
   } catch (error) {
     toastError("Tài khoản hoặc mật khẩu không đúng!");
