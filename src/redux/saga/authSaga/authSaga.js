@@ -1,30 +1,59 @@
 import { put, call } from "redux-saga/effects";
-import { loginJWt } from "../../api/auth";
-import { STATUS_CODE } from "../../constants";
+import { loginJWt, loginWithGoogle } from "../../api/auth";
 import { setUserCookie } from "../../../utility/auth/setAuthToken";
-import {
-  loginSuccess,
-  changeRole,
-  logoutSuccess,
-} from "../../actions/auth/loginActions";
+import { changeRole, logoutSuccess } from "../../actions/auth/loginActions";
 import { history } from "../../../history";
 import { toastSuccess, toastError } from "../../../utility/toast/toastHelper";
 export function* loginActionSaga({ payload }) {
   const { user } = payload;
   const authData = {
-    email: user.email,
+    username: user.email,
     password: user.password,
   };
   try {
     const res = yield call(loginJWt, authData);
-    const { status: statusCode, data } = res;
-    if (statusCode === STATUS_CODE.SUCCESS) {
-      console.log(data);
-      yield put(loginSuccess(data.data));
-      setUserCookie(data.data.token);
-      yield put(changeRole(data.data.role));
-      history.push("/");
-      toastSuccess(`Xin chào ${data.data.role}...`);
+    const { data } = res;
+    console.log(data);
+    if (data.success === true) {
+      setUserCookie(data.payload.token);
+      yield put(changeRole(data.payload.role.name));
+      // history.push("/");
+      switch (data.payload.role.name) {
+        case "admin":
+          history.push("/assistTant");
+          break;
+        default:
+          return false;
+      }
+      toastSuccess(`Xin chào ${data.payload.role.name} ...`);
+    }
+  } catch (error) {
+    toastError("Tài khoản hoặc mật khẩu không đúng!");
+  }
+}
+export function* loginWithGoogleSaga({ payload }) {
+  const { user } = payload;
+  console.log(user);
+  const authData = {
+    tokenId: user,
+  };
+  try {
+    const res = yield call(loginWithGoogle, authData);
+    console.log(res);
+    const { data } = res;
+    console.log(data);
+    if (data.success === true) {
+      setUserCookie(data.payload.token);
+      yield put(changeRole(data.payload.role.name));
+      // history.push("/");
+      switch (data.payload.role.name) {
+        case "admin":
+          history.push("/assistTant");
+          break;
+        default:
+          return false;
+      }
+      toastSuccess(`Xin chào ${data.payload.role.name} ...`);
     }
   } catch (error) {
     toastError("Tài khoản hoặc mật khẩu không đúng!");

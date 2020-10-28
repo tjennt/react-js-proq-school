@@ -48,11 +48,11 @@ export function* updateApprovedAcceptSaga({ payload }) {
   }
 }
 export function* updateAcceptDoneSaga({ payload }) {
-  const { status, row, params } = payload;
+  const { status, row } = payload;
   const data = {
     status: status,
   };
   try {
-    const res = yield call(updateAcceptDone, row.id, data);
+    yield call(updateAcceptDone, row.id, data);
   } catch (error) {}
 }

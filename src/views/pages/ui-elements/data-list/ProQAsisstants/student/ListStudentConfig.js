@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Plus } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getData } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -10,15 +9,8 @@ import Sidebar from "./DataListStudentSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Table,
-} from "reactstrap";
-import Chip from "../../../../../../components/@vuexy/chips/ChipComponent";
+import { Card, CardBody, Table } from "reactstrap";
+// import Chip from "../../../../../../components/@vuexy/chips/ChipComponent";
 // import { Popconfirm, message } from "antd";
 // const selectedStyle = {
 //   rows: {
@@ -61,23 +53,23 @@ import Chip from "../../../../../../components/@vuexy/chips/ChipComponent";
 //   );
 // };
 
-const CustomHeader = (props) => {
-  return (
-    <div className="data-list-header d-flex justify-content-between flex-wrap">
-      <div className="actions-left d-flex flex-wrap">
-        <Button
-          className="add-new-btn"
-          color="primary"
-          onClick={() => props.handleSidebar(true, true)}
-          outline
-        >
-          <Plus size={15} />
-          <span className="align-middle">Tạo mới</span>
-        </Button>
-      </div>
-    </div>
-  );
-};
+// const CustomHeader = (props) => {
+//   return (
+//     <div className="data-list-header d-flex justify-content-between flex-wrap">
+//       <div className="actions-left d-flex flex-wrap">
+//         <Button
+//           className="add-new-btn"
+//           color="primary"
+//           onClick={() => props.handleSidebar(true, true)}
+//           outline
+//         >
+//           <Plus size={15} />
+//           <span className="align-middle">Tạo mới</span>
+//         </Button>
+//       </div>
+//     </div>
+//   );
+// };
 
 class ListStudentConfig extends Component {
   static getDerivedStateFromProps(props, state) {

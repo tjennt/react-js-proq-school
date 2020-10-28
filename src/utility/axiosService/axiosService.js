@@ -15,8 +15,13 @@ class axiosService {
   handError(error) {
     return Promise.reject(error);
   }
-  get(url) {
-    return axios.get(url);
+  get(url, params) {
+    this.getHeaders();
+    return axios.get(url, params);
+  }
+  postData(url, body) {
+    this.getHeaders();
+    return axios.post(url, body);
   }
   post(url, body) {
     return axios.post(url, body);

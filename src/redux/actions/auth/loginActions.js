@@ -5,6 +5,12 @@ export const loginWithJWT = (user) => ({
     user,
   },
 });
+export const loginWithGoogle = (user) => ({
+  type: authType.LOGIN_GOOGLE,
+  payload: {
+    user,
+  },
+});
 export const loginSuccess = (loggedInUser) => ({
   type: authType.LOGIN_SUCCESS,
   payload: {

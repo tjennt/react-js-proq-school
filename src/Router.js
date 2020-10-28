@@ -6,10 +6,10 @@ import Spinner from "./components/@vuexy/spinner/Loading-spinner";
 import { ContextLayout } from "./utility/context/Layout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+//assistant
 const dashboard = lazy(() =>
   import("./views/dashboard/analytics/AnalyticsDashboard")
 );
-//assistant
 const studentAssistant = lazy(() =>
   import("./views/pages/ui-elements/data-list/ProQAsisstants/student/student")
 );
@@ -44,12 +44,12 @@ const ListClassTeacher = lazy(() =>
 const Attendance = lazy(() =>
   import("./views/pages/ProQ-Teacher/Attendance/Attendance")
 );
-const EmailTeacher = lazy(() =>
-  import("./views/pages/ProQ-Teacher/EmailTeacher/Email")
-);
-const LiveStreamTeacher = lazy(() =>
-  import("./views/pages/ProQ-Teacher/LiveStream/Chat")
-);
+// const EmailTeacher = lazy(() =>
+//   import("./views/pages/ProQ-Teacher/EmailTeacher/Email")
+// );
+// const LiveStreamTeacher = lazy(() =>
+//   import("./views/pages/ProQ-Teacher/LiveStream/Chat")
+// );
 // Educate
 const ClassEducate = lazy(() =>
   import(
@@ -84,6 +84,23 @@ const TotalDepartment = lazy(() =>
 const Schedules = lazy(() =>
   import(
     "./views/pages/ui-elements/data-list/ProQEducate/TotalDepartment/ItemTotalDepartment/Schedules"
+  )
+);
+//student
+const StudyStudent = lazy(() => import("./views/pages/Student/Study"));
+const markStudent = lazy(() =>
+  import("./views/pages/Student/MarkStudent/markStudent")
+);
+const scheduleStudent = lazy(() =>
+  import("./views/pages/Student/Schedule/ScheduleStudent")
+);
+const AttendanceStudent = lazy(() =>
+  import("./views/pages/Student/Attendance/AttendanceStudent")
+);
+//acount admin
+const AccountAdminTeacher = lazy(() =>
+  import(
+    "./views/pages/ui-elements/data-list/ProQAdmin/adminTeachers/AdminTeacher"
   )
 );
 // Set Layout and Component Using App Route
@@ -129,7 +146,7 @@ class AppRouter extends React.Component {
         <Switch>
           <AppRoute exact path="/login" component={login} fullLayout />
           <AppRoute exact path="/register" component={register} fullLayout />
-          <AppRoute path="/assisttant" component={dashboard} />
+          <AppRoute exact path="/assistTant" component={dashboard} />
           <AppRoute path="/assistant/search" component={searchStudent} />
           <AppRoute
             path="/assistant/list/student"
@@ -169,7 +186,16 @@ class AppRouter extends React.Component {
           <AppRoute path="/teacher/attendance" component={Attendance} />
           <AppRoute path="/teacher/email" component={commingSoon} />
           <AppRoute path="/teacher/liveStream" component={commingSoon} />
-
+          {/* student */}
+          <AppRoute path="/student/news" component={StudyStudent} />
+          <AppRoute path="/student/score" component={markStudent} />
+          <AppRoute path="/student/schedule" component={scheduleStudent} />
+          <AppRoute path="/student/attendance" component={AttendanceStudent} />
+          {/* Admin */}
+          <AppRoute
+            path="/admin/account/teacher"
+            component={AccountAdminTeacher}
+          />
           <AppRoute component={login} fullLayout />
         </Switch>
       </Router>

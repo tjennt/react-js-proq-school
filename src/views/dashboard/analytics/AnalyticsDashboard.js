@@ -1,16 +1,15 @@
 import React from "react";
-import { Row, Col } from "reactstrap";
-import SuberscribersGained from "../../pages/ui-elements/cards/statistics/SubscriberGained";
-import TotalProduct from "../../pages/ui-elements/cards/statistics/TotalProduct";
+import { Row, Col, Button } from "reactstrap";
 import OrdersReceived from "../../pages/ui-elements/cards/statistics/OrdersReceived";
 import MoneyReceivedCard from "../../pages/ui-elements/cards/statistics/MoneyReceived";
 import "../../../assets/scss/pages/dashboard-analytics.scss";
 import { DatePicker, Space } from "antd";
-import { Button } from "antd";
 import moment from "moment";
 import "../../../assets/scss/plugins/extensions/recharts.scss";
 import "../../../assets/scss/plugins/charts/apex-charts.scss";
 import { connect } from "react-redux";
+import "antd/dist/antd.css";
+import CustomersChart from "./Customers";
 import {
   getDataTotalProduct,
   getDataTotaMony,
@@ -19,19 +18,19 @@ import {
   getDataTotalUserLogin,
 } from "./../../../redux/actions/dataListDashboard/index";
 import MoneyReceivedUser from "../../pages/ui-elements/cards/statistics/MoneyReceivedUser";
-import SimpleLineChartMoneyReceived from "../../charts/recharts/SimpleLineChartMoneyReceived";
-import SimpleLineChartjs from "../../charts/recharts/SimpleLineChartjs";
-import ApexPieCharts from "../../charts/apex/ApexPieChart";
-import SimpleAreaChart from "../../charts/recharts/SimpleAreaChart";
 import { getToken } from "../../../utility/auth/setAuthToken";
+import TableTotal from "./Table";
 import { logoutWithJWT } from "../../../redux/actions/auth/loginActions";
+import Revenue from "./Revenue";
 const { RangePicker } = DatePicker;
 let $primary = "#7367F0",
-  $success = "#28C76F",
   $danger = "#EA5455",
   $warning = "#FF9F43",
-  $info = "#00cfe8";
-let themeColors = [$primary, $success, $danger, $warning, $info];
+  $primary_light = "#9c8cfc",
+  $warning_light = "#FFC085",
+  $danger_light = "#f29292",
+  $stroke_color = "#b9c3cd",
+  $label_color = "#e7eef7";
 class AnalyticsDashboard extends React.Component {
   state = {
     visible: false,
@@ -111,7 +110,7 @@ class AnalyticsDashboard extends React.Component {
               </Col>
               <Col lg="4" md="6" sm="12">
                 <Button
-                  type="primary"
+                  color="primary"
                   loading={loadings[0]}
                   onClick={() => this.enterLoading(0)}
                 >
@@ -119,12 +118,6 @@ class AnalyticsDashboard extends React.Component {
                 </Button>
               </Col>
             </Row>
-          </Col>
-          <Col lg="4" md="6" sm="12">
-            <TotalProduct dataTotalProduct={this.props.dataTotalBilling} />
-          </Col>
-          <Col lg="4" md="6" sm="12">
-            <SuberscribersGained dataUser={this.props.dataTotalUser} />
           </Col>
           <Col lg="4" md="6" sm="12">
             <OrdersReceived
@@ -140,35 +133,27 @@ class AnalyticsDashboard extends React.Component {
             <MoneyReceivedUser UserCommission={this.props.user_commission} />
           </Col>
         </Row>
-        <Row>
+        <Row className="match-height">
           <Col lg="5">
-            <ApexPieCharts
-              TotalUserLogin={this.props.staticTotalUserLogin}
-              themeColors={themeColors}
+            <CustomersChart
+              primary={$primary}
+              warning={$warning}
+              danger={$danger}
+              primaryLight={$primary_light}
+              warningLight={$warning_light}
+              dangerLight={$danger_light}
             />
           </Col>
           <Col lg="7">
-            <SimpleAreaChart
-              totalUser={this.props.staticTotalUser}
+            <Revenue
               primary={$primary}
-              danger={$danger}
-              success={$success}
+              dangerLight={$danger_light}
+              strokeColor={$stroke_color}
+              labelColor={$label_color}
             />
           </Col>
-          <Col lg="12">
-            <SimpleLineChartMoneyReceived
-              totalMoney={this.props.staticTotalMoney}
-              primary={$primary}
-              danger={$danger}
-              success={$success}
-            />
-          </Col>
-          <Col lg="12">
-            <SimpleLineChartjs
-              staticProduct={this.props.staticTotalProduct}
-              primary={$primary}
-              success={$success}
-            />
+          <Col>
+            <TableTotal />
           </Col>
         </Row>
       </React.Fragment>
@@ -185,8 +170,6 @@ const mapStateToProp = (state) => {
       state.dataDashBoard.dataDashboard.total_pub_commission,
     catback_commission: state.dataDashBoard.dataDashboard.catback_commission,
     user_commission: state.dataDashBoard.dataDashboard.user_commission,
-    staticTotalProduct: state.dataDashBoard.staticTotalProduct,
-    staticTotalMoney: state.dataDashBoard.staticTotalMoney,
     staticTotalUser: state.dataDashBoard.staticTotalUser,
     staticTotalUserLogin: state.dataDashBoard.staticTotalUserLogin,
   };

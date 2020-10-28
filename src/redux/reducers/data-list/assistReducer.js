@@ -1,9 +1,13 @@
 import * as assType from "./../../constants/assistant";
 const initialState = {
   data: [],
+  total_page_student: 0,
+  total_record_student: 0,
   dataTeacher: [],
-  dataschedules: [],
   dataSubject: [],
+  dataClass: [],
+  total_page_class: 0,
+  total_record_class: 0,
 };
 const assistantReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -15,10 +19,12 @@ const assistantReducer = (state = initialState, action) => {
         ...state,
       };
     case assType.GET_DATA_STUDENT_ASS_SUCCE: {
-      const { data } = action.payload;
+      const { data, total_page, total_record } = action.payload;
       return {
         ...state,
         data: data,
+        total_page_student: total_page,
+        total_record_student: total_record,
       };
     }
     /**
@@ -45,10 +51,12 @@ const assistantReducer = (state = initialState, action) => {
       };
     }
     case assType.GET_DATA_CLASS_ASS_SUCCESS: {
-      const { data } = action.payload;
+      const { data, total_page, total_record } = action.payload;
       return {
         ...state,
-        dataschedules: data,
+        dataClass: data,
+        total_page_class: total_page,
+        total_record_class: total_record,
       };
     }
     /**

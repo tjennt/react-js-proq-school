@@ -1,7 +1,7 @@
 import { API_ENDPOINT } from "../../constants/index";
 import axiosService from "../../../utility/axiosService/axiosService";
-const url = "students";
+const url = "staff/student";
 
-export const getDataStudentApi = () => {
-  return axiosService.get(`${API_ENDPOINT}/${url}`);
+export const getDataStudentApi = (params) => {
+  return axiosService.get(`${API_ENDPOINT}/${url}`, { params });
 };

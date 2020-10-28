@@ -2,37 +2,37 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Download, Edit, Plus, RefreshCw, Trash } from "react-feather";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  Edit,
+  Plus,
+  Trash,
+} from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getData } from "../../../../../../redux/actions/dataListAssistance/index";
+import { importExcelStudent } from "../../../../../../redux/actions/education/index";
 import Sidebar from "./DataListStudentSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import {
   Button,
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
+  Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Row,
   Table,
+  UncontrolledDropdown,
 } from "reactstrap";
-import Chip from "../../../../../../components/@vuexy/chips/ChipComponent";
 import { Popconfirm, message, Modal, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-const selectedStyle = {
-  rows: {
-    selectedHighlighStyle: {
-      backgroundColor: "rgba(115,103,240,.05)",
-      color: "#7367F0 !important",
-      boxShadow: "0 0 1px 0 #7367F0 !important",
-      "&:hover": {
-        transform: "translateY(0px) !important",
-      },
-    },
-  },
-};
+import Moment from "react-moment";
+import ReactPaginate from "react-paginate";
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
@@ -63,30 +63,6 @@ const ActionsComponent = (props) => {
     </div>
   );
 };
-
-const CustomHeader = (props) => {
-  const showModal = () => {
-    props.showModal();
-  };
-  return (
-    <div className="data-list-header d-flex justify-content-between flex-wrap">
-      <div className="actions-left d-flex flex-wrap">
-        <Button
-          color="primary"
-          onClick={() => props.handleSidebar(true, true)}
-          outline={true}
-        >
-          <Plus size={15} />
-          <span className="align-middle">Tạo mới</span>
-        </Button>
-        <Button onClick={showModal} className=" ml-2" color="danger">
-          <Download size={15} /> Import
-        </Button>
-      </div>
-    </div>
-  );
-};
-
 class ListStudentEducation extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
@@ -95,11 +71,11 @@ class ListStudentEducation extends Component {
     ) {
       return {
         data: props.dataList.data,
-        totalPages: props.dataList.totalPages,
-        currentPage: parseInt(props.parsedFilter.page) - 1,
-        rowsPerPage: parseInt(props.parsedFilter.perPage),
-        totalRecords: props.dataList.totalRecords,
-        sortIndex: props.dataList.sortIndex,
+        totalPages: props.dataList.total_page_student,
+        // currentPage: parseInt(props.parsedFilter.page) - 1,
+        // rowsPerPage: parseInt(props.parsedFilter.perPage),
+        totalRecords: props.dataList.total_record_student,
+        // sortIndex: props.dataList.sortIndex,
       };
     }
 
@@ -128,8 +104,8 @@ class ListStudentEducation extends Component {
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
-            {row.fullname}
+          <p title={row.fullName} className="text-truncate text-bold-500 mb-0">
+            {row.fullName}
           </p>
         ),
       },
@@ -139,8 +115,11 @@ class ListStudentEducation extends Component {
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.code} className="text-truncate text-bold-500 mb-0">
-            {row.code}
+          <p
+            title={row.studentCode}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.studentCode}
           </p>
         ),
       },
@@ -150,8 +129,11 @@ class ListStudentEducation extends Component {
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.classCode} className="text-truncate text-bold-500 mb-0">
-            {row.classCode}
+          <p
+            title={row.classId.className}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.classId.className}
           </p>
         ),
       },
@@ -160,15 +142,7 @@ class ListStudentEducation extends Component {
         selector: "date",
         sortable: true,
         // minWidth: "300px",
-        cell: (row) => (
-          <p
-            title={row.created_at}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {/* {row.created_at} */}
-            11/10/2020
-          </p>
-        ),
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.createAt}</Moment>,
       },
       {
         name: "Thao tác",
@@ -195,12 +169,20 @@ class ListStudentEducation extends Component {
     totalRecords: 0,
     sortIndex: [],
     addNew: "",
+    file: "",
   };
 
   thumbView = this.props.thumbView;
 
   componentDidMount() {
-    this.props.getData();
+    const { parsedFilter } = this.props;
+
+    const paginate = {
+      page: 1,
+      limit: 10,
+    };
+    let limit = parsedFilter || paginate;
+    this.props.getData(limit);
   }
   handleFilter = (e) => {
     this.setState({ value: e.target.value });
@@ -215,27 +197,32 @@ class ListStudentEducation extends Component {
     this.props.updateStatus(row, this.props.parsedFilter);
     this.props.getData(this.props.parsedFilter);
   };
-  handleDelete = (row) => {
-    this.props.deleteData(row);
-    this.props.getData(this.props.parsedFilter);
-    if (this.state.data.length - 1 === 0) {
-      history.push(
-        `/accountAdmin?page=${parseInt(
-          this.props.parsedFilter.page - 1
-        )}&perPage=${this.props.parsedFilter.perPage}`
-      );
-      this.props.getData({
-        page: this.props.parsedFilter.page - 1,
-        perPage: this.props.parsedFilter.perPage,
-      });
-    }
-  };
+  // handleDelete = (row) => {
+  //   this.props.deleteData(row);
+  //   this.props.getData(this.props.parsedFilter);
+  //   if (this.state.data.length - 1 === 0) {
+  //     history.push(
+  //       `/education/student?page=${parseInt(
+  //         this.props.parsedFilter.page - 1
+  //       )}&limit=${this.props.parsedFilter.perPage}`
+  //     );
+  //     this.props.getData({
+  //       page: this.props.parsedFilter.page - 1,
+  //       perPage: this.props.parsedFilter.perPage,
+  //     });
+  //   }
+  // };
   showModal = () => {
     this.setState({
       visible: true,
     });
   };
   handleOk = (e) => {
+    let { parsedFilter, importExcelStudent } = this.props;
+
+    const { file } = this.state;
+    let fileReq = file.file.originFileObj;
+    importExcelStudent(fileReq, parsedFilter);
     this.setState({
       ...this.state,
       visible: false,
@@ -252,19 +239,33 @@ class ListStudentEducation extends Component {
     this.setState({ currentData: obj });
     this.handleSidebar(true);
   };
-
+  onChangeExcel = (file) => {
+    this.setState({
+      ...this.state,
+      file: file,
+    });
+  };
   handlePagination = (page) => {
     let { parsedFilter, getData } = this.props;
-    let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 4;
-
-    history.push(`/accountAdmin?page=${page.selected + 1}&perPage=${perPage}`);
-    getData({ page: page.selected + 1, perPage: perPage });
+    const { limit } = parsedFilter;
+    let perPage = limit || 10;
+    history.push(
+      `/education/student?page=${page.selected + 1}&limit=${perPage}`
+    );
+    getData({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
+  };
+  handleRowsPerPage = (value) => {
+    let { parsedFilter, getData } = this.props;
+
+    let page = parsedFilter.page !== undefined ? parsedFilter.page : 10;
+    history.push(`/education/student?page=${page}&limit=${value}`);
+    this.setState({ rowsPerPage: value });
+    getData({ page: parsedFilter.page, limit: value });
   };
 
   render() {
     let { columns, value, currentData, sidebar, data } = this.state;
-    console.log(data);
     return (
       <div className="data-list">
         <Modal
@@ -286,29 +287,105 @@ class ListStudentEducation extends Component {
             </p>
           </Dragger>
         </Modal>
-        <Card>
-          <CardBody>
-            <DataTable
-              className="dataTable-custom"
-              data={value.length ? "" : data}
-              columns={columns}
-              noHeader
-              pagination
-              subHeader
-              subHeaderComponent={
-                <CustomHeader
-                  handleSidebar={this.handleSidebar}
-                  showModal={this.showModal}
-                  handleFilter={this.handleFilter}
-                  handleRowsPerPage={this.handleRowsPerPage}
-                />
+        <Col lg="12">
+          <Row>
+            <Col lg="3">
+              <Button
+                color="primary"
+                onClick={() => this.handleSidebar(true, true)}
+                outline={true}
+              >
+                <Plus size={15} />
+                <span className="align-middle">Tạo mới</span>
+              </Button>
+              <Button onClick={this.showModal} className=" ml-2" color="danger">
+                <Download size={15} /> Import
+              </Button>
+            </Col>
+            <Col lg="9">
+              <UncontrolledDropdown
+                style={{ backgroundColor: "#fff", borderRadius: "20px" }}
+                className="data-list-rows-dropdown  d-md-block d-none"
+              >
+                <DropdownToggle
+                  className="sort-dropdown"
+                  style={{
+                    float: "right",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <span className="align-middle mx-50">{`${
+                    this.props.parsedFilter.page
+                      ? this.props.parsedFilter.page
+                      : 1
+                  } of ${this.state.totalRecords}`}</span>
+                  <ChevronDown size={15} />
+                </DropdownToggle>
+                <DropdownMenu tag="div" right>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(10)}
+                  >
+                    10
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(20)}
+                  >
+                    20
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(30)}
+                  >
+                    30
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(50)}
+                  >
+                    50
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(100)}
+                  >
+                    100
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Col>
+          </Row>
+        </Col>
+        <DataTable
+          className="dataTable-custom"
+          data={value.length ? "" : data}
+          columns={columns}
+          noHeader
+          pagination
+          paginationServer
+          paginationComponent={() => (
+            <ReactPaginate
+              previousLabel={<ChevronLeft size={15} />}
+              nextLabel={<ChevronRight size={15} />}
+              breakLabel="..."
+              breakClassName="break-me"
+              pageCount={this.state.totalPages}
+              containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+              activeClassName="active"
+              forcePage={
+                this.props.parsedFilter.page
+                  ? parseInt(this.props.parsedFilter.page - 1)
+                  : 0
               }
-              expandableRows
-              expandOnRowClicked
-              expandableRowsComponent={<ExpandableTable />}
+              onPageChange={(page) => this.handlePagination(page)}
             />
-          </CardBody>
-        </Card>
+          )}
+          subHeader
+          expandableRows
+          expandOnRowClicked
+          expandableRowsComponent={<ExpandableTable />}
+        />
         <Sidebar
           show={sidebar}
           data={currentData}
@@ -342,8 +419,8 @@ const ExpandableTable = ({ data }) => {
       </thead>
       <tbody>
         <tr>
-          <td>Chaulinh0302cr7@gmail.com</td>
-          <td> 03/02/200</td>
+          <td>{data.identityNumber}</td>
+          <td>{data.dob}</td>
           <td>Lập trình web </td>
         </tr>
       </tbody>
@@ -358,4 +435,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getData,
+  importExcelStudent,
 })(ListStudentEducation);

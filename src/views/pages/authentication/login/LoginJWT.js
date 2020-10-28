@@ -6,9 +6,10 @@ import { Mail, Lock } from "react-feather";
 import {
   loginWithJWT,
   changeRole,
+  loginWithGoogle,
 } from "../../../../redux/actions/auth/loginActions";
 import { connect } from "react-redux";
-import { history } from "../../../../history";
+// import { history } from "../../../../history";
 import GoogleLogin from "react-google-login";
 class LoginJWT extends React.Component {
   state = {
@@ -26,9 +27,7 @@ class LoginJWT extends React.Component {
     this.props.loginWithJWT(this.state);
   };
   responseGoogle = (res) => {
-    console.log(res);
-    console.log(res.profileObj);
-    this.props.loginWithJWT(res);
+    this.props.loginWithGoogle(res.tokenId);
   };
   render() {
     return (
@@ -94,4 +93,8 @@ const mapStateToProps = (state) => {
     values: state.auth.login,
   };
 };
-export default connect(mapStateToProps, { loginWithJWT, changeRole })(LoginJWT);
+export default connect(mapStateToProps, {
+  loginWithJWT,
+  changeRole,
+  loginWithGoogle,
+})(LoginJWT);

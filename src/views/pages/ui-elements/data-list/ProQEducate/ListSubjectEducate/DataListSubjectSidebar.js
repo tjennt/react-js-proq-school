@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Label, Input, FormGroup, Button } from "reactstrap";
+// import { Label, Input, FormGroup, Button } from "reactstrap";
 import { X } from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import classnames from "classnames";
-import { toastWarning } from "../../../../../../utility/toast/toastHelper";
+// import { toastWarning } from "../../../../../../utility/toast/toastHelper";
 import FormSubject from "./FormSubject";
 class DataListSubjectSidebar extends Component {
   initialValues = {
@@ -14,7 +14,7 @@ class DataListSubjectSidebar extends Component {
   };
 
   handleSubmit = (values, { resetForm }) => {
-    const { addData, handleSidebar, data, updateData } = this.props;
+    const { handleSidebar, data } = this.props;
     if (!data) {
       // addData(values);
       // handleSidebar(false, true);
