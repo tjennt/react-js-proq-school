@@ -1,2 +1,0 @@
-export const GET_DATA_COUNT = "GET_DATA_COUNT";
-export const DELETE_DATA_cOUNT = "DELETE_DATA_cOUNT";
