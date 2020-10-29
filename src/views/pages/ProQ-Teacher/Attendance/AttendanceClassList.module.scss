@@ -1,0 +1,27 @@
+.Table{
+    cursor: pointer;
+    
+    &>thead>tr>th{
+        &:hover, &.active, &:active{
+            color: crimson!important;
+        }
+    }
+    &>tbody>tr{
+        &:hover{
+            border-color:#b6b0f7;
+            background-color: #98dcdf;
+            color: black;
+            transition: 0.7s;
+
+        }
+        &>td{
+            &.Image{
+                 width: 300px;
+            }
+        }
+    }
+}
+.rowActive{
+    background-color: #98dcdf;
+    color: black;
+}

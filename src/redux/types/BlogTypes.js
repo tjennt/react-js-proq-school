@@ -1,0 +1,5 @@
+export const GET_DATA_BLOG = "GET_DATA_BLOG";
+export const GET_TAG_TO_BLOG = "GET_TAG_TO_BLOG";
+export const DELETE_DATA_BLOG = "DELETE_DATA_BLOG";
+export const UPDATE_DATA_BLOG = "UPDATE_DATA_BLOG";
+export const ADD_DATA_BLOG = "ADD_DATA_BLOG";
