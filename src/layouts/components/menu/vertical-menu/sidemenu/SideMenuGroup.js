@@ -59,9 +59,9 @@ class SideMenuGroup extends React.Component {
                 this.flag = false;
               }
               if (
-                (child.permission &&
-                  child.permission.includes(this.props.currentUser)) ||
-                child.permission === undefined
+                (child.permissions &&
+                  child.permissions.includes(this.props.currentUser)) ||
+                child.permissions === undefined
               ) {
                 return (
                   <li

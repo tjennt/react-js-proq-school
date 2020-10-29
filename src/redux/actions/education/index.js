@@ -7,15 +7,10 @@ export const importExcelStudent = (file, params) => ({
     params,
   },
 });
-export const importExcelStudentSuccess = (data) => ({
-  type: educationType.IMPORT_EXCEL_sTUDENT_SUCCESS,
+export const importExcelClass = (file, params) => ({
+  type: educationType.IMPORT_EXCEL_CLASS,
   payload: {
-    data,
-  },
-});
-export const importExcelStudentFaild = (erro) => ({
-  type: educationType.IMPORT_EXCEL_sTUDENT_FAIL,
-  payload: {
-    erro,
+    file,
+    params,
   },
 });
