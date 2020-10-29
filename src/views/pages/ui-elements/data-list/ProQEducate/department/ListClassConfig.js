@@ -63,11 +63,11 @@ const CustomHeader = (props) => {
 class ListDepartmentConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
-      props.dataList.dataschedules !== state.data.length ||
+      props.dataList.dataClass !== state.data.length ||
       state.currentPage !== props.parsedFilter.page
     ) {
       return {
-        data: props.dataList.dataschedules,
+        data: props.dataList.dataClass,
         totalPages: props.dataList.totalPages,
         currentPage: parseInt(props.parsedFilter.page) - 1,
         rowsPerPage: parseInt(props.parsedFilter.perPage),
@@ -85,20 +85,20 @@ class ListDepartmentConfig extends Component {
     visible: false,
     currentPage: 0,
     columns: [
-      // {
-      //   name: "Sinh viên",
-      //   selector: "student",
-      //   sortable: true,
-      //   minWidth: "200px",
-      //   cell: (row) => (
-      //     <p
-      //       title={row.nameStudent}
-      //       className="text-truncate text-bold-500 mb-0"
-      //     >
-      //       {row.nameStudent}
-      //     </p>
-      //   ),
-      // },
+      {
+        name: "Sinh viên",
+        selector: "student",
+        sortable: true,
+        minWidth: "200px",
+        cell: (row) => (
+          <p
+            title={row.nameStudent}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.nameStudent}
+          </p>
+        ),
+      },
       {
         name: "Lớp",
         selector: "class",
@@ -121,20 +121,20 @@ class ListDepartmentConfig extends Component {
           </p>
         ),
       },
-      // {
-      //   name: "Môn học",
-      //   selector: "subject",
-      //   sortable: true,
-      //   minWidth: "200px",
-      //   cell: (row) => (
-      //     <p
-      //       title={row.nameSubject}
-      //       className="text-truncate text-bold-500 mb-0"
-      //     >
-      //       {row.nameSubject}
-      //     </p>
-      //   ),
-      // },
+      {
+        name: "Môn học",
+        selector: "subject",
+        sortable: true,
+        minWidth: "200px",
+        cell: (row) => (
+          <p
+            title={row.nameSubject}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.nameSubject}
+          </p>
+        ),
+      },
       {
         name: "Thời gian bắt đầu",
         selector: "dateCreate",
