@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .LinkJoinClass:hover{
     color: #20c997;
     cursor: pointer;
@@ -11,4 +12,19 @@
     100%{
         margin-left: 8px;
     }
+=======
+.LinkJoinClass:hover{
+    color: #20c997;
+    cursor: pointer;
+    background-color: white  !important;
+    animation: movetext 0.3s forwards 
+}
+@keyframes movetext{
+    90%{
+        margin-left: 10px;
+    }
+    100%{
+        margin-left: 8px;
+    }
+>>>>>>> 598f33b62cb27da0629f936f9e4f8fa7d8f75670
 }

@@ -141,7 +141,6 @@ const navigationConfig = [
     permissions: ["admin"],
     navLink: "/teacher/listClass",
   },
-
   {
     id: "attendance",
     title: "Điểm danh",

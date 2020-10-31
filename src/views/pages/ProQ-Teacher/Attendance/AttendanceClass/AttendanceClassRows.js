@@ -17,9 +17,13 @@ const AttendanceClassRows = React.memo((props) => {
         rowTable = [
           ...rowTable,
           <td key={Math.random()} className={classes.Image}>
-            <img className="img-fluid rounded-circle"
-                height="136"
-                width="136" src={images} alt={`"${data[keyData][key]}"`}  />
+            <img
+              className="img-fluid rounded-circle"
+              height="136"
+              width="136"
+              src={images}
+              alt={`"${data[keyData][key]}"`}
+            />
           </td>,
         ];
       } else if (key === "attendance") {
@@ -46,7 +50,7 @@ const AttendanceClassRows = React.memo((props) => {
       ...rowsTable,
       <tr
         key={Math.random()}
-        className={data[keyData].attendance === true ? classes.rowActive: null}
+        className={data[keyData].attendance === true ? classes.rowActive : null}
         onClick={() => props.onRowClick(data[keyData].id)}
       >
         {rowTable}

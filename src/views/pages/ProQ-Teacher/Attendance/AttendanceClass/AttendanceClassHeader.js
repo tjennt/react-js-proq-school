@@ -2,7 +2,7 @@ import React from "react";
 import classes from "../AttendanceClassList.module.scss";
 
 const AttendanceClassHeader = React.memo((props) => {
-  const { columns  } = props;
+  const { columns } = props;
   let columnsTable = []; // Setup comlumns------------
   for (let value of columns) {
     columnsTable = [
