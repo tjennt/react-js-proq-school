@@ -6,13 +6,12 @@ import FormAdminTeacher from "./FormAdminTeacher";
 class AdminTeacherSidebar extends Component {
   initialValues = {
     id: "",
-    nameClass: "",
-    subject: 1,
-    days: [],
-    start_time: "",
-    ca: 1,
-    end_time: "",
-    teacher: null,
+    fullName: "",
+    username: "",
+    email: "",
+    password: "",
+    role: 0,
+    status: false,
   };
 
   handleSubmit = (values, { resetForm }) => {

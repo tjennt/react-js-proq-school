@@ -11,22 +11,23 @@ export function* loginActionSaga({ payload }) {
     password: user.password,
   };
   try {
-    const res = yield call(loginJWt, authData);
-    const { data } = res;
-    console.log(data);
-    if (data.success === true) {
-      setUserCookie(data.payload.token);
-      yield put(changeRole(data.payload.role.name));
-      // history.push("/");
-      switch (data.payload.role.name) {
-        case "admin":
-          history.push("/assistTant");
-          break;
-        default:
-          return false;
-      }
-      toastSuccess(`Xin chào ${data.payload.role.name} ...`);
-    }
+    history.push("/");
+    // const res = yield call(loginJWt, authData);
+    // const { data } = res;
+    // console.log(data);
+    // if (data.success === true) {
+    //   setUserCookie(data.payload.token);
+    // yield put(changeRole(data.payload.role.name));
+    yield put(changeRole("admin"));
+    //   // history.push("/");
+    //   switch (data.payload.role.name) {
+    //     case "admin":
+    //       break;
+    //     default:
+    //       return false;
+    //   }
+    //   toastSuccess(`Xin chào ${data.payload.role.name} ...`);
+    // }
   } catch (error) {
     toastError("Tài khoản hoặc mật khẩu không đúng!");
   }

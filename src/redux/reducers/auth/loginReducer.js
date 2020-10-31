@@ -1,5 +1,5 @@
 import * as authType from "../../constants/auth";
-export const login = (state = { userRole: "ADMIN" }, action) => {
+export const login = (state = { userRole: "admin" }, action) => {
   switch (action.type) {
     case authType.LOGIN: {
       return {

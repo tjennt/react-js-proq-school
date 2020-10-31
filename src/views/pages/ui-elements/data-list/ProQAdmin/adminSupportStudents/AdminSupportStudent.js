@@ -11,8 +11,8 @@ class AdminSupportStudent extends React.Component {
       <React.Fragment>
         <Breadcrumbs
           breadCrumbTitle="Admin "
-          breadCrumbParent="Quản lí tài khoản"
-          breadCrumbActive="Danh sách tài khoản giáo viên"
+          breadCrumbParent="Quản lí tài khoảng"
+          breadCrumbActive="Danh sách tài khoảng công tác sinh viên"
         />
         <Row>
           <Col sm="12">

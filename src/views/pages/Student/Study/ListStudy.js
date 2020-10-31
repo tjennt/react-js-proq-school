@@ -1,11 +1,12 @@
 import React from "react";
-import { Button, Col, Input, Row } from "reactstrap";
+import { Badge, Button, Col, Input, Row } from "reactstrap";
 import ItemStudy from "./ItemStudy";
 import Select from "react-select";
-import ReactPaginate from "react-paginate";
 // import "../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../assets/scss/plugins/extensions/react-paginate.scss";
+import ReactPaginate from "react-paginate";
 import { ChevronLeft, ChevronRight } from "react-feather";
+
 const optionsCategory = [
   { value: 0, label: "Thông tin học tập" },
   { value: 1, label: "Thông tin hoạt động" },
@@ -47,16 +48,18 @@ class ListStudy extends React.Component {
         <Col lg="4">
           <Button color="primary">Tìm kiếm</Button>
         </Col>
-
-        <ItemStudy />
-        <ItemStudy />
-        <ItemStudy />
-        <ItemStudy />
-        <ItemStudy />
-        <ItemStudy />
-        <ItemStudy />
-        <ItemStudy />
         <Col lg="12">
+          <Badge className="mt-1" style={{ fontSize: "12pt" }} color="success">
+            {" "}
+            Thông tin học tập
+          </Badge>
+
+          <Row>
+            <ItemStudy />
+            <ItemStudy />
+            <ItemStudy />
+            <ItemStudy />
+          </Row>
           <ReactPaginate
             previousLabel={<ChevronLeft size={15} />}
             nextLabel={<ChevronRight size={15} />}
@@ -70,7 +73,59 @@ class ListStudy extends React.Component {
             //     ? parseInt(this.props.parsedFilter.page - 1)
             //     : 0
             // }
-            onPageChange={(page) => this.handlePagination(page)}
+            // onPageChange={(page) => this.handlePagination(page)}
+          />
+        </Col>
+        <Col lg="12">
+          <Badge className="mt-1" style={{ fontSize: "12pt" }} color="primary">
+            Thông tin hoạt động{" "}
+          </Badge>
+          <Row>
+            <ItemStudy />
+            <ItemStudy />
+            <ItemStudy />
+            <ItemStudy />
+          </Row>
+          <ReactPaginate
+            previousLabel={<ChevronLeft size={15} />}
+            nextLabel={<ChevronRight size={15} />}
+            breakLabel="..."
+            breakClassName="break-me"
+            pageCount={10}
+            containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+            activeClassName="active"
+            // forcePage={
+            //   this.props.parsedFilter.page
+            //     ? parseInt(this.props.parsedFilter.page - 1)
+            //     : 0
+            // }
+            // onPageChange={(page) => this.handlePagination(page)}
+          />
+        </Col>
+        <Col lg="12">
+          <Badge className="mt-1" style={{ fontSize: "12pt" }} color="info">
+            Thông tin học phí
+          </Badge>
+          <Row>
+            <ItemStudy />
+            <ItemStudy />
+            <ItemStudy />
+            <ItemStudy />
+          </Row>
+          <ReactPaginate
+            previousLabel={<ChevronLeft size={15} />}
+            nextLabel={<ChevronRight size={15} />}
+            breakLabel="..."
+            breakClassName="break-me"
+            pageCount={10}
+            containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+            activeClassName="active"
+            // forcePage={
+            //   this.props.parsedFilter.page
+            //     ? parseInt(this.props.parsedFilter.page - 1)
+            //     : 0
+            // }
+            // onPageChange={(page) => this.handlePagination(page)}
           />
         </Col>
       </Row>

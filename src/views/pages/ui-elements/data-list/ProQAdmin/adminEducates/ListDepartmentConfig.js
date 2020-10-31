@@ -11,8 +11,7 @@ import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 
-import Moment from "react-moment";
-import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
+import { Button } from "reactstrap";
 import { message, Popconfirm } from "antd";
 
 const ActionsComponent = (props) => {
@@ -63,16 +62,15 @@ const CustomHeader = (props) => {
 class ListDepartmentConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
-      props.dataList.dataschedules !== state.data.length ||
+      props.dataList.dataClass !== state.data.length ||
       state.currentPage !== props.parsedFilter.page
     ) {
       return {
-        data: props.dataList.dataschedules,
+        data: props.dataList.dataClass,
         totalPages: props.dataList.totalPages,
-        currentPage: parseInt(props.parsedFilter.page) - 1,
-        rowsPerPage: parseInt(props.parsedFilter.perPage),
+        // currentPage: parseInt(props.parsedFilter.page) - 1,
+        // rowsPerPage: parseInt(props.parsedFilter.perPage),
         totalRecords: props.dataList.totalRecords,
-        sortIndex: props.dataList.sortIndex,
       };
     }
 
@@ -85,72 +83,46 @@ class ListDepartmentConfig extends Component {
     visible: false,
     currentPage: 0,
     columns: [
-      // {
-      //   name: "Sinh viên",
-      //   selector: "student",
-      //   sortable: true,
-      //   minWidth: "200px",
-      //   cell: (row) => (
-      //     <p
-      //       title={row.nameStudent}
-      //       className="text-truncate text-bold-500 mb-0"
-      //     >
-      //       {row.nameStudent}
-      //     </p>
-      //   ),
-      // },
       {
-        name: "Lớp",
-        selector: "class",
+        name: "Họ và Tên",
+        selector: "fullName",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.classCode} className="text-truncate text-bold-500 mb-0">
-            {row.classCode}
+          <p title={row.fullName} className="text-truncate text-bold-500 mb-0">
+            {row.fullName}
           </p>
         ),
       },
       {
-        name: "Mã Lớp",
-        selector: "class",
+        name: "Tên tài khoản",
+        selector: "userName",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.classCode} className="text-truncate text-bold-500 mb-0">
-            {row.classCode}
+          <p title={row.userName} className="text-truncate text-bold-500 mb-0">
+            {row.userName}
           </p>
         ),
       },
-      // {
-      //   name: "Môn học",
-      //   selector: "subject",
-      //   sortable: true,
-      //   minWidth: "200px",
-      //   cell: (row) => (
-      //     <p
-      //       title={row.nameSubject}
-      //       className="text-truncate text-bold-500 mb-0"
-      //     >
-      //       {row.nameSubject}
-      //     </p>
-      //   ),
-      // },
       {
-        name: "Thời gian bắt đầu",
-        selector: "dateCreate",
+        name: "Email",
+        selector: "Email",
         sortable: true,
-        // minWidth: "300px",
         cell: (row) => (
-          <Moment format="DD/MM/YYYY">{row.dateCreateClass}</Moment>
+          <p title={row.Email} className="text-truncate text-bold-500 mb-0">
+            {row.Email}
+          </p>
         ),
       },
       {
-        name: "Thời gian kết thúc",
-        selector: "dateCreate",
+        name: "Quyền",
+        selector: "role",
         sortable: true,
-        // minWidth: "300px",
         cell: (row) => (
-          <Moment format="DD/MM/YYYY">{row.dateCreateClass}</Moment>
+          <p title={row.role} className="text-truncate text-bold-500 mb-0">
+            {row.role}
+          </p>
         ),
       },
       {
@@ -163,7 +135,7 @@ class ListDepartmentConfig extends Component {
             onClick={this.changeStatus}
             className="m-0"
             color={row.statusDay ? "success" : "danger"}
-            text={row.statusDay ? "Điểm danh" : "Chưa điểm danh"}
+            text={row.statusDay ? "Kích hoạt" : "Chưa kích hoạt"}
           />
         ),
       },
@@ -263,31 +235,23 @@ class ListDepartmentConfig extends Component {
     let { columns, data, value, currentData, sidebar } = this.state;
     return (
       <div className="data-list">
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-large-1 text-primary">
-              {this.props.TitleTable}
-            </CardTitle>
-          </CardHeader>
-          <CardBody className="rdt_Wrapper">
-            <DataTable
-              className="dataTable-custom"
-              data={value.length ? "" : data}
-              columns={columns}
-              noHeader
-              pagination
-              subHeader
-              subHeaderComponent={
-                <CustomHeader
-                  handleSidebar={this.handleSidebar}
-                  showModal={this.showModal}
-                  handleFilter={this.handleFilter}
-                  handleRowsPerPage={this.handleRowsPerPage}
-                />
-              }
+        <DataTable
+          className="dataTable-custom"
+          data={value.length ? "" : data}
+          columns={columns}
+          noHeader
+          pagination
+          noDataComponent="Không có dữ liệu"
+          subHeader
+          subHeaderComponent={
+            <CustomHeader
+              handleSidebar={this.handleSidebar}
+              showModal={this.showModal}
+              handleFilter={this.handleFilter}
+              handleRowsPerPage={this.handleRowsPerPage}
             />
-          </CardBody>
-        </Card>
+          }
+        />
         <Sidebar
           show={sidebar}
           data={currentData}

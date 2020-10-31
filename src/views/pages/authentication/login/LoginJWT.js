@@ -26,6 +26,7 @@ class LoginJWT extends React.Component {
     this.props.loginWithJWT(this.state);
   };
   responseGoogle = (res) => {
+    console.log(res);
     this.props.loginWithGoogle(res.tokenId);
   };
   render() {

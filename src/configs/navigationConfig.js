@@ -13,7 +13,7 @@ const navigationConfig = [
     type: "item",
     icon: <Icon.Circle size={12} />,
     permissions: ["admin"],
-    navLink: "/assistTant",
+    navLink: "/",
   },
   {
     id: "searchStudentAssistant",
@@ -141,6 +141,7 @@ const navigationConfig = [
     permissions: ["admin"],
     navLink: "/teacher/listClass",
   },
+
   {
     id: "attendance",
     title: "Điểm danh",
@@ -165,7 +166,20 @@ const navigationConfig = [
     permissions: ["admin"],
     navLink: "/teacher/liveStream",
   },
-
+  {
+    id: "groupheader5",
+    type: "groupHeader",
+    groupTitle: "Blog",
+    permissions: ["admin"],
+  },
+  {
+    id: "blog",
+    title: "blog",
+    type: "item",
+    icon: <Icon.Circle size={12} />,
+    permissions: ["admin"],
+    navLink: "/admin/blog",
+  },
   //------------------
   // Student
   //-----------------
@@ -231,6 +245,19 @@ const navigationConfig = [
         navLink: "/student/livestream",
       },
     ],
+  },
+  {
+    type: "groupHeader",
+    groupTitle: "Trò truyện",
+    permissions: ["admin", "student", "teacher"],
+  },
+  {
+    id: "Hội họp",
+    title: "chat",
+    type: "item",
+    icon: <Icon.MessageCircle size={15} />,
+    permissions: ["admin", "student", "Chat"],
+    navLink: "/chat",
   },
   {
     type: "groupHeader",

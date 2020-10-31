@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import customizer from "./customizer/";
 import auth from "./auth/";
+import chatReducer from "./chat/";
 import navbar from "./navbar/Index";
 import modalReducer from "./ui/modalReducer";
 import { persistReducer } from "redux-persist";
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   navbar: navbar,
   dataDashBoard: DataTotalProductReducer,
   assistantData: assistantReducer,
+  chatApp: chatReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

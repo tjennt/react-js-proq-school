@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col } from "reactstrap";
 import Breadcrumbs from "../../../../../../components/@vuexy/breadCrumbs/BreadCrumb";
-import ListClassConfig from "./ListClassConfig";
+import ListDepartmentConfig from "./ListDepartmentConfig";
 import queryString from "query-string";
 import { connect } from "react-redux";
 import { logoutWithJWT } from "../../../../../../redux/actions/auth/loginActions";
@@ -12,11 +12,11 @@ class Department extends React.Component {
         <Breadcrumbs
           breadCrumbTitle="Phòng đào tạo "
           breadCrumbParent="Danh sách"
-          breadCrumbActive="Danh sách phân lớp"
+          breadCrumbActive="Danh sách phòng đào tạo"
         />
         <Row>
           <Col sm="12">
-            <ListClassConfig
+            <ListDepartmentConfig
               thumbView={true}
               parsedFilter={queryString.parse(this.props.location.search)}
             />

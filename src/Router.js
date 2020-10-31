@@ -97,11 +97,26 @@ const scheduleStudent = lazy(() =>
 const AttendanceStudent = lazy(() =>
   import("./views/pages/Student/Attendance/AttendanceStudent")
 );
+//chat
+const Chat = lazy(() => import("./views/apps/chat/Chat"));
 //acount admin
 const AccountAdminTeacher = lazy(() =>
   import(
     "./views/pages/ui-elements/data-list/ProQAdmin/adminTeachers/AdminTeacher"
   )
+);
+const AccountAdminSupport = lazy(() =>
+  import(
+    "./views/pages/ui-elements/data-list/ProQAdmin/adminSupportStudents/AdminSupportStudent"
+  )
+);
+const AccountAdminDepartment = lazy(() =>
+  import(
+    "./views/pages/ui-elements/data-list/ProQAdmin/adminEducates/ListDepartmentConfig"
+  )
+);
+const BlogAdmin = lazy(() =>
+  import("./views/pages/ui-elements/data-list/ProQBlog/AdminBlog")
 );
 // Set Layout and Component Using App Route
 const RouteConfig = ({ component: Component, fullLayout, ...rest }) => (
@@ -145,7 +160,7 @@ class AppRouter extends React.Component {
         <Switch>
           <AppRoute exact path="/login" component={login} fullLayout />
           <AppRoute exact path="/register" component={register} fullLayout />
-          <AppRoute exact path="/assistTant" component={dashboard} />
+          <AppRoute exact path="/" component={dashboard} />
           <AppRoute path="/assistant/search" component={searchStudent} />
           <AppRoute
             path="/assistant/list/student"
@@ -190,11 +205,21 @@ class AppRouter extends React.Component {
           <AppRoute path="/student/score" component={markStudent} />
           <AppRoute path="/student/schedule" component={scheduleStudent} />
           <AppRoute path="/student/attendance" component={AttendanceStudent} />
+          <AppRoute path="/chat" component={Chat} />
           {/* Admin */}
           <AppRoute
             path="/admin/account/teacher"
             component={AccountAdminTeacher}
           />
+          <AppRoute
+            path="/admin/account/suport"
+            component={AccountAdminSupport}
+          />
+          <AppRoute
+            path="/admin/account/educate"
+            component={AccountAdminDepartment}
+          />
+          <AppRoute path="/admin/blog" component={BlogAdmin} />
           <AppRoute component={login} fullLayout />
         </Switch>
       </Router>

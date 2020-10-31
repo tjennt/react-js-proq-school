@@ -10,9 +10,7 @@ import Sidebar from "./AdminSupportSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-
-import Moment from "react-moment";
-import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
+import { Button } from "reactstrap";
 import { message, Popconfirm } from "antd";
 
 const ActionsComponent = (props) => {
@@ -63,16 +61,15 @@ const CustomHeader = (props) => {
 class ListAdminSupportConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
-      props.dataList.dataschedules !== state.data.length ||
+      props.dataList.dataClass !== state.data.length ||
       state.currentPage !== props.parsedFilter.page
     ) {
       return {
-        data: props.dataList.dataschedules,
+        data: props.dataList.dataClass,
         totalPages: props.dataList.totalPages,
         currentPage: parseInt(props.parsedFilter.page) - 1,
         rowsPerPage: parseInt(props.parsedFilter.perPage),
         totalRecords: props.dataList.totalRecords,
-        sortIndex: props.dataList.sortIndex,
       };
     }
 
@@ -85,20 +82,6 @@ class ListAdminSupportConfig extends Component {
     visible: false,
     currentPage: 0,
     columns: [
-      // {
-      //   name: "Sinh viên",
-      //   selector: "student",
-      //   sortable: true,
-      //   minWidth: "200px",
-      //   cell: (row) => (
-      //     <p
-      //       title={row.nameStudent}
-      //       className="text-truncate text-bold-500 mb-0"
-      //     >
-      //       {row.nameStudent}
-      //     </p>
-      //   ),
-      // },
       {
         name: "Họ và Tên",
         selector: "fullName",
@@ -125,7 +108,6 @@ class ListAdminSupportConfig extends Component {
         name: "Email",
         selector: "Email",
         sortable: true,
-        // minWidth: "300px",
         cell: (row) => (
           <p title={row.Email} className="text-truncate text-bold-500 mb-0">
             {row.Email}
@@ -136,7 +118,6 @@ class ListAdminSupportConfig extends Component {
         name: "Quyền",
         selector: "role",
         sortable: true,
-        // minWidth: "300px",
         cell: (row) => (
           <p title={row.role} className="text-truncate text-bold-500 mb-0">
             {row.role}
@@ -253,31 +234,23 @@ class ListAdminSupportConfig extends Component {
     let { columns, data, value, currentData, sidebar } = this.state;
     return (
       <div className="data-list">
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-large-1 text-primary">
-              {this.props.TitleTable}
-            </CardTitle>
-          </CardHeader>
-          <CardBody className="rdt_Wrapper">
-            <DataTable
-              className="dataTable-custom"
-              data={value.length ? "" : data}
-              columns={columns}
-              noHeader
-              pagination
-              subHeader
-              subHeaderComponent={
-                <CustomHeader
-                  handleSidebar={this.handleSidebar}
-                  showModal={this.showModal}
-                  handleFilter={this.handleFilter}
-                  handleRowsPerPage={this.handleRowsPerPage}
-                />
-              }
+        <DataTable
+          className="dataTable-custom"
+          data={value.length ? "" : data}
+          columns={columns}
+          noHeader
+          noDataComponent="Không có dữ liệu"
+          pagination
+          subHeader
+          subHeaderComponent={
+            <CustomHeader
+              handleSidebar={this.handleSidebar}
+              showModal={this.showModal}
+              handleFilter={this.handleFilter}
+              handleRowsPerPage={this.handleRowsPerPage}
             />
-          </CardBody>
-        </Card>
+          }
+        />
         <Sidebar
           show={sidebar}
           data={currentData}

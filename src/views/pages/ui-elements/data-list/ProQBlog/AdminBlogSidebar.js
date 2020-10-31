@@ -2,20 +2,21 @@ import React, { Component } from "react";
 import { X } from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import classnames from "classnames";
-import FormAdminSupport from "./FormAdminSupport";
-class AdminSupportSidebar extends Component {
+import FormBlog from "./FormAdminTeacher";
+class AdminBlogSidebar extends Component {
   initialValues = {
     id: "",
-    fullName: "",
-    username: "",
-    email: "",
-    password: "",
-    role: 3,
-    status: false,
+    date: "",
+    author: "",
+    content: "",
+    location: null,
+    timeUpdate: "",
+    authorUpdate: "",
+    category: null,
   };
 
   handleSubmit = (values, { resetForm }) => {
-    const { addData, handleSidebar, data, updateData } = this.props;
+    const { handleSidebar, data } = this.props;
     if (!data) {
       // addData(values);
       // handleSidebar(false, true);
@@ -46,7 +47,7 @@ class AdminSupportSidebar extends Component {
           className="data-list-fields px-2 mt-3"
           options={{ wheelPropagation: false }}
         >
-          <FormAdminSupport
+          <FormBlog
             initialValues={this.initialValues}
             onSubmitForm={this.handleSubmit}
             handleSidebar={this.handleSidebar}
@@ -56,4 +57,4 @@ class AdminSupportSidebar extends Component {
     );
   }
 }
-export default AdminSupportSidebar;
+export default AdminBlogSidebar;

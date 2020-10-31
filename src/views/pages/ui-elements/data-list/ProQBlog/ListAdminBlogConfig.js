@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
-import { history } from "../../../../../../history";
+import { history } from "../../../../../history";
 import { Edit, Plus, Trash } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import { getDataClass } from "../../../../../../redux/actions/dataListAssistance/index";
-import Sidebar from "./AdminTeacherSidebar";
-import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
-import "./../../../../../../assets/scss/pages/data-list.scss";
-import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-
+import { getDataClass } from "../../../../../redux/actions/dataListAssistance/index";
+import Sidebar from "./AdminBlogSidebar";
+import "../../../../../assets/scss/plugins/extensions/react-paginate.scss";
+import "../../../../../assets/scss/pages/data-list.scss";
 import { Button } from "reactstrap";
 import { message, Popconfirm } from "antd";
 
@@ -59,7 +57,7 @@ const CustomHeader = (props) => {
     </div>
   );
 };
-class ListAdminTeacherConfig extends Component {
+class ListAdminBlogConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
       props.dataList.dataClass !== state.data.length ||
@@ -83,76 +81,87 @@ class ListAdminTeacherConfig extends Component {
     visible: false,
     currentPage: 0,
     columns: [
-      // {
-      //   name: "Sinh viên",
-      //   selector: "student",
-      //   sortable: true,
-      //   minWidth: "200px",
-      //   cell: (row) => (
-      //     <p
-      //       title={row.nameStudent}
-      //       className="text-truncate text-bold-500 mb-0"
-      //     >
-      //       {row.nameStudent}
-      //     </p>
-      //   ),
-      // },
       {
-        name: "Họ và Tên",
-        selector: "fullName",
+        name: "date",
+        selector: "Thứ",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullName} className="text-truncate text-bold-500 mb-0">
-            {row.fullName}
+          <p title={row.date} className="text-truncate text-bold-500 mb-0">
+            {row.date}
           </p>
         ),
       },
       {
-        name: "Tên tài khoản",
-        selector: "userName",
+        name: "Người đăng",
+        selector: "author",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.userName} className="text-truncate text-bold-500 mb-0">
-            {row.userName}
+          <p title={row.author} className="text-truncate text-bold-500 mb-0">
+            {row.author}
           </p>
         ),
       },
       {
-        name: "Email",
-        selector: "Email",
+        name: "Nội dung",
+        selector: "content",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.Email} className="text-truncate text-bold-500 mb-0">
-            {row.Email}
+          <p title={row.content} className="text-truncate text-bold-500 mb-0">
+            {row.content}
           </p>
         ),
       },
       {
-        name: "Quyền",
-        selector: "role",
+        name: "Cơ sở",
+        selector: "location",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.role} className="text-truncate text-bold-500 mb-0">
-            {row.role}
+          <p title={row.location} className="text-truncate text-bold-500 mb-0">
+            {row.location}
           </p>
         ),
       },
       {
-        name: "Trạng thái ",
-        selector: "type",
+        name: "Thời gian cập nhật",
+        selector: "timeUpdate",
         maxWidth: "140px",
         sortable: true,
         cell: (row) => (
           <p
-            onClick={this.changeStatus}
-            className="m-0"
-            color={row.statusDay ? "success" : "danger"}
-            text={row.statusDay ? "Kích hoạt" : "Chưa kích hoạt"}
-          />
+            title={row.timeUpdate}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.timeUpdate}
+          </p>
+        ),
+      },
+      {
+        name: "Người cập nhật",
+        selector: "authorUpdate",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p
+            title={row.authorUpdate}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.authorUpdate}
+          </p>
+        ),
+      },
+      {
+        name: "Loại bài viết ",
+        selector: "category",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p title={row.category} className="text-truncate text-bold-500 mb-0">
+            {row.category}
+          </p>
         ),
       },
       {
@@ -299,4 +308,4 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getDataClass,
-})(ListAdminTeacherConfig);
+})(ListAdminBlogConfig);
