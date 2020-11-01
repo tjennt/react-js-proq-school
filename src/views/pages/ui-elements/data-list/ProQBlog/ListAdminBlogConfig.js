@@ -10,7 +10,7 @@ import Sidebar from "./AdminBlogSidebar";
 import "../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../../assets/scss/pages/data-list.scss";
 import { Button } from "reactstrap";
-import { message, Popconfirm } from "antd";
+import { message, Popconfirm, Tooltip } from "antd";
 
 const ActionsComponent = (props) => {
   function confirm(e) {
@@ -82,13 +82,17 @@ class ListAdminBlogConfig extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "date",
-        selector: "Thứ",
+        name: "Người cập nhật",
+        selector: "authorUpdate",
         sortable: true,
-        minWidth: "200px",
+        minWidth: "160px",
         cell: (row) => (
-          <p title={row.date} className="text-truncate text-bold-500 mb-0">
-            {row.date}
+          <p
+            title={row.authorUpdate}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {/* {row.authorUpdate} */}
+            LinhCT
           </p>
         ),
       },
@@ -99,7 +103,8 @@ class ListAdminBlogConfig extends Component {
         minWidth: "200px",
         cell: (row) => (
           <p title={row.author} className="text-truncate text-bold-500 mb-0">
-            {row.author}
+            {/* {row.author} */}
+            LinhCT
           </p>
         ),
       },
@@ -109,9 +114,12 @@ class ListAdminBlogConfig extends Component {
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.content} className="text-truncate text-bold-500 mb-0">
-            {row.content}
-          </p>
+          <Tooltip placement="bottom" title="Hiển thị nội dung bài viết">
+            <p title={row.content} className="text-truncate text-bold-500 mb-0">
+              {row.content}
+              baalalalalalala
+            </p>
+          </Tooltip>
         ),
       },
       {
@@ -122,13 +130,14 @@ class ListAdminBlogConfig extends Component {
         cell: (row) => (
           <p title={row.location} className="text-truncate text-bold-500 mb-0">
             {row.location}
+            Cơ sở 3
           </p>
         ),
       },
       {
         name: "Thời gian cập nhật",
         selector: "timeUpdate",
-        maxWidth: "140px",
+        maxWidth: "180px",
         sortable: true,
         cell: (row) => (
           <p
@@ -136,23 +145,11 @@ class ListAdminBlogConfig extends Component {
             className="text-truncate text-bold-500 mb-0"
           >
             {row.timeUpdate}
+            31/10/2020
           </p>
         ),
       },
-      {
-        name: "Người cập nhật",
-        selector: "authorUpdate",
-        sortable: true,
-        // minWidth: "300px",
-        cell: (row) => (
-          <p
-            title={row.authorUpdate}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.authorUpdate}
-          </p>
-        ),
-      },
+
       {
         name: "Loại bài viết ",
         selector: "category",
@@ -161,6 +158,7 @@ class ListAdminBlogConfig extends Component {
         cell: (row) => (
           <p title={row.category} className="text-truncate text-bold-500 mb-0">
             {row.category}
+            Thông tin học tập
           </p>
         ),
       },
@@ -265,7 +263,6 @@ class ListAdminBlogConfig extends Component {
           data={value.length ? "" : data}
           columns={columns}
           noHeader
-          pagination
           subHeader
           noDataComponent="Không có dữ liệu "
           subHeaderComponent={

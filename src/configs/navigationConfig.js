@@ -168,12 +168,12 @@ const navigationConfig = [
   {
     id: "groupheader5",
     type: "groupHeader",
-    groupTitle: "Blog",
+    groupTitle: "Thông báo",
     permissions: ["admin"],
   },
   {
     id: "blog",
-    title: "blog",
+    title: "Thông báo",
     type: "item",
     icon: <Icon.Circle size={12} />,
     permissions: ["admin"],

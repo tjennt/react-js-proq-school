@@ -118,6 +118,7 @@ const AccountAdminDepartment = lazy(() =>
 const BlogAdmin = lazy(() =>
   import("./views/pages/ui-elements/data-list/ProQBlog/AdminBlog")
 );
+const BlogDetail = lazy(() => import("./views/pages/Student/Study/blogDetail"));
 // Set Layout and Component Using App Route
 const RouteConfig = ({ component: Component, fullLayout, ...rest }) => (
   <Route
@@ -197,6 +198,7 @@ class AppRouter extends React.Component {
             path="/teacher/listClass/:id"
             component={ListClassTeacher}
           />
+          <AppRoute path="/student/news/:id" component={BlogDetail} />
           <AppRoute path="/teacher/attendance" component={Attendance} />
           <AppRoute path="/teacher/email" component={commingSoon} />
           <AppRoute path="/teacher/liveStream" component={commingSoon} />
@@ -220,6 +222,7 @@ class AppRouter extends React.Component {
             component={AccountAdminDepartment}
           />
           <AppRoute path="/admin/blog" component={BlogAdmin} />
+
           <AppRoute component={login} fullLayout />
         </Switch>
       </Router>

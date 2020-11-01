@@ -12,7 +12,7 @@ class AdminTeacher extends React.Component {
         <Breadcrumbs
           breadCrumbTitle="Admin "
           breadCrumbParent="Quản lí tài khoản"
-          breadCrumbActive="Danh sách tài khoảng giáo viên"
+          breadCrumbActive="Danh sách tài khoản giáo viên"
         />
         <Row>
           <Col sm="12">

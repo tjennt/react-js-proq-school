@@ -40,9 +40,9 @@ const ActionsComponent = (props) => {
 class ListStudentEducation extends Component {
   parsedFilter = queryString.parse(this.props.location.search);
   static getDerivedStateFromProps(props, state) {
-    if (props.dataList.data !== state.data.length) {
+    if (props.dataList.dataClass !== state.data.length) {
       return {
-        data: props.dataList.data,
+        data: props.dataList.dataClass,
         totalPages: props.dataList.totalPages,
       };
     }

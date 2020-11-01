@@ -59,6 +59,14 @@ function FormDepartment(props) {
               type="text"
             />
             <Field
+              label="Mật khẩu *"
+              placeholder="Vui lòng nhập mật khẩu "
+              name="password"
+              component={InputField}
+              value={initialValues.password}
+              type="password"
+            />
+            <Field
               name="role"
               placeholder="Vui lòng chọn quyền "
               label="Quyền "

@@ -74,11 +74,11 @@ import { Table } from "reactstrap";
 class ListStudentConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
-      props.dataList.data !== state.data.length ||
+      props.dataList.dataClass !== state.data.length ||
       state.currentPage !== props.parsedFilter.page
     ) {
       return {
-        data: props.dataList.data,
+        data: props.dataList.dataClass,
         totalPages: props.dataList.totalPages,
         currentPage: parseInt(props.parsedFilter.page) - 1,
         rowsPerPage: parseInt(props.parsedFilter.perPage),

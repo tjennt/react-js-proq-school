@@ -31,7 +31,7 @@ const CustomHeader = (props) => {
 
 class TableTotal extends Component {
   static getDerivedStateFromProps(props, state) {
-    if (props.dataList.data !== state.data.length) {
+    if (props.dataList.dataClass !== state.data.length) {
       return {
         data: props.dataList.data,
         totalPages: props.dataList.totalPages,

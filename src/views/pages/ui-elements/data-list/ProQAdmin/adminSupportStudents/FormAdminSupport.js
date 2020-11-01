@@ -35,7 +35,7 @@ function FormDepartment(props) {
         return (
           <Form>
             <Field
-              label="Tên Giảng Công tác sinh viên *"
+              label="Tên nhân viên *"
               placeholder="Vui lòng nhập tên CTSV"
               name="fullName"
               component={InputField}
@@ -43,7 +43,7 @@ function FormDepartment(props) {
               type="text"
             />
             <Field
-              label="Tên tài khoảng *"
+              label="Tên tài khoản *"
               placeholder="Vui lòng nhập tên CTSV "
               name="username"
               component={InputField}
@@ -57,6 +57,14 @@ function FormDepartment(props) {
               component={InputField}
               value={initialValues.email}
               type="text"
+            />
+            <Field
+              label="Mật khẩu *"
+              placeholder="Vui lòng nhập mật khẩu "
+              name="password"
+              component={InputField}
+              value={initialValues.password}
+              type="password"
             />
             <Field
               name="role"

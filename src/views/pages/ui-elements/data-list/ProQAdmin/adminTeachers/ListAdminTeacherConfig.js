@@ -105,6 +105,7 @@ class ListAdminTeacherConfig extends Component {
         cell: (row) => (
           <p title={row.fullName} className="text-truncate text-bold-500 mb-0">
             {row.fullName}
+            Châu Thế Linh
           </p>
         ),
       },
@@ -116,6 +117,7 @@ class ListAdminTeacherConfig extends Component {
         cell: (row) => (
           <p title={row.userName} className="text-truncate text-bold-500 mb-0">
             {row.userName}
+            ctLinh_teacher
           </p>
         ),
       },
@@ -127,6 +129,7 @@ class ListAdminTeacherConfig extends Component {
         cell: (row) => (
           <p title={row.Email} className="text-truncate text-bold-500 mb-0">
             {row.Email}
+            Chaulinh0302cr7@gmail.com
           </p>
         ),
       },
@@ -138,6 +141,7 @@ class ListAdminTeacherConfig extends Component {
         cell: (row) => (
           <p title={row.role} className="text-truncate text-bold-500 mb-0">
             {row.role}
+            Giáo viên
           </p>
         ),
       },
@@ -150,9 +154,13 @@ class ListAdminTeacherConfig extends Component {
           <p
             onClick={this.changeStatus}
             className="m-0"
-            color={row.statusDay ? "success" : "danger"}
-            text={row.statusDay ? "Kích hoạt" : "Chưa kích hoạt"}
-          />
+            // color={row.statusDay ? "success" : "danger"}
+            color="success"
+            // text={row.statusDay ? "Kích hoạt" : "Chưa kích hoạt"}
+            text="kích hoạt"
+          >
+            kích hoạt
+          </p>
         ),
       },
       {
