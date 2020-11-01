@@ -9,81 +9,40 @@ import Sidebar from "./DataListStudentSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import { Table } from "reactstrap";
-// import Chip from "../../../../../../components/@vuexy/chips/ChipComponent";
-// import { Popconfirm, message } from "antd";
-// const selectedStyle = {
-//   rows: {
-//     selectedHighlighStyle: {
-//       backgroundColor: "rgba(115,103,240,.05)",
-//       color: "#7367F0 !important",
-//       boxShadow: "0 0 1px 0 #7367F0 !important",
-//       "&:hover": {
-//         transform: "translateY(0px) !important",
-//       },
-//     },
-//   },
-// };
-// const ActionsComponent = (props) => {
-//   function confirm(e) {
-//     props.changeStatus(props.row);
-//   }
-//   function cancel(e) {
-//     message.error("Hủy thay đổi trạng thái  !");
-//   }
-//   return (
-//     <div className="data-list-action">
-//       <Edit
-//         className="cursor-pointer mr-1"
-//         size={20}
-//         onClick={() => {
-//           return props.currentData(props.row);
-//         }}
-//       />
-//       <Popconfirm
-//         title="Bạn có chắc chắn thay đổi trạng thái?"
-//         onConfirm={confirm}
-//         onCancel={cancel}
-//         okText="Có "
-//         cancelText="Không "
-//       >
-//         <RefreshCw className="cursor-pointer" size={20} />
-//       </Popconfirm>
-//     </div>
-//   );
-// };
-
-// const CustomHeader = (props) => {
-//   return (
-//     <div className="data-list-header d-flex justify-content-between flex-wrap">
-//       <div className="actions-left d-flex flex-wrap">
-//         <Button
-//           className="add-new-btn"
-//           color="primary"
-//           onClick={() => props.handleSidebar(true, true)}
-//           outline
-//         >
-//           <Plus size={15} />
-//           <span className="align-middle">Tạo mới</span>
-//         </Button>
-//       </div>
-//     </div>
-//   );
-// };
-
+import {
+  Button,
+  Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Input,
+  Row,
+  Table,
+  UncontrolledDropdown,
+} from "reactstrap";
+import ReactPaginate from "react-paginate";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+} from "react-feather";
+import { Modal } from "antd";
+import Moment from "react-moment";
+import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
 class ListStudentConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
-      props.dataList.dataClass !== state.data.length ||
+      props.dataList.data !== state.data.length ||
       state.currentPage !== props.parsedFilter.page
     ) {
       return {
-        data: props.dataList.dataClass,
-        totalPages: props.dataList.totalPages,
-        currentPage: parseInt(props.parsedFilter.page) - 1,
-        rowsPerPage: parseInt(props.parsedFilter.perPage),
-        totalRecords: props.dataList.totalRecords,
-        sortIndex: props.dataList.sortIndex,
+        data: props.dataList.data,
+        totalPages: props.dataList.total_page_student,
+        // currentPage: parseInt(props.parsedFilter.page) - 1,
+        // rowsPerPage: parseInt(props.parsedFilter.perPage),
+        totalRecords: props.dataList.total_record_student,
+        // sortIndex: props.dataList.sortIndex,
       };
     }
 
@@ -101,9 +60,11 @@ class ListStudentConfig extends Component {
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
-            {row.fullname}
-          </p>
+          <img
+            height="100"
+            src={`${API_ENDPOINT_IMG}/${row.avatar}`}
+            alt={row.avatar}
+          />
         ),
       },
       {
@@ -112,8 +73,8 @@ class ListStudentConfig extends Component {
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
-            {row.fullname}
+          <p title={row.fullName} className="text-truncate text-bold-500 mb-0">
+            {row.fullName}
           </p>
         ),
       },
@@ -123,8 +84,11 @@ class ListStudentConfig extends Component {
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.code} className="text-truncate text-bold-500 mb-0">
-            {row.code}
+          <p
+            title={row.studentCode}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.studentCode}
           </p>
         ),
       },
@@ -134,8 +98,11 @@ class ListStudentConfig extends Component {
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.classCode} className="text-truncate text-bold-500 mb-0">
-            {row.classCode}
+          <p
+            title={row.classId.className}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.classId.className}
           </p>
         ),
       },
@@ -144,30 +111,8 @@ class ListStudentConfig extends Component {
         selector: "date",
         sortable: true,
         // minWidth: "300px",
-        cell: (row) => (
-          <p
-            title={row.created_at}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {/* {row.created_at} */}
-            11/10/2020
-          </p>
-        ),
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.createAt}</Moment>,
       },
-      // {
-      //   name: "Thao tác",
-      //   sortable: true,
-      //   cell: (row) => (
-      //     <ActionsComponent
-      //       row={row}
-      //       getData={this.props.getData}
-      //       parsedFilter={this.props.parsedFilter}
-      //       currentData={this.handleCurrentData}
-      //       deleteRow={this.handleDelete}
-      //       changeStatus={(row) => this.changeStatus(row)}
-      //     />
-      //   ),
-      // },
     ],
     allData: [],
     value: "",
@@ -175,15 +120,25 @@ class ListStudentConfig extends Component {
     sidebar: false,
     currentData: null,
     selected: [],
+    visible: false,
+    nameFile: "",
     totalRecords: 0,
     sortIndex: [],
     addNew: "",
+    file: "",
   };
 
   thumbView = this.props.thumbView;
 
   componentDidMount() {
-    this.props.getData();
+    const { parsedFilter } = this.props;
+
+    const paginate = {
+      page: 1,
+      limit: 10,
+    };
+    let limit = parsedFilter || paginate;
+    this.props.getData(limit);
   }
   handleFilter = (e) => {
     this.setState({ value: e.target.value });
@@ -194,52 +149,181 @@ class ListStudentConfig extends Component {
     this.setState({ sidebar: boolean });
     if (addNew === true) this.setState({ currentData: null, addNew: true });
   };
-  changeStatus = (row) => {
-    this.props.updateStatus(row, this.props.parsedFilter);
-    this.props.getData(this.props.parsedFilter);
+  // changeStatus = (row) => {
+  //   this.props.updateStatus(row, this.props.parsedFilter);
+  //   this.props.getData(this.props.parsedFilter);
+  // };
+  // handleDelete = (row) => {
+  //   this.props.deleteData(row);
+  //   this.props.getData(this.props.parsedFilter);
+  //   if (this.state.data.length - 1 === 0) {
+  //     history.push(
+  //       `/education/student?page=${parseInt(
+  //         this.props.parsedFilter.page - 1
+  //       )}&limit=${this.props.parsedFilter.perPage}`
+  //     );
+  //     this.props.getData({
+  //       page: this.props.parsedFilter.page - 1,
+  //       perPage: this.props.parsedFilter.perPage,
+  //     });
+  //   }
+  // };
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
   };
-  handleDelete = (row) => {
-    this.props.deleteData(row);
-    this.props.getData(this.props.parsedFilter);
-    if (this.state.data.length - 1 === 0) {
-      history.push(
-        `/accountAdmin?page=${parseInt(
-          this.props.parsedFilter.page - 1
-        )}&perPage=${this.props.parsedFilter.perPage}`
-      );
-      this.props.getData({
-        page: this.props.parsedFilter.page - 1,
-        perPage: this.props.parsedFilter.perPage,
-      });
-    }
+  handleOk = (e) => {
+    let { parsedFilter, importExcelStudent } = this.props;
+
+    const { file } = this.state;
+    let fileReq = file.file.originFileObj;
+    importExcelStudent(fileReq, parsedFilter);
+    this.setState({
+      ...this.state,
+      visible: false,
+    });
   };
 
+  handleCancel = (e) => {
+    this.setState({
+      visible: false,
+      excel: null,
+    });
+  };
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
     this.handleSidebar(true);
   };
-
+  onChangeExcel = (file) => {
+    this.setState({
+      ...this.state,
+      file: file,
+    });
+  };
   handlePagination = (page) => {
     let { parsedFilter, getData } = this.props;
-    let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 4;
-
-    history.push(`/accountAdmin?page=${page.selected + 1}&perPage=${perPage}`);
-    getData({ page: page.selected + 1, perPage: perPage });
+    const { limit } = parsedFilter;
+    let perPage = limit || 10;
+    history.push(
+      `/assistant/list/student?page=${page.selected + 1}&limit=${perPage}`
+    );
+    getData({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
+  };
+  handleRowsPerPage = (value) => {
+    let { parsedFilter, getData } = this.props;
+
+    let page = parsedFilter.page !== undefined ? parsedFilter.page : 10;
+    history.push(`/assistant/list/student?page=${page}&limit=${value}`);
+    this.setState({ rowsPerPage: value });
+    getData({ page: parsedFilter.page, limit: value });
   };
 
   render() {
     let { columns, value, currentData, sidebar, data } = this.state;
-    console.log(data);
     return (
       <div className="data-list">
+        <Modal
+          destroyOnClose={true}
+          title="Thêm dữ liệu từ file excel"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <Input
+            onChange={(e) => this.setState({ nameFile: e.target.value })}
+            placeholder="nhập tên file "
+          />
+        </Modal>
+        <Col lg="12">
+          <Row>
+            <Col lg="3">
+              <Button onClick={this.showModal} className=" ml-2" color="danger">
+                <Download size={15} /> Xuất excel
+              </Button>
+            </Col>
+            <Col lg="9">
+              <UncontrolledDropdown
+                style={{ backgroundColor: "#fff", borderRadius: "20px" }}
+                className="data-list-rows-dropdown  d-md-block d-none"
+              >
+                <DropdownToggle
+                  className="sort-dropdown"
+                  style={{
+                    float: "right",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <span className="align-middle mx-50">{`${
+                    this.props.parsedFilter.page
+                      ? this.props.parsedFilter.page
+                      : 1
+                  } of ${this.state.totalRecords}`}</span>
+                  <ChevronDown size={15} />
+                </DropdownToggle>
+                <DropdownMenu tag="div" right>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(10)}
+                  >
+                    10
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(20)}
+                  >
+                    20
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(30)}
+                  >
+                    30
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(50)}
+                  >
+                    50
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(100)}
+                  >
+                    100
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Col>
+          </Row>
+        </Col>
         <DataTable
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
           noHeader
           pagination
-          noDataComponent="Không có dữ liệu sinh viên"
+          noDataComponent="Không có dữ liệu học sinh"
+          paginationServer
+          paginationComponent={() => (
+            <ReactPaginate
+              previousLabel={<ChevronLeft size={15} />}
+              nextLabel={<ChevronRight size={15} />}
+              breakLabel="..."
+              breakClassName="break-me"
+              pageCount={this.state.totalPages}
+              containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+              activeClassName="active"
+              forcePage={
+                this.props.parsedFilter.page
+                  ? parseInt(this.props.parsedFilter.page - 1)
+                  : 0
+              }
+              onPageChange={(page) => this.handlePagination(page)}
+            />
+          )}
+          subHeader
           expandableRows
           expandOnRowClicked
           expandableRowsComponent={<ExpandableTable />}

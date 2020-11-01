@@ -4,6 +4,8 @@ const initialState = {
   total_page_student: 0,
   total_record_student: 0,
   dataTeacher: [],
+  total_page_teacher: 0,
+  total_record_teacher: 0,
   dataSubject: [],
   dataClass: [],
   total_page_class: 0,
@@ -36,10 +38,12 @@ const assistantReducer = (state = initialState, action) => {
       };
     }
     case assType.GET_DATA_TEACHER_ASS_SUCCESS: {
-      const { data } = action.payload;
+      const { data, total_page, total_record } = action.payload;
       return {
         ...state,
         dataTeacher: data,
+        total_page_teacher: total_page,
+        total_record_teacher: total_record,
       };
     }
     /**
@@ -52,6 +56,7 @@ const assistantReducer = (state = initialState, action) => {
     }
     case assType.GET_DATA_CLASS_ASS_SUCCESS: {
       const { data, total_page, total_record } = action.payload;
+      console.log(data);
       return {
         ...state,
         dataClass: data,

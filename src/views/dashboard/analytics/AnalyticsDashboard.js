@@ -22,6 +22,7 @@ import { getToken } from "../../../utility/auth/setAuthToken";
 import TableTotal from "./Table";
 import { logoutWithJWT } from "../../../redux/actions/auth/loginActions";
 import Revenue from "./Revenue";
+import { history } from "../../../history";
 const { RangePicker } = DatePicker;
 let $primary = "#7367F0",
   $danger = "#EA5455",
@@ -172,6 +173,7 @@ const mapStateToProp = (state) => {
     user_commission: state.dataDashBoard.dataDashboard.user_commission,
     staticTotalUser: state.dataDashBoard.staticTotalUser,
     staticTotalUserLogin: state.dataDashBoard.staticTotalUserLogin,
+    role: state.auth.login.userRole,
   };
 };
 export default connect(mapStateToProp, {

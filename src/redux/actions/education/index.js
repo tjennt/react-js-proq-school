@@ -14,3 +14,11 @@ export const importExcelClass = (file, params) => ({
     params,
   },
 });
+
+export const importExcelTeacer = (file, params) => ({
+  type: educationType.IMPORT_EXCEL_TEACHER,
+  payload: {
+    file,
+    params,
+  },
+});

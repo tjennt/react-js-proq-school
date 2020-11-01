@@ -49,6 +49,10 @@ class Layout extends React.Component {
     if (!token) {
       history.push("/login");
     }
+    let role = localStorage.getItem("role");
+    if (role === "student") {
+      history.push("/student/news");
+    }
     if (window !== "undefined") {
       window.addEventListener("resize", this.handleWindowResize);
     }
@@ -84,6 +88,7 @@ class Layout extends React.Component {
 
   render() {
     const { children } = this.props;
+    console.log(children);
     return (
       <ContextLayout.Provider
         value={{

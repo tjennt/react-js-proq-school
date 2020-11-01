@@ -33,6 +33,7 @@ import { Popconfirm, message, Modal, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
+import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
@@ -93,9 +94,11 @@ class ListStudentEducation extends Component {
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
-            {row.fullname}
-          </p>
+          <img
+            height="100"
+            src={`${API_ENDPOINT_IMG}/${row.avatar}`}
+            alt={row.avatar}
+          />
         ),
       },
       {
@@ -193,10 +196,10 @@ class ListStudentEducation extends Component {
     this.setState({ sidebar: boolean });
     if (addNew === true) this.setState({ currentData: null, addNew: true });
   };
-  changeStatus = (row) => {
-    this.props.updateStatus(row, this.props.parsedFilter);
-    this.props.getData(this.props.parsedFilter);
-  };
+  // changeStatus = (row) => {
+  //   this.props.updateStatus(row, this.props.parsedFilter);
+  //   this.props.getData(this.props.parsedFilter);
+  // };
   // handleDelete = (row) => {
   //   this.props.deleteData(row);
   //   this.props.getData(this.props.parsedFilter);
@@ -315,10 +318,12 @@ class ListStudentEducation extends Component {
                   }}
                 >
                   <span className="align-middle mx-50">{`${
-                    this.props.parsedFilter.page
-                      ? this.props.parsedFilter.page
+                    this.state.totalRecords
+                  } of ${
+                    this.props.parsedFilter.limit
+                      ? this.props.parsedFilter.limit
                       : 1
-                  } of ${this.state.totalRecords}`}</span>
+                  }`}</span>
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>

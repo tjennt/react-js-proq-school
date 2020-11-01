@@ -73,10 +73,7 @@ class ListClassEducateConfig extends Component {
       return {
         data: props.dataList.dataClass,
         totalPages: props.dataList.total_page_class,
-        // currentPage: parseInt(props.parsedFilter.page) - 1,
-        // rowsPerPage: parseInt(props.parsedFilter.perPage),
         totalRecords: props.dataList.total_record_class,
-        // sortIndex: props.dataList.sortIndex,
       };
     }
 

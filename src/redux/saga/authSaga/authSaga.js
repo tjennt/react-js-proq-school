@@ -11,23 +11,23 @@ export function* loginActionSaga({ payload }) {
     password: user.password,
   };
   try {
-    history.push("/");
-    // const res = yield call(loginJWt, authData);
-    // const { data } = res;
-    // console.log(data);
-    // if (data.success === true) {
-    //   setUserCookie(data.payload.token);
-    // yield put(changeRole(data.payload.role.name));
-    yield put(changeRole("admin"));
-    //   // history.push("/");
-    //   switch (data.payload.role.name) {
-    //     case "admin":
-    //       break;
-    //     default:
-    //       return false;
-    //   }
-    //   toastSuccess(`Xin chào ${data.payload.role.name} ...`);
-    // }
+    // history.push("/");
+    const res = yield call(loginJWt, authData);
+    const { data } = res;
+    console.log(data);
+    if (data.success === true) {
+      setUserCookie(data.payload.token);
+      yield put(changeRole(data.payload.role.name));
+      yield put(changeRole("admin"));
+      switch (data.payload.role.name) {
+        case "admin":
+          history.push("/");
+          break;
+        default:
+          return false;
+      }
+      toastSuccess(`Xin chào ${data.payload.role.name} ...`);
+    }
   } catch (error) {
     toastError("Tài khoản hoặc mật khẩu không đúng!");
   }
@@ -46,6 +46,7 @@ export function* loginWithGoogleSaga({ payload }) {
       switch (data.payload.access) {
         case "student":
           history.push("/student/news");
+          localStorage.setItem("role", data.payload.access);
           break;
         default:
           return false;
@@ -59,5 +60,6 @@ export function* loginWithGoogleSaga({ payload }) {
 export function* logoutSaga() {
   yield put(logoutSuccess());
   yield put(changeRole(""));
+  localStorage.removeItem("role");
   history.push("/login");
 }

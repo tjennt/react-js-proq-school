@@ -25,13 +25,18 @@ export const getDataFaild = (error) => ({
 /**
  * assistant teacher
  */
-export const getDataTeacher = () => ({
+export const getDataTeacher = (params) => ({
   type: assisType.GET_DATA_TEACHER_ASS,
+  payload: {
+    params,
+  },
 });
-export const getDataTeacherSuccess = (data) => ({
+export const getDataTeacherSuccess = (data, total_page, total_record) => ({
   type: assisType.GET_DATA_TEACHER_ASS_SUCCESS,
   payload: {
     data,
+    total_page,
+    total_record,
   },
 });
 export const getDataTeacherFaild = (error) => ({

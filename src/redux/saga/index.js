@@ -17,7 +17,10 @@ import { getStudentActionSaga } from "./assistant/student";
 import { getTeacherActionSaga } from "./assistant/teacher";
 import { getClassActionSaga } from "./assistant/class";
 import { getSubjectActionSaga } from "./assistant/subject";
-import { importExcelStudentEduSaga } from "./educationSaga";
+import {
+  importExcelStudentEduSaga,
+  importExcelTeacherEduSaga,
+} from "./educationSaga";
 function* rootSaga() {
   //login //auth
   yield takeLatest(authType.LOGIN, loginActionSaga);
@@ -39,6 +42,10 @@ function* rootSaga() {
   yield takeLatest(
     educationType.IMPORT_EXCEL_STUDENT,
     importExcelStudentEduSaga
+  );
+  yield takeLatest(
+    educationType.IMPORT_EXCEL_TEACHER,
+    importExcelTeacherEduSaga
   );
 }
 export default rootSaga;

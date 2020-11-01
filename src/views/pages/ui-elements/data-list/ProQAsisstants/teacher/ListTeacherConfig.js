@@ -10,7 +10,27 @@ import Sidebar from "./DataListTeachertSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
+import ReactPaginate from "react-paginate";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+} from "react-feather";
+import {
+  Button,
+  Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Input,
+  Row,
+  UncontrolledDropdown,
+} from "reactstrap";
+import Moment from "react-moment";
+import Modal from "antd/lib/modal/Modal";
 
+import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
 class ListTeacherConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
@@ -19,11 +39,10 @@ class ListTeacherConfig extends Component {
     ) {
       return {
         data: props.dataList.dataTeacher,
-        totalPages: props.dataList.totalPages,
-        currentPage: parseInt(props.parsedFilter.page) - 1,
-        rowsPerPage: parseInt(props.parsedFilter.perPage),
-        totalRecords: props.dataList.totalRecords,
-        sortIndex: props.dataList.sortIndex,
+        totalPages: props.dataList.total_page_teacher,
+        // currentPage: parseInt(props.parsedFilter.page) - 1,
+        // rowsPerPage: parseInt(props.parsedFilter.perPage),
+        totalRecords: props.dataList.total_record_teacher,
       };
     }
 
@@ -41,9 +60,11 @@ class ListTeacherConfig extends Component {
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullName} className="text-truncate text-bold-500 mb-0">
-            {row.fullName}
-          </p>
+          <img
+            height="100"
+            src={`${API_ENDPOINT_IMG}/${row.avatar}`}
+            alt={row.avatar}
+          />
         ),
       },
       {
@@ -52,20 +73,22 @@ class ListTeacherConfig extends Component {
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullName} className="text-truncate text-bold-500 mb-0">
-            {row.fullName}
+          <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
+            {row.fullname}
           </p>
         ),
       },
       {
-        name: "Email",
-        selector: "email",
+        name: "Mã giáo viên",
+        selector: "teacherCode",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.email} className="text-truncate text-bold-500 mb-0">
-            {/* {row.email} */}
-            chaulinh0302cr7@gmail.com
+          <p
+            title={row.teacherCode}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.teacherCode}
           </p>
         ),
       },
@@ -75,9 +98,11 @@ class ListTeacherConfig extends Component {
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.email} className="text-truncate text-bold-500 mb-0">
-            {/* {row.email} */}
-            Dạy php
+          <p
+            title={row.specialization}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.specialization}
           </p>
         ),
       },
@@ -87,9 +112,8 @@ class ListTeacherConfig extends Component {
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.email} className="text-truncate text-bold-500 mb-0">
-            {/* {row.email} */}
-            0399172329
+          <p title={row.phone} className="text-truncate text-bold-500 mb-0">
+            {row.phone}
           </p>
         ),
       },
@@ -98,22 +122,16 @@ class ListTeacherConfig extends Component {
         selector: "date",
         sortable: true,
         // minWidth: "300px",
-        cell: (row) => (
-          <p
-            title={row.created_at}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {/* {row.created_at} */}
-            11/10/2020
-          </p>
-        ),
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.createAt}</Moment>,
       },
     ],
     allData: [],
     value: "",
     rowsPerPage: 4,
     sidebar: false,
+    nameFile: "",
     currentData: null,
+    file: null,
     selected: [],
     totalRecords: 0,
     sortIndex: [],
@@ -123,36 +141,66 @@ class ListTeacherConfig extends Component {
   thumbView = this.props.thumbView;
 
   componentDidMount() {
-    this.props.getDataTeacher();
+    const { parsedFilter } = this.props;
+
+    const paginate = {
+      page: 1,
+      limit: 10,
+    };
+    let limit = parsedFilter || paginate;
+    this.props.getDataTeacher(limit);
   }
-  handleFilter = (e) => {
-    this.setState({ value: e.target.value });
-    this.props.filterData(e.target.value);
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+  onChangeExcel = (file) => {
+    this.setState({
+      ...this.state,
+      file: file,
+    });
+  };
+  handleOk = (e) => {
+    let { parsedFilter, importExcelTeacer } = this.props;
+    const { file } = this.state;
+    let fileReq = file.file.originFileObj;
+    importExcelTeacer(fileReq, parsedFilter);
+    this.setState({
+      ...this.state,
+      visible: false,
+    });
   };
 
+  handleCancel = (e) => {
+    this.setState({
+      visible: false,
+      excel: null,
+    });
+  };
   handleSidebar = (boolean, addNew = false) => {
     this.setState({ sidebar: boolean });
     if (addNew === true) this.setState({ currentData: null, addNew: true });
   };
-  changeStatus = (row) => {
-    this.props.updateStatus(row, this.props.parsedFilter);
-    this.props.getData(this.props.parsedFilter);
-  };
-  handleDelete = (row) => {
-    this.props.deleteData(row);
-    this.props.getData(this.props.parsedFilter);
-    if (this.state.data.length - 1 === 0) {
-      history.push(
-        `/accountAdmin?page=${parseInt(
-          this.props.parsedFilter.page - 1
-        )}&perPage=${this.props.parsedFilter.perPage}`
-      );
-      this.props.getData({
-        page: this.props.parsedFilter.page - 1,
-        perPage: this.props.parsedFilter.perPage,
-      });
-    }
-  };
+  // changeStatus = (row) => {
+  //   this.props.updateStatus(row, this.props.parsedFilter);
+  //   this.props.getData(this.props.parsedFilter);
+  // };
+  // handleDelete = (row) => {
+  //   this.props.deleteData(row);
+  //   this.props.getData(this.props.parsedFilter);
+  //   if (this.state.data.length - 1 === 0) {
+  //     history.push(
+  //       `/accountAdmin?page=${parseInt(
+  //         this.props.parsedFilter.page - 1
+  //       )}&perPage=${this.props.parsedFilter.perPage}`
+  //     );
+  //     this.props.getData({
+  //       page: this.props.parsedFilter.page - 1,
+  //       perPage: this.props.parsedFilter.perPage,
+  //     });
+  //   }
+  // };
 
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
@@ -160,28 +208,128 @@ class ListTeacherConfig extends Component {
   };
 
   handlePagination = (page) => {
-    let { parsedFilter, getData } = this.props;
-    let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 4;
-
-    history.push(`/accountAdmin?page=${page.selected + 1}&perPage=${perPage}`);
-    getData({ page: page.selected + 1, perPage: perPage });
+    let { parsedFilter, getDataTeacher } = this.props;
+    const { limit } = parsedFilter;
+    let perPage = limit || 10;
+    history.push(
+      `/assistant/list/teacher?page=${page.selected + 1}&limit=${perPage}`
+    );
+    getDataTeacher({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
+  handleRowsPerPage = (value) => {
+    let { parsedFilter, getDataTeacher } = this.props;
 
+    let page = parsedFilter.page !== undefined ? parsedFilter.page : 10;
+    history.push(`/assistant/list/teacher?page=${page}&limit=${value}`);
+    this.setState({ rowsPerPage: value });
+    getDataTeacher({ page: parsedFilter.page, limit: value });
+  };
   render() {
     let { columns, data, value, currentData, sidebar } = this.state;
-    console.log(data);
     return (
       <div className="data-list">
+        <Modal
+          destroyOnClose={true}
+          title="Thêm dữ liệu từ file excel"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <Input
+            onChange={(e) => this.setState({ nameFile: e.target.value })}
+            placeholder="nhập tên file "
+          />
+        </Modal>
+        <Col lg="12">
+          <Row>
+            <Col lg="3">
+              <Button onClick={this.showModal} className=" ml-2" color="danger">
+                <Download size={15} /> Xuất excel
+              </Button>
+            </Col>
+            <Col lg="9">
+              <UncontrolledDropdown
+                style={{ backgroundColor: "#fff", borderRadius: "20px" }}
+                className="data-list-rows-dropdown  d-md-block d-none"
+              >
+                <DropdownToggle
+                  className="sort-dropdown"
+                  style={{
+                    float: "right",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <span className="align-middle mx-50">{`${
+                    this.state.totalRecords
+                  } of ${
+                    this.props.parsedFilter.limit
+                      ? this.props.parsedFilter.limit
+                      : 1
+                  }`}</span>
+                  <ChevronDown size={15} />
+                </DropdownToggle>
+                <DropdownMenu tag="div" right>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(10)}
+                  >
+                    10
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(20)}
+                  >
+                    20
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(30)}
+                  >
+                    30
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(50)}
+                  >
+                    50
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(100)}
+                  >
+                    100
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Col>
+          </Row>
+        </Col>
         <DataTable
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
-          pagination
-          noDataComponent="Không dữ liệu giáo viên"
-          // expandableRows
+          noHeader
+          subHeader
+          noDataComponent="Không có dữ liệu"
           expandOnRowClicked
         />
+        <ReactPaginate
+          previousLabel={<ChevronLeft size={15} />}
+          nextLabel={<ChevronRight size={15} />}
+          breakLabel="..."
+          breakClassName="break-me"
+          pageCount={this.state.totalPages}
+          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+          activeClassName="active"
+          forcePage={
+            this.props.parsedFilter.page
+              ? parseInt(this.props.parsedFilter.page - 1)
+              : 0
+          }
+          onPageChange={(page) => this.handlePagination(page)}
+        />
+
         <Sidebar
           show={sidebar}
           data={currentData}
