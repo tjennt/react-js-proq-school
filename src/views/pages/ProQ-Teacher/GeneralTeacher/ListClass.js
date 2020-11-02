@@ -1,28 +1,23 @@
-import React from "react"; 
-import {
-  Card,
-  CardBody,
-  Badge,
-  Input, 
-} from "reactstrap" 
-import DataTable from "react-data-table-component"
-import { Star, Search} from "react-feather" 
-
-const CustomHeader = props => {
+import React from "react";
+import { Badge, Input } from "reactstrap";
+import DataTable from "react-data-table-component";
+import { Star, Search, ChevronLeft, ChevronRight } from "react-feather";
+import "../../../../assets/scss/pages/data-list.scss";
+import "./../../../../assets/scss/plugins/extensions/react-paginate.scss";
+import ReactPaginate from "react-paginate";
+const CustomHeader = (props) => {
   return (
     <div className="d-flex w-100 justify-content-between">
-      <div className="primary font-large-1">
-        Danh sách lớp 
-      </div>
+      <div className="primary font-large-1">Danh sách lớp</div>
       <div className="position-relative has-icon-left mb-1">
-        <Input value={props.value} onChange={e => props.handleFilter(e)} />
+        <Input value={props.value} onChange={(e) => props.handleFilter(e)} />
         <div className="form-control-position">
           <Search size="15" />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 class ListClass extends React.Component {
   state = {
@@ -32,51 +27,66 @@ class ListClass extends React.Component {
         selector: "name",
         sortable: true,
         minWidth: "200px",
-        cell: row => (
-          <div onClick={this.textRowClickedHandel} className="d-flex flex-xl-row flex-column align-items-xl-center align-items-start py-xl-0 py-1">
+        cell: (row) => (
+          <div
+            onClick={this.textRowClickedHandel}
+            className="d-flex flex-xl-row flex-column align-items-xl-center align-items-start py-xl-0 py-1"
+          >
             <div className="user-info text-truncate ml-xl-50 ml-0">
-              <span
-                className="d-block text-bold-500 text-truncate mb-0">
+              <span className="d-block text-bold-500 text-truncate mb-0">
                 {row.name}
               </span>
             </div>
           </div>
-        )
+        ),
       },
       {
         name: "Ngày bắt đầu",
         selector: "date",
         sortable: true,
-        cell: row => (
-          <p onClick={this.textRowClickedHandel} className="text-bold-500 text-truncate mb-0">{row.date}</p>
-        )
+        cell: (row) => (
+          <p
+            onClick={this.textRowClickedHandel}
+            className="text-bold-500 text-truncate mb-0"
+          >
+            {row.date}
+          </p>
+        ),
       },
       {
         name: "Trạng thái",
         selector: "status",
         sortable: true,
-        cell: row => (
-          <Badge 
+        cell: (row) => (
+          <Badge
             onClick={this.textRowClickedHandel}
             color={row.status === "inactive" ? "light-danger" : "light-success"}
-            pill>
+            pill
+          >
             {row.status}
           </Badge>
-        )
+        ),
       },
       {
         name: "Số lượng sinh viên",
         selector: "revenue",
         sortable: true,
-        cell: row => <p onClick={this.textRowClickedHandel} className="text-bold-500 mb-0">{row.revenue}</p>
+        cell: (row) => (
+          <p onClick={this.textRowClickedHandel} className="text-bold-500 mb-0">
+            {row.revenue}
+          </p>
+        ),
       },
       {
         name: "Feedback",
         selector: "",
         sortable: true,
-        cell: row => {
+        cell: (row) => {
           return (
-            <div onClick={this.textRowClickedHandel} className="d-flex flex-column align-items-center">
+            <div
+              onClick={this.textRowClickedHandel}
+              className="d-flex flex-column align-items-center"
+            >
               <ul className="list-inline mb-0">
                 <li className="list-inline-item">
                   <Star size="20" className="text-warning" />
@@ -112,9 +122,9 @@ class ListClass extends React.Component {
                 </li>
               </ul>
             </div>
-          )
-        }
-      }
+          );
+        },
+      },
     ],
     data: [
       {
@@ -124,7 +134,7 @@ class ListClass extends React.Component {
         date: "May 13, 2018",
         status: "active",
         revenue: "30/30",
-        ratings: "good"
+        ratings: "good",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-1.jpg"),
@@ -133,7 +143,7 @@ class ListClass extends React.Component {
         date: "June 5, 2019",
         status: "active",
         revenue: "30/30",
-        ratings: "good"
+        ratings: "good",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-3.jpg"),
@@ -142,7 +152,7 @@ class ListClass extends React.Component {
         date: "December 24, 2019",
         status: "active",
         revenue: "30/30",
-        ratings: "average"
+        ratings: "average",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-4.jpg"),
@@ -151,7 +161,7 @@ class ListClass extends React.Component {
         date: "November 30, 2018",
         status: "inactive",
         revenue: "$10,000",
-        ratings: "bad"
+        ratings: "bad",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-5.jpg"),
@@ -160,7 +170,7 @@ class ListClass extends React.Component {
         date: "April 8, 2017",
         status: "active",
         revenue: "$22,000",
-        ratings: "average"
+        ratings: "average",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-6.jpg"),
@@ -169,7 +179,7 @@ class ListClass extends React.Component {
         date: "August 12, 2019",
         status: "inactive",
         revenue: "$49,000",
-        ratings: "bad"
+        ratings: "bad",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-8.jpg"),
@@ -178,7 +188,7 @@ class ListClass extends React.Component {
         date: "October 1, 2017",
         status: "active",
         revenue: "$56,000",
-        ratings: "good"
+        ratings: "good",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-7.jpg"),
@@ -187,7 +197,7 @@ class ListClass extends React.Component {
         date: "February 28, 2018",
         status: "inactive",
         revenue: "$83,000",
-        ratings: "bad"
+        ratings: "bad",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-26.jpg"),
@@ -196,7 +206,7 @@ class ListClass extends React.Component {
         date: "January 29, 2018",
         status: "active",
         revenue: "$26,000",
-        ratings: "good"
+        ratings: "good",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-12.jpg"),
@@ -205,7 +215,7 @@ class ListClass extends React.Component {
         date: "April 1, 2019",
         status: "active",
         revenue: "$60,000",
-        ratings: "average"
+        ratings: "average",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-10.jpg"),
@@ -214,7 +224,7 @@ class ListClass extends React.Component {
         date: "Dec 4, 2019",
         status: "active",
         revenue: "$21,000",
-        ratings: "good"
+        ratings: "good",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-17.jpg"),
@@ -223,7 +233,7 @@ class ListClass extends React.Component {
         date: "Jan 4, 2018",
         status: "inactive",
         revenue: "$30,000",
-        ratings: "bad"
+        ratings: "bad",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-20.jpg"),
@@ -232,7 +242,7 @@ class ListClass extends React.Component {
         date: "February 23, 2019",
         status: "active",
         revenue: "$12,000",
-        ratings: "good"
+        ratings: "good",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-14.jpg"),
@@ -241,7 +251,7 @@ class ListClass extends React.Component {
         date: "September 8, 2018",
         status: "active",
         revenue: "$40,000",
-        ratings: "average"
+        ratings: "average",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-25.jpg"),
@@ -250,7 +260,7 @@ class ListClass extends React.Component {
         date: "August 20, 2017",
         status: "active",
         revenue: "$90,000",
-        ratings: "good"
+        ratings: "good",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-9.jpg"),
@@ -259,7 +269,7 @@ class ListClass extends React.Component {
         date: "April 7, 2019",
         status: "active",
         revenue: "$38,000",
-        ratings: "good"
+        ratings: "good",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-24.jpg"),
@@ -268,7 +278,7 @@ class ListClass extends React.Component {
         date: "March 30, 2018",
         status: "active",
         revenue: "$18,000",
-        ratings: "average"
+        ratings: "average",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-18.jpg"),
@@ -277,7 +287,7 @@ class ListClass extends React.Component {
         date: "August 25, 2017",
         status: "active",
         revenue: "$69,000",
-        ratings: "bad"
+        ratings: "bad",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-23.jpg"),
@@ -286,7 +296,7 @@ class ListClass extends React.Component {
         date: "September 30, 2017",
         status: "inactive",
         revenue: "$35,000",
-        ratings: "good"
+        ratings: "good",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-6.jpg"),
@@ -295,7 +305,7 @@ class ListClass extends React.Component {
         date: "June 21, 2018",
         status: "active",
         revenue: "$35,000",
-        ratings: "good"
+        ratings: "good",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-2.jpg"),
@@ -304,7 +314,7 @@ class ListClass extends React.Component {
         date: "July 4, 2018",
         status: "active",
         revenue: "$72,000",
-        ratings: "good"
+        ratings: "good",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-1.jpg"),
@@ -313,7 +323,7 @@ class ListClass extends React.Component {
         date: "May 5, 2019",
         status: "inactive",
         revenue: "$13,000",
-        ratings: "bad"
+        ratings: "bad",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-3.jpg"),
@@ -322,7 +332,7 @@ class ListClass extends React.Component {
         date: "February 15, 2017",
         status: "active",
         revenue: "$84,000",
-        ratings: "average"
+        ratings: "average",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-4.jpg"),
@@ -331,7 +341,7 @@ class ListClass extends React.Component {
         date: "January 30, 2018",
         status: "inactive",
         revenue: "$15,000",
-        ratings: "bad"
+        ratings: "bad",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-5.jpg"),
@@ -340,7 +350,7 @@ class ListClass extends React.Component {
         date: "November 3, 2018",
         status: "active",
         revenue: "$26,000",
-        ratings: "average"
+        ratings: "average",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-6.jpg"),
@@ -349,7 +359,7 @@ class ListClass extends React.Component {
         date: "March 12, 2017",
         status: "active",
         revenue: "$69,000",
-        ratings: "good"
+        ratings: "good",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-8.jpg"),
@@ -358,7 +368,7 @@ class ListClass extends React.Component {
         date: "July 10, 2017",
         status: "active",
         revenue: "$65,000",
-        ratings: "good"
+        ratings: "good",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-7.jpg"),
@@ -367,7 +377,7 @@ class ListClass extends React.Component {
         date: "February 6, 2017",
         status: "inactive",
         revenue: "$38,000",
-        ratings: "bad"
+        ratings: "bad",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-26.jpg"),
@@ -376,7 +386,7 @@ class ListClass extends React.Component {
         date: "February 20, 2018",
         status: "active",
         revenue: "$62,000",
-        ratings: "average"
+        ratings: "average",
       },
       {
         image: require("../../../../assets/img/portrait/small/avatar-s-12.jpg"),
@@ -385,74 +395,59 @@ class ListClass extends React.Component {
         date: "June 1, 2017",
         status: "active",
         revenue: "$60,000",
-        ratings: "good"
-      }
+        ratings: "good",
+      },
     ],
     filteredData: [],
-    value: ""
-  }
-    
-  handleFilter = e => {
-    let value = e.target.value
-    let data = this.state.data
-    let filteredData = this.state.filteredData
-    this.setState({ value })
-
-    if (value.length) {
-      filteredData = data.filter(item => {
-        let startsWithCondition =
-          item.name.toLowerCase().startsWith(value.toLowerCase()) ||
-          item.date.toLowerCase().startsWith(value.toLowerCase()) ||
-          item.email.toLowerCase().startsWith(value.toLowerCase()) ||
-          item.revenue.toLowerCase().startsWith(value.toLowerCase()) ||
-          item.status.toLowerCase().startsWith(value.toLowerCase())
-        let includesCondition =
-          item.name.toLowerCase().includes(value.toLowerCase()) ||
-          item.date.toLowerCase().includes(value.toLowerCase()) ||
-          item.email.toLowerCase().includes(value.toLowerCase()) ||
-          item.revenue.toLowerCase().includes(value.toLowerCase()) ||
-          item.status.toLowerCase().includes(value.toLowerCase())
-
-        if (startsWithCondition) {
-          return startsWithCondition
-        } else if (!startsWithCondition && includesCondition) {
-          return includesCondition
-        } else return null
-      })
-      this.setState({ filteredData })
-    }
-  }
-
+    value: "",
+  };
   rowClickedHandel = (row) => {
     this.props.history.push("/teacher/listClass/" + row.name);
   };
-  textRowClickedHandel = (e) => { 
-    e.target.parentNode.parentNode.parentNode.click()
-  }
+  textRowClickedHandel = (e) => {
+    e.target.parentNode.parentNode.parentNode.click();
+  };
 
   render() {
-    let { data, columns, value, filteredData } = this.state
+    let { data, columns, value, filteredData } = this.state;
     return (
-      <Card>
-        <CardBody className="rdt_Wrapper">
-          <DataTable
-            className="dataTable-custom"
-            data={value.length ? filteredData : data}
-            columns={columns}
-            noHeader
-            pagination
-            subHeader
-            subHeaderComponent={
-              <CustomHeader {...this.props}  value={value} handleFilter={this.handleFilter} />
-            }
-            onRowClicked={(row) => this.rowClickedHandel(row)}
-            highlightOnHover 
-            pointerOnHover 
-          />
-        </CardBody>
-      </Card>
-    )
+      <div className="data-list">
+        <DataTable
+          data={value.length ? filteredData : data}
+          columns={columns}
+          noHeader
+          fixedHeader
+          fixedHeaderScrollHeight={"55vh"}
+          subHeader
+          subHeaderComponent={
+            <CustomHeader
+              {...this.props}
+              value={value}
+              handleFilter={this.handleFilter}
+            />
+          }
+          onRowClicked={(row) => this.rowClickedHandel(row)}
+          highlightOnHover
+          pointerOnHover
+        />
+        <ReactPaginate
+          previousLabel={<ChevronLeft size={15} />}
+          nextLabel={<ChevronRight size={15} />}
+          breakLabel="..."
+          breakClassName="break-me"
+          pageCount={this.state.totalPages}
+          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+          activeClassName="active"
+          // forcePage={
+          //   this.props.parsedFilter.page
+          //     ? parseInt(this.props.parsedFilter.page - 1)
+          //     : 0
+          // }
+          onPageChange={(page) => this.handlePagination(page)}
+        />
+      </div>
+    );
   }
 }
 
-export default  ListClass
+export default ListClass;

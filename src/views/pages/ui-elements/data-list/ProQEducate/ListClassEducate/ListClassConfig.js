@@ -231,7 +231,7 @@ class ListClassEducateConfig extends Component {
   handleRowsPerPage = (value) => {
     let { parsedFilter, getDataClass } = this.props;
 
-    let page = parsedFilter.page !== undefined ? parsedFilter.page : 10;
+    let page = parsedFilter.page !== undefined ? parsedFilter.page : 1;
     history.push(`/education/class?page=${page}&limit=${value}`);
     this.setState({ rowsPerPage: value });
     getDataClass({ page: parsedFilter.page, limit: value });
@@ -334,27 +334,23 @@ class ListClassEducateConfig extends Component {
           data={value.length ? "" : data}
           columns={columns}
           noHeader
-          pagination
           noDataComponent="Không có dữ liệu"
-          paginationServer
-          paginationComponent={() => (
-            <ReactPaginate
-              previousLabel={<ChevronLeft size={15} />}
-              nextLabel={<ChevronRight size={15} />}
-              breakLabel="..."
-              breakClassName="break-me"
-              pageCount={this.state.totalPages}
-              containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
-              activeClassName="active"
-              forcePage={
-                this.props.parsedFilter.page
-                  ? parseInt(this.props.parsedFilter.page - 1)
-                  : 0
-              }
-              onPageChange={(page) => this.handlePagination(page)}
-            />
-          )}
           subHeader
+        />
+        <ReactPaginate
+          previousLabel={<ChevronLeft size={15} />}
+          nextLabel={<ChevronRight size={15} />}
+          breakLabel="..."
+          breakClassName="break-me"
+          pageCount={this.state.totalPages}
+          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+          activeClassName="active"
+          forcePage={
+            this.props.parsedFilter.page
+              ? parseInt(this.props.parsedFilter.page - 1)
+              : 0
+          }
+          onPageChange={(page) => this.handlePagination(page)}
         />
         <Sidebar
           show={sidebar}

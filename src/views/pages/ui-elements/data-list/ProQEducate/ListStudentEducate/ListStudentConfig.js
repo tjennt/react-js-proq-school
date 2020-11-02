@@ -95,7 +95,7 @@ class ListStudentEducation extends Component {
         minWidth: "200px",
         cell: (row) => (
           <img
-            height="100"
+            height="80px"
             src={`${API_ENDPOINT_IMG}/${row.avatar}`}
             alt={row.avatar}
           />
@@ -196,10 +196,6 @@ class ListStudentEducation extends Component {
     this.setState({ sidebar: boolean });
     if (addNew === true) this.setState({ currentData: null, addNew: true });
   };
-  // changeStatus = (row) => {
-  //   this.props.updateStatus(row, this.props.parsedFilter);
-  //   this.props.getData(this.props.parsedFilter);
-  // };
   // handleDelete = (row) => {
   //   this.props.deleteData(row);
   //   this.props.getData(this.props.parsedFilter);
@@ -261,7 +257,7 @@ class ListStudentEducation extends Component {
   handleRowsPerPage = (value) => {
     let { parsedFilter, getData } = this.props;
 
-    let page = parsedFilter.page !== undefined ? parsedFilter.page : 10;
+    let page = parsedFilter.page !== undefined ? parsedFilter.page : 1;
     history.push(`/education/student?page=${page}&limit=${value}`);
     this.setState({ rowsPerPage: value });
     getData({ page: parsedFilter.page, limit: value });
@@ -368,29 +364,29 @@ class ListStudentEducation extends Component {
           columns={columns}
           noHeader
           pagination
+          fixedHeader
+          fixedHeaderScrollHeight={"55vh"}
           noDataComponent="Không có dữ liệu học sinh"
           paginationServer
-          paginationComponent={() => (
-            <ReactPaginate
-              previousLabel={<ChevronLeft size={15} />}
-              nextLabel={<ChevronRight size={15} />}
-              breakLabel="..."
-              breakClassName="break-me"
-              pageCount={this.state.totalPages}
-              containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
-              activeClassName="active"
-              forcePage={
-                this.props.parsedFilter.page
-                  ? parseInt(this.props.parsedFilter.page - 1)
-                  : 0
-              }
-              onPageChange={(page) => this.handlePagination(page)}
-            />
-          )}
           subHeader
           expandableRows
           expandOnRowClicked
           expandableRowsComponent={<ExpandableTable />}
+        />
+        <ReactPaginate
+          previousLabel={<ChevronLeft size={15} />}
+          nextLabel={<ChevronRight size={15} />}
+          breakLabel="..."
+          breakClassName="break-me"
+          pageCount={this.state.totalPages}
+          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+          activeClassName="active"
+          forcePage={
+            this.props.parsedFilter.page
+              ? parseInt(this.props.parsedFilter.page - 1)
+              : 0
+          }
+          onPageChange={(page) => this.handlePagination(page)}
         />
         <Sidebar
           show={sidebar}

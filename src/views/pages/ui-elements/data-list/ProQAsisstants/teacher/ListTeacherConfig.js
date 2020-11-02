@@ -311,6 +311,8 @@ class ListTeacherConfig extends Component {
           columns={columns}
           noHeader
           subHeader
+          fixedHeader
+          fixedHeaderScrollHeight={"55vh"}
           noDataComponent="Không có dữ liệu"
           expandOnRowClicked
         />

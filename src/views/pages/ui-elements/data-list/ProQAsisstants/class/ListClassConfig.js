@@ -246,6 +246,8 @@ class ListClassConfig extends Component {
           columns={columns}
           noHeader
           pagination
+          fixedHeader
+          fixedHeaderScrollHeight={"55vh"}
           noDataComponent="Không có dữ liệu"
           paginationServer
           paginationComponent={() => (

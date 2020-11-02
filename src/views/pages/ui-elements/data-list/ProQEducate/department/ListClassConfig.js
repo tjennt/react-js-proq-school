@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Edit, Plus, Trash } from "react-feather";
+import { ChevronLeft, ChevronRight, Edit, Plus, Trash } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataClass } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -11,8 +11,9 @@ import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import Moment from "react-moment";
-import { Button } from "reactstrap";
+import { Button, Col } from "reactstrap";
 import { message, Popconfirm } from "antd";
+import ReactPaginate from "react-paginate";
 
 const ActionsComponent = (props) => {
   function confirm(e) {
@@ -75,7 +76,6 @@ class ListDepartmentConfig extends Component {
       };
     }
 
-    // Return null if the state hasn't changed
     return null;
   }
   state = {
@@ -138,7 +138,7 @@ class ListDepartmentConfig extends Component {
         name: "Thời gian bắt đầu",
         selector: "dateCreate",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "220px",
         cell: (row) => (
           <Moment format="DD/MM/YYYY">{row.dateCreateClass}</Moment>
         ),
@@ -147,7 +147,7 @@ class ListDepartmentConfig extends Component {
         name: "Thời gian kết thúc",
         selector: "dateCreate",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "220px",
         cell: (row) => (
           <Moment format="DD/MM/YYYY">{row.dateCreateClass}</Moment>
         ),
@@ -155,7 +155,7 @@ class ListDepartmentConfig extends Component {
       {
         name: "Trạng thái ",
         selector: "type",
-        maxWidth: "140px",
+        minWidth: "190px",
         sortable: true,
         cell: (row) => (
           <p
@@ -168,6 +168,7 @@ class ListDepartmentConfig extends Component {
       },
       {
         name: "Thao tác",
+        minWidth: "190px",
         sortable: true,
         cell: (row) => (
           <ActionsComponent
@@ -253,7 +254,7 @@ class ListDepartmentConfig extends Component {
     let { parsedFilter, getData } = this.props;
     let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 4;
 
-    history.push(`/accountAdmin?page=${page.selected + 1}&perPage=${perPage}`);
+    history.push(`/department?page=${page.selected + 1}&perPage=${perPage}`);
     getData({ page: page.selected + 1, perPage: perPage });
     this.setState({ currentPage: page.selected });
   };
@@ -262,24 +263,37 @@ class ListDepartmentConfig extends Component {
     let { columns, data, value, currentData, sidebar } = this.state;
     return (
       <div className="data-list">
+        <Col lg="12">
+          <CustomHeader
+            handleSidebar={this.handleSidebar}
+            showModal={this.showModal}
+            handleFilter={this.handleFilter}
+            handleRowsPerPage={this.handleRowsPerPage}
+          />
+        </Col>
         <DataTable
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
           noHeader
-          pagination
           noDataComponent="Không có dữ liệu "
           subHeader
-          subHeaderComponent={
-            <CustomHeader
-              handleSidebar={this.handleSidebar}
-              showModal={this.showModal}
-              handleFilter={this.handleFilter}
-              handleRowsPerPage={this.handleRowsPerPage}
-            />
-          }
         />
-
+        <ReactPaginate
+          previousLabel={<ChevronLeft size={15} />}
+          nextLabel={<ChevronRight size={15} />}
+          breakLabel="..."
+          breakClassName="break-me"
+          pageCount={this.state.totalPages}
+          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+          activeClassName="active"
+          forcePage={
+            this.props.parsedFilter.page
+              ? parseInt(this.props.parsedFilter.page - 1)
+              : 0
+          }
+          onPageChange={(page) => this.handlePagination(page)}
+        />
         <Sidebar
           show={sidebar}
           data={currentData}

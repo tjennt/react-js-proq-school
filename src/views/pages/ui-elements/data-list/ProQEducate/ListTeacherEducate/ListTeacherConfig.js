@@ -95,7 +95,7 @@ class ListTeacherConfig extends Component {
         minWidth: "200px",
         cell: (row) => (
           <img
-            height="100"
+            height="85px"
             src={`${API_ENDPOINT_IMG}/${row.avatar}`}
             alt={row.avatar}
           />
@@ -253,7 +253,14 @@ class ListTeacherConfig extends Component {
     this.setState({ currentData: obj });
     this.handleSidebar(true);
   };
+  handleRowsPerPage = (value) => {
+    let { parsedFilter, getDataTeacher } = this.props;
 
+    let page = parsedFilter.page !== undefined ? parsedFilter.page : 1;
+    history.push(`/education/teacher?page=${page}&limit=${value}`);
+    this.setState({ rowsPerPage: value });
+    getDataTeacher({ page: parsedFilter.page, limit: value });
+  };
   handlePagination = (page) => {
     let { parsedFilter, getDataTeacher } = this.props;
     const { limit } = parsedFilter;
@@ -290,7 +297,7 @@ class ListTeacherConfig extends Component {
         </Modal>
         <Col lg="12">
           <Row>
-            <Col lg="3">
+            <Col lg="4">
               <Button
                 color="primary"
                 onClick={() => this.handleSidebar(true, true)}
@@ -300,10 +307,10 @@ class ListTeacherConfig extends Component {
                 <span className="align-middle">Tạo mới</span>
               </Button>
               <Button onClick={this.showModal} className=" ml-2" color="danger">
-                <Download size={15} /> Xuất excel
+                <Download size={15} /> Import excel
               </Button>
             </Col>
-            <Col lg="9">
+            <Col lg="8">
               <UncontrolledDropdown
                 style={{ backgroundColor: "#fff", borderRadius: "20px" }}
                 className="data-list-rows-dropdown  d-md-block d-none"
@@ -365,6 +372,8 @@ class ListTeacherConfig extends Component {
           data={value.length ? "" : data}
           columns={columns}
           noHeader
+          fixedHeader
+          fixedHeaderScrollHeight={"55vh"}
           subHeader
           noDataComponent="Không có dữ liệu"
           expandOnRowClicked

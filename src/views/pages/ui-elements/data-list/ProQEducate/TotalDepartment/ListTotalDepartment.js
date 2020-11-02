@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Eye } from "react-feather";
+import { ChevronLeft, ChevronRight, Eye } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataClass } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -11,6 +11,7 @@ import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 // import history from "../../../../../../history"
 import Moment from "react-moment";
+import ReactPaginate from "react-paginate";
 // import { Button, Card, CardBody, CardHeader, CardTitle } from "reactstrap";
 
 const ActionsComponent = (props) => {
@@ -55,20 +56,6 @@ class ListTotalDepartment extends Component {
     visible: false,
     currentPage: 0,
     columns: [
-      // {
-      //   name: "Sinh viên",
-      //   selector: "student",
-      //   sortable: true,
-      //   minWidth: "200px",
-      //   cell: (row) => (
-      //     <p
-      //       title={row.nameStudent}
-      //       className="text-truncate text-bold-500 mb-0"
-      //     >
-      //       {row.nameStudent}
-      //     </p>
-      //   ),
-      // },
       {
         name: "Lớp",
         selector: "class",
@@ -220,7 +207,9 @@ class ListTotalDepartment extends Component {
     let { parsedFilter, getData } = this.props;
     let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 4;
 
-    history.push(`/accountAdmin?page=${page.selected + 1}&perPage=${perPage}`);
+    history.push(
+      `/education/totalDepartment?page=${page.selected + 1}&perPage=${perPage}`
+    );
     getData({ page: page.selected + 1, perPage: perPage });
     this.setState({ currentPage: page.selected });
   };
@@ -234,7 +223,6 @@ class ListTotalDepartment extends Component {
           data={value.length ? "" : data}
           columns={columns}
           noHeader
-          pagination
           subHeader
           subHeaderComponent={
             <CustomHeader
@@ -244,6 +232,21 @@ class ListTotalDepartment extends Component {
               handleRowsPerPage={this.handleRowsPerPage}
             />
           }
+        />
+        <ReactPaginate
+          previousLabel={<ChevronLeft size={15} />}
+          nextLabel={<ChevronRight size={15} />}
+          breakLabel="..."
+          breakClassName="break-me"
+          pageCount={this.state.totalPages}
+          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+          activeClassName="active"
+          forcePage={
+            this.props.parsedFilter.page
+              ? parseInt(this.props.parsedFilter.page - 1)
+              : 0
+          }
+          onPageChange={(page) => this.handlePagination(page)}
         />
         <div
           className={classnames("data-list-overlay", {

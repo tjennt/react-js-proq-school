@@ -303,6 +303,8 @@ class ListStudentConfig extends Component {
           data={value.length ? "" : data}
           columns={columns}
           noHeader
+          fixedHeader
+          fixedHeaderScrollHeight={"55vh"}
           pagination
           noDataComponent="Không có dữ liệu học sinh"
           paginationServer

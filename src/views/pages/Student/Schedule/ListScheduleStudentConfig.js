@@ -2,14 +2,29 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../history";
-import { Download } from "react-feather";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+} from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getData } from "../../../../redux/actions/dataListAssistance/index";
 import "./../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../assets/scss/pages/data-list.scss";
-import { Button, Input } from "reactstrap";
+import {
+  Button,
+  Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Input,
+  Row,
+  UncontrolledDropdown,
+} from "reactstrap";
 import { Modal } from "antd";
+import ReactPaginate from "react-paginate";
 
 const CustomHeader = (props) => {
   const showModal = () => {
@@ -178,10 +193,6 @@ class ListScheduleStudent extends Component {
     this.setState({ value: e.target.value });
     this.props.filterData(e.target.value);
   };
-  changeStatus = (row) => {
-    this.props.updateStatus(row, this.props.parsedFilter);
-    this.props.getData(this.props.parsedFilter);
-  };
   handleDelete = (row) => {
     this.props.deleteData(row);
     this.props.getData(this.props.parsedFilter);
@@ -243,25 +254,96 @@ class ListScheduleStudent extends Component {
         >
           <Input placeholder="Bạn có thể đặt tên cho file excel" />
         </Modal>
-
+        <Col lg="12">
+          <Row>
+            <Col lg="4">
+              <CustomHeader
+                handleSidebar={this.handleSidebar}
+                showModal={this.showModal}
+                handleFilter={this.handleFilter}
+                handleRowsPerPage={this.handleRowsPerPage}
+              />
+            </Col>
+            <Col lg="8">
+              <UncontrolledDropdown
+                style={{ backgroundColor: "#fff", borderRadius: "20px" }}
+                className="data-list-rows-dropdown  d-md-block d-none"
+              >
+                <DropdownToggle
+                  className="sort-dropdown"
+                  style={{
+                    float: "right",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <span className="align-middle mx-50">{`${
+                    this.props.parsedFilter.page
+                      ? this.props.parsedFilter.page
+                      : 1
+                  } of ${this.state.totalRecords}`}</span>
+                  <ChevronDown size={15} />
+                </DropdownToggle>
+                <DropdownMenu tag="div" right>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(10)}
+                  >
+                    10
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(20)}
+                  >
+                    20
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(30)}
+                  >
+                    30
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(50)}
+                  >
+                    50
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(100)}
+                  >
+                    100
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Col>
+          </Row>
+        </Col>
         <DataTable
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
           noHeader
-          pagination
+          fixedHeader
+          fixedHeaderScrollHeight={"55vh"}
           noDataComponent="Không có dữ liệu"
           subHeader
-          subHeaderComponent={
-            <CustomHeader
-              handleSidebar={this.handleSidebar}
-              showModal={this.showModal}
-              handleFilter={this.handleFilter}
-              handleRowsPerPage={this.handleRowsPerPage}
-            />
-          }
         />
-
+        <ReactPaginate
+          previousLabel={<ChevronLeft size={15} />}
+          nextLabel={<ChevronRight size={15} />}
+          breakLabel="..."
+          breakClassName="break-me"
+          pageCount={this.state.totalPages}
+          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+          activeClassName="active"
+          forcePage={
+            this.props.parsedFilter.page
+              ? parseInt(this.props.parsedFilter.page - 1)
+              : 0
+          }
+          onPageChange={(page) => this.handlePagination(page)}
+        />
         <div
           className={classnames("data-list-overlay", {
             show: sidebar,
