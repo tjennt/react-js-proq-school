@@ -27,7 +27,7 @@ const classAssi = lazy(() =>
 const subject = lazy(() =>
   import("./views/pages/ui-elements/data-list/ProQAsisstants/subject/subject")
 );
-const commingSoon = lazy(() => import("./views/pages/misc/ComingSoon"));
+// const commingSoon = lazy(() => import("./views/pages/misc/ComingSoon"));
 
 const login = lazy(() => import("./views/pages/authentication/login/Login"));
 const register = lazy(() =>
@@ -200,8 +200,8 @@ class AppRouter extends React.Component {
           />
           <AppRoute path="/student/news/:id" component={BlogDetail} />
           <AppRoute path="/teacher/attendance" component={Attendance} />
-          <AppRoute path="/teacher/email" component={commingSoon} />
-          <AppRoute path="/teacher/liveStream" component={commingSoon} />
+          {/* <AppRoute path="/teacher/email" component={commingSoon} />
+          <AppRoute path="/teacher/liveStream" component={commingSoon} /> */}
           {/* student */}
           <AppRoute path="/student/news" component={StudyStudent} />
           <AppRoute path="/student/score" component={markStudent} />

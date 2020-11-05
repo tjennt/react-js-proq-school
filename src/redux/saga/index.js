@@ -3,6 +3,7 @@ import * as authType from "../constants/auth";
 import * as trancType from "../constants/tranc";
 import * as assType from "../constants/assistant";
 import * as educationType from "../constants/education";
+import * as scheduleType from "../constants/schedule/index";
 import {
   loginActionSaga,
   loginWithGoogleSaga,
@@ -18,9 +19,14 @@ import { getTeacherActionSaga } from "./assistant/teacher";
 import { getClassActionSaga } from "./assistant/class";
 import { getSubjectActionSaga } from "./assistant/subject";
 import {
+  addClassSaga,
+  addSubjectSaga,
   importExcelStudentEduSaga,
   importExcelTeacherEduSaga,
 } from "./educationSaga";
+import { getDataSemesterSaga } from "./schedule/semesterSaga";
+import { getDataSubjectSaga } from "./schedule/subjectSaga";
+import { getDataBothStudySaga } from "./schedule/bothStudySaga";
 function* rootSaga() {
   //login //auth
   yield takeLatest(authType.LOGIN, loginActionSaga);
@@ -47,5 +53,13 @@ function* rootSaga() {
     educationType.IMPORT_EXCEL_TEACHER,
     importExcelTeacherEduSaga
   );
+  yield takeLatest(educationType.ADD_CLASS, addClassSaga);
+  yield takeLatest(educationType.ADD_SUBJECT, addSubjectSaga);
+  /**
+   * Schedule
+   */
+  yield takeLatest(scheduleType.GET_SEMESTER, getDataSemesterSaga);
+  yield takeLatest(scheduleType.GET_SUBJECT_FROM_CLASS, getDataSubjectSaga);
+  yield takeLatest(scheduleType.GET_BOTHSTUDY, getDataBothStudySaga);
 }
 export default rootSaga;

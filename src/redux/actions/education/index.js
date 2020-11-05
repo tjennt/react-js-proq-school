@@ -22,3 +22,23 @@ export const importExcelTeacer = (file, params) => ({
     params,
   },
 });
+/**
+ * create class
+ */
+export const addClass = (obj, params) => ({
+  type: educationType.ADD_CLASS,
+  payload: {
+    obj,
+    params,
+  },
+});
+/**
+ * create subject
+ */
+export const addSubject = (obj, params) => ({
+  type: educationType.ADD_SUBJECT,
+  payload: {
+    obj,
+    params,
+  },
+});

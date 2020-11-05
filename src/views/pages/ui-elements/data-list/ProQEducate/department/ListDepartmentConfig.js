@@ -6,6 +6,9 @@ import { ChevronLeft, ChevronRight, Edit, Plus, Trash } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataClass } from "../../../../../../redux/actions/dataListAssistance/index";
+import { getDataSemester } from "../../../../../../redux/actions/schedule/getDataSemster";
+import { getDataSubject } from "../../../../../../redux/actions/schedule/getDataSubject";
+import { getDataBothStudy } from "../../../../../../redux/actions/schedule/getDataBothStudy";
 import Sidebar from "./DepartmentSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
@@ -68,6 +71,7 @@ class ListDepartmentConfig extends Component {
     ) {
       return {
         data: props.dataList.dataClass,
+        dataClass: props.dataList.dataClass,
         totalPages: props.dataList.totalPages,
         currentPage: parseInt(props.parsedFilter.page) - 1,
         rowsPerPage: parseInt(props.parsedFilter.perPage),
@@ -196,8 +200,14 @@ class ListDepartmentConfig extends Component {
   thumbView = this.props.thumbView;
 
   componentDidMount() {
-    this.props.getDataClass();
+    const { getDataClass, getDataSemester } = this.props;
+    getDataSemester();
+    let params = {
+      limit: 1000,
+    };
+    getDataClass(params);
   }
+
   handleFilter = (e) => {
     this.setState({ value: e.target.value });
     this.props.filterData(e.target.value);
@@ -260,7 +270,7 @@ class ListDepartmentConfig extends Component {
   };
 
   render() {
-    let { columns, data, value, currentData, sidebar } = this.state;
+    let { columns, data, value, currentData, sidebar, dataClass } = this.state;
     return (
       <div className="data-list">
         <Col lg="12">
@@ -295,6 +305,9 @@ class ListDepartmentConfig extends Component {
           onPageChange={(page) => this.handlePagination(page)}
         />
         <Sidebar
+          getDataBothStudy={this.props.getDataBothStudy}
+          getDataSubject={this.props.getDataSubject}
+          dataClass={dataClass}
           show={sidebar}
           data={currentData}
           updateData={this.props.updateData}
@@ -324,4 +337,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getDataClass,
+  getDataSemester,
+  getDataSubject,
+  getDataBothStudy,
 })(ListDepartmentConfig);

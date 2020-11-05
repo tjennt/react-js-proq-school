@@ -1,19 +1,39 @@
 import { Formik, Form, Field } from "formik";
-import React from "react";
-import { Button, FormGroup } from "reactstrap";
+import React, { useState } from "react";
+import { Button, FormGroup, Label } from "reactstrap";
 // import * as Yup from "yup";
-import InputField from "../../../../../../utility/customFields/inputField";
-import datePickerField from "../../../../../../utility/customFields/datePickerFields";
-import SelectFieldMulti from "../../../../../../utility/customFields/selectFields/selectFieldsMulti";
+// import InputField from "../../../../../../utility/customFields/inputField";
 import SelectField from "../../../../../../utility/customFields/selectFields";
+import Select from "react-select";
+import { DatePicker } from "antd";
+import moment from "moment";
 
 function FormDepartment(props) {
-  const { initialValues } = props;
+  const { initialValues, dataClass, getDataSubject, getDataBothStudy } = props;
+  const [state, setState] = useState({
+    id: "",
+    nameClass: "",
+    subject: 1,
+    days: [],
+    start_time: "",
+    ca: 1,
+    end_time: "",
+    teacher: null,
+  });
+  const [check, setCheck] = useState(false);
   // const validationSchema = Yup.object().shape({
   //   title: Yup.string().required("Vui lòng nhập tiêu đề!"),
   //   content: Yup.string().required("Vui lòng nhập content !"),
   //   time_send: Yup.date().required("Vui lòng chọn ngày!"),
   // });
+  let option = [];
+  if (dataClass) {
+    option = dataClass.reduce(
+      (arr, curr) => [...arr, { label: curr.className, value: curr.className }],
+      []
+    );
+  }
+
   const optionsDay = [
     { value: 0, label: "Chủ nhật" },
     { value: 1, label: "thứ 2" },
@@ -41,74 +61,131 @@ function FormDepartment(props) {
     { value: 3, label: "Nguyễn Văn C" },
     { value: 4, label: "Nguyễn Văn D" },
   ];
+  const handleChange = (data) => {
+    getDataSubject(data);
+    setState({ ...state, nameClass: data.label });
+  };
+  const onChangeValueDateStart = (date, dateString) => {
+    console.log(dateString);
+    setState({ ...state, start_time: dateString });
+  };
+  const onChangeValueDateEnd = (date, dateString) => {
+    console.log(dateString);
+    setState({ ...state, end_time: dateString });
+  };
+  const onSubmitForm = (values) => {
+    console.log(values);
+  };
+  const onChangeDate = (value) => {
+    console.log(value);
+    setState({ ...state, days: value });
+  };
+  const SearchCa = () => {
+    setCheck(!check);
+    getDataBothStudy(state);
+  };
   return (
     <Formik
       enableReinitialize="true"
-      initialValues={initialValues}
+      initialValues={state}
       // validationSchema={validationSchema}
-      onSubmit={props.onSubmitForm}
+      onSubmit={onSubmitForm}
     >
       {(formikProps) => {
         const { isValid, resetForm } = formikProps;
         return (
           <Form>
-            <Field
-              label="Tên lớp *"
-              placeholder="Vui lòng nhập tên lớp "
-              name="nameClass"
-              component={InputField}
-              value={initialValues.title}
-              type="text"
-            />
-            <Field
-              name="Môn *"
-              type="subject"
-              label="Mã Môn"
-              placeholder="Vui lòng nhập mã môn  "
-              // value={initialValues.url}
-              component={InputField}
-            />
-            <Field
-              value={initialValues.days}
-              name="days"
-              label="Thứ"
-              placeholder="Vui lòng chọn thứ "
-              component={SelectFieldMulti}
-              options={optionsDay}
-              isMulti={true}
-            />
-            <Field
-              name="Thời gian bắt đầu"
-              label="Thời gian bắt đầu *"
-              // value={initialValues.time_send}
-              placeholder="Vui lòng nhập thời gian bắt đầu "
-              component={datePickerField}
-            />
-            <Field
-              name="Thời gian kết thúc "
-              label="Thời gian kết thúc *"
-              // value={initialValues.time_send}
-              placeholder="Vui lòng thời gian kết thúc * "
-              component={datePickerField}
-            />
-            <Field
-              name="ca"
-              placeholder="Vui lòng chọn ca "
-              label="Ca "
-              value={initialValues.ca}
-              component={SelectField}
-              options={optionCa}
-            />
-            <Field
-              name="teacher"
-              placeholder="Vui lòng giảng viên "
-              label="Giảng viên"
-              value={initialValues.teacher}
-              component={SelectField}
-              options={optionsTeacher}
-            />
             <FormGroup>
-              <Button disabled={!isValid} color="primary" type="submit">
+              <Label>Kì học *</Label>
+              <Select
+                placeholder="Vui lòng chọn lớp "
+                name="semster"
+                // type="text"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label>Tên lớp *</Label>
+              <Select
+                placeholder="Vui lòng chọn lớp "
+                name="nameClass"
+                isClearable={true}
+                onChange={handleChange}
+                options={option}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label>Môn *</Label>
+              <Select
+                placeholder="Vui lòng chọn  môn  "
+                name="subject"
+                options={option}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label>Thời gian bắt đầu *</Label>
+              <DatePicker
+                // format={"DD/MM/YYYY"}
+                style={{ height: "40px", width: "100%" }}
+                ranges={{
+                  Ngày: [moment().startOf("days"), moment().endOf("days")],
+                  Tuần: [moment().startOf("week"), moment().endOf("week")],
+                  Tháng: [moment().startOf("month"), moment().endOf("month")],
+                  Quý: [moment().startOf("quarter"), moment().endOf("quarter")],
+                  Năm: [moment().startOf("year"), moment().endOf("year")],
+                }}
+                onChange={onChangeValueDateStart}
+              />
+              {/* <ErrorMessage name={name} component={FormFeedback} /> */}
+            </FormGroup>
+            <FormGroup>
+              <Label>Thời gian kết thúc *</Label>
+              <DatePicker
+                style={{ height: "40px", width: "100%" }}
+                // format={"DD/MM/YYYY"}
+                ranges={{
+                  Ngày: [moment().startOf("days"), moment().endOf("days")],
+                  Tuần: [moment().startOf("week"), moment().endOf("week")],
+                  Tháng: [moment().startOf("month"), moment().endOf("month")],
+                  Quý: [moment().startOf("quarter"), moment().endOf("quarter")],
+                  Năm: [moment().startOf("year"), moment().endOf("year")],
+                }}
+                onChange={onChangeValueDateEnd}
+              />
+              {/* <ErrorMessage name={name} component={FormFeedback} /> */}
+            </FormGroup>
+            <FormGroup>
+              <Label>Thứ *</Label>
+              <Select
+                placeholder="Vui lòng chọn thứ "
+                options={optionsDay}
+                isMulti={true}
+                onChange={onChangeDate}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Button color="primary" onClick={SearchCa}>
+                {" "}
+                Chọn{" "}
+              </Button>
+            </FormGroup>
+            <FormGroup>
+              <Label>Ca *</Label>
+              <Select
+                isDisabled={!check ? true : false}
+                placeholder="Vui lòng chọn ca "
+                options={optionCa}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label>Giáo viên *</Label>
+              <Select
+                isDisabled={!check ? true : false}
+                placeholder="Vui lòng chọn giáo viên "
+                options={optionsTeacher}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Button color="primary" type="submit">
                 Lưu
               </Button>
               <Button

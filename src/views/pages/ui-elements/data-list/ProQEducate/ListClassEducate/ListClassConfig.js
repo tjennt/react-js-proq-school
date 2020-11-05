@@ -14,6 +14,7 @@ import {
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataClass } from "../../../../../../redux/actions/dataListAssistance/index";
+import { addClass } from "../../../../../../redux/actions/education/index";
 import Sidebar from "./DataListClassSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
@@ -356,11 +357,11 @@ class ListClassEducateConfig extends Component {
           show={sidebar}
           data={currentData}
           updateData={this.props.updateData}
-          addData={this.props.addData}
+          addData={this.props.addClass}
           handleSidebar={this.handleSidebar}
           thumbView={this.props.thumbView}
           getData={this.props.getData}
-          dataParams={this.props.parsedFilter}
+          parsedFilter={this.props.parsedFilter}
           addNew={this.state.addNew}
         />
         <div
@@ -382,4 +383,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getDataClass,
+  addClass,
 })(ListClassEducateConfig);

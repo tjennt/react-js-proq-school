@@ -27,8 +27,8 @@ function datePickerField(props) {
   // const { errors, touched } = form;
   // const showError = errors[name] && touched[name];
 
-  const onChangeValue = (date) => {
-    form.setFieldValue(name, date);
+  const onChangeValue = (date, dateString) => {
+    form.setFieldValue(name, dateString);
   };
   return (
     <FormGroup>

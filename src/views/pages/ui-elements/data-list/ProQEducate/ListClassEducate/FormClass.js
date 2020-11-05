@@ -12,10 +12,7 @@ function FormClass(props) {
   //   content: Yup.string().required("Vui lòng nhập content !"),
   //   time_send: Yup.date().required("Vui lòng chọn ngày!"),
   // });
-  // const options = [
-  //   { value: 0, label: "Khuyến mãi " },
-  //   { value: 1, label: "Khác" },
-  // ];
+
   return (
     <Formik
       enableReinitialize="true"
@@ -30,30 +27,30 @@ function FormClass(props) {
             <Field
               label="Tên lớp *"
               placeholder="Vui lòng nhập tên lớp "
-              name="class"
+              name="nameClass"
               component={InputField}
-              value={initialValues.title}
+              value={initialValues.nameClass}
               type="text"
             />
             <Field
-              name="Mã lớp *"
+              name="idClass"
               type="text"
               label="Mã lớp"
               placeholder="Vui lòng nhập mã lớp  "
-              // value={initialValues.url}
+              value={initialValues.idClass}
               component={InputField}
             />
             <Field
-              name="Thời gian bắt đầu"
+              name="start_time"
               label="Thời gian bắt đầu *"
-              // value={initialValues.time_send}
+              value={initialValues.start_time}
               placeholder="Vui lòng nhập thời gian bắt đầu "
               component={datePickerField}
             />
             <Field
-              name="Thời gian kết thúc "
+              name="end_time"
               label="Thời gian kết thúc *"
-              // value={initialValues.time_send}
+              value={initialValues.end_time}
               placeholder="Vui lòng thời gian kết thúc * "
               component={datePickerField}
             />

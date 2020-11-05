@@ -8,6 +8,8 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import DataTotalProductReducer from "./data-list/DashboardReducer";
 import assistantReducer from "./data-list/assistReducer";
+import scheduleReducer from "./schedule";
+import uiReducer from "./ui/loadingReducer";
 
 const persistConfig = {
   key: "root",
@@ -22,6 +24,8 @@ const rootReducer = combineReducers({
   dataDashBoard: DataTotalProductReducer,
   assistantData: assistantReducer,
   chatApp: chatReducer,
+  dataSchedule: scheduleReducer,
+  ui: uiReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

@@ -12,16 +12,17 @@ class ClassEducateSidebar extends Component {
     end_time: "",
   };
 
-  handleSubmit = (values, { resetForm }) => {
-    const { handleSidebar, data } = this.props;
+  handleSubmit = (obj, { resetForm }) => {
+    const { handleSidebar, data, addData, parsedFilter } = this.props;
     if (!data) {
-      // addData(values);
+      addData(obj, parsedFilter);
       // handleSidebar(false, true);
       resetForm({});
     } else {
       // updateData(values);
       handleSidebar(false, true);
     }
+    console.log(obj);
   };
   render() {
     let { show, handleSidebar, data } = this.props;

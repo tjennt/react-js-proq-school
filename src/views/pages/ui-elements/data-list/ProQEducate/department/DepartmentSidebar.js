@@ -27,7 +27,14 @@ class DepartmentSidebar extends Component {
     }
   };
   render() {
-    let { show, handleSidebar, data } = this.props;
+    let {
+      show,
+      handleSidebar,
+      data,
+      dataClass,
+      getDataSubject,
+      getDataBothStudy,
+    } = this.props;
     // let dataId = "";
     // if (data) {
     //   dataId = data.id;
@@ -48,6 +55,9 @@ class DepartmentSidebar extends Component {
           options={{ wheelPropagation: false }}
         >
           <FormDepartment
+            getDataBothStudy={getDataBothStudy}
+            dataClass={dataClass}
+            getDataSubject={getDataSubject}
             initialValues={this.initialValues}
             onSubmitForm={this.handleSubmit}
             handleSidebar={this.handleSidebar}

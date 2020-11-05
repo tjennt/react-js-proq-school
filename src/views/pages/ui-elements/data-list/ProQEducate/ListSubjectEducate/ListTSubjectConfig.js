@@ -6,6 +6,7 @@ import { Download, Edit, Plus, Trash } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataSubject } from "../../../../../../redux/actions/dataListAssistance/index";
+import { addSubject } from "../../../../../../redux/actions/education/index";
 import Sidebar from "./DataListSubjectSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
@@ -54,7 +55,7 @@ const CustomHeader = (props) => {
         <Button
           color="primary"
           onClick={() => props.handleSidebar(true, true)}
-          outline="true"
+          outline={true}
         >
           <Plus size={15} />
           <span className="align-middle">Tạo mới</span>
@@ -286,7 +287,7 @@ class ListTSubjectConfig extends Component {
           show={sidebar}
           data={currentData}
           updateData={this.props.updateData}
-          addData={this.props.addData}
+          addData={this.props.addSubject}
           handleSidebar={this.handleSidebar}
           thumbView={this.props.thumbView}
           getData={this.props.getData}
@@ -312,4 +313,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getDataSubject,
+  addSubject,
 })(ListTSubjectConfig);

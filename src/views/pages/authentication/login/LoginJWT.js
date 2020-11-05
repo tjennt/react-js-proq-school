@@ -7,9 +7,11 @@ import {
   changeRole,
   loginWithGoogle,
 } from "../../../../redux/actions/auth/loginActions";
+import { showLoading } from "../../../../redux/actions/ui";
 import { connect } from "react-redux";
-// import { history } from "../../../../history";
+import "antd/dist/antd.css";
 import GoogleLogin from "react-google-login";
+import { Spin } from "antd";
 class LoginJWT extends React.Component {
   state = {
     email: "",
@@ -22,14 +24,18 @@ class LoginJWT extends React.Component {
     });
   };
   handleLogin = (e) => {
+    const { loginWithJWT, showLoading } = this.props;
     e.preventDefault();
-    this.props.loginWithJWT(this.state);
+    showLoading();
+    loginWithJWT(this.state);
   };
   responseGoogle = (res) => {
-    console.log(res);
-    this.props.loginWithGoogle(res.tokenId);
+    const { showLoading, loginWithGoogle } = this.props;
+    showLoading();
+    loginWithGoogle(res.tokenId);
   };
   render() {
+    const { loading } = this.props;
     return (
       <React.Fragment>
         <CardBody className="pt-1">
@@ -60,15 +66,25 @@ class LoginJWT extends React.Component {
               <Label>Mật khẩu</Label>
             </FormGroup>
             <div className="d-flex justify-content-between">
-              <GoogleLogin
-                clientId="1038607072813-rdjohk5kccvju3891r4vj73b9o0knphu.apps.googleusercontent.com"
-                onSuccess={this.responseGoogle}
-                onFailure={this.onFailure}
-                cookiePolicy={"single_host_origin"}
-              />
-              <Button.Ripple color="primary" type="submit">
-                Đăng nhập
-              </Button.Ripple>
+              {loading ? (
+                <Spin />
+              ) : (
+                <div>
+                  <GoogleLogin
+                    clientId="1038607072813-rdjohk5kccvju3891r4vj73b9o0knphu.apps.googleusercontent.com"
+                    onSuccess={this.responseGoogle}
+                    onFailure={this.onFailure}
+                    cookiePolicy={"single_host_origin"}
+                  />
+                  <Button.Ripple
+                    className="ml-4 mt-1"
+                    color="primary"
+                    type="submit"
+                  >
+                    Đăng nhập
+                  </Button.Ripple>
+                </div>
+              )}
             </div>
           </Form>
         </CardBody>
@@ -79,10 +95,12 @@ class LoginJWT extends React.Component {
 const mapStateToProps = (state) => {
   return {
     values: state.auth.login,
+    loading: state.ui.showLoading,
   };
 };
 export default connect(mapStateToProps, {
   loginWithJWT,
   changeRole,
   loginWithGoogle,
+  showLoading,
 })(LoginJWT);

@@ -46,3 +46,17 @@ export function* importExcelTeacherEduSaga({ payload }) {
     toastWarning(`Đã có lỗi xảy ra :${error}`);
   }
 }
+/**
+ * class
+ */
+export function* addClassSaga({ payload }) {
+  const { obj, params } = payload;
+  yield console.log(payload);
+}
+/**
+ * subject
+ */
+export function* addSubjectSaga({ payload }) {
+  const { obj, params } = payload;
+  yield console.log(payload);
+}

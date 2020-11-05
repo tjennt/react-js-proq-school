@@ -13,10 +13,10 @@ class DataListSubjectSidebar extends Component {
     fail: 1,
   };
 
-  handleSubmit = (values, { resetForm }) => {
-    const { handleSidebar, data } = this.props;
+  handleSubmit = (obj, { resetForm }) => {
+    const { handleSidebar, data, addData } = this.props;
     if (!data) {
-      // addData(values);
+      addData(obj);
       // handleSidebar(false, true);
       resetForm({});
     } else {

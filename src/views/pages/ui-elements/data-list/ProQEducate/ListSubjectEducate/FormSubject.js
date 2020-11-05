@@ -39,13 +39,13 @@ function FormSubject(props) {
             <Field
               label="Tên môn *"
               placeholder="Vui lòng nhập tên môn "
-              name="subject"
+              name="nameSubject"
               component={InputField}
               value={initialValues.title}
               type="text"
             />
             <Field
-              name="Mã môn *"
+              name="idSubject"
               type="text"
               label="Mã môn"
               placeholder="Vui lòng nhập mã môn  "

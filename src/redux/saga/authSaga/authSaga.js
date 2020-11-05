@@ -1,9 +1,10 @@
-import { put, call } from "redux-saga/effects";
+import { put, call, delay } from "redux-saga/effects";
 import { loginJWt, loginWithGoogle } from "../../api/auth";
 import { setUserCookie } from "../../../utility/auth/setAuthToken";
 import { changeRole, logoutSuccess } from "../../actions/auth/loginActions";
 import { history } from "../../../history";
 import { toastSuccess, toastError } from "../../../utility/toast/toastHelper";
+import { hideLoading } from "../../actions/ui";
 export function* loginActionSaga({ payload }) {
   const { user } = payload;
   const authData = {
@@ -14,9 +15,10 @@ export function* loginActionSaga({ payload }) {
     // history.push("/");
     const res = yield call(loginJWt, authData);
     const { data } = res;
-    console.log(data);
+    yield delay(500);
     if (data.success === true) {
       setUserCookie(data.payload.token);
+      yield put(hideLoading());
       yield put(changeRole(data.payload.role.name));
       yield put(changeRole("admin"));
       switch (data.payload.role.name) {
@@ -29,6 +31,7 @@ export function* loginActionSaga({ payload }) {
       toastSuccess(`Xin chào ${data.payload.role.name} ...`);
     }
   } catch (error) {
+    yield put(hideLoading());
     toastError("Tài khoản hoặc mật khẩu không đúng!");
   }
 }
@@ -39,10 +42,12 @@ export function* loginWithGoogleSaga({ payload }) {
   };
   try {
     const res = yield call(loginWithGoogle, authData);
+    yield delay(500);
     const { data } = res;
     if (data.success === true) {
       setUserCookie(data.payload.token);
       yield put(changeRole(data.payload.access));
+      yield put(hideLoading());
       switch (data.payload.access) {
         case "student":
           history.push("/student/news");
@@ -54,6 +59,7 @@ export function* loginWithGoogleSaga({ payload }) {
       toastSuccess(`Xin chào ${data.payload.access} ...`);
     }
   } catch (error) {
+    yield put(hideLoading());
     toastError("Tài khoản hoặc mật khẩu không đúng!");
   }
 }
