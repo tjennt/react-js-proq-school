@@ -1,9 +1,17 @@
-import { call } from "redux-saga/effects";
+import { call, put } from "redux-saga/effects";
 import { getDataSceduleApi } from "../../api/schedule/semester";
-// import { getDataSemesterSuccess } from "../../actions/schedule/getDataSemster";
+import { getDataSubjectSuccess } from "../../actions/schedule/getDataSubject";
 export function* getDataSubjectSaga({ payload }) {
-  yield console.log(payload);
+  const { idClass, season } = payload;
+  const params = {
+    classID: idClass ? idClass.value : "",
+    seasonID: season ? season.value : "",
+  };
   try {
-    // const res = yield call();
+    const res = yield call(getDataSceduleApi, params);
+    const { data } = res;
+    if (data.success) {
+      yield put(getDataSubjectSuccess(data.payload));
+    }
   } catch (error) {}
 }

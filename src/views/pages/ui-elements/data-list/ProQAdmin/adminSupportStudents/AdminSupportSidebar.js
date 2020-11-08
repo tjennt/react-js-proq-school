@@ -15,7 +15,12 @@ class AdminSupportSidebar extends Component {
   };
 
   handleSubmit = (values, { resetForm }) => {
-    const { addData, handleSidebar, data, updateData } = this.props;
+    const {
+      // addData,
+      handleSidebar,
+      data,
+      // updateData
+    } = this.props;
     if (!data) {
       // addData(values);
       // handleSidebar(false, true);

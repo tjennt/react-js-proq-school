@@ -11,9 +11,7 @@ export function* getSeasonSaga({ payload }) {
   try {
     const res = yield call(getDataAssSeasonApi, param);
     const { data } = res;
-    console.log(data);
     if (data.success === true) {
-      console.log("abc");
       yield put(
         getDataSeasonSuccss(data.payload, data.total_page, data.total_item)
       );

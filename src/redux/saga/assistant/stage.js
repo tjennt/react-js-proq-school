@@ -11,7 +11,6 @@ export function* getStageSaga({ payload }) {
   try {
     const res = yield call(getDataAssStageApi, param);
     const { data } = res;
-    console.log(data);
     if (data.success === true) {
       yield put(
         getDataStageSuccss(data.payload, data.total_page, data.total_item)

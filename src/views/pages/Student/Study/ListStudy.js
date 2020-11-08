@@ -25,7 +25,6 @@ class ListStudy extends React.Component {
 
   handlePagination = (page) => {
     // let { parsedFilter, getData } = this.props;
-    console.log(page);
     // let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 4;
   };
   render() {

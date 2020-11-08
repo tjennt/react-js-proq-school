@@ -6,8 +6,12 @@ import { ChevronLeft, ChevronRight, Edit, Plus, Trash } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataSchedules } from "../../../../../../redux/actions/education/index";
-import { getDataClass } from "../../../../../../redux/actions/dataListAssistance/index";
-import { getDataSemester } from "../../../../../../redux/actions/schedule/getDataSemster";
+import {
+  getDataClass,
+  getDataSeason,
+  getDataTeacher,
+} from "../../../../../../redux/actions/dataListAssistance/index";
+import { addSchedules } from "../../../../../../redux/actions/schedule/index";
 import { getDataSubject } from "../../../../../../redux/actions/schedule/getDataSubject";
 import { getDataBothStudy } from "../../../../../../redux/actions/schedule/getDataBothStudy";
 import Sidebar from "./DepartmentSidebar";
@@ -74,10 +78,7 @@ class ListDepartmentConfig extends Component {
         data: props.dataList.dataClass,
         dataClass: props.dataList.dataClass,
         totalPages: props.dataList.totalPages,
-        currentPage: parseInt(props.parsedFilter.page) - 1,
-        rowsPerPage: parseInt(props.parsedFilter.perPage),
         totalRecords: props.dataList.totalRecords,
-        sortIndex: props.dataList.sortIndex,
       };
     }
 
@@ -203,11 +204,10 @@ class ListDepartmentConfig extends Component {
   componentDidMount() {
     const {
       getDataClass,
-      getDataSemester,
-      getDataSchedules,
       parsedFilter,
+      getDataSeason,
+      getDataTeacher,
     } = this.props;
-    getDataSemester();
     let params = {
       limit: 1000,
     };
@@ -218,6 +218,8 @@ class ListDepartmentConfig extends Component {
     let limit = parsedFilter || paginate;
     getDataClass(params);
     getDataSchedules(limit);
+    getDataSeason(params);
+    getDataTeacher(params);
   }
 
   handleFilter = (e) => {
@@ -317,18 +319,19 @@ class ListDepartmentConfig extends Component {
           onPageChange={(page) => this.handlePagination(page)}
         />
         <Sidebar
-          getDataBothStudy={this.props.getDataBothStudy}
+          season={this.props.season}
+          shift={this.props.shift}
+          teacher={this.props.teacher}
+          classDepart={this.props.class}
+          subjectClass={this.props.subjectClass}
           getDataSubject={this.props.getDataSubject}
+          getDataBothStudy={this.props.getDataBothStudy}
           dataClass={dataClass}
           show={sidebar}
           data={currentData}
           updateData={this.props.updateData}
-          addData={this.props.addData}
+          addData={this.props.addSchedules}
           handleSidebar={this.handleSidebar}
-          thumbView={this.props.thumbView}
-          getData={this.props.getData}
-          dataParams={this.props.parsedFilter}
-          addNew={this.state.addNew}
         />
         <div
           className={classnames("data-list-overlay", {
@@ -344,13 +347,20 @@ class ListDepartmentConfig extends Component {
 const mapStateToProps = (state) => {
   return {
     dataList: state.assistantData,
+    season: state.assistantData.dataSeason,
+    class: state.assistantData.dataClass,
+    subjectClass: state.dataSchedule.dataSubject,
+    shift: state.dataSchedule.dataBothStudy,
+    teacher: state.assistantData.dataTeacher,
   };
 };
 
 export default connect(mapStateToProps, {
   getDataClass,
-  getDataSemester,
   getDataSubject,
-  getDataBothStudy,
   getDataSchedules,
+  getDataSeason,
+  getDataBothStudy,
+  getDataTeacher,
+  addSchedules,
 })(ListDepartmentConfig);

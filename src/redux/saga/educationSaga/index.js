@@ -35,9 +35,7 @@ export function* getSchedulesSaga({ payload }) {
   try {
     const res = yield call(getDataSchedulesApi, param);
     const { data } = res;
-    console.log(data);
     if (data.success === true) {
-      console.log("abc");
       yield put(
         getDataSchedulesSuccess(data.payload, data.total_page, data.total_item)
       );
@@ -54,7 +52,6 @@ export function* getSchedulesSaga({ payload }) {
  */
 export function* importExcelStudentEduSaga({ payload }) {
   const { file, params } = payload;
-  console.log(params);
   let formData = new FormData();
   formData.append("excelFile", file);
   try {
@@ -75,12 +72,10 @@ export function* importExcelStudentEduSaga({ payload }) {
  */
 export function* importExcelTeacherEduSaga({ payload }) {
   const { file, params } = payload;
-  console.log(params, file);
   let formData = new FormData();
   formData.append("excelFile", file);
   try {
     const res = yield call(importExcelTeacherApi, formData);
-    console.log(res);
     const { data } = res;
     if (data.success) {
       yield put(getDataTeacher(params));
@@ -97,7 +92,6 @@ export function* importExcelTeacherEduSaga({ payload }) {
  */
 export function* addClassSaga({ payload }) {
   const { obj, params } = payload;
-  yield console.log(payload);
   const dataReq = {
     name: obj.nameClass,
     stage: obj.stage,
@@ -105,7 +99,6 @@ export function* addClassSaga({ payload }) {
   };
   try {
     const res = yield call(addClassApi, dataReq);
-    console.log(res);
     const { data } = res;
     if (data.success) {
       yield put(getDataClass(params));
@@ -122,7 +115,6 @@ export function* addClassSaga({ payload }) {
  */
 export function* addSubjectSaga({ payload }) {
   const { obj, params } = payload;
-  yield console.log(payload);
   const dataReq = {
     name: obj.nameSubject,
   };
@@ -144,7 +136,6 @@ export function* addSubjectSaga({ payload }) {
  */
 export function* addStageSaga({ payload }) {
   const { obj, params } = payload;
-  yield console.log(payload);
   const dataReq = {
     name: obj.name,
     startAt: obj.startAt,
@@ -152,7 +143,6 @@ export function* addStageSaga({ payload }) {
   };
   try {
     const res = yield call(addStageApi, dataReq);
-    console.log(res);
     const { data } = res;
     if (data.success) {
       yield put(getDataStage(params));
@@ -169,7 +159,6 @@ export function* addStageSaga({ payload }) {
  */
 export function* addSeasonSaga({ payload }) {
   const { obj, params } = payload;
-  yield console.log(payload);
   const dataReq = {
     name: obj.name,
     startAt: obj.startAt,
@@ -177,7 +166,6 @@ export function* addSeasonSaga({ payload }) {
   };
   try {
     const res = yield call(addSeasonApi, dataReq);
-    console.log(res);
     const { data } = res;
     if (data.success) {
       yield put(getDataSeason(params));
@@ -194,14 +182,12 @@ export function* addSeasonSaga({ payload }) {
  */
 export function* addSpecializationSaga({ payload }) {
   const { obj, params } = payload;
-  yield console.log(payload);
   const dataReq = {
     name: obj.nameSpecialization,
     subject: obj.subject,
   };
   try {
     const res = yield call(addSpecializationApi, dataReq);
-    console.log(res);
     const { data } = res;
     if (data.success) {
       yield put(getDataSpecialization(params));

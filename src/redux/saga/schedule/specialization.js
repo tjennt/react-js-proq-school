@@ -11,9 +11,7 @@ export function* getSpecializationSaga({ payload }) {
   try {
     const res = yield call(getDataSpecializationApi, param);
     const { data } = res;
-    console.log(data);
     if (data.success === true) {
-      console.log("abc");
       yield put(
         getDataSpecializationSuccess(
           data.payload,

@@ -22,7 +22,6 @@ import { getToken } from "../../../utility/auth/setAuthToken";
 import TableTotal from "./Table";
 import { logoutWithJWT } from "../../../redux/actions/auth/loginActions";
 import Revenue from "./Revenue";
-import { history } from "../../../history";
 const { RangePicker } = DatePicker;
 let $primary = "#7367F0",
   $danger = "#EA5455",

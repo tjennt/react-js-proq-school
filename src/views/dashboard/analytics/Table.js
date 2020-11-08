@@ -160,7 +160,6 @@ class TableTotal extends Component {
 
   render() {
     let { columns, data } = this.state;
-    console.log(data);
     return (
       <div className="data-list">
         <Modal

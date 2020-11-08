@@ -4,23 +4,11 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import classnames from "classnames";
 import FormDepartment from "./FormDepartment";
 class DepartmentSidebar extends Component {
-  initialValues = {
-    id: "",
-    nameClass: "",
-    subject: 1,
-    days: [],
-    start_time: "",
-    ca: 1,
-    end_time: "",
-    teacher: null,
-  };
-
-  handleSubmit = (values, { resetForm }) => {
-    const { handleSidebar, data } = this.props;
+  handleSubmit = (state) => {
+    const { handleSidebar, data, addData } = this.props;
     if (!data) {
-      // addData(values);
+      addData(state);
       // handleSidebar(false, true);
-      resetForm({});
     } else {
       // updateData(values);
       handleSidebar(false, true);
@@ -33,6 +21,11 @@ class DepartmentSidebar extends Component {
       data,
       dataClass,
       getDataSubject,
+      season,
+      classDepart,
+      subjectClass,
+      shift,
+      teacher,
       getDataBothStudy,
     } = this.props;
     // let dataId = "";
@@ -55,11 +48,16 @@ class DepartmentSidebar extends Component {
           options={{ wheelPropagation: false }}
         >
           <FormDepartment
-            getDataBothStudy={getDataBothStudy}
+            teacher={teacher}
+            season={season}
+            shift={shift}
+            classDepart={classDepart}
+            subjectClass={subjectClass}
             dataClass={dataClass}
+            getDataBothStudy={getDataBothStudy}
             getDataSubject={getDataSubject}
             initialValues={this.initialValues}
-            onSubmitForm={this.handleSubmit}
+            handleSubmit={this.handleSubmit}
             handleSidebar={this.handleSidebar}
           />
         </PerfectScrollbar>

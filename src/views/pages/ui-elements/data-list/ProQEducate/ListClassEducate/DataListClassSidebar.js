@@ -26,7 +26,6 @@ class ClassEducateSidebar extends Component {
       // updateData(values);
       handleSidebar(false, true);
     }
-    console.log(obj);
   };
   render() {
     let { show, handleSidebar, data } = this.props;

@@ -1,8 +1,8 @@
 import * as bothStudyType from "../../constants/schedule/index";
-export const getDataBothStudy = (data) => ({
+export const getDataBothStudy = (state) => ({
   type: bothStudyType.GET_BOTHSTUDY,
   payload: {
-    data,
+    state,
   },
 });
 export const getDataBothStudySuccess = (data) => ({

@@ -11,9 +11,7 @@ export function* getClassActionSaga({ payload }) {
   try {
     const res = yield call(getDataAssClassApi, param);
     const { data } = res;
-    console.log(data);
     if (data.success === true) {
-      console.log("abc");
       yield put(
         getDataClassSuccess(data.payload, data.total_page, data.total_item)
       );

@@ -11,7 +11,6 @@ export function* getSubjectActionSaga({ payload }) {
   try {
     const res = yield call(getDataAssSubjectApi, param);
     const { data } = res;
-    console.log(data.total_page);
     if (data.success === true) {
       yield put(
         getDataSubjectSuccess(data.payload, data.total_page, data.total_item)

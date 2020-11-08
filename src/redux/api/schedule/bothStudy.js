@@ -1,5 +1,7 @@
 import axiosService from "../../../utility/axiosService/axiosService";
-const url = "";
-export const getDataBothStudyApi = () => {
-  return axiosService.post(`${process.env.REACT_APP_API_ENDPOINT}/${url}`);
+const url = "staff/schedules/getShift";
+export const getDataBothStudyApi = (params) => {
+  return axiosService.get(`${process.env.REACT_APP_API_ENDPOINT}/${url}/`, {
+    params,
+  });
 };

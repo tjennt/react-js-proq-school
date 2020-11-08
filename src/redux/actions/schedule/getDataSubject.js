@@ -1,9 +1,10 @@
 import * as subjectType from "../../constants/schedule/index";
 
-export const getDataSubject = (data) => ({
+export const getDataSubject = (season, idClass) => ({
   type: subjectType.GET_SUBJECT_FROM_CLASS,
   payload: {
-    data,
+    season,
+    idClass,
   },
 });
 export const getDataSubjectSuccess = (data) => ({

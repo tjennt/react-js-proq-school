@@ -24,7 +24,6 @@ function FormClass(props) {
         []
       )
     : [];
-  console.log(optionSpecialization);
   return (
     <Formik
       enableReinitialize="true"

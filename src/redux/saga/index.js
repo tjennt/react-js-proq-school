@@ -29,11 +29,11 @@ import {
   importExcelStudentEduSaga,
   importExcelTeacherEduSaga,
 } from "./educationSaga";
-import { getDataSemesterSaga } from "./schedule/semesterSaga";
 import { getDataSubjectSaga } from "./schedule/subjectSaga";
 import { getDataBothStudySaga } from "./schedule/bothStudySaga";
 import { getSeasonSaga } from "./assistant/season";
 import { getSpecializationSaga } from "./schedule/specialization";
+import { addSchedulesSaga } from "./schedule/schedulesSaga";
 function* rootSaga() {
   //login //auth
   yield takeLatest(authType.LOGIN, loginActionSaga);
@@ -71,9 +71,9 @@ function* rootSaga() {
   /**
    * Schedule
    */
-  yield takeLatest(scheduleType.GET_SEMESTER, getDataSemesterSaga);
   yield takeLatest(scheduleType.GET_SUBJECT_FROM_CLASS, getDataSubjectSaga);
   yield takeLatest(scheduleType.GET_BOTHSTUDY, getDataBothStudySaga);
   yield takeLatest(scheduleType.GET_SPECIALIZATION, getSpecializationSaga);
+  yield takeLatest(scheduleType.ADD_SCHEDULES, addSchedulesSaga);
 }
 export default rootSaga;

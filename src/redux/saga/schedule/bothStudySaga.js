@@ -1,20 +1,32 @@
-import { call } from "redux-saga/effects";
-import { getDataSceduleApi } from "../../api/schedule/semester";
+import { call, put } from "redux-saga/effects";
+import { toastError, toastWarning } from "../../../utility/toast/toastHelper";
+import { getDataBothStudySuccess } from "../../actions/schedule/getDataBothStudy";
+import { getDataBothStudyApi } from "../../api/schedule/bothStudy";
 // import { getDataSemesterSuccess } from "../../actions/schedule/getDataSemster";
 export function* getDataBothStudySaga({ payload }) {
-  console.log(payload);
-  const { data } = payload;
-  let { end_time, start_time, days } = data;
+  const { state } = payload;
+  const { days, nameClass, start_time, end_time } = state;
+
   let arrDay = days.length && days.map((day) => day.value);
-  console.log(end_time);
-  let date_start = new Date(start_time).toISOString();
-  let date_end = new Date(end_time).toISOString();
-  console.log(
-    { datestart: date_start },
-    { dateend: date_end },
-    { arrDay: arrDay }
-  );
+  const params = {
+    classID: nameClass ? nameClass.value : "",
+    startAt: start_time || "",
+    endAt: end_time || "",
+    days: arrDay.reduce((f, s) => `${f},${s}`),
+  };
   try {
-    const res = yield call();
-  } catch (error) {}
+    const res = yield call(getDataBothStudyApi, params);
+    const { data } = res;
+    if (data.success) {
+      const dataArr = data.payload.reduce(
+        (arr, curr) => [...arr, { label: curr, value: curr }],
+        []
+      );
+      yield put(getDataBothStudySuccess(dataArr));
+    } else {
+      toastWarning("Vui lòng thử lại sau");
+    }
+  } catch (error) {
+    toastError("Đã có lỗi xảy ra vui lòng thử lại sau");
+  }
 }

@@ -61,7 +61,6 @@ const assistantReducer = (state = initialState, action) => {
     }
     case assType.GET_DATA_CLASS_ASS_SUCCESS: {
       const { data, total_page, total_record } = action.payload;
-      console.log(data);
       return {
         ...state,
         dataClass: data,
