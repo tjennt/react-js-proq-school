@@ -3,28 +3,15 @@ import React from "react";
 import { Button, FormGroup } from "reactstrap";
 // import * as Yup from "yup";
 import InputField from "../../../../../../utility/customFields/inputField";
-import SelectField from "../../../../../../utility/customFields/selectFields";
+import datePickerField from "../../../../../../utility/customFields/datePickerFields";
 
-function FormClass(props) {
-  const { initialValues, stage, specialization } = props;
+function FormSeason(props) {
+  const { initialValues } = props;
   // const validationSchema = Yup.object().shape({
   //   title: Yup.string().required("Vui lòng nhập tiêu đề!"),
   //   content: Yup.string().required("Vui lòng nhập content !"),
   //   time_send: Yup.date().required("Vui lòng chọn ngày!"),
   // });
-  const optionStage = stage
-    ? stage.reduce(
-        (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
-        []
-      )
-    : [];
-  const optionSpecialization = specialization
-    ? specialization.reduce(
-        (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
-        []
-      )
-    : [];
-  console.log(optionSpecialization);
   return (
     <Formik
       enableReinitialize="true"
@@ -37,28 +24,26 @@ function FormClass(props) {
         return (
           <Form>
             <Field
-              label="Tên lớp *"
-              placeholder="Vui lòng nhập tên lớp "
-              name="nameClass"
+              label="Tên kì học *"
+              placeholder="Vui lòng nhập tên kì học "
+              name="name"
               component={InputField}
-              value={initialValues.nameClass}
+              value={initialValues.name}
               type="text"
             />
             <Field
-              name="stage"
-              label="Khóa *"
-              value={initialValues.stage}
-              placeholder="Vui lòng chọn khóa "
-              component={SelectField}
-              options={optionStage}
+              name="startAt"
+              label="Thời gian bắt đầu"
+              placeholder="Vui lòng nhập chọn thời gian bắt đầu "
+              value={initialValues.startAt}
+              component={datePickerField}
             />
             <Field
-              name="specializate"
-              label="Khóa *"
-              value={initialValues.specializate}
-              placeholder="Vui lòng chọn Chuyên ngành "
-              component={SelectField}
-              options={optionSpecialization}
+              name="startEnd"
+              label="Thời gian kết thúc"
+              placeholder="Vui lòng nhập chọn thời gian kết thúc "
+              value={initialValues.startEnd}
+              component={datePickerField}
             />
             <FormGroup>
               <Button disabled={!isValid} color="primary" type="submit">
@@ -80,4 +65,4 @@ function FormClass(props) {
   );
 }
 
-export default FormClass;
+export default FormSeason;

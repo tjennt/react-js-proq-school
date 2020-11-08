@@ -20,6 +20,7 @@ datePickerField.defaultProps = {
   placeholder: "",
   disable: false,
 };
+const dateFormatList = ["MM/DD/YYYY", "DD/MM/YY"];
 
 function datePickerField(props) {
   const { field, form, label } = props;
@@ -34,6 +35,7 @@ function datePickerField(props) {
     <FormGroup>
       {label && <Label for="name">{label}</Label>}
       <DatePicker
+        format={dateFormatList}
         style={{ height: "40px", width: "100%" }}
         ranges={{
           Ngày: [moment().startOf("days"), moment().endOf("days")],

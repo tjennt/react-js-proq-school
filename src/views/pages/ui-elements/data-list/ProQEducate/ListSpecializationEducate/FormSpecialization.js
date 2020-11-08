@@ -3,32 +3,25 @@ import React from "react";
 import { Button, FormGroup } from "reactstrap";
 // import * as Yup from "yup";
 import InputField from "../../../../../../utility/customFields/inputField";
-import SelectField from "../../../../../../utility/customFields/selectFields";
+import selectFieldsMulti from "../../../../../../utility/customFields/selectFields/selectFieldsMulti";
 
-function FormClass(props) {
-  const { initialValues, stage, specialization } = props;
+function FormSpecialization(props) {
+  const { initialState, subject } = props;
   // const validationSchema = Yup.object().shape({
   //   title: Yup.string().required("Vui lòng nhập tiêu đề!"),
   //   content: Yup.string().required("Vui lòng nhập content !"),
   //   time_send: Yup.date().required("Vui lòng chọn ngày!"),
   // });
-  const optionStage = stage
-    ? stage.reduce(
-        (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
+  const optionSubject = subject
+    ? subject.reduce(
+        (arr, curr) => [...arr, { value: curr._id, label: curr.name }],
         []
       )
     : [];
-  const optionSpecialization = specialization
-    ? specialization.reduce(
-        (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
-        []
-      )
-    : [];
-  console.log(optionSpecialization);
   return (
     <Formik
       enableReinitialize="true"
-      initialValues={initialValues}
+      initialValues={initialState}
       // validationSchema={validationSchema}
       onSubmit={props.onSubmitForm}
     >
@@ -37,29 +30,23 @@ function FormClass(props) {
         return (
           <Form>
             <Field
-              label="Tên lớp *"
-              placeholder="Vui lòng nhập tên lớp "
-              name="nameClass"
+              label="Tên chuyên ngành *"
+              placeholder="Vui lòng nhập tên chuyên ngành "
+              name="nameSpecialization"
               component={InputField}
-              value={initialValues.nameClass}
+              value={initialState.nameSpecialization}
               type="text"
             />
             <Field
-              name="stage"
-              label="Khóa *"
-              value={initialValues.stage}
-              placeholder="Vui lòng chọn khóa "
-              component={SelectField}
-              options={optionStage}
+              name="subject"
+              label="Chọn môn học"
+              placeholder="Chọn môn học "
+              value={initialState.subject}
+              component={selectFieldsMulti}
+              isMulti={true}
+              options={optionSubject}
             />
-            <Field
-              name="specializate"
-              label="Khóa *"
-              value={initialValues.specializate}
-              placeholder="Vui lòng chọn Chuyên ngành "
-              component={SelectField}
-              options={optionSpecialization}
-            />
+
             <FormGroup>
               <Button disabled={!isValid} color="primary" type="submit">
                 Lưu
@@ -80,4 +67,4 @@ function FormClass(props) {
   );
 }
 
-export default FormClass;
+export default FormSpecialization;

@@ -86,6 +86,21 @@ const Schedules = lazy(() =>
     "./views/pages/ui-elements/data-list/ProQEducate/TotalDepartment/ItemTotalDepartment/Schedules"
   )
 );
+const ListStage = lazy(() =>
+  import(
+    "./views/pages/ui-elements/data-list/ProQEducate/ListStageEducate/index"
+  )
+);
+const ListSeason = lazy(() =>
+  import(
+    "./views/pages/ui-elements/data-list/ProQEducate/ListSeasonEducate/index"
+  )
+);
+const Specialization = lazy(() =>
+  import(
+    "./views/pages/ui-elements/data-list/ProQEducate/ListSpecializationEducate/specialization"
+  )
+);
 //student
 const StudyStudent = lazy(() => import("./views/pages/Student/Study"));
 const markStudent = lazy(() =>
@@ -179,6 +194,12 @@ class AppRouter extends React.Component {
           <AppRoute path="/education/subject" component={SubjectEducate} />
           <AppRoute path="/education/student" component={StudentEducate} />
           <AppRoute path="/education/teacher" component={TeacherEducate} />
+          <AppRoute path="/education/stage" component={ListStage} />
+          <AppRoute path="/education/season" component={ListSeason} />
+          <AppRoute
+            path="/education/specialization"
+            component={Specialization}
+          />
           <AppRoute
             exact
             path="/education/totalDepartment"

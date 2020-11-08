@@ -4,6 +4,9 @@ const initialState = {
   dataSemester: [],
   dataSubject: [],
   dataBothStudy: [],
+  dataSpecial: [],
+  total_page_special: 0,
+  total_count_schedule: 0,
 };
 const scheduleReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -55,6 +58,22 @@ const scheduleReducer = (state = initialState, action) => {
       return {
         ...state,
         dataBothStudy: data,
+      };
+    }
+    /**
+     * specialization
+     */
+    case scheduleType.GET_SPECIALIZATION: {
+      return {
+        ...state,
+      };
+    }
+    case scheduleType.GET_SPECIALIZATION_SUCCESS: {
+      const { data, total_page } = action.payload;
+      return {
+        ...state,
+        dataSpecial: data,
+        total_page_special: total_page,
       };
     }
     default:

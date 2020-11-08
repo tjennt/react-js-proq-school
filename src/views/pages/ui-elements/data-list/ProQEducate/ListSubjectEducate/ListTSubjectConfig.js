@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { Download, Edit, Plus, Trash } from "react-feather";
+import { ChevronLeft, ChevronRight, Edit, Plus, Trash } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getDataSubject } from "../../../../../../redux/actions/dataListAssistance/index";
@@ -13,9 +13,8 @@ import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import { Button } from "reactstrap";
 import Moment from "react-moment";
-import { message, Modal, Popconfirm, Upload } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
-const { Dragger } = Upload;
+import { message, Popconfirm } from "antd";
+import ReactPaginate from "react-paginate";
 const ActionsComponent = (props) => {
   function confirm(e) {
     props.deleteRow(props.row);
@@ -46,9 +45,6 @@ const ActionsComponent = (props) => {
   );
 };
 const CustomHeader = (props) => {
-  const showModal = () => {
-    props.showModal();
-  };
   return (
     <div className="data-list-header d-flex justify-content-between flex-wrap">
       <div className="actions-left d-flex flex-wrap">
@@ -59,9 +55,6 @@ const CustomHeader = (props) => {
         >
           <Plus size={15} />
           <span className="align-middle">Tạo mới</span>
-        </Button>
-        <Button onClick={showModal} className=" ml-2" color="primary">
-          <Download size={15} /> Import
         </Button>
       </div>
     </div>
@@ -75,7 +68,7 @@ class ListTSubjectConfig extends Component {
     ) {
       return {
         data: props.dataList.dataSubject,
-        totalPages: props.dataList.totalPages,
+        totalPages: props.dataList.total_page_subject,
         currentPage: parseInt(props.parsedFilter.page) - 1,
         rowsPerPage: parseInt(props.parsedFilter.perPage),
         totalRecords: props.dataList.totalRecords,
@@ -92,17 +85,6 @@ class ListTSubjectConfig extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "ID",
-        selector: "id",
-        sortable: true,
-        minWidth: "250px",
-        cell: (row) => (
-          <p title={row._id} className="text-truncate text-bold-500 mb-0">
-            {row._id}
-          </p>
-        ),
-      },
-      {
         name: "Môn học",
         selector: "subject",
         sortable: true,
@@ -110,20 +92,6 @@ class ListTSubjectConfig extends Component {
         cell: (row) => (
           <p title={row.name} className="text-truncate text-bold-500 mb-0">
             {row.name}
-          </p>
-        ),
-      },
-      {
-        name: "Mã môn học",
-        selector: "subjectCode",
-        sortable: true,
-        // minWidth: "300px",
-        cell: (row) => (
-          <p
-            title={row.subjectCode}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.subjectCode}
           </p>
         ),
       },
@@ -178,7 +146,14 @@ class ListTSubjectConfig extends Component {
   thumbView = this.props.thumbView;
 
   componentDidMount() {
-    this.props.getDataSubject();
+    const { parsedFilter } = this.props;
+
+    const paginate = {
+      page: 1,
+      limit: 10,
+    };
+    let limit = parsedFilter || paginate;
+    this.props.getDataSubject(limit);
   }
   handleFilter = (e) => {
     this.setState({ value: e.target.value });
@@ -189,34 +164,12 @@ class ListTSubjectConfig extends Component {
     this.setState({ sidebar: boolean });
     if (addNew === true) this.setState({ currentData: null, addNew: true });
   };
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
-  handleOk = (e) => {
-    this.setState({
-      ...this.state,
-      visible: false,
-    });
-  };
-
-  handleCancel = (e) => {
-    this.setState({
-      visible: false,
-      excel: null,
-    });
-  };
-  changeStatus = (row) => {
-    this.props.updateStatus(row, this.props.parsedFilter);
-    this.props.getData(this.props.parsedFilter);
-  };
   handleDelete = (row) => {
     this.props.deleteData(row);
     this.props.getData(this.props.parsedFilter);
     if (this.state.data.length - 1 === 0) {
       history.push(
-        `/accountAdmin?page=${parseInt(
+        `/education/subject?page=${parseInt(
           this.props.parsedFilter.page - 1
         )}&perPage=${this.props.parsedFilter.perPage}`
       );
@@ -233,11 +186,14 @@ class ListTSubjectConfig extends Component {
   };
 
   handlePagination = (page) => {
-    let { parsedFilter, getData } = this.props;
-    let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 4;
+    let { parsedFilter, getDataSubject } = this.props;
+    let perPage =
+      parsedFilter.perPage !== undefined ? parsedFilter.perPage : 10;
 
-    history.push(`/accountAdmin?page=${page.selected + 1}&perPage=${perPage}`);
-    getData({ page: page.selected + 1, perPage: perPage });
+    history.push(
+      `/education/subject?page=${page.selected + 1}&limit=${perPage}`
+    );
+    getDataSubject({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
 
@@ -245,31 +201,12 @@ class ListTSubjectConfig extends Component {
     let { columns, data, value, currentData, sidebar } = this.state;
     return (
       <div className="data-list">
-        <Modal
-          destroyOnClose={true}
-          title="Thêm dữ liệu từ file excel"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-        >
-          <Dragger
-            onChange={this.onChangeExcel}
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-          >
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-hint">
-              Click vào đây để chọn file excel hoặc kéo thả từ máy tính của bạn
-            </p>
-          </Dragger>
-        </Modal>
-
         <DataTable
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
-          pagination
+          fixedHeader
+          fixedHeaderScrollHeight={"55vh"}
           noDataComponent="Không có dữ liệu"
           noHeader
           subHeader
@@ -282,7 +219,21 @@ class ListTSubjectConfig extends Component {
             />
           }
         />
-
+        <ReactPaginate
+          previousLabel={<ChevronLeft size={15} />}
+          nextLabel={<ChevronRight size={15} />}
+          breakLabel="..."
+          breakClassName="break-me"
+          pageCount={this.state.totalPages}
+          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+          activeClassName="active"
+          forcePage={
+            this.props.parsedFilter.page
+              ? parseInt(this.props.parsedFilter.page - 1)
+              : 0
+          }
+          onPageChange={(page) => this.handlePagination(page)}
+        />
         <Sidebar
           show={sidebar}
           data={currentData}

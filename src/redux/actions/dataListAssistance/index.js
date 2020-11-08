@@ -71,17 +71,65 @@ export const getDataClassFaild = (error) => ({
 /**
  * assistant subject
  */
-export const getDataSubject = () => ({
+export const getDataSubject = (params) => ({
   type: assisType.GET_DATA_SUBJECT_ASS,
+  payload: {
+    params,
+  },
 });
-export const getDataSubjectSuccess = (data) => ({
+export const getDataSubjectSuccess = (data, total_page) => ({
   type: assisType.GET_DATA_SUBJECT_ASS_SUCCESS,
   payload: {
     data,
+    total_page,
   },
 });
 export const getDataSubjectFaild = (error) => ({
   type: assisType.GET_DATA_SUBJECT_ASS_FAILD,
+  payload: {
+    error,
+  },
+});
+/**
+ * asssist stage
+ */
+export const getDataStage = (params) => ({
+  type: assisType.GET_DATA_STAGE,
+  payload: {
+    params,
+  },
+});
+export const getDataStageSuccss = (data, total_page) => ({
+  type: assisType.GET_DATA_STAGE_SUCCESS,
+  payload: {
+    data,
+    total_page,
+  },
+});
+export const getDataStageFail = (error) => ({
+  type: assisType.GET_DATA_STAGE_FAIL,
+  payload: {
+    error,
+  },
+});
+/**
+ * asssist season
+ */
+export const getDataSeason = (params) => ({
+  type: assisType.GET_DATA_SEASON,
+  payload: {
+    params,
+  },
+});
+export const getDataSeasonSuccss = (data, total_page) => ({
+  type: assisType.GET_DATA_SEASON_SUCCESS,
+  payload: {
+    data,
+    total_page,
+  },
+});
+export const getDataSeasonFail = (error) => ({
+  type: assisType.GET_DATA_SEASON_FAIL,
   payload: {
     error,
   },

@@ -1,32 +1,29 @@
 import React, { Component } from "react";
+import { Button } from "reactstrap";
 import { X } from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import classnames from "classnames";
-import FormSubject from "./FormSubject";
-class DataListSubjectSidebar extends Component {
-  initialValues = {
-    id: "",
-    nameSubject: "",
-  };
+import "antd/dist/antd.css";
+import FormStage from "./FormStage";
 
-  handleSubmit = (obj, { resetForm }) => {
-    const { handleSidebar, data, addData } = this.props;
-    if (!data) {
-      addData(obj);
-      handleSidebar(false, true);
-      resetForm({});
-    } else {
-      // updateData(values);
-      handleSidebar(false, true);
-    }
+class StageEducationSidebar extends Component {
+  initialState = {
+    id: "",
+    name: "",
+    startAt: "",
+    startEnd: "",
+  };
+  handleSubmit = (obj) => {
+    console.log(obj);
+    const { addData, parsedFilter, handleSidebar } = this.props;
+    // this.props.updateData(obj, params);
+    handleSidebar(false, true);
+
+    addData(obj, parsedFilter);
+    // this.props.handleSidebar(false, true);
   };
   render() {
     let { show, handleSidebar, data } = this.props;
-    // let dataId = "";
-    // if (data) {
-    //   dataId = data.id;
-    // }
-    // let dataInititalEdit = [];
     return (
       <div
         className={classnames("data-list-sidebar", {
@@ -34,21 +31,20 @@ class DataListSubjectSidebar extends Component {
         })}
       >
         <div className="data-list-sidebar-header mt-2 px-2 d-flex justify-content-between">
-          <h4>{data !== null ? "Cập nhật dữ liệu" : "Thêm dữ liệu"}</h4>
+          <h4>{data !== null ? "Cập nhật" : "Thêm dữ liệu"}</h4>
           <X size={20} onClick={() => handleSidebar(false, true)} />
         </div>
         <PerfectScrollbar
           className="data-list-fields px-2 mt-3"
           options={{ wheelPropagation: false }}
         >
-          <FormSubject
-            initialValues={this.initialValues}
+          <FormStage
             onSubmitForm={this.handleSubmit}
-            handleSidebar={this.handleSidebar}
+            initialValues={this.initialState}
           />
         </PerfectScrollbar>
       </div>
     );
   }
 }
-export default DataListSubjectSidebar;
+export default StageEducationSidebar;

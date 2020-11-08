@@ -18,15 +18,22 @@ import { getStudentActionSaga } from "./assistant/student";
 import { getTeacherActionSaga } from "./assistant/teacher";
 import { getClassActionSaga } from "./assistant/class";
 import { getSubjectActionSaga } from "./assistant/subject";
+import { getStageSaga } from "./assistant/stage";
 import {
   addClassSaga,
+  addSeasonSaga,
+  addSpecializationSaga,
+  addStageSaga,
   addSubjectSaga,
+  getSchedulesSaga,
   importExcelStudentEduSaga,
   importExcelTeacherEduSaga,
 } from "./educationSaga";
 import { getDataSemesterSaga } from "./schedule/semesterSaga";
 import { getDataSubjectSaga } from "./schedule/subjectSaga";
 import { getDataBothStudySaga } from "./schedule/bothStudySaga";
+import { getSeasonSaga } from "./assistant/season";
+import { getSpecializationSaga } from "./schedule/specialization";
 function* rootSaga() {
   //login //auth
   yield takeLatest(authType.LOGIN, loginActionSaga);
@@ -44,6 +51,8 @@ function* rootSaga() {
   yield takeLatest(assType.GET_DATA_TEACHER_ASS, getTeacherActionSaga);
   yield takeLatest(assType.GET_DATA_CLASS_ASS, getClassActionSaga);
   yield takeLatest(assType.GET_DATA_SUBJECT_ASS, getSubjectActionSaga);
+  yield takeLatest(assType.GET_DATA_STAGE, getStageSaga);
+  yield takeLatest(assType.GET_DATA_SEASON, getSeasonSaga);
   //education
   yield takeLatest(
     educationType.IMPORT_EXCEL_STUDENT,
@@ -55,11 +64,16 @@ function* rootSaga() {
   );
   yield takeLatest(educationType.ADD_CLASS, addClassSaga);
   yield takeLatest(educationType.ADD_SUBJECT, addSubjectSaga);
+  yield takeLatest(educationType.CREATE_STAGE, addStageSaga);
+  yield takeLatest(educationType.CREATE_SEASON, addSeasonSaga);
+  yield takeLatest(educationType.GET_DATA_SCHEDULES, getSchedulesSaga);
+  yield takeLatest(educationType.ADD_SEPCIALIZATION, addSpecializationSaga);
   /**
    * Schedule
    */
   yield takeLatest(scheduleType.GET_SEMESTER, getDataSemesterSaga);
   yield takeLatest(scheduleType.GET_SUBJECT_FROM_CLASS, getDataSubjectSaga);
   yield takeLatest(scheduleType.GET_BOTHSTUDY, getDataBothStudySaga);
+  yield takeLatest(scheduleType.GET_SPECIALIZATION, getSpecializationSaga);
 }
 export default rootSaga;

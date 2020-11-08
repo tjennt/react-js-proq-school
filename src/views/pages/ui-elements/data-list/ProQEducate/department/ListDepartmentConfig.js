@@ -5,6 +5,7 @@ import { history } from "../../../../../../history";
 import { ChevronLeft, ChevronRight, Edit, Plus, Trash } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
+import { getDataSchedules } from "../../../../../../redux/actions/education/index";
 import { getDataClass } from "../../../../../../redux/actions/dataListAssistance/index";
 import { getDataSemester } from "../../../../../../redux/actions/schedule/getDataSemster";
 import { getDataSubject } from "../../../../../../redux/actions/schedule/getDataSubject";
@@ -200,12 +201,23 @@ class ListDepartmentConfig extends Component {
   thumbView = this.props.thumbView;
 
   componentDidMount() {
-    const { getDataClass, getDataSemester } = this.props;
+    const {
+      getDataClass,
+      getDataSemester,
+      getDataSchedules,
+      parsedFilter,
+    } = this.props;
     getDataSemester();
     let params = {
       limit: 1000,
     };
+    const paginate = {
+      page: 1,
+      limit: 10,
+    };
+    let limit = parsedFilter || paginate;
     getDataClass(params);
+    getDataSchedules(limit);
   }
 
   handleFilter = (e) => {
@@ -340,4 +352,5 @@ export default connect(mapStateToProps, {
   getDataSemester,
   getDataSubject,
   getDataBothStudy,
+  getDataSchedules,
 })(ListDepartmentConfig);

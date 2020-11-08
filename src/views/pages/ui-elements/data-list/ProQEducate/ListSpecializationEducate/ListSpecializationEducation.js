@@ -12,18 +12,12 @@ import {
 } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import {
-  getDataClass,
-  getDataStage,
-} from "../../../../../../redux/actions/dataListAssistance/index";
-import { getDataSpecialization } from "../../../../../../redux/actions/schedule/getDataSpecialization";
-import { addClass } from "../../../../../../redux/actions/education/index";
-import Sidebar from "./DataListClassSidebar";
+import { getData } from "../../../../../../redux/actions/dataListAssistance/index";
+import { importExcelStudent } from "../../../../../../redux/actions/education/index";
+import Sidebar from "./SpecializationSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-
-import Moment from "react-moment";
 import {
   Button,
   Col,
@@ -31,17 +25,22 @@ import {
   DropdownMenu,
   DropdownToggle,
   Row,
+  Table,
   UncontrolledDropdown,
 } from "reactstrap";
-import { message, Popconfirm } from "antd";
+import { Popconfirm, message } from "antd";
+import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
+import { getDataSpecialization } from "../../../../../../redux/actions/schedule/getDataSpecialization";
+import { addSpecialization } from "../../../../../../redux/actions/education/index";
+import { getDataSubject } from "../../../../../../redux/actions/dataListAssistance/index";
+
 const ActionsComponent = (props) => {
   function confirm(e) {
-    props.deleteRow(props.row);
+    props.changeStatus(props.row);
   }
-
   function cancel(e) {
-    message.error("Hủy xóa dữ liệu !");
+    message.error("Hủy thay đổi trạng thái  !");
   }
   return (
     <div className="data-list-action">
@@ -53,7 +52,7 @@ const ActionsComponent = (props) => {
         }}
       />
       <Popconfirm
-        title="Bạn có chắc chắn xóa dữ liệu không?"
+        title="Bạn có chắc chắn xóa sinh viên?"
         onConfirm={confirm}
         onCancel={cancel}
         okText="Có "
@@ -64,17 +63,16 @@ const ActionsComponent = (props) => {
     </div>
   );
 };
-
-class ListClassEducateConfig extends Component {
+class ListSpecializationEducation extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
-      props.dataList.dataClass !== state.data.length ||
+      props.dataList.dataSpecial !== state.data.length ||
       state.currentPage !== props.parsedFilter.page
     ) {
       return {
-        data: props.dataList.dataClass,
-        totalPages: props.dataList.total_page_class,
-        totalRecords: props.dataList.total_record_class,
+        data: props.dataList.dataSpecial,
+        totalPages: props.dataList.total_page_special,
+        totalRecords: props.dataList.total_record_student,
       };
     }
 
@@ -84,14 +82,13 @@ class ListClassEducateConfig extends Component {
   state = {
     data: [],
     totalPages: 0,
-    visible: false,
     currentPage: 0,
     columns: [
       {
-        name: "Lớp",
-        selector: "class",
+        name: "Chuyên ngành",
+        selector: "name",
         sortable: true,
-        minWidth: "200px",
+        // minWidth: "300px",
         cell: (row) => (
           <p title={row.name} className="text-truncate text-bold-500 mb-0">
             {row.name}
@@ -99,37 +96,8 @@ class ListClassEducateConfig extends Component {
         ),
       },
       {
-        name: "Khóa",
-        selector: "stage",
-        sortable: true,
-        minWidth: "200px",
-        cell: (row) => (
-          <p
-            title={row.stage.name}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.stage.name}
-          </p>
-        ),
-      },
-      {
-        name: "Chuyên ngành",
-        selector: "specialization",
-        sortable: true,
-        minWidth: "200px",
-        cell: (row) => (
-          <p
-            title={row.specialization.name}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.specialization.name}
-          </p>
-        ),
-      },
-
-      {
-        name: "Thời gian bắt đầu",
-        selector: "dateCreate",
+        name: " Ngày Tạo ",
+        selector: "date",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => <Moment format="DD/MM/YYYY">{row.createdAt}</Moment>,
@@ -155,34 +123,30 @@ class ListClassEducateConfig extends Component {
     sidebar: false,
     currentData: null,
     selected: [],
+    visible: false,
     totalRecords: 0,
     sortIndex: [],
     addNew: "",
+    file: "",
   };
 
   thumbView = this.props.thumbView;
 
   componentDidMount() {
-    const { parsedFilter } = this.props;
+    const { parsedFilter, getDataSpecialization, getDataSubject } = this.props;
 
     const paginate = {
       page: 1,
       limit: 10,
     };
-    const getAll = {
-      page: "",
-      limit: 1000,
-    };
     let limit = parsedFilter || paginate;
-    this.props.getDataClass(limit);
-    this.props.getDataStage(getAll);
-    this.props.getDataSpecialization(getAll);
+    let dataAll = {
+      page: "",
+      limit: 10000,
+    };
+    getDataSpecialization(limit);
+    getDataSubject(dataAll);
   }
-  handleFilter = (e) => {
-    this.setState({ value: e.target.value });
-    this.props.filterData(e.target.value);
-  };
-
   handleSidebar = (boolean, addNew = false) => {
     this.setState({ sidebar: boolean });
     if (addNew === true) this.setState({ currentData: null, addNew: true });
@@ -192,9 +156,9 @@ class ListClassEducateConfig extends Component {
   //   this.props.getData(this.props.parsedFilter);
   //   if (this.state.data.length - 1 === 0) {
   //     history.push(
-  //       `/accountAdmin?page=${parseInt(
+  //       `/education/student?page=${parseInt(
   //         this.props.parsedFilter.page - 1
-  //       )}&perPage=${this.props.parsedFilter.perPage}`
+  //       )}&limit=${this.props.parsedFilter.perPage}`
   //     );
   //     this.props.getData({
   //       page: this.props.parsedFilter.page - 1,
@@ -203,29 +167,27 @@ class ListClassEducateConfig extends Component {
   //   }
   // };
 
-  handleCurrentData = (obj) => {
-    this.setState({ currentData: obj });
-    this.handleSidebar(true);
-  };
-
   handlePagination = (page) => {
-    let { parsedFilter, getDataClass } = this.props;
+    let { parsedFilter, getData } = this.props;
     const { limit } = parsedFilter;
     let perPage = limit || 10;
-    history.push(`/education/class?page=${page.selected + 1}&limit=${perPage}`);
-    getDataClass({ page: page.selected + 1, limit: perPage });
+    history.push(
+      `/education/student?page=${page.selected + 1}&limit=${perPage}`
+    );
+    getData({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
   handleRowsPerPage = (value) => {
-    let { parsedFilter, getDataClass } = this.props;
+    let { parsedFilter, getData } = this.props;
 
     let page = parsedFilter.page !== undefined ? parsedFilter.page : 1;
-    history.push(`/education/class?page=${page}&limit=${value}`);
+    history.push(`/education/student?page=${page}&limit=${value}`);
     this.setState({ rowsPerPage: value });
-    getDataClass({ page: parsedFilter.page, limit: value });
+    getData({ page: parsedFilter.page, limit: value });
   };
+
   render() {
-    let { columns, data, value, currentData, sidebar } = this.state;
+    let { columns, value, currentData, sidebar, data } = this.state;
     return (
       <div className="data-list">
         <Col lg="12">
@@ -253,10 +215,12 @@ class ListClassEducateConfig extends Component {
                   }}
                 >
                   <span className="align-middle mx-50">{`${
-                    this.props.parsedFilter.page
-                      ? this.props.parsedFilter.page
+                    this.state.totalRecords
+                  } of ${
+                    this.props.parsedFilter.limit
+                      ? this.props.parsedFilter.limit
                       : 1
-                  } of ${this.state.totalRecords}`}</span>
+                  }`}</span>
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>
@@ -297,11 +261,15 @@ class ListClassEducateConfig extends Component {
         </Col>
         <DataTable
           className="dataTable-custom"
-          data={value.length ? "" : data}
+          data={value.length ? data : data}
           columns={columns}
-          noHeader
-          noDataComponent="Không có dữ liệu"
-          subHeader
+          noHeader={true}
+          fixedHeader
+          fixedHeaderScrollHeight={"55vh"}
+          noDataComponent="Không có dữ liệu học sinh"
+          expandableRows
+          expandOnRowClicked
+          expandableRowsComponent={<ExpandableTable data={data} />}
         />
         <ReactPaginate
           previousLabel={<ChevronLeft size={15} />}
@@ -319,12 +287,11 @@ class ListClassEducateConfig extends Component {
           onPageChange={(page) => this.handlePagination(page)}
         />
         <Sidebar
-          stage={this.props.stage}
-          specialization={this.props.specialization}
+          subject={this.props.subject}
           show={sidebar}
           data={currentData}
           updateData={this.props.updateData}
-          addData={this.props.addClass}
+          addData={this.props.addSpecialization}
           handleSidebar={this.handleSidebar}
           parsedFilter={this.props.parsedFilter}
         />
@@ -338,18 +305,36 @@ class ListClassEducateConfig extends Component {
     );
   }
 }
-
+const ExpandableTable = ({ data }) => {
+  return (
+    <Table responsive striped>
+      <thead>
+        <tr>
+          <th>Môn </th>
+        </tr>
+      </thead>
+      <tbody>
+        {data &&
+          data.subject.map((item) => (
+            <tr key={item._id}>
+              <td> {item.name} </td>
+            </tr>
+          ))}
+      </tbody>
+    </Table>
+  );
+};
 const mapStateToProps = (state) => {
   return {
-    dataList: state.assistantData,
-    stage: state.assistantData.dataStage,
-    specialization: state.dataSchedule.dataSpecial,
+    dataList: state.dataSchedule,
+    subject: state.assistantData.dataSubject,
   };
 };
 
 export default connect(mapStateToProps, {
-  getDataClass,
-  addClass,
-  getDataStage,
+  getData,
+  importExcelStudent,
   getDataSpecialization,
-})(ListClassEducateConfig);
+  getDataSubject,
+  addSpecialization,
+})(ListSpecializationEducation);

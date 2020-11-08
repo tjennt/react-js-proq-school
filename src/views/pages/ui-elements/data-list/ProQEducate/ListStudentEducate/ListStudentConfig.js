@@ -127,20 +127,6 @@ class ListStudentEducation extends Component {
         ),
       },
       {
-        name: "Lớp",
-        selector: "classCode",
-        sortable: true,
-        // minWidth: "300px",
-        cell: (row) => (
-          <p
-            title={row.classId.className}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.classId.className}
-          </p>
-        ),
-      },
-      {
         name: " Ngày Tạo ",
         selector: "date",
         sortable: true,
@@ -362,13 +348,10 @@ class ListStudentEducation extends Component {
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
-          noHeader
-          pagination
+          noHeader={true}
           fixedHeader
           fixedHeaderScrollHeight={"55vh"}
           noDataComponent="Không có dữ liệu học sinh"
-          paginationServer
-          subHeader
           expandableRows
           expandOnRowClicked
           expandableRowsComponent={<ExpandableTable />}

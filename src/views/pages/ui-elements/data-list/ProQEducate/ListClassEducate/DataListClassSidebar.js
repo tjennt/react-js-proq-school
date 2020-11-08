@@ -7,16 +7,20 @@ class ClassEducateSidebar extends Component {
   initialValues = {
     id: "",
     nameClass: "",
-    idClass: "",
-    start_time: "",
-    end_time: "",
+    stage: "",
+    specializate: "",
   };
 
   handleSubmit = (obj, { resetForm }) => {
     const { handleSidebar, data, addData, parsedFilter } = this.props;
+    const panigate = {
+      page: 1,
+      limit: 10,
+    };
+    let params = parsedFilter || panigate;
     if (!data) {
-      addData(obj, parsedFilter);
-      // handleSidebar(false, true);
+      addData(obj, params);
+      handleSidebar(false, true);
       resetForm({});
     } else {
       // updateData(values);
@@ -46,6 +50,8 @@ class ClassEducateSidebar extends Component {
           options={{ wheelPropagation: false }}
         >
           <FormClass
+            stage={this.props.stage}
+            specialization={this.props.specialization}
             initialValues={this.initialValues}
             onSubmitForm={this.handleSubmit}
             handleSidebar={this.handleSidebar}

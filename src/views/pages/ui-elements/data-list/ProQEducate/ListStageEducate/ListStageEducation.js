@@ -12,18 +12,14 @@ import {
 } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import {
-  getDataClass,
-  getDataStage,
-} from "../../../../../../redux/actions/dataListAssistance/index";
-import { getDataSpecialization } from "../../../../../../redux/actions/schedule/getDataSpecialization";
-import { addClass } from "../../../../../../redux/actions/education/index";
-import Sidebar from "./DataListClassSidebar";
+import { getDataStage } from "../../../../../../redux/actions/dataListAssistance/index";
+import { importExcelStudent } from "../../../../../../redux/actions/education/index";
+
+import { addStage } from "../../../../../../redux/actions/education/index";
+import Sidebar from "./StageEducationSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-
-import Moment from "react-moment";
 import {
   Button,
   Col,
@@ -33,15 +29,18 @@ import {
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
-import { message, Popconfirm } from "antd";
+import { Popconfirm, message, Modal, Upload } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
+import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
+const { Dragger } = Upload;
+
 const ActionsComponent = (props) => {
   function confirm(e) {
-    props.deleteRow(props.row);
+    props.changeStatus(props.row);
   }
-
   function cancel(e) {
-    message.error("Hủy xóa dữ liệu !");
+    message.error("Hủy thay đổi trạng thái  !");
   }
   return (
     <div className="data-list-action">
@@ -53,7 +52,7 @@ const ActionsComponent = (props) => {
         }}
       />
       <Popconfirm
-        title="Bạn có chắc chắn xóa dữ liệu không?"
+        title="Bạn có chắc chắn xóa sinh viên?"
         onConfirm={confirm}
         onCancel={cancel}
         okText="Có "
@@ -64,17 +63,19 @@ const ActionsComponent = (props) => {
     </div>
   );
 };
-
-class ListClassEducateConfig extends Component {
+class ListStageEducation extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
-      props.dataList.dataClass !== state.data.length ||
+      props.dataList.dataStage !== state.data.length ||
       state.currentPage !== props.parsedFilter.page
     ) {
       return {
-        data: props.dataList.dataClass,
-        totalPages: props.dataList.total_page_class,
-        totalRecords: props.dataList.total_record_class,
+        data: props.dataList.dataStage,
+        totalPages: props.dataList.toal_page_stage,
+        // currentPage: parseInt(props.parsedFilter.page) - 1,
+        // rowsPerPage: parseInt(props.parsedFilter.perPage),
+        totalRecords: props.dataList.total_record_student,
+        // sortIndex: props.dataList.sortIndex,
       };
     }
 
@@ -84,14 +85,13 @@ class ListClassEducateConfig extends Component {
   state = {
     data: [],
     totalPages: 0,
-    visible: false,
     currentPage: 0,
     columns: [
       {
-        name: "Lớp",
-        selector: "class",
+        name: "Khóa",
+        selector: "stage",
         sortable: true,
-        minWidth: "200px",
+        minWidth: "300px",
         cell: (row) => (
           <p title={row.name} className="text-truncate text-bold-500 mb-0">
             {row.name}
@@ -99,40 +99,18 @@ class ListClassEducateConfig extends Component {
         ),
       },
       {
-        name: "Khóa",
-        selector: "stage",
+        name: " Ngày bắt đầu",
+        selector: "date_start",
         sortable: true,
-        minWidth: "200px",
-        cell: (row) => (
-          <p
-            title={row.stage.name}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.stage.name}
-          </p>
-        ),
+        minWidth: "300px",
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.startAt}</Moment>,
       },
       {
-        name: "Chuyên ngành",
-        selector: "specialization",
+        name: " Ngày kết thúc",
+        selector: "date_end",
         sortable: true,
-        minWidth: "200px",
-        cell: (row) => (
-          <p
-            title={row.specialization.name}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.specialization.name}
-          </p>
-        ),
-      },
-
-      {
-        name: "Thời gian bắt đầu",
-        selector: "dateCreate",
-        sortable: true,
-        // minWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.createdAt}</Moment>,
+        minWidth: "300px",
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.endAt}</Moment>,
       },
       {
         name: "Thao tác",
@@ -155,28 +133,24 @@ class ListClassEducateConfig extends Component {
     sidebar: false,
     currentData: null,
     selected: [],
+    visible: false,
     totalRecords: 0,
     sortIndex: [],
     addNew: "",
+    file: "",
   };
 
   thumbView = this.props.thumbView;
 
   componentDidMount() {
-    const { parsedFilter } = this.props;
+    const { parsedFilter, getDataStage } = this.props;
 
     const paginate = {
       page: 1,
       limit: 10,
     };
-    const getAll = {
-      page: "",
-      limit: 1000,
-    };
     let limit = parsedFilter || paginate;
-    this.props.getDataClass(limit);
-    this.props.getDataStage(getAll);
-    this.props.getDataSpecialization(getAll);
+    getDataStage(limit);
   }
   handleFilter = (e) => {
     this.setState({ value: e.target.value });
@@ -192,9 +166,9 @@ class ListClassEducateConfig extends Component {
   //   this.props.getData(this.props.parsedFilter);
   //   if (this.state.data.length - 1 === 0) {
   //     history.push(
-  //       `/accountAdmin?page=${parseInt(
+  //       `/education/student?page=${parseInt(
   //         this.props.parsedFilter.page - 1
-  //       )}&perPage=${this.props.parsedFilter.perPage}`
+  //       )}&limit=${this.props.parsedFilter.perPage}`
   //     );
   //     this.props.getData({
   //       page: this.props.parsedFilter.page - 1,
@@ -202,32 +176,81 @@ class ListClassEducateConfig extends Component {
   //     });
   //   }
   // };
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+  handleOk = (e) => {
+    let { parsedFilter, importExcelStudent } = this.props;
 
+    const { file } = this.state;
+    let fileReq = file.file.originFileObj;
+    importExcelStudent(fileReq, parsedFilter);
+    this.setState({
+      ...this.state,
+      visible: false,
+    });
+  };
+
+  handleCancel = (e) => {
+    this.setState({
+      visible: false,
+      excel: null,
+    });
+  };
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
     this.handleSidebar(true);
   };
-
+  onChangeExcel = (file) => {
+    this.setState({
+      ...this.state,
+      file: file,
+    });
+  };
   handlePagination = (page) => {
-    let { parsedFilter, getDataClass } = this.props;
+    let { parsedFilter, getData } = this.props;
     const { limit } = parsedFilter;
     let perPage = limit || 10;
-    history.push(`/education/class?page=${page.selected + 1}&limit=${perPage}`);
-    getDataClass({ page: page.selected + 1, limit: perPage });
+    history.push(
+      `/education/student?page=${page.selected + 1}&limit=${perPage}`
+    );
+    getData({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
   handleRowsPerPage = (value) => {
-    let { parsedFilter, getDataClass } = this.props;
+    let { parsedFilter, getData } = this.props;
 
     let page = parsedFilter.page !== undefined ? parsedFilter.page : 1;
-    history.push(`/education/class?page=${page}&limit=${value}`);
+    history.push(`/education/student?page=${page}&limit=${value}`);
     this.setState({ rowsPerPage: value });
-    getDataClass({ page: parsedFilter.page, limit: value });
+    getData({ page: parsedFilter.page, limit: value });
   };
+
   render() {
-    let { columns, data, value, currentData, sidebar } = this.state;
+    let { columns, value, currentData, sidebar, data } = this.state;
     return (
       <div className="data-list">
+        <Modal
+          destroyOnClose={true}
+          title="Thêm dữ liệu từ file excel"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <Dragger
+            onChange={this.onChangeExcel}
+            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          >
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined />
+            </p>
+            <p className="ant-upload-hint">
+              Click vào đây để chọn file excel hoặc kéo thả từ máy tính của bạn
+            </p>
+          </Dragger>
+        </Modal>
         <Col lg="12">
           <Row>
             <Col lg="3">
@@ -253,10 +276,12 @@ class ListClassEducateConfig extends Component {
                   }}
                 >
                   <span className="align-middle mx-50">{`${
-                    this.props.parsedFilter.page
-                      ? this.props.parsedFilter.page
+                    this.state.totalRecords
+                  } of ${
+                    this.props.parsedFilter.limit
+                      ? this.props.parsedFilter.limit
                       : 1
-                  } of ${this.state.totalRecords}`}</span>
+                  }`}</span>
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>
@@ -299,9 +324,10 @@ class ListClassEducateConfig extends Component {
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
-          noHeader
-          noDataComponent="Không có dữ liệu"
-          subHeader
+          noHeader={true}
+          fixedHeader
+          fixedHeaderScrollHeight={"55vh"}
+          noDataComponent="Không có dữ liệu học sinh"
         />
         <ReactPaginate
           previousLabel={<ChevronLeft size={15} />}
@@ -319,12 +345,10 @@ class ListClassEducateConfig extends Component {
           onPageChange={(page) => this.handlePagination(page)}
         />
         <Sidebar
-          stage={this.props.stage}
-          specialization={this.props.specialization}
           show={sidebar}
           data={currentData}
           updateData={this.props.updateData}
-          addData={this.props.addClass}
+          addData={this.props.addStage}
           handleSidebar={this.handleSidebar}
           parsedFilter={this.props.parsedFilter}
         />
@@ -342,14 +366,11 @@ class ListClassEducateConfig extends Component {
 const mapStateToProps = (state) => {
   return {
     dataList: state.assistantData,
-    stage: state.assistantData.dataStage,
-    specialization: state.dataSchedule.dataSpecial,
   };
 };
 
 export default connect(mapStateToProps, {
-  getDataClass,
-  addClass,
   getDataStage,
-  getDataSpecialization,
-})(ListClassEducateConfig);
+  importExcelStudent,
+  addStage,
+})(ListStageEducation);
