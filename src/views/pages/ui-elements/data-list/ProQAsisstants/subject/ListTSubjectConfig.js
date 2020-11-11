@@ -36,17 +36,6 @@ class ListTSubjectConfig extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "ID",
-        selector: "id",
-        sortable: true,
-        minWidth: "250px",
-        cell: (row) => (
-          <p title={row._id} className="text-truncate text-bold-500 mb-0">
-            {row._id}
-          </p>
-        ),
-      },
-      {
         name: "Môn học",
         selector: "subject",
         sortable: true,

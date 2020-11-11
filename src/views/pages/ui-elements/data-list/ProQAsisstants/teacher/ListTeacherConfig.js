@@ -4,6 +4,7 @@ import classnames from "classnames";
 import { history } from "../../../../../../history";
 // import { Plus } from "react-feather";
 import { connect } from "react-redux";
+import { API_ENDPOINT } from "../../../../../../redux/constants/index";
 import "antd/dist/antd.css";
 import { getDataTeacher } from "../../../../../../redux/actions/dataListAssistance/index";
 import Sidebar from "./DataListTeachertSidebar";
@@ -61,8 +62,8 @@ class ListTeacherConfig extends Component {
         minWidth: "200px",
         cell: (row) => (
           <img
-            height="100"
-            src={`${API_ENDPOINT_IMG}/${row.avatar}`}
+            height="50px"
+            src={`${API_ENDPOINT}/${row.avatar}`}
             alt={row.avatar}
           />
         ),

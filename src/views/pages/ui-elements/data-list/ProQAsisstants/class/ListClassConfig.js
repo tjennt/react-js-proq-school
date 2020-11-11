@@ -56,8 +56,8 @@ class ListClassConfig extends Component {
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.className} className="text-truncate text-bold-500 mb-0">
-            {row.className}
+          <p title={row.name} className="text-truncate text-bold-500 mb-0">
+            {row.name}
           </p>
         ),
       },
@@ -75,24 +75,40 @@ class ListClassConfig extends Component {
           </p>
         ),
       },
-
+      {
+        name: "Khóa ",
+        selector: "stage",
+        sortable: true,
+        minWidth: "200px",
+        cell: (row) => (
+          <p
+            title={row.stage.name}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.stage.name}
+          </p>
+        ),
+      },
+      {
+        name: "Chuyên ngành",
+        selector: "specialization",
+        sortable: true,
+        minWidth: "200px",
+        cell: (row) => (
+          <p
+            title={row.specialization.name}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.specialization.name}
+          </p>
+        ),
+      },
       {
         name: "Thời gian bắt đầu",
         selector: "dateCreate",
         sortable: true,
         // minWidth: "300px",
-        cell: (row) => (
-          <Moment format="DD/MM/YYYY">{row.dateCreateClass}</Moment>
-        ),
-      },
-      {
-        name: "Thời gian kết thúc",
-        selector: "dateCreate",
-        sortable: true,
-        // minWidth: "300px",
-        cell: (row) => (
-          <Moment format="DD/MM/YYYY">{row.dateCreateClass}</Moment>
-        ),
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.createdAt}</Moment>,
       },
     ],
     allData: [],

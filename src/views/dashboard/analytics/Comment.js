@@ -21,7 +21,7 @@ const CustomHeader = (props) => {
   return (
     <Row>
       <Col lg="3">
-        <h2>Thôn tin lớp </h2>
+        <h2>Nhận xét của giáo viên</h2>
       </Col>
       <Col lg="3">
         <Button onClick={showModal} className=" ml-2" color="danger">
@@ -32,7 +32,7 @@ const CustomHeader = (props) => {
   );
 };
 
-class TableTotal extends Component {
+class Comment extends Component {
   static getDerivedStateFromProps(props, state) {
     if (props.dataList.dataClass !== state.data.length) {
       return {
@@ -50,66 +50,29 @@ class TableTotal extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Môn",
-        selector: "subject",
+        name: "Tên giáo viên",
+        selector: "nameTeacher",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
           <p title={row.subject} className="text-truncate text-bold-500 mb-0">
-            PHP
-          </p>
-        ),
-      },
-      {
-        name: "Lớp",
-        selector: "class",
-        sortable: true,
-        minWidth: "200px",
-        cell: (row) => (
-          <p title={row.class} className="text-truncate text-bold-500 mb-0">
-            WD14305
-          </p>
-        ),
-      },
-      {
-        name: "Số lượng SV Vắng",
-        selector: "studentFail",
-        sortable: true,
-        // minWidth: "300px",
-        cell: (row) => (
-          <p
-            title={row.studentFail}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            20
-          </p>
-        ),
-      },
-      {
-        name: "Sỉ số",
-        selector: "total",
-        sortable: true,
-        // minWidth: "300px",
-        cell: (row) => (
-          <p title={row.total} className="text-truncate text-bold-500 mb-0">
-            50
-          </p>
-        ),
-      },
-      {
-        name: "Giảng viên ",
-        selector: "teacher",
-        sortable: true,
-        // minWidth: "300px",
-        cell: (row) => (
-          <p title={row.teacher} className="text-truncate text-bold-500 mb-0">
-            {/* {row.created_at} */}
             Mua TC
           </p>
         ),
       },
       {
-        name: "Ngày",
+        name: "Nhận xét",
+        selector: "class",
+        sortable: true,
+        minWidth: "200px",
+        cell: (row) => (
+          <p title={row.class} className="text-truncate text-bold-500 mb-0">
+            Sửa máy lạnh nóng quá
+          </p>
+        ),
+      },
+      {
+        name: "Ngày nhận xét",
         selector: "date",
         cell: (row) => (
           <p title={row.dae} className="text-truncate text-bold-500 mb-0">
@@ -212,4 +175,4 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getData,
-})(TableTotal);
+})(Comment);

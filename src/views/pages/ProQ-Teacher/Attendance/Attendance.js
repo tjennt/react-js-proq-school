@@ -15,9 +15,9 @@ const Attendance = () => {
   return (
     <React.Fragment>
       <BreadCrumbs
-        breadCrumbTitle="Attendance"
-        breadCrumbParent="GeneralTeacher"
-        breadCrumbActive="Attendance"
+        breadCrumbTitle="Giáo viên"
+        breadCrumbParent="Danh sách"
+        breadCrumbActive="Điểm danh "
       />
       <Row>
         <Col sm="12">

@@ -5,10 +5,15 @@ import { Switch } from "antd";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import queryString from "query-string";
-import { getData } from "../../../../../redux/actions/dataListAssistance/index";
+import {
+  getDataSchedulesTeacherId,
+  schedule,
+} from "../../../../../redux/actions/teacher/index";
 import "../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
+import Moment from "react-moment";
+import { API_ENDPOINT_IMG } from "../../../../../redux/constants";
 // import { Popconfirm, message } from "antd";
 const selectedStyle = {
   rows: {
@@ -23,13 +28,14 @@ const selectedStyle = {
   },
 };
 const ActionsComponent = (props) => {
+  const { row } = props;
   function onChange(checked) {
-    props.switchAtten(checked);
+    props.switchAtten(checked, row);
   }
   return (
     <div className="data-list-action">
       <Switch
-        defaultChecked={props.switch ? true : false}
+        defaultChecked={row.status ? true : false}
         // checked={props.switch}
         onChange={onChange}
         className="cursor-pointer mr-1"
@@ -43,11 +49,10 @@ const ActionsComponent = (props) => {
 };
 
 class ListStudentEducation extends Component {
-  parsedFilter = queryString.parse(this.props.location.search);
   static getDerivedStateFromProps(props, state) {
-    if (props.dataList.data !== state.data.length) {
+    if (props.dataList.dataDetail !== state.data.length) {
       return {
-        data: props.dataList.data,
+        data: props.dataList.dataDetail,
         totalPages: props.dataList.totalPages,
       };
     }
@@ -64,17 +69,12 @@ class ListStudentEducation extends Component {
         name: "Ảnh",
         selector: "img",
         minWidth: "220px",
-        // cell: (row) => <img src={row.img} height="100" alt={row.name} />,
-      },
-      {
-        name: "Mã số sinh viên",
-        selector: "id",
-        sortable: true,
-        minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
-            {/* {row.fullname} */}Ps09912
-          </p>
+          <img
+            src={`${API_ENDPOINT_IMG}/${row.avatar}`}
+            height="100"
+            alt={row.avatar}
+          />
         ),
       },
       {
@@ -83,23 +83,17 @@ class ListStudentEducation extends Component {
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
-            {/* {row.fullname} */}
-            Châu Thế Linh
+          <p title={row.fullName} className="text-truncate text-bold-500 mb-0">
+            {row.fullName}
           </p>
         ),
       },
       {
-        name: "Ghi chú",
-        selector: "note",
+        name: "Ngày",
+        selector: "date",
         sortable: true,
         // minWidth: "300px",
-        cell: (row) => (
-          <p title={row.code} className="text-truncate text-bold-500 mb-0">
-            {/* {row.code} */}
-            Abcxyz
-          </p>
-        ),
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.date}</Moment>,
       },
       {
         name: "Thao tác",
@@ -127,7 +121,9 @@ class ListStudentEducation extends Component {
 
   thumbView = this.props.thumbView;
   componentDidMount() {
-    this.props.getData();
+    let parsedFilter = queryString.parse(this.props.location.search);
+    let id = this.props.match.params.id;
+    this.props.getDataSchedulesTeacherId(parsedFilter, id);
   }
   handleFilter = (e) => {
     this.setState({ value: e.target.value });
@@ -153,8 +149,11 @@ class ListStudentEducation extends Component {
       });
     }
   };
-  switchAtten = (value) => {
-    console.log(value);
+  switchAtten = (value, data) => {
+    let id = this.props.match.params.id;
+    let parsedFilter = queryString.parse(this.props.location.search);
+    this.props.schedule(data, id, parsedFilter);
+    console.log(data);
     this.setState({
       ...this.state,
       switch: value,
@@ -169,7 +168,6 @@ class ListStudentEducation extends Component {
   };
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
-    console.log(obj);
     this.handleSidebar(true);
   };
 
@@ -194,8 +192,7 @@ class ListStudentEducation extends Component {
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
-          noHeader
-          subHeader
+          noHeader={true}
           pointerOnHover
           selectableRowsHighlight
           onSelectedRowsChange={this.onSelectedRowsChange}
@@ -208,10 +205,11 @@ class ListStudentEducation extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    dataList: state.assistantData,
+    dataList: state.dataTeacher,
   };
 };
 
 export default connect(mapStateToProps, {
-  getData,
+  getDataSchedulesTeacherId,
+  schedule,
 })(ListStudentEducation);

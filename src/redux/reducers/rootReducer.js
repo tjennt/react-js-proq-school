@@ -10,6 +10,7 @@ import DataTotalProductReducer from "./data-list/DashboardReducer";
 import assistantReducer from "./data-list/assistReducer";
 import scheduleReducer from "./schedule";
 import uiReducer from "./ui/loadingReducer";
+import teacherReducer from "./teacher";
 
 const persistConfig = {
   key: "root",
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   assistantData: assistantReducer,
   chatApp: chatReducer,
   dataSchedule: scheduleReducer,
+  dataTeacher: teacherReducer,
   ui: uiReducer,
 });
 

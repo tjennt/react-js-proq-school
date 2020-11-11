@@ -9,6 +9,7 @@ import "../../../assets/scss/plugins/extensions/recharts.scss";
 import "../../../assets/scss/plugins/charts/apex-charts.scss";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
+import CommentStudent from "./Comment";
 import CustomersChart from "./Customers";
 import {
   getDataTotalProduct,
@@ -119,17 +120,20 @@ class AnalyticsDashboard extends React.Component {
               </Col>
             </Row>
           </Col>
-          <Col lg="4" md="6" sm="12">
+          <Col lg="3" md="6" sm="12">
             <OrdersReceived
               dataPubCommission={this.props.dataTotalPubCommission}
             />
           </Col>
-          <Col lg="4" md="6" sm="12">
+          <Col lg="3" md="6" sm="12">
             <MoneyReceivedCard
               catbackCommission={this.props.catback_commission}
             />
           </Col>
-          <Col lg="4" md="6" sm="12">
+          <Col lg="3" md="6" sm="12">
+            <MoneyReceivedUser UserCommission={this.props.user_commission} />
+          </Col>
+          <Col lg="3" md="6" sm="12">
             <MoneyReceivedUser UserCommission={this.props.user_commission} />
           </Col>
         </Row>
@@ -152,8 +156,11 @@ class AnalyticsDashboard extends React.Component {
               labelColor={$label_color}
             />
           </Col>
-          <Col>
+          <Col lg="12">
             <TableTotal />
+          </Col>
+          <Col lg="12" className="mt-4">
+            <CommentStudent />
           </Col>
         </Row>
       </React.Fragment>

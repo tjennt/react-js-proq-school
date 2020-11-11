@@ -20,7 +20,6 @@ export function* loginActionSaga({ payload }) {
       setUserCookie(data.payload.token);
       yield put(hideLoading());
       yield put(changeRole(data.payload.role.name));
-      yield put(changeRole("admin"));
       switch (data.payload.role.name) {
         case "admin":
           history.push("/");
@@ -46,12 +45,16 @@ export function* loginWithGoogleSaga({ payload }) {
     const { data } = res;
     if (data.success === true) {
       setUserCookie(data.payload.token);
-      yield put(changeRole(data.payload.access));
       yield put(hideLoading());
       switch (data.payload.access) {
         case "student":
+          yield put(changeRole(data.payload.access));
           history.push("/student/news");
           localStorage.setItem("role", data.payload.access);
+          break;
+        case "teacher":
+          history.push("/");
+          yield put(changeRole(data.payload.access));
           break;
         default:
           return false;

@@ -61,7 +61,7 @@ class ListStudentConfig extends Component {
         minWidth: "200px",
         cell: (row) => (
           <img
-            height="100"
+            height="70px"
             src={`${API_ENDPOINT_IMG}/${row.avatar}`}
             alt={row.avatar}
           />
@@ -99,10 +99,10 @@ class ListStudentConfig extends Component {
         // minWidth: "300px",
         cell: (row) => (
           <p
-            title={row.classId.className}
+            title={row.class.name}
             className="text-truncate text-bold-500 mb-0"
           >
-            {row.classId.className}
+            {row.class.name}
           </p>
         ),
       },
@@ -111,7 +111,7 @@ class ListStudentConfig extends Component {
         selector: "date",
         sortable: true,
         // minWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.createAt}</Moment>,
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.createdAt}</Moment>,
       },
     ],
     allData: [],
@@ -356,16 +356,16 @@ const ExpandableTable = ({ data }) => {
     <Table responsive striped>
       <thead>
         <tr>
-          <th>Email </th>
+          <th>Số điện thoại </th>
+          <th>Địa chỉ</th>
           <th>Ngày sinh</th>
-          <th>Chuyên ngành</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Chaulinh0302cr7@gmail.com</td>
-          <td> 03/02/200</td>
-          <td>Lập trình web </td>
+          <td>{data.phone}</td>
+          <td> {data.address}</td>
+          <td>{data.dob}</td>
         </tr>
       </tbody>
     </Table>

@@ -10,7 +10,7 @@ class MoneyReceivedUser extends React.Component {
         icon={<User className="warning" size={22} />}
         iconBg="warning"
         stat="1000"
-        statTitle="Sinh viên"
+        statTitle="Tổng sinh viên giỏi"
         options={MoneyReceived}
         series={ordersReceivedSeries}
         type="area"

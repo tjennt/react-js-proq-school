@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import { history } from "../../../../history";
-import { Eye } from "react-feather";
+import { ChevronLeft, ChevronRight, Eye } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import queryString from "query-string";
-// import { getData } from "./../../../../../redux/actions/dataListAssistance/index";
-import { getData } from "../../../../redux/actions/dataListAssistance/index";
+import { getDataSchedulesTeacher } from "../../../../redux/actions/teacher/index";
 import "../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../assets/scss/pages/data-list.scss";
 import "../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
+import ReactPaginate from "react-paginate";
+import Moment from "react-moment";
 // import { Popconfirm, message } from "antd";
 const selectedStyle = {
   rows: {
@@ -22,6 +23,26 @@ const selectedStyle = {
       },
     },
   },
+};
+const chipText = {
+  0: "Chủ nhật",
+  1: "Thứ 2",
+  2: "Thứ 3",
+  3: "Thứ 4",
+  4: "Thứ 5",
+  5: "Thứ 6",
+  6: "Thứ 7",
+};
+const ActionDay = (props) => {
+  const { row } = props;
+  let weekDays = row.weekDays;
+  return (
+    <div style={{ display: "inline-flex" }}>
+      {weekDays.map((item) => (
+        <p key={item}> {chipText[item]}, </p>
+      ))}
+    </div>
+  );
 };
 const ActionsComponent = (props) => {
   return (
@@ -40,10 +61,10 @@ const ActionsComponent = (props) => {
 class ListStudentEducation extends Component {
   parsedFilter = queryString.parse(this.props.location.search);
   static getDerivedStateFromProps(props, state) {
-    if (props.dataList.dataClass !== state.data.length) {
+    if (props.dataList.data !== state.data.length) {
       return {
-        data: props.dataList.dataClass,
-        totalPages: props.dataList.totalPages,
+        data: props.dataList.data,
+        totalPages: props.dataList.total_page,
       };
     }
 
@@ -56,66 +77,74 @@ class ListStudentEducation extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "ID",
-        selector: "id",
-        sortable: true,
-        minWidth: "200px",
-        cell: (row) => (
-          <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
-            {/* {row.fullname} */}1
-          </p>
-        ),
-      },
-      {
         name: "Tên lớp",
         selector: "class",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
-            {/* {row.fullname} */}
-            WD14301
+          <p title={row.class} className="text-truncate text-bold-500 mb-0">
+            {row.class}
           </p>
         ),
       },
       {
-        name: "Phòng",
-        selector: "rooms",
+        name: "Môn",
+        selector: "subjects",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.code} className="text-truncate text-bold-500 mb-0">
-            {/* {row.code} */}
-            504P
+          <p title={row.subject} className="text-truncate text-bold-500 mb-0">
+            {row.subject}
+          </p>
+        ),
+      },
+
+      {
+        name: "Ca",
+        selector: "shift",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p title={row.shift} className="text-truncate text-bold-500 mb-0">
+            {row.shift}
           </p>
         ),
       },
       {
-        name: "Sỉ số",
-        selector: "classCode",
+        name: "Học kì",
+        selector: "season",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.classCode} className="text-truncate text-bold-500 mb-0">
-            {/* {row.classCode} */}
-            40
+          <p title={row.season} className="text-truncate text-bold-500 mb-0">
+            {row.season}
           </p>
         ),
       },
       {
-        name: "Hiện diện/vắng",
-        selector: "date",
+        name: "Thứ",
+        selector: "subjects",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p
-            title={row.created_at}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {/* {row.created_at} */}
-            22/30
+          <p title={row.subject} className="text-truncate text-bold-500 mb-0">
+            {row.subject}
           </p>
         ),
+      },
+      {
+        name: "Thứ",
+        selector: "subjects",
+        sortable: true,
+        minWidth: "300px",
+        cell: (row) => <ActionDay row={row} />,
+      },
+      {
+        name: "Ngày",
+        selector: "startAt",
+        sortable: true,
+        // maxWidth: "300px",
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.startAt}</Moment>,
       },
       {
         name: "Thao tác",
@@ -148,27 +177,14 @@ class ListStudentEducation extends Component {
 
   thumbView = this.props.thumbView;
   componentDidMount() {
-    this.props.getData();
+    this.props.getDataSchedulesTeacher();
   }
-  handleFilter = (e) => {
-    this.setState({ value: e.target.value });
-    this.props.filterData(e.target.value);
-  };
-
-  handleSidebar = (boolean, addNew = false) => {
-    this.setState({ sidebar: boolean });
-    if (addNew === true) this.setState({ currentData: null, addNew: true });
-  };
-  changeStatus = (row) => {
-    this.props.updateStatus(row, this.props.parsedFilter);
-    this.props.getData(this.props.parsedFilter);
-  };
   handleDelete = (row) => {
     this.props.deleteData(row);
     this.props.getData(this.props.parsedFilter);
     if (this.state.data.length - 1 === 0) {
       history.push(
-        `/accountAdmin?page=${parseInt(
+        `/teacher/attendance?page=${parseInt(
           this.props.parsedFilter.page - 1
         )}&perPage=${this.props.parsedFilter.perPage}`
       );
@@ -178,43 +194,26 @@ class ListStudentEducation extends Component {
       });
     }
   };
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
-  handleOk = (e) => {
-    this.setState({
-      ...this.state,
-      visible: false,
-    });
-  };
-
-  handleCancel = (e) => {
-    this.setState({
-      visible: false,
-      excel: null,
-    });
-  };
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
-    history.push(`${this.props.match.url}/${obj._id}`);
-    this.handleSidebar(true);
+    history.push(`${this.props.match.url}/${obj.id}`);
   };
 
   handlePagination = (page) => {
     let { parsedFilter, getData } = this.props;
     let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 4;
 
-    history.push(`/accountAdmin?page=${page.selected + 1}&perPage=${perPage}`);
-    getData({ page: page.selected + 1, perPage: perPage });
+    history.push(
+      `/teacher/attendance?page=${page.selected + 1}&limit=${perPage}`
+    );
+    getData({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
   updateState = (state) => {
     this.setState({ selectedRows: state.selectedRows }); // triggers MyComponent to re-render with new state
   };
   onRowClicked = (state) => {
-    history.push(`${this.props.match.url}/${state._id}`);
+    history.push(`${this.props.match.url}/${state.id}`);
   };
   render() {
     let { columns, value, data } = this.state;
@@ -224,15 +223,22 @@ class ListStudentEducation extends Component {
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
-          noHeader
-          pagination
+          noHeader={true}
           subHeader
           pointerOnHover
-          onSelectedRowsChange={this.updateState}
-          selectableRows
           onRowClicked={this.onRowClicked}
           highlightOnHover
           customStyles={selectedStyle}
+        />
+        <ReactPaginate
+          previousLabel={<ChevronLeft size={15} />}
+          nextLabel={<ChevronRight size={15} />}
+          breakLabel="..."
+          breakClassName="break-me"
+          pageCount={this.state.totalPages}
+          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+          activeClassName="active"
+          onPageChange={(page) => this.handlePagination(page)}
         />
       </div>
     );
@@ -240,10 +246,10 @@ class ListStudentEducation extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    dataList: state.assistantData,
+    dataList: state.dataTeacher,
   };
 };
 
 export default connect(mapStateToProps, {
-  getData,
+  getDataSchedulesTeacher,
 })(ListStudentEducation);

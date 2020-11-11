@@ -4,6 +4,7 @@ import * as trancType from "../constants/tranc";
 import * as assType from "../constants/assistant";
 import * as educationType from "../constants/education";
 import * as scheduleType from "../constants/schedule/index";
+import * as teacherType from "../constants/teacher";
 import {
   loginActionSaga,
   loginWithGoogleSaga,
@@ -34,6 +35,11 @@ import { getDataBothStudySaga } from "./schedule/bothStudySaga";
 import { getSeasonSaga } from "./assistant/season";
 import { getSpecializationSaga } from "./schedule/specialization";
 import { addSchedulesSaga } from "./schedule/schedulesSaga";
+import {
+  getSchedulesTeacgerSaga,
+  getTeacherDetailSaga,
+  scheduleSaga,
+} from "./teacherSaga";
 function* rootSaga() {
   //login //auth
   yield takeLatest(authType.LOGIN, loginActionSaga);
@@ -75,5 +81,8 @@ function* rootSaga() {
   yield takeLatest(scheduleType.GET_BOTHSTUDY, getDataBothStudySaga);
   yield takeLatest(scheduleType.GET_SPECIALIZATION, getSpecializationSaga);
   yield takeLatest(scheduleType.ADD_SCHEDULES, addSchedulesSaga);
+  yield takeLatest(teacherType.GET_SCHEDULES_TEACHER, getSchedulesTeacgerSaga);
+  yield takeLatest(teacherType.GET_SCHEDULE_ID, getTeacherDetailSaga);
+  yield takeLatest(teacherType.SCHEDULES, scheduleSaga);
 }
 export default rootSaga;
