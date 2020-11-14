@@ -1,7 +1,11 @@
 import { put, call, delay } from "redux-saga/effects";
 import { loginJWt, loginWithGoogle } from "../../api/auth";
 import { setUserCookie } from "../../../utility/auth/setAuthToken";
-import { changeRole, logoutSuccess } from "../../actions/auth/loginActions";
+import {
+  changeRole,
+  logoutSuccess,
+  loginSuccess,
+} from "../../actions/auth/loginActions";
 import { history } from "../../../history";
 import { toastSuccess, toastError } from "../../../utility/toast/toastHelper";
 import { hideLoading } from "../../actions/ui";
@@ -18,6 +22,7 @@ export function* loginActionSaga({ payload }) {
     yield delay(500);
     if (data.success === true) {
       setUserCookie(data.payload.token);
+      yield put(loginSuccess(data.payload));
       yield put(hideLoading());
       yield put(changeRole(data.payload.role.name));
       switch (data.payload.role.name) {
@@ -30,6 +35,7 @@ export function* loginActionSaga({ payload }) {
       toastSuccess(`Xin chào ${data.payload.role.name} ...`);
     }
   } catch (error) {
+    yield put(changeRole(""));
     yield put(hideLoading());
     toastError("Tài khoản hoặc mật khẩu không đúng!");
   }
@@ -43,18 +49,20 @@ export function* loginWithGoogleSaga({ payload }) {
     const res = yield call(loginWithGoogle, authData);
     yield delay(500);
     const { data } = res;
+    console.log(data);
     if (data.success === true) {
+      yield put(loginSuccess(data.payload));
       setUserCookie(data.payload.token);
       yield put(hideLoading());
+      yield put(changeRole(data.payload.access));
+
       switch (data.payload.access) {
         case "student":
-          yield put(changeRole(data.payload.access));
           history.push("/student/news");
           localStorage.setItem("role", data.payload.access);
           break;
         case "teacher":
           history.push("/");
-          yield put(changeRole(data.payload.access));
           break;
         default:
           return false;
@@ -62,12 +70,12 @@ export function* loginWithGoogleSaga({ payload }) {
       toastSuccess(`Xin chào ${data.payload.access} ...`);
     }
   } catch (error) {
+    yield put(changeRole(""));
     yield put(hideLoading());
     toastError("Tài khoản hoặc mật khẩu không đúng!");
   }
 }
 export function* logoutSaga() {
-  yield put(logoutSuccess());
   yield put(changeRole(""));
   localStorage.removeItem("role");
   history.push("/login");

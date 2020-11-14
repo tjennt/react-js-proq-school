@@ -11,7 +11,8 @@ import "../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../../assets/scss/pages/data-list.scss";
 import { Button } from "reactstrap";
 import { message, Popconfirm, Tooltip } from "antd";
-
+import io from "socket.io-client";
+let socket;
 const ActionsComponent = (props) => {
   function confirm(e) {
     props.deleteRow(props.row);
@@ -191,6 +192,10 @@ class ListAdminBlogConfig extends Component {
   thumbView = this.props.thumbView;
 
   componentDidMount() {
+    socket = io(
+      "http://ec2-54-255-188-210.ap-southeast-1.compute.amazonaws.com"
+    );
+    console.log(socket);
     this.props.getDataClass();
   }
   handleFilter = (e) => {

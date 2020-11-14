@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 const dashboard = lazy(() =>
   import("./views/dashboard/analytics/AnalyticsDashboard")
 );
+const Profile = lazy(() => import("./views/pages/Profile/index"));
 const studentAssistant = lazy(() =>
   import("./views/pages/ui-elements/data-list/ProQAsisstants/student/student")
 );
@@ -178,6 +179,7 @@ class AppRouter extends React.Component {
           <AppRoute exact path="/register" component={register} fullLayout />
           <AppRoute exact path="/" component={dashboard} />
           <AppRoute path="/assistant/search" component={searchStudent} />
+          <AppRoute path="/profile" component={Profile} />
           <AppRoute
             path="/assistant/list/student"
             component={studentAssistant}

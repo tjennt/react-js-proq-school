@@ -1,4 +1,5 @@
 import React from "react";
+import { history } from "../../../history";
 import {
   UncontrolledDropdown,
   DropdownMenu,
@@ -17,11 +18,18 @@ const UserDropdown = (props) => {
     e.preventDefault();
     props.logoutWithJWT();
   };
+  const profile = (e) => {
+    // history.push("/profile");
+  };
   return (
     <DropdownMenu right>
       <DropdownItem tag="a" href="#" onClick={(e) => logout(e)}>
         <Icon.Power size={14} className="mr-50" />
         <span className="align-middle">Đăng xuất</span>
+      </DropdownItem>
+      <DropdownItem tag="a" href="#" onClick={(e) => profile(e)}>
+        <Icon.User size={14} className="mr-50" />
+        <span className="align-middle">Tài khoản</span>
       </DropdownItem>
     </DropdownMenu>
   );
