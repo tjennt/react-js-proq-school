@@ -8,33 +8,33 @@ import { togglePinned, sendMessage } from "../../../redux/actions/chat/index";
 import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg";
 
 class ChatLog extends React.Component {
-  static getDerivedStateFromProps(props, state) {
-    if (
-      props.activeUser !== state.activeChat ||
-      props.activeChat !== state.activeChat
-    ) {
-      return {
-        activeUser: props.activeUser,
-        activeChat: props.activeChat,
-      };
-    }
-    // Return null if the state hasn't changed
-    return null;
-  }
+  // static getDerivedStateFromProps(props, state) {
+  //   if (
+  //     props.activeUser !== state.activeChat ||
+  //     props.activeChat !== state.activeChat
+  //   ) {
+  //     return {
+  //       activeUser: props.activeUser,
+  //       activeChat: props.activeChat,
+  //     };
+  //   }
+  //   // Return null if the state hasn't changed
+  //   return null;
+  // }
   state = {
     msg: "",
     activeUser: null,
     activeChat: null,
   };
 
-  handleSendMessage = (id, isPinned, text) => {
-    if (text.length > 0) {
-      this.props.sendMessage(id, isPinned, text);
-      this.setState({
-        msg: "",
-      });
-    }
-  };
+  // handleSendMessage = (id, isPinned, text) => {
+  //   if (text.length > 0) {
+  //     this.props.sendMessage(id, isPinned, text);
+  //     this.setState({
+  //       msg: "",
+  //     });
+  //   }
+  // };
   componentDidMount() {
     this.scrollToBottom();
   }
@@ -59,127 +59,105 @@ class ChatLog extends React.Component {
 
   render() {
     const { activeUser } = this.state;
-    let activeUserUid = activeUser && activeUser.uid ? activeUser.uid : null,
-      activeChat =
-        activeUser && activeUser.uid
-          ? this.props.chat.chats[activeUserUid]
-          : null;
+    // let activeUserUid = activeUser && activeUser.uid ? activeUser.uid : null,
+    //   activeChat =
+    //     activeUser && activeUser.uid
+    //       ? this.props.chat.chats[activeUserUid]
+    //       : null;
 
-    let renderChats =
-      activeChat && activeChat !== undefined && activeChat.msg
-        ? activeChat.msg.map((chat, i) => {
-            let renderSentTime = () => {
-              if (
-                i > 0 &&
-                !this.handleTime(chat.time, activeChat.msg[i - 1].time)
-              ) {
-                return (
-                  <div className="divider">
-                    <div className="divider-text">
-                      {new Date().getDate() +
-                        " " +
-                        new Date().toLocaleString("default", {
-                          month: "short",
-                        })}
-                    </div>
-                  </div>
-                );
-              }
-            };
-            let renderAvatar = () => {
-              if (i > 0) {
-                if (
-                  chat.isSent === true &&
-                  activeChat.msg[i - 1].isSent !== true
-                ) {
-                  return (
-                    <div className="chat-avatar">
-                      <div className="avatar m-0">
-                        <img
-                          src={userImg}
-                          alt="chat avatar"
-                          height="40"
-                          width="40"
-                        />
-                      </div>
-                    </div>
-                  );
-                } else if (chat.isSent !== true) {
-                  return (
-                    <div className="chat-avatar">
-                      <div className="avatar m-0">
-                        <img
-                          src={activeUser.photoURL}
-                          alt="chat avatar"
-                          height="40"
-                          width="40"
-                        />
-                      </div>
-                    </div>
-                  );
-                } else {
-                  return "";
-                }
-              } else {
-                return (
-                  <div className="chat-avatar">
-                    <div className="avatar m-0">
-                      <img
-                        src={chat.isSent ? userImg : activeUser.photoURL}
-                        alt="chat avatar"
-                        height="40"
-                        width="40"
-                      />
-                    </div>
-                  </div>
-                );
-              }
-            };
-            return (
-              <React.Fragment key={i}>
-                {renderSentTime()}
-                <div
-                  className={`chat ${
-                    chat.isSent !== true ? "chat-left" : "chat-right"
-                  }`}
-                >
-                  {renderAvatar()}
-                  <div className="chat-body">
-                    <div className="chat-content">{chat.textContent}</div>
-                  </div>
-                </div>
-              </React.Fragment>
-            );
-          })
-        : null;
+    // let renderChats =
+    //   activeChat && activeChat !== undefined && activeChat.msg
+    //     ? activeChat.msg.map((chat, i) => {
+    //         let renderSentTime = () => {
+    //           if (
+    //             i > 0 &&
+    //             !this.handleTime(chat.time, activeChat.msg[i - 1].time)
+    //           ) {
+    //             return (
+    //               <div className="divider">
+    //                 <div className="divider-text">
+    //                   {new Date().getDate() +
+    //                     " " +
+    //                     new Date().toLocaleString("default", {
+    //                       month: "short",
+    //                     })}
+    //                 </div>
+    //               </div>
+    //             );
+    //           }
+    //         };
+    //         let renderAvatar = () => {
+    //           if (i > 0) {
+    //             if (
+    //               chat.isSent === true &&
+    //               activeChat.msg[i - 1].isSent !== true
+    //             ) {
+    //               return (
+    //                 <div className="chat-avatar">
+    //                   <div className="avatar m-0">
+    //                     <img
+    //                       src={userImg}
+    //                       alt="chat avatar"
+    //                       height="40"
+    //                       width="40"
+    //                     />
+    //                   </div>
+    //                 </div>
+    //               );
+    //             } else if (chat.isSent !== true) {
+    //               return (
+    //                 <div className="chat-avatar">
+    //                   <div className="avatar m-0">
+    //                     <img
+    //                       src={activeUser.photoURL}
+    //                       alt="chat avatar"
+    //                       height="40"
+    //                       width="40"
+    //                     />
+    //                   </div>
+    //                 </div>
+    //               );
+    //             } else {
+    //               return "";
+    //             }
+    //           } else {
+    //             return (
+    //               <div className="chat-avatar">
+    //                 <div className="avatar m-0">
+    //                   <img
+    //                     src={chat.isSent ? userImg : activeUser.photoURL}
+    //                     alt="chat avatar"
+    //                     height="40"
+    //                     width="40"
+    //                   />
+    //                 </div>
+    //               </div>
+    //             );
+    //           }
+    //         };
+    //         return (
+    //       <React.Fragment key={i}>
+    //         {renderSentTime()}
+    //         <div
+    //           className={`chat ${
+    //             chat.isSent !== true ? "chat-left" : "chat-right"
+    //           }`}
+    //         >
+    //           {renderAvatar()}
+    //           <div className="chat-body">
+    //             <div className="chat-content">{chat.textContent}</div>
+    //           </div>
+    //         </div>
+    //       </React.Fragment>
+    //     );
+    //   })
+    // : null;
 
     return (
       <div className="content-right">
         <div className="chat-app-window">
           <div
-            className={`start-chat-area ${
-              activeUser !== null ? "d-none" : "d-flex"
-            }`}
-          >
-            <span className="mb-1 start-chat-icon">
-              <MessageSquare size={50} />
-            </span>
-            <h4
-              className="py-50 px-1 sidebar-toggle start-chat-text"
-              onClick={() => {
-                if (this.props.mql.matches === false) {
-                  this.props.mainSidebar(true);
-                } else {
-                  return null;
-                }
-              }}
-            >
-              Start Conversation
-            </h4>
-          </div>
-          <div
-            className={`active-chat ${
-              activeUser === null ? "d-none" : "d-block"
+            className={`active-chat "d-block"
             }`}
           >
             <div className="chat_navbar">
@@ -195,32 +173,12 @@ class ChatLog extends React.Component {
                     className="avatar user-profile-toggle m-0 m-0 mr-1"
                     onClick={() => this.props.handleReceiverSidebar("open")}
                   >
-                    <img
-                      src={activeUser !== null ? activeUser.photoURL : ""}
-                      alt={activeUser !== null ? activeUser.displayName : ""}
-                      height="40"
-                      width="40"
-                    />
-                    <span
-                      className={`
-                    ${
-                      activeUser !== null &&
-                      activeUser.status === "do not disturb"
-                        ? "avatar-status-busy"
-                        : activeUser !== null && activeUser.status === "away"
-                        ? "avatar-status-away"
-                        : activeUser !== null && activeUser.status === "offline"
-                        ? "avatar-status-offline"
-                        : "avatar-status-online"
-                    }
-                    `}
-                    />
+                    <img src={userImg} alt={userImg} height="40" width="40" />
+                    <span className={"avatar-status-online"} />
                   </div>
-                  <h6 className="mb-0">
-                    {activeUser !== null ? activeUser.displayName : ""}
-                  </h6>
+                  <h6 className="mb-0">linh </h6>
                 </div>
-                <span
+                {/* <span
                   className="favorite"
                   onClick={() => {
                     if (activeChat) {
@@ -239,7 +197,7 @@ class ChatLog extends React.Component {
                         : "#626262"
                     }
                   />
-                </span>
+                </span> */}
               </header>
             </div>
             <PerfectScrollbar
@@ -251,7 +209,47 @@ class ChatLog extends React.Component {
                 this.chatArea = el;
               }}
             >
-              <div className="chats">{renderChats}</div>
+              <div className="chats">
+                <React.Fragment>
+                  {" "}
+                  <div
+                    className={`chat  chat-right 
+                   `}
+                  >
+                    <div className="chat-avatar">
+                      <div className="avatar m-0">
+                        <img
+                          src={userImg}
+                          alt="chat avatar"
+                          height="40"
+                          width="40"
+                        />
+                      </div>
+                    </div>
+                    <div className="chat-body">
+                      <div className="chat-content">Bắt đầu </div>
+                    </div>
+                  </div>
+                  <div
+                    className={`chat chat-left
+                   `}
+                  >
+                    <div className="chat-avatar">
+                      <div className="avatar m-0">
+                        <img
+                          src={userImg}
+                          alt="chat avatar"
+                          height="40"
+                          width="40"
+                        />
+                      </div>
+                    </div>
+                    <div className="chat-body">
+                      <div className="chat-content">Kết thúc</div>
+                    </div>
+                  </div>
+                </React.Fragment>
+              </div>
             </PerfectScrollbar>
             <div className="chat-app-form">
               <form

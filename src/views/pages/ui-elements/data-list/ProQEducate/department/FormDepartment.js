@@ -55,18 +55,21 @@ function FormDepartment(props) {
     : [];
   const optionTeacher = teacher
     ? teacher.reduce(
-        (arr, curr) => [...arr, { label: curr.fullname, value: curr._id }],
+        (arr, curr) => [
+          ...arr,
+          { label: curr.teacherId.fullname, value: curr.teacherId._id },
+        ],
         []
       )
     : [];
   const optionMonday = [
-    { label: "Chủ nhật", value: "0" },
-    { label: "Thứ 2", value: "1" },
-    { label: "Thứ 3", value: "2" },
-    { label: "Thứ 4", value: "3" },
-    { label: "Thứ 5", value: "4" },
-    { label: "Thứ 6", value: "5" },
-    { label: "Thứ 7", value: "6" },
+    { label: "Chủ nhật", value: 0 },
+    { label: "Thứ 2", value: 1 },
+    { label: "Thứ 3", value: 2 },
+    { label: "Thứ 4", value: 3 },
+    { label: "Thứ 5", value: 4 },
+    { label: "Thứ 6", value: 5 },
+    { label: "Thứ 7", value: 6 },
   ];
   const handleChange = (data) => {
     getDataSubject(state.season, data);
@@ -136,7 +139,7 @@ function FormDepartment(props) {
       <FormGroup>
         <Label>Thời gian bắt đầu *</Label>
         <DatePicker
-          format={"MM/DD/YYYY"}
+          format={"MM-DD-YYYY"}
           style={{ height: "40px", width: "100%" }}
           ranges={{
             Ngày: [moment().startOf("days"), moment().endOf("days")],
@@ -153,7 +156,7 @@ function FormDepartment(props) {
         <Label>Thời gian kết thúc *</Label>
         <DatePicker
           style={{ height: "40px", width: "100%" }}
-          format={"MM/DD/YYYY"}
+          format={"MM-DD-YYYY"}
           ranges={{
             Ngày: [moment().startOf("days"), moment().endOf("days")],
             Tuần: [moment().startOf("week"), moment().endOf("week")],

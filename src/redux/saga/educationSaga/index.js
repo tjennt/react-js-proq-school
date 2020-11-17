@@ -36,8 +36,25 @@ export function* getSchedulesSaga({ payload }) {
     const res = yield call(getDataSchedulesApi, param);
     const { data } = res;
     if (data.success === true) {
+      console.log(data);
+      let dataSchedule = data.payload.reduce(
+        (arr, curr) => [
+          ...arr,
+          {
+            class: curr.class.name,
+            season: curr.season.name,
+            shift: curr.shift,
+            weekDays: curr.weekDays,
+            id: curr._id,
+            subject: curr.subject.name,
+            createdAt: curr.createAt,
+            startAt: curr.startAt,
+          },
+        ],
+        []
+      );
       yield put(
-        getDataSchedulesSuccess(data.payload, data.total_page, data.total_item)
+        getDataSchedulesSuccess(dataSchedule, data.total_page, data.total_item)
       );
     } else {
       toastWarning("Vui lòng thử lại sau");

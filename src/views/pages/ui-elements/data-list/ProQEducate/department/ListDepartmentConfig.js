@@ -22,7 +22,26 @@ import Moment from "react-moment";
 import { Button, Col } from "reactstrap";
 import { message, Popconfirm } from "antd";
 import ReactPaginate from "react-paginate";
-
+const chipText = {
+  0: "Chủ nhật",
+  1: "Thứ 2",
+  2: "Thứ 3",
+  3: "Thứ 4",
+  4: "Thứ 5",
+  5: "Thứ 6",
+  6: "Thứ 7",
+};
+const ActionDay = (props) => {
+  const { row } = props;
+  let weekDays = row.weekDays;
+  return (
+    <div style={{ display: "inline-flex" }}>
+      {weekDays.map((item) => (
+        <p key={item}> {chipText[item]}, </p>
+      ))}
+    </div>
+  );
+};
 const ActionsComponent = (props) => {
   function confirm(e) {
     props.deleteRow(props.row);
@@ -71,14 +90,12 @@ const CustomHeader = (props) => {
 class ListDepartmentConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
-      props.dataList.dataClass !== state.data.length ||
+      props.schedules.dataSchedules !== state.data.length ||
       state.currentPage !== props.parsedFilter.page
     ) {
       return {
-        data: props.dataList.dataClass,
-        dataClass: props.dataList.dataClass,
-        totalPages: props.dataList.totalPages,
-        totalRecords: props.dataList.totalRecords,
+        data: props.schedules.dataSchedules,
+        totalPages: props.schedules.total_page_schedule,
       };
     }
 
@@ -91,96 +108,84 @@ class ListDepartmentConfig extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Sinh viên",
-        selector: "student",
-        sortable: true,
-        minWidth: "200px",
-        cell: (row) => (
-          <p
-            title={row.nameStudent}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.nameStudent}
-          </p>
-        ),
-      },
-      {
-        name: "Lớp",
+        name: "Tên lớp",
         selector: "class",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.classCode} className="text-truncate text-bold-500 mb-0">
-            {row.classCode}
+          <p title={row.class} className="text-truncate text-bold-500 mb-0">
+            {row.class}
           </p>
         ),
       },
       {
-        name: "Mã Lớp",
-        selector: "class",
+        name: "Môn",
+        selector: "subjects",
         sortable: true,
-        minWidth: "200px",
+        // minWidth: "300px",
         cell: (row) => (
-          <p title={row.classCode} className="text-truncate text-bold-500 mb-0">
-            {row.classCode}
+          <p title={row.subject} className="text-truncate text-bold-500 mb-0">
+            {row.subject}
+          </p>
+        ),
+      },
+
+      {
+        name: "Ca",
+        selector: "shift",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p title={row.shift} className="text-truncate text-bold-500 mb-0">
+            {row.shift}
           </p>
         ),
       },
       {
-        name: "Môn học",
-        selector: "subject",
+        name: "Học kì",
+        selector: "season",
         sortable: true,
-        minWidth: "200px",
+        // minWidth: "300px",
         cell: (row) => (
-          <p
-            title={row.nameSubject}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.nameSubject}
+          <p title={row.season} className="text-truncate text-bold-500 mb-0">
+            {row.season}
           </p>
         ),
       },
       {
-        name: "Thời gian bắt đầu",
-        selector: "dateCreate",
+        name: "Thứ",
+        selector: "subjects",
         sortable: true,
-        minWidth: "220px",
+        // minWidth: "300px",
         cell: (row) => (
-          <Moment format="DD/MM/YYYY">{row.dateCreateClass}</Moment>
+          <p title={row.subject} className="text-truncate text-bold-500 mb-0">
+            {row.subject}
+          </p>
         ),
       },
       {
-        name: "Thời gian kết thúc",
-        selector: "dateCreate",
+        name: "Thứ",
+        selector: "subjects",
         sortable: true,
-        minWidth: "220px",
-        cell: (row) => (
-          <Moment format="DD/MM/YYYY">{row.dateCreateClass}</Moment>
-        ),
+        minWidth: "300px",
+        cell: (row) => <ActionDay row={row} />,
       },
       {
-        name: "Trạng thái ",
-        selector: "type",
-        minWidth: "190px",
+        name: "Ngày",
+        selector: "startAt",
         sortable: true,
-        cell: (row) => (
-          <p
-            onClick={this.changeStatus}
-            className="m-0"
-            color={row.statusDay ? "success" : "danger"}
-            text={row.statusDay ? "Điểm danh" : "Chưa điểm danh"}
-          />
-        ),
+        // maxWidth: "300px",
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.startAt}</Moment>,
       },
       {
         name: "Thao tác",
-        minWidth: "190px",
         sortable: true,
         cell: (row) => (
           <ActionsComponent
             row={row}
             getData={this.props.getData}
             parsedFilter={this.props.parsedFilter}
+            dataId={this.state.currentData}
             currentData={this.handleCurrentData}
             deleteRow={this.handleDelete}
             changeStatus={(row) => this.changeStatus(row)}
@@ -207,6 +212,7 @@ class ListDepartmentConfig extends Component {
       parsedFilter,
       getDataSeason,
       getDataTeacher,
+      getDataSchedules,
     } = this.props;
     let params = {
       limit: 1000,
@@ -352,6 +358,7 @@ const mapStateToProps = (state) => {
     subjectClass: state.dataSchedule.dataSubject,
     shift: state.dataSchedule.dataBothStudy,
     teacher: state.assistantData.dataTeacher,
+    schedules: state.dataSchedule,
   };
 };
 

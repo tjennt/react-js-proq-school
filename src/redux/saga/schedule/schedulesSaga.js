@@ -3,10 +3,7 @@ import {
   // put
 } from "redux-saga/effects";
 import { toastError } from "../../../utility/toast/toastHelper";
-// import { getDataBothStudySuccess } from "../../actions/schedule/getDataBothStudy";
-// import { getDataBothStudyApi } from "../../api/schedule/bothStudy";
 import { addSchedulesApi } from "../../api/schedule/schedule";
-// import { getDataSemesterSuccess } from "../../actions/schedule/getDataSemster";
 export function* addSchedulesSaga({ payload }) {
   const { state } = payload;
   const {

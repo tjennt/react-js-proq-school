@@ -6,13 +6,17 @@ import {
   DropdownItem,
   DropdownToggle,
   Badge,
+  Button,
+  Input,
 } from "reactstrap";
 import * as Icon from "react-feather";
 import { connect } from "react-redux";
 import { logoutWithJWT } from "./../../../redux/actions/auth/loginActions";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import NotificationItem from "./NotificationItem";
+import socket from "socket.io-client";
 
+let io;
 const UserDropdown = (props) => {
   const logout = (e) => {
     e.preventDefault();
@@ -38,10 +42,37 @@ class NavbarUser extends React.PureComponent {
   state = {
     navbarSearch: false,
     suggestions: [],
+    text: "",
+  };
+  componentDidMount() {
+    io = socket(
+      "http://ec2-54-255-188-210.ap-southeast-1.compute.amazonaws.com"
+    );
+    console.log(io);
+    io.emit("PING", {});
+    io.on("PONG", (data) => console.log(data));
+    // io.emit("client-send-message-to-server", {
+    //   message: "xin chao tui la reactj1",
+    // });
+    io.on("server-send-message-to-client", (data) => console.log(data));
+  }
+  socket = () => {
+    const { text } = this.state;
+    const { token, idUser } = this.props;
+    const data = {
+      text,
+      token,
+      idUser,
+    };
+    io.emit("client-send-message-to-server", {
+      message: data,
+    });
   };
   render() {
     return (
       <ul className="nav navbar-nav navbar-nav-user float-right">
+        {/* <Input onChange={(e) => this.setState({ text: e.target.value })} /> */}
+        {/* <Button onClick={this.socket}>Noti </Button> */}
         <UncontrolledDropdown
           tag="li"
           className="dropdown-notification nav-item"
@@ -104,6 +135,8 @@ class NavbarUser extends React.PureComponent {
 const mapStateToProps = (state) => {
   return {
     role: state.auth.login.userRole,
+    token: state.auth.login.values.loggedInUser.token,
+    idUser: state.auth.login.values.loggedInUser._id,
   };
 };
 export default connect(mapStateToProps, { logoutWithJWT })(NavbarUser);

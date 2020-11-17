@@ -11,18 +11,8 @@ import {
 import loginImg from "../../../../assets/img/pages/login.png";
 import "../../../../assets/scss/pages/authentication.scss";
 import LoginJWT from "./LoginJWT";
-import socket from 'socket.io-client';
-
-let io;
 
 class Login extends React.Component {
-  componentDidMount() {
-    io = socket('http://ec2-54-255-188-210.ap-southeast-1.compute.amazonaws.com')
-    io.emit('PING', {})
-    io.on('PONG', data => console.log(data));
-    io.emit('client-send-message-to-server', { message: 'xin chao tui la reactjs'});
-    io.on('server-send-message-to-client', data => console.log(data));
-  }
   state = {
     activeTab: "1",
   };

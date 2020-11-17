@@ -1,10 +1,12 @@
 import * as scheduleType from "../../constants/schedule/index";
-
+import * as listScheduleType from "../../constants/education";
 const initialState = {
   dataSemester: [],
   dataSubject: [],
   dataBothStudy: [],
   dataSpecial: [],
+  dataSchedules: [],
+  total_page_schedule: [],
   total_page_special: 0,
   total_count_schedule: 0,
 };
@@ -74,6 +76,20 @@ const scheduleReducer = (state = initialState, action) => {
         ...state,
         dataSpecial: data,
         total_page_special: total_page,
+      };
+    }
+    // schedules
+    case listScheduleType.GET_DATA_SCHEDULES: {
+      return {
+        ...state,
+      };
+    }
+    case listScheduleType.GET_DATA_SCHEDULES_SUCCESS: {
+      const { data, total_page } = action.payload;
+      return {
+        ...state,
+        dataSchedules: data,
+        total_page_schedule: total_page,
       };
     }
     default:

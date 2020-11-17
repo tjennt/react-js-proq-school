@@ -33,7 +33,10 @@ import { message, Modal, Popconfirm, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import ReactPaginate from "react-paginate";
 import Moment from "react-moment";
-import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
+import {
+  API_ENDPOINT,
+  API_ENDPOINT_IMG,
+} from "../../../../../../redux/constants";
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
@@ -96,7 +99,7 @@ class ListTeacherConfig extends Component {
         cell: (row) => (
           <img
             height="85px"
-            src={`${API_ENDPOINT_IMG}/${row.avatar}`}
+            src={`${API_ENDPOINT}/${row.teacherId.avatar}`}
             alt={row.avatar}
           />
         ),
@@ -107,8 +110,11 @@ class ListTeacherConfig extends Component {
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullname} className="text-truncate text-bold-500 mb-0">
-            {row.fullname}
+          <p
+            title={row.teacherId.fullname}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.teacherId.fullname}
           </p>
         ),
       },
@@ -119,10 +125,10 @@ class ListTeacherConfig extends Component {
         // minWidth: "300px",
         cell: (row) => (
           <p
-            title={row.teacherCode}
+            title={row.teacherId.teacherCode}
             className="text-truncate text-bold-500 mb-0"
           >
-            {row.teacherCode}
+            {row.teacherId.teacherCode}
           </p>
         ),
       },
@@ -133,10 +139,10 @@ class ListTeacherConfig extends Component {
         // minWidth: "300px",
         cell: (row) => (
           <p
-            title={row.specialization}
+            title={row.teacherId.specialization}
             className="text-truncate text-bold-500 mb-0"
           >
-            {row.specialization}
+            {row.teacherId.specialization}
           </p>
         ),
       },
@@ -146,8 +152,11 @@ class ListTeacherConfig extends Component {
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.phone} className="text-truncate text-bold-500 mb-0">
-            {row.phone}
+          <p
+            title={row.teacherId.phone}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.teacherId.phone}
           </p>
         ),
       },

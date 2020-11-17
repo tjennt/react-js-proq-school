@@ -33,7 +33,10 @@ import { Popconfirm, message, Modal, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
-import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
+import {
+  API_ENDPOINT,
+  API_ENDPOINT_IMG,
+} from "../../../../../../redux/constants";
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
@@ -96,7 +99,7 @@ class ListStudentEducation extends Component {
         cell: (row) => (
           <img
             height="80px"
-            src={`${API_ENDPOINT_IMG}/${row.avatar}`}
+            src={`${API_ENDPOINT_IMG}/${row.studentId.avatar}`}
             alt={row.avatar}
           />
         ),
@@ -107,8 +110,11 @@ class ListStudentEducation extends Component {
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullName} className="text-truncate text-bold-500 mb-0">
-            {row.fullName}
+          <p
+            title={row.studentId.fullName}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.studentId.fullName}
           </p>
         ),
       },
@@ -119,10 +125,10 @@ class ListStudentEducation extends Component {
         // minWidth: "300px",
         cell: (row) => (
           <p
-            title={row.studentCode}
+            title={row.studentId.studentCode}
             className="text-truncate text-bold-500 mb-0"
           >
-            {row.studentCode}
+            {row.studentId.studentCode}
           </p>
         ),
       },
@@ -404,8 +410,8 @@ const ExpandableTable = ({ data }) => {
       </thead>
       <tbody>
         <tr>
-          <td>{data.identityNumber}</td>
-          <td>{data.dob}</td>
+          <td>{data.studentId.identityNumber}</td>
+          <td>{data.studentId.dob}</td>
           <td>Lập trình web </td>
         </tr>
       </tbody>
