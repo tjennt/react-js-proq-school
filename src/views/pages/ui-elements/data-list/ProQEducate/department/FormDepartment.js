@@ -29,7 +29,14 @@ function FormDepartment(props) {
     teacher: null,
   });
   const [check, setCheck] = useState(false);
-  // const [check]
+  const [checkClass, setCheckClass] = useState(false);
+  const [checkSubject, setCheckSubject] = useState(false);
+  const [checkStartTime, setCheckStartTime] = useState(false);
+  const [checkEndTime, setCheckEndTime] = useState(false);
+  const [checkDay, setCheckDay] = useState(false);
+  const [checkShift, setCheckShift] = useState(false);
+  const [checkButton, setCheckButton] = useState(false);
+  const [checkSubmit, setCheckSubmit] = useState(false);
   // const validationSchema = Yup.object().shape({
   //   title: Yup.string().required("Vui lòng nhập tiêu đề!"),
   //   content: Yup.string().required("Vui lòng nhập content !"),
@@ -75,35 +82,55 @@ function FormDepartment(props) {
   const handleChange = (data) => {
     getDataSubject(state.season, data);
     setState({ ...state, nameClass: data });
+    setCheckSubject(true);
   };
   const handleChangeStage = (data) => {
     setState({ ...state, season: data });
+    setCheckClass(true);
   };
   const handleChangeClass = (data) => {
     setState({ ...state, subject: data });
+    setCheckStartTime(true);
   };
   const onChangeValueDateStart = (date, dateString) => {
     setState({ ...state, start_time: dateString });
+    setCheckEndTime(true);
   };
   const onChangeValueDateEnd = (date, dateString) => {
     setState({ ...state, end_time: dateString });
+    setCheckDay(true);
   };
   const handleChangeCa = (value) => {
     setState({ ...state, ca: value });
+    setCheck(true);
   };
   const handleChangeTeacger = (value) => {
     setState({ ...state, teacher: value });
+    setCheckSubmit(true);
   };
   const onChangeDate = (value) => {
     setState({ ...state, days: value });
+    setCheckButton(true);
   };
   const SearchCa = () => {
     getDataBothStudy(state);
-    setCheck(!check);
+    setCheckShift(true);
   };
   const onSubmitForm = (e) => {
     e.preventDefault();
-    handleSubmit(state);
+    // handleSubmit(state);
+    console.log("abc");
+    setState({
+      id: "",
+      season: "",
+      nameClass: "",
+      subject: null,
+      days: [],
+      start_time: "",
+      ca: null,
+      end_time: "",
+      teacher: null,
+    });
   };
   return (
     <Form>
@@ -120,6 +147,7 @@ function FormDepartment(props) {
       <FormGroup>
         <Label>Tên lớp *</Label>
         <Select
+          isDisabled={checkClass ? false : true}
           placeholder="Vui lòng chọn lớp "
           name="nameClass"
           isClearable={true}
@@ -132,7 +160,7 @@ function FormDepartment(props) {
         <Select
           placeholder="Vui lòng chọn  môn  "
           name="subject"
-          isClearable={true}
+          isDisabled={checkSubject ? false : true}
           options={optionSubjectClass}
           onChange={handleChangeClass}
         />
@@ -140,6 +168,7 @@ function FormDepartment(props) {
       <FormGroup>
         <Label>Thời gian bắt đầu *</Label>
         <DatePicker
+          disabled={checkStartTime ? false : true}
           format={"MM-DD-YYYY"}
           style={{ height: "40px", width: "100%" }}
           ranges={{
@@ -156,6 +185,7 @@ function FormDepartment(props) {
       <FormGroup>
         <Label>Thời gian kết thúc *</Label>
         <DatePicker
+          disabled={checkEndTime ? false : true}
           style={{ height: "40px", width: "100%" }}
           format={"MM-DD-YYYY"}
           ranges={{
@@ -172,6 +202,7 @@ function FormDepartment(props) {
       <FormGroup>
         <Label>Thứ *</Label>
         <Select
+          isDisabled={checkDay ? false : true}
           placeholder="Vui lòng chọn thứ "
           isMulti={true}
           onChange={onChangeDate}
@@ -179,7 +210,11 @@ function FormDepartment(props) {
         />
       </FormGroup>
       <FormGroup>
-        <Button color="primary" onClick={SearchCa}>
+        <Button
+          disabled={checkButton ? false : true}
+          color="primary"
+          onClick={SearchCa}
+        >
           {" "}
           Chọn{" "}
         </Button>
@@ -188,7 +223,7 @@ function FormDepartment(props) {
         <Label>Ca *</Label>
         <Select
           onChange={handleChangeCa}
-          isDisabled={!check ? true : false}
+          isDisabled={checkShift ? false : true}
           placeholder="Vui lòng chọn ca "
           options={shift}
         />
@@ -203,7 +238,12 @@ function FormDepartment(props) {
         />
       </FormGroup>
       <FormGroup>
-        <Button color="primary" onClick={onSubmitForm} type="submit">
+        <Button
+          disabled={checkSubmit ? false : true}
+          color="primary"
+          onClick={onSubmitForm}
+          type="submit"
+        >
           Lưu
         </Button>
         {/* <Button
