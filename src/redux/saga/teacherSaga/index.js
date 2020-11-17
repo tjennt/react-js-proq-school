@@ -23,7 +23,6 @@ export function* getSchedulesTeacgerSaga({ payload }) {
   try {
     const res = yield call(getDataTeacherApi, param);
     const { data } = res;
-    console.log(data);
     if (data.success === true) {
       let dataSchedule = data.payload.reduce(
         (arr, curr) => [

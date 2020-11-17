@@ -62,7 +62,7 @@ class ListStudentConfig extends Component {
         cell: (row) => (
           <img
             height="70px"
-            src={`${API_ENDPOINT_IMG}/${row.avatar}`}
+            src={`${API_ENDPOINT_IMG}/${row.studentId.avatar}`}
             alt={row.avatar}
           />
         ),
@@ -73,8 +73,11 @@ class ListStudentConfig extends Component {
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.fullName} className="text-truncate text-bold-500 mb-0">
-            {row.fullName}
+          <p
+            title={row.studentId.fullName}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.studentId.fullName}
           </p>
         ),
       },
@@ -85,10 +88,10 @@ class ListStudentConfig extends Component {
         // minWidth: "300px",
         cell: (row) => (
           <p
-            title={row.studentCode}
+            title={row.studentId.studentCode}
             className="text-truncate text-bold-500 mb-0"
           >
-            {row.studentCode}
+            {row.studentId.studentCode}
           </p>
         ),
       },
@@ -99,10 +102,10 @@ class ListStudentConfig extends Component {
         // minWidth: "300px",
         cell: (row) => (
           <p
-            title={row.class.name}
+            title={row.studentId.class.name}
             className="text-truncate text-bold-500 mb-0"
           >
-            {row.class.name}
+            {row.studentId.class.name}
           </p>
         ),
       },

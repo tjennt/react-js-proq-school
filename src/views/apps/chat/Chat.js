@@ -1,12 +1,12 @@
-import React from "react"
-import Sidebar from "react-sidebar"
-import { ContextLayout } from "../../../utility/context/Layout"
-import ChatSidebarContent from "./ChatSidebar"
-import ChatLog from "./ChatLog"
-import ReceiverSidebar from "./receiverProfile"
-import UserSidebar from "./UserSidebar"
-import "../../../assets/scss/pages/app-chat.scss"
-const mql = window.matchMedia(`(min-width: 992px)`)
+import React from "react";
+import Sidebar from "react-sidebar";
+import { ContextLayout } from "../../../utility/context/Layout";
+import ChatSidebarContent from "./ChatSidebar";
+import ChatLog from "./ChatLog";
+import ReceiverSidebar from "./receiverProfile";
+import UserSidebar from "./UserSidebar";
+import "../../../assets/scss/pages/app-chat.scss";
+const mql = window.matchMedia(`(min-width: 992px)`);
 
 class Chat extends React.Component {
   state = {
@@ -17,63 +17,63 @@ class Chat extends React.Component {
     activeChat: null,
     activeUser: null,
     receiverProfile: false,
-    userSidebar: false
-  }
+    userSidebar: false,
+  };
   // mounted = false
-  handleUserSidebar = status => {
+  handleUserSidebar = (status) => {
     if (status === "open") {
       this.setState({
-        userProfile: true
-      })
+        userProfile: true,
+      });
     } else {
       this.setState({
-        userProfile: false
-      })
+        userProfile: false,
+      });
     }
-  }
+  };
   handleActiveChat = (id, user, chats) => {
     this.setState({
       activeChatID: id,
       activeUser: user,
-      activeChat: chats
-    })
-  }
+      activeChat: chats,
+    });
+  };
 
   UNSAFE_componentWillMount() {
-    mql.addListener(this.mediaQueryChanged)
+    mql.addListener(this.mediaQueryChanged);
   }
 
   componentWillUnmount() {
-    mql.removeListener(this.mediaQueryChanged)
+    mql.removeListener(this.mediaQueryChanged);
   }
 
-  onSetSidebarOpen = open => {
-    this.setState({ sidebarOpen: open })
-  }
+  onSetSidebarOpen = (open) => {
+    this.setState({ sidebarOpen: open });
+  };
 
   mediaQueryChanged = () => {
-    this.setState({ sidebarDocked: mql.matches, sidebarOpen: false })
-  }
+    this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
+  };
 
-  handleReceiverSidebar = status => {
+  handleReceiverSidebar = (status) => {
     status === "open"
       ? this.setState({
-          receiverProfile: true
+          receiverProfile: true,
         })
       : this.setState({
-          receiverProfile: false
-        })
-  }
+          receiverProfile: false,
+        });
+  };
 
-  handleUserSidebar = status => {
+  handleUserSidebar = (status) => {
     status === "open"
       ? this.setState({
-          userSidebar: true
+          userSidebar: true,
         })
       : this.setState({
-          userSidebar: false
-        })
-  }
+          userSidebar: false,
+        });
+  };
 
   render() {
     return (
@@ -87,13 +87,13 @@ class Chat extends React.Component {
               : "d-none"
           }`}
           onClick={() => {
-            this.handleReceiverSidebar("close")
-            this.handleUserSidebar("close")
-            this.onSetSidebarOpen(false)
+            this.handleReceiverSidebar("close");
+            this.handleUserSidebar("close");
+            this.onSetSidebarOpen(false);
           }}
         />
         <ContextLayout.Consumer>
-          {context => (
+          {(context) => (
             <Sidebar
               sidebar={
                 <ChatSidebarContent
@@ -108,7 +108,8 @@ class Chat extends React.Component {
               touch={false}
               sidebarClassName="chat-sidebar"
               contentClassName="sidebar-children d-none"
-              pullRight={context.state.direction === "rtl"}>
+              pullRight={context.state.direction === "rtl"}
+            >
               ""
             </Sidebar>
           )}
@@ -131,8 +132,8 @@ class Chat extends React.Component {
           handleReceiverSidebar={this.handleReceiverSidebar}
         />
       </div>
-    )
+    );
   }
 }
 
-export default Chat
+export default Chat;
