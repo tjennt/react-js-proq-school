@@ -2,7 +2,11 @@ import {
   call,
   // put
 } from "redux-saga/effects";
-import { toastError } from "../../../utility/toast/toastHelper";
+import {
+  toastError,
+  toastSuccess,
+  toastWarning,
+} from "../../../utility/toast/toastHelper";
 import { addSchedulesApi } from "../../api/schedule/schedule";
 export function* addSchedulesSaga({ payload }) {
   const { state } = payload;
@@ -30,13 +34,13 @@ export function* addSchedulesSaga({ payload }) {
   };
   try {
     const res = yield call(addSchedulesApi, dataReq);
-    console.log(res);
-    // const { data } = res;
-    // if (data.success) {
-
-    // } else {
-    // toastWarning("Vui lòng thử lại sau");
-    // }
+    const { data } = res;
+    console.log(data);
+    if (data.success) {
+      toastSuccess("Phân bố lịch học thành công");
+    } else {
+      toastWarning("Vui lòng thử lại sau");
+    }
   } catch (error) {
     toastError("Đã có lỗi xảy ra vui lòng thử lại sau");
   }

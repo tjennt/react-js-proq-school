@@ -1,7 +1,6 @@
-export const API_ENDPOINT =
-  "http://ec2-54-255-188-210.ap-southeast-1.compute.amazonaws.com";
+export const API_ENDPOINT = "https://server-dev.asia/v1";
 export const API_ENDPOINT_IMG =
-  "http://ec2-54-255-188-210.ap-southeast-1.compute.amazonaws.com/uploads/user-avatar";
+  "https://server-dev.asia/v1/uploads/user-avatar";
 // export const API_ENDPOINT1 = "http://122.248.226.220";
 // export const API_ENDPOINT = "http://122.248.226.220:2208";
 

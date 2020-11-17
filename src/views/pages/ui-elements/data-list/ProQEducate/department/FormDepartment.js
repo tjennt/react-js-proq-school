@@ -29,6 +29,7 @@ function FormDepartment(props) {
     teacher: null,
   });
   const [check, setCheck] = useState(false);
+  // const [check]
   // const validationSchema = Yup.object().shape({
   //   title: Yup.string().required("Vui lòng nhập tiêu đề!"),
   //   content: Yup.string().required("Vui lòng nhập content !"),

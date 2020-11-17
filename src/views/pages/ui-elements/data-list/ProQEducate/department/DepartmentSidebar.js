@@ -8,7 +8,7 @@ class DepartmentSidebar extends Component {
     const { handleSidebar, data, addData } = this.props;
     if (!data) {
       addData(state);
-      // handleSidebar(false, true);
+      handleSidebar(false, true);
     } else {
       // updateData(values);
       handleSidebar(false, true);
@@ -40,7 +40,7 @@ class DepartmentSidebar extends Component {
         })}
       >
         <div className="data-list-sidebar-header mt-2 px-2 d-flex justify-content-between">
-          <h4>{data !== null ? "Cập nhật dữ liệu" : "Thêm dữ liệu"}</h4>
+          <h4>{data !== null ? "Cập nhật lịch học" : "Phân bố lịch học"}</h4>
           <X size={20} onClick={() => handleSidebar(false, true)} />
         </div>
         <PerfectScrollbar

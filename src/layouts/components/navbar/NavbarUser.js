@@ -45,9 +45,7 @@ class NavbarUser extends React.PureComponent {
     text: "",
   };
   componentDidMount() {
-    io = socket(
-      "http://ec2-54-255-188-210.ap-southeast-1.compute.amazonaws.com"
-    );
+    io = socket(`https://server-dev.asia/v1/api-docs`);
     console.log(io);
     io.emit("PING", {});
     io.on("PONG", (data) => console.log(data));
