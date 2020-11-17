@@ -4,6 +4,9 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import classnames from "classnames";
 import FormDepartment from "./FormDepartment";
 class DepartmentSidebar extends Component {
+  state = {
+    addData: false,
+  };
   handleSubmit = (state) => {
     const { handleSidebar, data, addData } = this.props;
     if (!data) {
