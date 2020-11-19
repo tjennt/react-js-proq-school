@@ -9,11 +9,21 @@ class axiosService {
       delete axios.defaults.headers.common["authorization"];
     }
   };
+
   handSuccess(response) {
     return response;
   }
   handError(error) {
     return Promise.reject(error);
+  }
+  getExportExcel(url, params) {
+    this.getHeaders();
+    return axios({
+      url: url, //your url
+      method: "GET",
+      responseType: "blob",
+      params, // important
+    });
   }
   get(url, params) {
     this.getHeaders();

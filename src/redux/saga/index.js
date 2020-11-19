@@ -15,8 +15,14 @@ import {
   searchActionSaga,
   updateApprovedAcceptSaga,
 } from "./trancSaga/trancSaga";
-import { getStudentActionSaga } from "./assistant/student";
-import { getTeacherActionSaga } from "./assistant/teacher";
+import {
+  exportExcelStudentSaga,
+  getStudentActionSaga,
+} from "./assistant/student";
+import {
+  exportExcelTeacherSaga,
+  getTeacherActionSaga,
+} from "./assistant/teacher";
 import { getClassActionSaga } from "./assistant/class";
 import { getSubjectActionSaga } from "./assistant/subject";
 import { getStageSaga } from "./assistant/stage";
@@ -59,6 +65,9 @@ function* rootSaga() {
   yield takeLatest(assType.GET_DATA_SUBJECT_ASS, getSubjectActionSaga);
   yield takeLatest(assType.GET_DATA_STAGE, getStageSaga);
   yield takeLatest(assType.GET_DATA_SEASON, getSeasonSaga);
+  yield takeLatest(assType.EXPORT_EXCEL_STUDENT, exportExcelStudentSaga);
+  yield takeLatest(assType.EXPORT_EXCEL_TEACHER, exportExcelTeacherSaga);
+
   //education
   yield takeLatest(
     educationType.IMPORT_EXCEL_STUDENT,

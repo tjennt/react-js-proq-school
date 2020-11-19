@@ -12,7 +12,10 @@ import {
 } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import { getDataTeacher } from "../../../../../../redux/actions/dataListAssistance/index";
+import {
+  getDataTeacher,
+  exportExcelTeacher,
+} from "../../../../../../redux/actions/dataListAssistance/index";
 import { importExcelTeacer } from "../../../../../../redux/actions/education/index";
 
 import Sidebar from "./DataListTeachertSidebar";
@@ -25,6 +28,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
+  Input,
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
@@ -188,6 +192,8 @@ class ListTeacherConfig extends Component {
     totalRecords: 0,
     sortIndex: [],
     addNew: "",
+    visibleExport: "",
+    nameFile: "",
   };
 
   thumbView = this.props.thumbView;
@@ -205,6 +211,24 @@ class ListTeacherConfig extends Component {
   showModal = () => {
     this.setState({
       visible: true,
+    });
+  };
+  showModalExportExcel = () => {
+    this.setState({
+      visibleExport: true,
+    });
+  };
+  handleOkTeacher = (e) => {
+    const { nameFile } = this.state;
+    this.props.exportExcelTeacher(nameFile);
+    this.setState({
+      ...this.state,
+      visibleExport: false,
+    });
+  };
+  handleCancelTeacher = (e) => {
+    this.setState({
+      visibleExport: false,
     });
   };
   onChangeExcel = (file) => {
@@ -300,9 +324,22 @@ class ListTeacherConfig extends Component {
             </p>
           </Dragger>
         </Modal>
+        <Modal
+          destroyOnClose={true}
+          title="Xuất excel"
+          visible={this.state.visibleExport}
+          onOk={this.handleOkTeacher}
+          onCancel={this.handleCancelTeacher}
+        >
+          <Input
+            onChange={(e) => this.setState({ nameFile: e.target.value })}
+            className="mt-2"
+            placeholder="Bạn có thể đặt tên file excel"
+          />
+        </Modal>
         <Col lg="12">
           <Row>
-            <Col lg="4">
+            <Col lg="6">
               {/* <Button
                 color="primary"
                 onClick={() => this.handleSidebar(true, true)}
@@ -314,8 +351,15 @@ class ListTeacherConfig extends Component {
               <Button onClick={this.showModal} className=" ml-2" color="danger">
                 <Download size={15} /> Import excel
               </Button>
+              <Button
+                onClick={this.showModalExportExcel}
+                className=" ml-2"
+                color="primary"
+              >
+                <Download size={15} /> Xuất excel
+              </Button>
             </Col>
-            <Col lg="8">
+            <Col lg="6">
               <UncontrolledDropdown
                 style={{ backgroundColor: "#fff", borderRadius: "20px" }}
                 className="data-list-rows-dropdown  d-md-block d-none"
@@ -374,10 +418,9 @@ class ListTeacherConfig extends Component {
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
-          noHeader
+          noHeader={true}
           fixedHeader
           fixedHeaderScrollHeight={"55vh"}
-          subHeader
           noDataComponent="Không có dữ liệu"
           expandOnRowClicked
         />
@@ -428,4 +471,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   getDataTeacher,
   importExcelTeacer,
+  exportExcelTeacher,
 })(ListTeacherConfig);

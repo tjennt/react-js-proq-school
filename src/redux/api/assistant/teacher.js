@@ -5,3 +5,8 @@ export const getDataAssTeachers = (params) => {
     params,
   });
 };
+export const exportExcelStudentApi = () => {
+  return axiosService.getExportExcel(
+    `${process.env.REACT_APP_API_ENDPOINT}/staff/export/teacher`
+  );
+};

@@ -22,6 +22,13 @@ export const getDataFaild = (error) => ({
     error,
   },
 });
+export const exportExcelStudent = (classArr, nameFile) => ({
+  type: assisType.EXPORT_EXCEL_STUDENT,
+  payload: {
+    classArr,
+    nameFile,
+  },
+});
 /**
  * assistant teacher
  */
@@ -43,6 +50,12 @@ export const getDataTeacherFaild = (error) => ({
   type: assisType.GET_DATA_TEACHER_ASS_FAILD,
   payload: {
     error,
+  },
+});
+export const exportExcelTeacher = (nameFile) => ({
+  type: assisType.EXPORT_EXCEL_TEACHER,
+  payload: {
+    nameFile,
   },
 });
 /**

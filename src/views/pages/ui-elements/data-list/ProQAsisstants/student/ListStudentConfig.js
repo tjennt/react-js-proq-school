@@ -4,7 +4,11 @@ import classnames from "classnames";
 import { history } from "../../../../../../history";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import { getData } from "../../../../../../redux/actions/dataListAssistance/index";
+import {
+  getData,
+  getDataClass,
+  exportExcelStudent,
+} from "../../../../../../redux/actions/dataListAssistance/index";
 import Sidebar from "./DataListStudentSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
@@ -28,6 +32,7 @@ import {
   Download,
 } from "react-feather";
 import { Modal } from "antd";
+import Select from "react-select";
 import Moment from "react-moment";
 import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
 class ListStudentConfig extends Component {
@@ -129,18 +134,24 @@ class ListStudentConfig extends Component {
     sortIndex: [],
     addNew: "",
     file: "",
+    classArr: null,
   };
 
   thumbView = this.props.thumbView;
 
   componentDidMount() {
-    const { parsedFilter } = this.props;
+    const { parsedFilter, getDataClass } = this.props;
 
     const paginate = {
       page: 1,
       limit: 10,
     };
     let limit = parsedFilter || paginate;
+    let params = {
+      limit: 10000,
+    };
+    getDataClass(params);
+
     this.props.getData(limit);
   }
   handleFilter = (e) => {
@@ -171,17 +182,20 @@ class ListStudentConfig extends Component {
   //     });
   //   }
   // };
+  handleChangeClass = (value) => {
+    this.setState({
+      ...this.state,
+      classArr: value,
+    });
+  };
   showModal = () => {
     this.setState({
       visible: true,
     });
   };
   handleOk = (e) => {
-    let { parsedFilter, importExcelStudent } = this.props;
-
-    const { file } = this.state;
-    let fileReq = file.file.originFileObj;
-    importExcelStudent(fileReq, parsedFilter);
+    const { classArr, nameFile } = this.state;
+    this.props.exportExcelStudent(classArr, nameFile);
     this.setState({
       ...this.state,
       visible: false,
@@ -225,16 +239,30 @@ class ListStudentConfig extends Component {
 
   render() {
     let { columns, value, currentData, sidebar, data } = this.state;
+    let { classOption } = this.props;
+    const arrDataClass = classOption
+      ? classOption.reduce(
+          (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
+          []
+        )
+      : [];
     return (
       <div className="data-list">
         <Modal
           destroyOnClose={true}
-          title="Thêm dữ liệu từ file excel"
+          title="Xuất file excel"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
+          <Select
+            placeholder="Vui lòng chọn lớp"
+            value={this.state.classArr}
+            onChange={this.handleChangeClass}
+            options={arrDataClass}
+          />
           <Input
+            className="mt-2"
             onChange={(e) => this.setState({ nameFile: e.target.value })}
             placeholder="nhập tên file "
           />
@@ -305,7 +333,7 @@ class ListStudentConfig extends Component {
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
-          noHeader
+          noHeader={true}
           fixedHeader
           fixedHeaderScrollHeight={"55vh"}
           pagination
@@ -328,7 +356,6 @@ class ListStudentConfig extends Component {
               onPageChange={(page) => this.handlePagination(page)}
             />
           )}
-          subHeader
           expandableRows
           expandOnRowClicked
           expandableRowsComponent={<ExpandableTable />}
@@ -377,9 +404,12 @@ const ExpandableTable = ({ data }) => {
 const mapStateToProps = (state) => {
   return {
     dataList: state.assistantData,
+    classOption: state.assistantData.dataClass,
   };
 };
 
 export default connect(mapStateToProps, {
   getData,
+  getDataClass,
+  exportExcelStudent,
 })(ListStudentConfig);
