@@ -128,7 +128,7 @@ class ListClassEducateConfig extends Component {
       },
 
       {
-        name: "Thời gian bắt đầu",
+        name: "Ngày tạo lớp",
         selector: "dateCreate",
         sortable: true,
         // minWidth: "300px",

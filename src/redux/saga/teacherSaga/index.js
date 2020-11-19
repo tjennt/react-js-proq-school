@@ -1,6 +1,7 @@
 import { put, call } from "redux-saga/effects";
 import { toastWarning, toastError } from "../../../utility/toast/toastHelper";
 import {
+  getDataSchedulesTeacherId,
   getDataSchedulesTeacherIdSuccess,
   getDataSchedulesTeacherSuccess,
 } from "../../actions/teacher";
@@ -56,11 +57,9 @@ export function* getSchedulesTeacgerSaga({ payload }) {
 }
 export function* getTeacherDetailSaga({ payload }) {
   const { params, id } = payload;
-  console.log(payload);
   try {
     const res = yield call(getDataTeacherDetailApi, id, params);
     const { data } = res;
-    console.log(data);
     let dataDetail = data.payload.reduce(
       (arr, curr) => [
         ...arr,
@@ -82,23 +81,25 @@ export function* getTeacherDetailSaga({ payload }) {
   } catch (error) {}
 }
 export function* scheduleSaga({ payload }) {
-  const { data, id } = payload;
-
-  let date = moment(data.date).format("MM/DD/YYYY");
-  console.log(date);
+  const { data, id, params } = payload;
+  let date = moment(data.date).format("MM-DD-YYYY");
   const dataReq = {
     schedulesClass: id,
     status: !data.status,
     student: data.idStudent,
     date: date,
   };
-  console.log(data.fullName);
   try {
     const res = yield call(scheduleApi, dataReq);
-    console.log(res);
     const { data: dataRes } = res;
     if (dataRes.success) {
-      message.success(` Sinh viên ${data.fullName} đã được điểm danh  `);
+      if (dataRes.payload.status) {
+        yield put(getDataSchedulesTeacherId(params, id));
+        message.success(` Sinh viên ${data.fullName} đã được điểm danh  `);
+      } else {
+        yield put(getDataSchedulesTeacherId(params, id));
+        message.error(` Hủy điểm danh sinh viên ${data.fullName}!`);
+      }
     } else {
       toastWarning("Điểm danh thất bại !");
     }

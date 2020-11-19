@@ -1,5 +1,6 @@
 import {
   call,
+  put,
   // put
 } from "redux-saga/effects";
 import {
@@ -7,36 +8,37 @@ import {
   toastSuccess,
   toastWarning,
 } from "../../../utility/toast/toastHelper";
+import { getDataSchedules } from "../../actions/education";
 import { addSchedulesApi } from "../../api/schedule/schedule";
 export function* addSchedulesSaga({ payload }) {
-  const { state } = payload;
+  const { state, params } = payload;
   const {
     days,
     nameClass,
-    start_time,
-    end_time,
     ca,
     season,
     subject,
     teacher,
+    start_timeReq,
+    end_timeReq,
   } = state;
 
-  let arrDay = days.length && days.map((day) => day.value);
+  // let arrDay = days.length && days.map((day) => day.value);
   const dataReq = {
-    class: nameClass ? nameClass.value : "",
-    season: season ? season.value : "",
-    shift: ca ? ca.value : "",
-    startAt: start_time || "",
-    endAt: end_time || "",
-    teacher: teacher ? teacher.value : "",
-    subject: subject ? subject.value : "",
-    weekDays: arrDay,
+    class: nameClass ? nameClass : "",
+    season: season ? season : "",
+    shift: ca ? ca : "",
+    startAt: start_timeReq || "",
+    endAt: end_timeReq || "",
+    teacher: teacher ? teacher : "",
+    subject: subject ? subject : "",
+    weekDays: days,
   };
   try {
     const res = yield call(addSchedulesApi, dataReq);
     const { data } = res;
-    console.log(data);
     if (data.success) {
+      yield put(getDataSchedules(params));
       toastSuccess("Phân bố lịch học thành công");
     } else {
       toastWarning("Vui lòng thử lại sau");

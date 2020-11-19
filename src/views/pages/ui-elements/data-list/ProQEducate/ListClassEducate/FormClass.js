@@ -1,17 +1,20 @@
 import { Formik, Form, Field } from "formik";
 import React from "react";
 import { Button, FormGroup } from "reactstrap";
-// import * as Yup from "yup";
+import * as Yup from "yup";
 import InputField from "../../../../../../utility/customFields/inputField";
 import SelectField from "../../../../../../utility/customFields/selectFields";
 
 function FormClass(props) {
-  const { initialValues, stage, specialization } = props;
-  // const validationSchema = Yup.object().shape({
-  //   title: Yup.string().required("Vui lòng nhập tiêu đề!"),
-  //   content: Yup.string().required("Vui lòng nhập content !"),
-  //   time_send: Yup.date().required("Vui lòng chọn ngày!"),
-  // });
+  const { initialValues, stage, specialization, handleSidebar } = props;
+  const validationSchema = Yup.object().shape({
+    nameClass: Yup.string().required("Vui lòng nhập lớp!"),
+    stage: Yup.string().required("Vui lòng chọn khóa!"),
+    specializate: Yup.string().required("Vui lòng chọn chuyên ngành!"),
+  });
+  const handleCancle = () => {
+    handleSidebar(false, true);
+  };
   const optionStage = stage
     ? stage.reduce(
         (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
@@ -28,11 +31,11 @@ function FormClass(props) {
     <Formik
       enableReinitialize="true"
       initialValues={initialValues}
-      // validationSchema={validationSchema}
+      validationSchema={validationSchema}
       onSubmit={props.onSubmitForm}
     >
       {(formikProps) => {
-        const { isValid, resetForm } = formikProps;
+        const { isValid } = formikProps;
         return (
           <Form>
             <Field
@@ -53,7 +56,7 @@ function FormClass(props) {
             />
             <Field
               name="specializate"
-              label="Khóa *"
+              label="Chuyên ngành *"
               value={initialValues.specializate}
               placeholder="Vui lòng chọn Chuyên ngành "
               component={SelectField}
@@ -63,11 +66,7 @@ function FormClass(props) {
               <Button disabled={!isValid} color="primary" type="submit">
                 Lưu
               </Button>
-              <Button
-                onClick={() => resetForm({})}
-                className="ml-2"
-                color="danger"
-              >
+              <Button onClick={handleCancle} className="ml-2" color="danger">
                 {" "}
                 Huỷ{" "}
               </Button>

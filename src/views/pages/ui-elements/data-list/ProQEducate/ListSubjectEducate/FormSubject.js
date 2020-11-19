@@ -1,19 +1,18 @@
 import { Formik, Form, Field } from "formik";
 import React from "react";
 import { Button, FormGroup } from "reactstrap";
+import * as Yup from "yup";
 import InputField from "../../../../../../utility/customFields/inputField";
 function FormSubject(props) {
   const { initialValues } = props;
-  // const validationSchema = Yup.object().shape({
-  //   title: Yup.string().required("Vui lòng nhập tiêu đề!"),
-  //   content: Yup.string().required("Vui lòng nhập content !"),
-  //   time_send: Yup.date().required("Vui lòng chọn ngày!"),
-  // });
+  const validationSchema = Yup.object().shape({
+    nameSubject: Yup.string().required("Vui lòng nhập môn!"),
+  });
   return (
     <Formik
       enableReinitialize="true"
       initialValues={initialValues}
-      // validationSchema={validationSchema}
+      validationSchema={validationSchema}
       onSubmit={props.onSubmitForm}
     >
       {(formikProps) => {
@@ -25,7 +24,7 @@ function FormSubject(props) {
               placeholder="Vui lòng nhập tên môn "
               name="nameSubject"
               component={InputField}
-              value={initialValues.title}
+              value={initialValues.nameSubject}
               type="text"
             />
             <FormGroup>

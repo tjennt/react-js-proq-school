@@ -25,8 +25,8 @@ const dateFormatList = ["MM/DD/YYYY", "DD/MM/YY"];
 function datePickerField(props) {
   const { field, form, label } = props;
   const { name } = field;
-  // const { errors, touched } = form;
-  // const showError = errors[name] && touched[name];
+  const { errors, touched } = form;
+  const showError = errors[name] && touched[name];
 
   const onChangeValue = (date, dateString) => {
     form.setFieldValue(name, dateString);
@@ -46,6 +46,7 @@ function datePickerField(props) {
         }}
         onChange={onChangeValue}
       />
+      <div className={showError ? "is-invalid" : ""}></div>
       <ErrorMessage name={name} component={FormFeedback} />
     </FormGroup>
   );

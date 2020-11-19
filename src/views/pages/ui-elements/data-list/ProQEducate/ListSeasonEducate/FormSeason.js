@@ -1,22 +1,22 @@
 import { Formik, Form, Field } from "formik";
 import React from "react";
 import { Button, FormGroup } from "reactstrap";
-// import * as Yup from "yup";
+import * as Yup from "yup";
 import InputField from "../../../../../../utility/customFields/inputField";
 import datePickerField from "../../../../../../utility/customFields/datePickerFields";
 
 function FormSeason(props) {
   const { initialValues } = props;
-  // const validationSchema = Yup.object().shape({
-  //   title: Yup.string().required("Vui lòng nhập tiêu đề!"),
-  //   content: Yup.string().required("Vui lòng nhập content !"),
-  //   time_send: Yup.date().required("Vui lòng chọn ngày!"),
-  // });
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Vui lòng nhập tiêu đề!"),
+    startAt: Yup.date().required("Vui lòng chọn !"),
+    startEnd: Yup.date().required("Vui lòng chọn ngày!"),
+  });
   return (
     <Formik
       enableReinitialize="true"
       initialValues={initialValues}
-      // validationSchema={validationSchema}
+      validationSchema={validationSchema}
       onSubmit={props.onSubmitForm}
     >
       {(formikProps) => {

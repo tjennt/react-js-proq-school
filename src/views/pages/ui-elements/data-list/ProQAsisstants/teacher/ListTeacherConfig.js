@@ -31,7 +31,6 @@ import {
 import Moment from "react-moment";
 import Modal from "antd/lib/modal/Modal";
 
-import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
 class ListTeacherConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (

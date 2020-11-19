@@ -3,7 +3,6 @@ import { Row, Col, Container } from "reactstrap";
 import Breadcrumbs from "../../../../components/@vuexy/breadCrumbs/BreadCrumb";
 class BlogDetail extends React.Component {
   componentDidMount() {
-    console.log(this.props);
     let id = this.props.match.params.id;
     console.log(id);
   }

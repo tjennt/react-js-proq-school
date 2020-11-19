@@ -1,252 +1,313 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
+
 import { Button, Form, FormGroup, Label } from "reactstrap";
 // import * as Yup from "yup";
 // import InputField from "../../../../../../utility/customFields/inputField";
-import Select from "react-select";
-import { DatePicker } from "antd";
-import moment from "moment";
-
-function FormDepartment(props) {
-  const {
-    getDataSubject,
-    season,
-    classDepart,
-    subjectClass,
-    getDataBothStudy,
-    shift,
-    teacher,
-    handleSubmit,
-  } = props;
-  const [state, setState] = useState({
+import { Select } from "antd";
+import DatePicker from "reactstrap-date-picker";
+class FormDepartment extends Component {
+  state = {
     id: "",
-    season: "",
-    nameClass: "",
+    season: null,
+    nameClass: null,
     subject: null,
     days: [],
     start_time: "",
-    ca: null,
+    start_timeReq: "",
     end_time: "",
+    end_timeReq: "",
+    ca: null,
     teacher: null,
-  });
-  const [check, setCheck] = useState(false);
-  const [checkClass, setCheckClass] = useState(false);
-  const [checkSubject, setCheckSubject] = useState(false);
-  const [checkStartTime, setCheckStartTime] = useState(false);
-  const [checkEndTime, setCheckEndTime] = useState(false);
-  const [checkDay, setCheckDay] = useState(false);
-  const [checkShift, setCheckShift] = useState(false);
-  const [checkButton, setCheckButton] = useState(false);
-  const [checkSubmit, setCheckSubmit] = useState(false);
-  // const validationSchema = Yup.object().shape({
-  //   title: Yup.string().required("Vui lòng nhập tiêu đề!"),
-  //   content: Yup.string().required("Vui lòng nhập content !"),
-  //   time_send: Yup.date().required("Vui lòng chọn ngày!"),
-  // });
+    check: false,
+    checkClass: false,
+    checkSubject: false,
+    checkStartTime: false,
+    checkEndTime: false,
+    checkDay: false,
+    checkShift: false,
+    checkButton: false,
+    checkSubmit: false,
+  };
+  addNew = false;
+  componentDidUpdate(prevProps, prevState) {
+    if (this.addNew) {
+      this.setState({
+        id: "",
+        season: "",
+        nameClass: "",
+        subject: "",
+        days: [],
+        start_time: "",
+        end_time: "",
+        ca: null,
+        teacher: null,
+      });
+    }
+    this.addNew = false;
+  }
+  handleChange = (data) => {
+    this.props.getDataSubject(this.state.season, data);
+    this.setState({
+      ...this.state,
+      nameClass: data,
+      checkSubject: true,
+    });
+  };
+  handleChangeStage = (data) => {
+    this.setState({ ...this.state, season: data, checkClass: true });
+  };
+  handleChangeClass = (data) => {
+    this.setState({ ...this.state, subject: data, checkStartTime: true });
+  };
 
-  const optionSeason = season
-    ? season.reduce(
-        (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
-        []
-      )
-    : [];
-  const optionClassDepart = classDepart
-    ? classDepart.reduce(
-        (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
-        []
-      )
-    : [];
-  const optionSubjectClass = subjectClass
-    ? subjectClass.reduce(
-        (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
-        []
-      )
-    : [];
-  const optionTeacher = teacher
-    ? teacher.reduce(
-        (arr, curr) => [
-          ...arr,
-          { label: curr.teacherId.fullname, value: curr.teacherId._id },
-        ],
-        []
-      )
-    : [];
-  const optionMonday = [
-    { label: "Chủ nhật", value: 0 },
-    { label: "Thứ 2", value: 1 },
-    { label: "Thứ 3", value: 2 },
-    { label: "Thứ 4", value: 3 },
-    { label: "Thứ 5", value: 4 },
-    { label: "Thứ 6", value: 5 },
-    { label: "Thứ 7", value: 6 },
-  ];
-  const handleChange = (data) => {
-    getDataSubject(state.season, data);
-    setState({ ...state, nameClass: data });
-    setCheckSubject(true);
+  onChangeValueDateStart = (value, formattedValue) => {
+    this.setState({
+      ...this.state,
+      start_time: value,
+      start_timeReq: formattedValue,
+      checkEndTime: true,
+    });
   };
-  const handleChangeStage = (data) => {
-    setState({ ...state, season: data });
-    setCheckClass(true);
+  onChangeValueDateEnd = (value, formattedValue) => {
+    this.setState({
+      ...this.state,
+      end_time: value,
+      end_timeReq: formattedValue,
+      checkDay: true,
+    });
   };
-  const handleChangeClass = (data) => {
-    setState({ ...state, subject: data });
-    setCheckStartTime(true);
+  handleChangeCa = (value) => {
+    this.setState({ ...this.state, ca: value, check: true });
   };
-  const onChangeValueDateStart = (date, dateString) => {
-    setState({ ...state, start_time: dateString });
-    setCheckEndTime(true);
+  handleChangeTeacger = (value) => {
+    this.setState({ ...this.state, teacher: value, checkSubmit: true });
   };
-  const onChangeValueDateEnd = (date, dateString) => {
-    setState({ ...state, end_time: dateString });
-    setCheckDay(true);
+  onChangeDate = (value) => {
+    this.setState({ ...this.state, days: value, checkButton: true });
   };
-  const handleChangeCa = (value) => {
-    setState({ ...state, ca: value });
-    setCheck(true);
+  SearchCa = () => {
+    this.props.getDataBothStudy(this.state);
+    this.setState({
+      ...this.state,
+      checkShift: true,
+    });
   };
-  const handleChangeTeacger = (value) => {
-    setState({ ...state, teacher: value });
-    setCheckSubmit(true);
-  };
-  const onChangeDate = (value) => {
-    setState({ ...state, days: value });
-    setCheckButton(true);
-  };
-  const SearchCa = () => {
-    getDataBothStudy(state);
-    setCheckShift(true);
-  };
-  const onSubmitForm = (e) => {
+  onSubmitForm = (e) => {
     e.preventDefault();
-    // handleSubmit(state);
-    console.log("abc");
-    setState({
+    this.setState({
       id: "",
       season: "",
       nameClass: "",
-      subject: null,
+      subject: "",
+      start_timeReq: "",
+      end_timeReq: "",
       days: [],
-      start_time: "",
+      start_time: null,
       ca: null,
-      end_time: "",
+      end_time: null,
       teacher: null,
+      check: false,
+      checkClass: false,
+      checkSubject: false,
+      checkStartTime: false,
+      checkEndTime: false,
+      checkDay: false,
+      checkShift: false,
+      checkButton: false,
+      checkSubmit: false,
     });
+    this.props.handleSubmit(this.state);
+    this.addNew = true;
   };
-  return (
-    <Form>
-      <FormGroup>
-        <Label>Kì học *</Label>
-        <Select
-          placeholder="Vui lòng chọn lớp "
-          name="season"
-          isClearable={true}
-          options={optionSeason}
-          onChange={handleChangeStage}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label>Tên lớp *</Label>
-        <Select
-          isDisabled={checkClass ? false : true}
-          placeholder="Vui lòng chọn lớp "
-          name="nameClass"
-          isClearable={true}
-          onChange={handleChange}
-          options={optionClassDepart}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label>Môn *</Label>
-        <Select
-          placeholder="Vui lòng chọn  môn  "
-          name="subject"
-          isDisabled={checkSubject ? false : true}
-          options={optionSubjectClass}
-          onChange={handleChangeClass}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label>Thời gian bắt đầu *</Label>
-        <DatePicker
-          disabled={checkStartTime ? false : true}
-          format={"MM-DD-YYYY"}
-          style={{ height: "40px", width: "100%" }}
-          ranges={{
-            Ngày: [moment().startOf("days"), moment().endOf("days")],
-            Tuần: [moment().startOf("week"), moment().endOf("week")],
-            Tháng: [moment().startOf("month"), moment().endOf("month")],
-            Quý: [moment().startOf("quarter"), moment().endOf("quarter")],
-            Năm: [moment().startOf("year"), moment().endOf("year")],
-          }}
-          onChange={onChangeValueDateStart}
-        />
-        {/* <ErrorMessage name={name} component={FormFeedback} /> */}
-      </FormGroup>
-      <FormGroup>
-        <Label>Thời gian kết thúc *</Label>
-        <DatePicker
-          disabled={checkEndTime ? false : true}
-          style={{ height: "40px", width: "100%" }}
-          format={"MM-DD-YYYY"}
-          ranges={{
-            Ngày: [moment().startOf("days"), moment().endOf("days")],
-            Tuần: [moment().startOf("week"), moment().endOf("week")],
-            Tháng: [moment().startOf("month"), moment().endOf("month")],
-            Quý: [moment().startOf("quarter"), moment().endOf("quarter")],
-            Năm: [moment().startOf("year"), moment().endOf("year")],
-          }}
-          onChange={onChangeValueDateEnd}
-        />
-        {/* <ErrorMessage name={name} component={FormFeedback} /> */}
-      </FormGroup>
-      <FormGroup>
-        <Label>Thứ *</Label>
-        <Select
-          isDisabled={checkDay ? false : true}
-          placeholder="Vui lòng chọn thứ "
-          isMulti={true}
-          onChange={onChangeDate}
-          options={optionMonday}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Button
-          disabled={checkButton ? false : true}
-          color="primary"
-          onClick={SearchCa}
-        >
-          {" "}
-          Chọn{" "}
-        </Button>
-      </FormGroup>
-      <FormGroup>
-        <Label>Ca *</Label>
-        <Select
-          onChange={handleChangeCa}
-          isDisabled={checkShift ? false : true}
-          placeholder="Vui lòng chọn ca "
-          options={shift}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label>Giáo viên *</Label>
-        <Select
-          isDisabled={!check ? true : false}
-          placeholder="Vui lòng chọn giáo viên "
-          onChange={handleChangeTeacger}
-          options={optionTeacher}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Button
-          disabled={checkSubmit ? false : true}
-          color="primary"
-          onClick={onSubmitForm}
-          type="submit"
-        >
-          Lưu
-        </Button>
-        {/* <Button
+  render() {
+    const { Option } = Select;
+    const { season, classDepart, subjectClass, teacher, shift } = this.props;
+    const {
+      checkSubject,
+      checkStartTime,
+      check,
+      checkShift,
+      checkButton,
+      checkDay,
+      checkEndTime,
+    } = this.state;
+    const optionMonday = [
+      { label: "Chủ nhật", value: 0 },
+      { label: "Thứ 2", value: 1 },
+      { label: "Thứ 3", value: 2 },
+      { label: "Thứ 4", value: 3 },
+      { label: "Thứ 5", value: 4 },
+      { label: "Thứ 6", value: 5 },
+      { label: "Thứ 7", value: 6 },
+    ];
+    let Mondays = optionMonday.map((item) => {
+      return (
+        <Option key={item.value} value={item.value}>
+          {item.label}
+        </Option>
+      );
+    });
+    let optionShift = shift.map((item) => {
+      return (
+        <Option key={item.value} value={item.value}>
+          {item.label}
+        </Option>
+      );
+    });
+    let children = season.map((item) => {
+      return (
+        <Option key={item._id} value={item._id}>
+          {item.name}
+        </Option>
+      );
+    });
+    let optionClassDepart = classDepart.map((item) => {
+      return (
+        <Option key={item._id} value={item._id}>
+          {item.name}
+        </Option>
+      );
+    });
+    const optionSubjectClass = subjectClass.map((item) => {
+      return (
+        <Option key={item._id} value={item._id}>
+          {item.name}
+        </Option>
+      );
+    });
+    const chilOptionTeacher = teacher
+      ? teacher.reduce(
+          (arr, curr) => [
+            ...arr,
+            { label: curr.teacherId.fullname, value: curr.teacherId._id },
+          ],
+          []
+        )
+      : [];
+    let optionTeacher = chilOptionTeacher.map((item) => {
+      return (
+        <Option key={item.value} value={item.value}>
+          {item.label}
+        </Option>
+      );
+    });
+    return (
+      <Form>
+        <FormGroup>
+          <Label>Kì học *</Label>
+          <Select
+            style={{ width: "100%" }}
+            placeholder="Vui lòng chọn giáo viên "
+            value={this.state.season}
+            onChange={this.handleChangeStage}
+          >
+            {children}
+          </Select>
+        </FormGroup>
+        <FormGroup>
+          <Label>Tên lớp *</Label>
+          <Select
+            style={{ width: "100%" }}
+            value={this.state.nameClass}
+            disabled={this.state.checkClass ? false : true}
+            placeholder="Vui lòng chọn lớp "
+            name="nameClass"
+            onChange={this.handleChange}
+          >
+            {optionClassDepart}
+          </Select>
+        </FormGroup>
+        <FormGroup>
+          <Label>Môn *</Label>
+          <Select
+            style={{ width: "100%" }}
+            placeholder="Vui lòng chọn môn"
+            value={this.state.subject}
+            disabled={checkSubject ? false : true}
+            onChange={this.handleChangeClass}
+          >
+            {optionSubjectClass}
+          </Select>
+        </FormGroup>
+        <FormGroup>
+          <Label>Thời gian bắt đầu *</Label>
+          <DatePicker
+            value={this.state.start_time}
+            disabled={checkStartTime ? false : true}
+            dateFormat="MM-DD-YYYY"
+            style={{ width: "80%" }}
+            onChange={this.onChangeValueDateStart}
+          />
+          {/* <ErrorMessage name={name} component={FormFeedback} /> */}
+        </FormGroup>
+        <FormGroup>
+          <Label>Thời gian kết thúc *</Label>
+          <DatePicker
+            value={this.state.end_time}
+            disabled={checkEndTime ? false : true}
+            style={{ width: "80%" }}
+            dateFormat="MM-DD-YYYY"
+            onChange={this.onChangeValueDateEnd}
+          />
+          {/* <ErrorMessage name={name} component={FormFeedback} /> */}
+        </FormGroup>
+        <FormGroup>
+          <Label>Thứ *</Label>
+          <Select
+            mode="multiple"
+            style={{ width: "100%" }}
+            placeholder="Vui lòng chọn thứ"
+            value={this.state.days}
+            disabled={checkDay ? false : true}
+            onChange={this.onChangeDate}
+          >
+            {Mondays}
+          </Select>
+        </FormGroup>
+        <FormGroup>
+          <Button
+            disabled={checkButton ? false : true}
+            color="primary"
+            onClick={this.SearchCa}
+          >
+            {" "}
+            Chọn{" "}
+          </Button>
+        </FormGroup>
+        <FormGroup>
+          <Label>Ca *</Label>
+          <Select
+            disabled={checkShift ? false : true}
+            style={{ width: "100%" }}
+            placeholder="Vui lòng chọn ca "
+            value={this.state.ca}
+            onChange={this.handleChangeCa}
+          >
+            {optionShift}
+          </Select>
+        </FormGroup>
+        <FormGroup>
+          <Label>Giáo viên *</Label>
+          <Select
+            disabled={check ? false : true}
+            style={{ width: "100%" }}
+            placeholder="Vui lòng chọn giáo viên "
+            value={this.state.teacher}
+            onChange={this.handleChangeTeacger}
+          >
+            {optionTeacher}
+          </Select>
+        </FormGroup>
+        <FormGroup>
+          <Button
+            disabled={this.state.checkSubmit ? false : true}
+            color="primary"
+            onClick={this.onSubmitForm}
+            type="submit"
+          >
+            Lưu
+          </Button>
+          {/* <Button
                 onClick={() => resetForm({})}
                 className="ml-2"
                 color="danger"
@@ -254,9 +315,10 @@ function FormDepartment(props) {
                 {" "}
                 Huỷ{" "}
               </Button> */}
-      </FormGroup>
-    </Form>
-  );
+        </FormGroup>
+      </Form>
+    );
+  }
 }
 
 export default FormDepartment;

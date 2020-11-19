@@ -13,8 +13,10 @@ const initialState = {
   total_record_class: 0,
   dataStage: [],
   total_page_stage: 0,
+  total_record_stage: 0,
   dataSeason: [],
   total_page_season: 0,
+  total_record_season: 0,
 };
 const assistantReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -93,11 +95,12 @@ const assistantReducer = (state = initialState, action) => {
       };
     }
     case assType.GET_DATA_STAGE_SUCCESS: {
-      const { data, total_page } = action.payload;
+      const { data, total_page, total_record } = action.payload;
       return {
         ...state,
         dataStage: data,
         toal_page_stage: total_page,
+        total_record_stage: total_record,
       };
     }
     /**

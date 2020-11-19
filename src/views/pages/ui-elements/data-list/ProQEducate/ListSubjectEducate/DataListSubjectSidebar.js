@@ -44,7 +44,7 @@ class DataListSubjectSidebar extends Component {
           <FormSubject
             initialValues={this.initialValues}
             onSubmitForm={this.handleSubmit}
-            handleSidebar={this.handleSidebar}
+            handleSidebar={handleSidebar}
           />
         </PerfectScrollbar>
       </div>

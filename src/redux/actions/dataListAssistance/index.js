@@ -99,11 +99,12 @@ export const getDataStage = (params) => ({
     params,
   },
 });
-export const getDataStageSuccss = (data, total_page) => ({
+export const getDataStageSuccss = (data, total_page, total_record) => ({
   type: assisType.GET_DATA_STAGE_SUCCESS,
   payload: {
     data,
     total_page,
+    total_record,
   },
 });
 export const getDataStageFail = (error) => ({
