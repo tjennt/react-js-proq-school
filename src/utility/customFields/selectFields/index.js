@@ -28,7 +28,7 @@ function SelectField(props) {
   const selectedOption = options.find((option) => option.value === value);
 
   const handleSelectedOptionChange = (selectedOption) => {
-    const selectedValue = selectedOption ? selectedOption.value : "";
+    const selectedValue = selectedOption ? selectedOption.value : [];
 
     const changeEvent = {
       target: {
@@ -49,10 +49,9 @@ function SelectField(props) {
         isClearable={true}
         onChange={handleSelectedOptionChange}
         placeholder={placeholder}
-        // isdisabled={disabled}
         options={options}
-        className={showError ? "is-invalid" : ""}
       ></Select>
+      <div className={showError ? "is-invalid" : ""}></div>
       <ErrorMessage name={name} component={FormFeedback} />
     </FormGroup>
   );

@@ -72,7 +72,7 @@ class ListSpecializationEducation extends Component {
       return {
         data: props.dataList.dataSpecial,
         totalPages: props.dataList.total_page_special,
-        totalRecords: props.dataList.total_record_student,
+        totalRecords: props.dataList.total_record_special,
       };
     }
 
@@ -168,22 +168,22 @@ class ListSpecializationEducation extends Component {
   // };
 
   handlePagination = (page) => {
-    let { parsedFilter, getData } = this.props;
+    let { parsedFilter, getDataSpecialization } = this.props;
     const { limit } = parsedFilter;
     let perPage = limit || 10;
     history.push(
-      `/education/student?page=${page.selected + 1}&limit=${perPage}`
+      `/education/specialization?page=${page.selected + 1}&limit=${perPage}`
     );
-    getData({ page: page.selected + 1, limit: perPage });
+    getDataSpecialization({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
   handleRowsPerPage = (value) => {
-    let { parsedFilter, getData } = this.props;
+    let { parsedFilter, getDataSpecialization } = this.props;
 
     let page = parsedFilter.page !== undefined ? parsedFilter.page : 1;
-    history.push(`/education/student?page=${page}&limit=${value}`);
+    history.push(`/education/specialization?page=${page}&limit=${value}`);
     this.setState({ rowsPerPage: value });
-    getData({ page: parsedFilter.page, limit: value });
+    getDataSpecialization({ page: parsedFilter.page, limit: value });
   };
 
   render() {
@@ -215,12 +215,10 @@ class ListSpecializationEducation extends Component {
                   }}
                 >
                   <span className="align-middle mx-50">{`${
-                    this.state.totalRecords
-                  } of ${
                     this.props.parsedFilter.limit
                       ? this.props.parsedFilter.limit
-                      : 1
-                  }`}</span>
+                      : 10
+                  } of ${this.state.totalRecords}`}</span>
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>

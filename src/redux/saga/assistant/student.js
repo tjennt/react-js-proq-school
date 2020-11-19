@@ -12,7 +12,6 @@ export function* getStudentActionSaga({ payload }) {
   try {
     const res = yield call(getDataStudentApi, param);
     const { data } = res;
-    console.log(data);
     if (data.success === true) {
       yield put(getDataSuccess(data.payload, data.total_page, data.total_item));
     } else {

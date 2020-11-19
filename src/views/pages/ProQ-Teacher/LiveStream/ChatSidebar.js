@@ -1,15 +1,15 @@
-import React from "react"
-import { Card, FormGroup, Input, Badge } from "reactstrap"
-import { X, Search } from "react-feather"
-import PerfectScrollbar from "react-perfect-scrollbar"
-import { connect } from "react-redux"
+import React from "react";
+import { Card, FormGroup, Input, Badge } from "reactstrap";
+import { X, Search } from "react-feather";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import { connect } from "react-redux";
 import {
   getChats,
   getContactChats,
   searchContacts,
-  markSeenAllMessages
-} from "../../../../redux/actions/chat/index"
-import userImg from "../../../../assets/img/portrait/small/avatar-s-11.jpg"
+  markSeenAllMessages,
+} from "../../../../redux/actions/chat/index";
+import userImg from "../../../../assets/img/portrait/small/avatar-s-11.jpg";
 
 class ChatSidebar extends React.Component {
   static getDerivedStateFromProps(props, state) {
@@ -23,51 +23,51 @@ class ChatSidebar extends React.Component {
         chatsContacts: props.chat.chatContacts,
         contacts: props.chat.contacts,
         chats: props.chat.chats,
-        status: props.chat.status
-      }
+        status: props.chat.status,
+      };
     }
     // Return null if the state hasn't changed
-    return null
+    return null;
   }
   state = {
     chatsContacts: [],
     contacts: [],
     messages: [],
     status: null,
-    value: ""
-  }
+    value: "",
+  };
 
   getChatContents = () => {
-    this.props.getChats()
-    this.props.getContactChats()
-  }
+    this.props.getChats();
+    this.props.getContactChats();
+  };
 
   async componentDidMount() {
-    await this.getChatContents()
+    await this.getChatContents();
     this.setState({
       chatsContacts: this.props.chat.chatContacts,
       contacts: this.props.chat.contacts,
       chats: this.props.chat.chats,
-      status: this.props.chat.status
-    })
+      status: this.props.chat.status,
+    });
   }
 
-  handleOnChange = e => {
-    this.setState({ value: e.target.value })
-    this.props.searchContacts(e.target.value)
-  }
+  handleOnChange = (e) => {
+    this.setState({ value: e.target.value });
+    this.props.searchContacts(e.target.value);
+  };
 
   render() {
-    const { contacts, chatsContacts, chats, status, value } = this.state
+    const { contacts, chatsContacts, chats, status, value } = this.state;
     const contactsArr = value.length
       ? this.props.chat.filteredContacts
-      : contacts
+      : contacts;
     const chatsArr = value.length
       ? this.props.chat.filteredChats
-      : chatsContacts
+      : chatsContacts;
     let renderContacts =
       contactsArr.length > 0
-        ? contactsArr.map(contact => (
+        ? contactsArr.map((contact) => (
             <li
               key={contact.uid}
               onClick={() => {
@@ -75,9 +75,9 @@ class ChatSidebar extends React.Component {
                   contact.uid,
                   contact,
                   chats[contact.uid]
-                )
-                this.props.markSeenAllMessages(contact.uid)
-                this.props.mainSidebar(false)
+                );
+                this.props.markSeenAllMessages(contact.uid);
+                this.props.mainSidebar(false);
               }}
             >
               <div className="pr-1">
@@ -98,10 +98,10 @@ class ChatSidebar extends React.Component {
               </div>
             </li>
           ))
-        : null
+        : null;
     let renderChats =
       chatsArr && Array.isArray(chatsArr)
-        ? chatsArr.map(chat => {
+        ? chatsArr.map((chat) => {
             let lastMsg =
                 chats[chat.uid] && chats[chat.uid].msg
                   ? chats[chat.uid].msg.slice(-1)[0]
@@ -110,24 +110,24 @@ class ChatSidebar extends React.Component {
                 lastMsg && lastMsg.time ? lastMsg.time : null
               ),
               lastMsgMonth = lastMsgDate.toLocaleString("default", {
-                month: "short"
+                month: "short",
               }),
-              lastMsgDay = lastMsgDate.getDate()
+              lastMsgDay = lastMsgDate.getDate();
             let pendingMsg =
               chats[chat.uid] && chats[chat.uid].msg
                 ? chats[chat.uid].msg.filter(
-                    i => i.isSeen === false && i.isSent !== true
+                    (i) => i.isSeen === false && i.isSent !== true
                   ).length
-                : null
+                : null;
             let activeID =
-              chats[chat.uid] !== undefined ? chats[chat.uid] : null
+              chats[chat.uid] !== undefined ? chats[chat.uid] : null;
             return (
               <li
                 key={chat.uid}
                 onClick={() => {
-                  this.props.handleActiveChat(chat.uid, chat, activeID)
-                  this.props.mainSidebar(false)
-                  this.props.markSeenAllMessages(chat.uid)
+                  this.props.handleActiveChat(chat.uid, chat, activeID);
+                  this.props.mainSidebar(false);
+                  this.props.markSeenAllMessages(chat.uid);
                 }}
                 className={`${
                   this.props.activeChatID === chat.uid ? "active" : ""
@@ -168,10 +168,9 @@ class ChatSidebar extends React.Component {
                   </div>
                 </div>
               </li>
-            )
+            );
           })
-        : null
-      console.log(this.props);
+        : null;
     return (
       <Card className="sidebar-content h-100">
         <span
@@ -206,7 +205,7 @@ class ChatSidebar extends React.Component {
                 className="round"
                 type="text"
                 placeholder="Search contact or start a new chat"
-                onChange={e => this.handleOnChange(e)}
+                onChange={(e) => this.handleOnChange(e)}
                 value={value}
               />
               <div className="form-control-position">
@@ -218,7 +217,7 @@ class ChatSidebar extends React.Component {
         <PerfectScrollbar
           className="chat-user-list list-group"
           options={{
-            wheelPropagation: false
+            wheelPropagation: false,
           }}
         >
           <h3 className="primary p-1 mb-0">Chats</h3>
@@ -229,18 +228,18 @@ class ChatSidebar extends React.Component {
           </ul>
         </PerfectScrollbar>
       </Card>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    chat: state.chatApp.chats
-  }
-}
+    chat: state.chatApp.chats,
+  };
+};
 export default connect(mapStateToProps, {
   getChats,
   getContactChats,
   searchContacts,
-  markSeenAllMessages
-})(ChatSidebar)
+  markSeenAllMessages,
+})(ChatSidebar);

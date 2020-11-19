@@ -8,7 +8,6 @@ import {
   ChevronRight,
   Download,
   Edit,
-  Plus,
   Trash,
 } from "react-feather";
 import { connect } from "react-redux";
@@ -33,10 +32,7 @@ import { message, Modal, Popconfirm, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import ReactPaginate from "react-paginate";
 import Moment from "react-moment";
-import {
-  API_ENDPOINT,
-  API_ENDPOINT_IMG,
-} from "../../../../../../redux/constants";
+import { API_ENDPOINT_IMG_TEACHER } from "../../../../../../redux/constants";
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
@@ -99,7 +95,7 @@ class ListTeacherConfig extends Component {
         cell: (row) => (
           <img
             height="85px"
-            src={`${API_ENDPOINT}/${row.teacherId.avatar}`}
+            src={`${API_ENDPOINT_IMG_TEACHER}/${row.teacherId.avatar}`}
             alt={row.avatar}
           />
         ),
@@ -307,14 +303,14 @@ class ListTeacherConfig extends Component {
         <Col lg="12">
           <Row>
             <Col lg="4">
-              <Button
+              {/* <Button
                 color="primary"
                 onClick={() => this.handleSidebar(true, true)}
                 outline={true}
               >
                 <Plus size={15} />
                 <span className="align-middle">Tạo mới</span>
-              </Button>
+              </Button> */}
               <Button onClick={this.showModal} className=" ml-2" color="danger">
                 <Download size={15} /> Import excel
               </Button>
@@ -332,12 +328,10 @@ class ListTeacherConfig extends Component {
                   }}
                 >
                   <span className="align-middle mx-50">{`${
-                    this.state.totalRecords
-                  } of ${
                     this.props.parsedFilter.limit
                       ? this.props.parsedFilter.limit
-                      : 1
-                  }`}</span>
+                      : 10
+                  } of ${this.state.totalRecords}`}</span>
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>

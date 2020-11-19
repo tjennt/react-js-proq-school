@@ -36,7 +36,6 @@ export function* getSchedulesSaga({ payload }) {
     const res = yield call(getDataSchedulesApi, param);
     const { data } = res;
     if (data.success === true) {
-      console.log(data);
       let dataSchedule = data.payload.reduce(
         (arr, curr) => [
           ...arr,
@@ -124,7 +123,7 @@ export function* addClassSaga({ payload }) {
       toastWarning("Thêm dữ liệu thất bại!");
     }
   } catch (error) {
-    toastError("Đã có lỗi xảy ra vui lòng thử lại");
+    toastError("Lớp đã tồn tại vui lòng thử lại");
   }
 }
 /**
@@ -186,7 +185,7 @@ export function* addSeasonSaga({ payload }) {
     const { data } = res;
     if (data.success) {
       yield put(getDataSeason(params));
-      toastSuccess("Đã có lỗi xảy ra vui lòng thử lại");
+      toastSuccess("Thêm dữ liệu thành công");
     } else {
       toastWarning("Vui lòng thử lại sau");
     }
@@ -208,7 +207,7 @@ export function* addSpecializationSaga({ payload }) {
     const { data } = res;
     if (data.success) {
       yield put(getDataSpecialization(params));
-      toastSuccess("Đã có lỗi xảy ra vui lòng thử lại");
+      toastSuccess("Thêm dữ liệu thành công");
     } else {
       toastWarning("Vui lòng thử lại sau");
     }

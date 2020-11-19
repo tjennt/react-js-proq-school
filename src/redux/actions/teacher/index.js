@@ -39,10 +39,11 @@ export const getDataSchedulesTeacherIdFail = (error) => ({
     error,
   },
 });
-export const schedule = (data, id) => ({
+export const schedule = (data, id, params) => ({
   type: teacherType.SCHEDULES,
   payload: {
     data,
     id,
+    params,
   },
 });

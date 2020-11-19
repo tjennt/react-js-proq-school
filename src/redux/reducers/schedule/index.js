@@ -8,6 +8,7 @@ const initialState = {
   dataSchedules: [],
   total_page_schedule: [],
   total_page_special: 0,
+  total_record_special: 0,
   total_count_schedule: 0,
 };
 const scheduleReducer = (state = initialState, action) => {
@@ -71,11 +72,12 @@ const scheduleReducer = (state = initialState, action) => {
       };
     }
     case scheduleType.GET_SPECIALIZATION_SUCCESS: {
-      const { data, total_page } = action.payload;
+      const { data, total_page, total_record } = action.payload;
       return {
         ...state,
         dataSpecial: data,
         total_page_special: total_page,
+        total_record_special: total_record,
       };
     }
     // schedules

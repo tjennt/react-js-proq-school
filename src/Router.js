@@ -41,7 +41,11 @@ const GeneralTeacher = lazy(() =>
 const ListClassTeacher = lazy(() =>
   import("./views/pages/ProQ-Teacher/GeneralTeacher/ListView")
 );
-
+const ListAttdance = lazy(() =>
+  import(
+    "./views/pages/ProQ-Teacher/Attendance/AttendanceClass/AttendanceClass"
+  )
+);
 const Attendance = lazy(() =>
   import("./views/pages/ProQ-Teacher/Attendance/Attendance")
 );
@@ -188,6 +192,7 @@ class AppRouter extends React.Component {
             path="/assistant/list/teacher"
             component={teacherAssistant}
           />
+
           <AppRoute path="/assistant/list/class" component={classAssi} />
           <AppRoute path="/assistant/list/subject" component={subject} />
           <AppRoute path="/department" component={Department} />
@@ -222,7 +227,8 @@ class AppRouter extends React.Component {
             component={ListClassTeacher}
           />
           <AppRoute path="/student/news/:id" component={BlogDetail} />
-          <AppRoute path="/teacher/attendance" component={Attendance} />
+          <AppRoute exact path="/teacher/attendance" component={Attendance} />
+          <AppRoute path="/teacher/attendance/:id" component={ListAttdance} />
           {/* <AppRoute path="/teacher/email" component={commingSoon} />
           <AppRoute path="/teacher/liveStream" component={commingSoon} /> */}
           {/* student */}

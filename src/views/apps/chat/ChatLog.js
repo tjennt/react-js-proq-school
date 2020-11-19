@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Input, Button } from "reactstrap";
-import { MessageSquare, Menu, Star, Send } from "react-feather";
+import { Menu, Send } from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { connect } from "react-redux";
 import { togglePinned, sendMessage } from "../../../redux/actions/chat/index";

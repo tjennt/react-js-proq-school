@@ -156,22 +156,11 @@ class ListDepartmentConfig extends Component {
         name: "Thứ",
         selector: "subjects",
         sortable: true,
-        // minWidth: "300px",
-        cell: (row) => (
-          <p title={row.subject} className="text-truncate text-bold-500 mb-0">
-            {row.subject}
-          </p>
-        ),
-      },
-      {
-        name: "Thứ",
-        selector: "subjects",
-        sortable: true,
         minWidth: "300px",
         cell: (row) => <ActionDay row={row} />,
       },
       {
-        name: "Ngày",
+        name: "Ngày bắt đầu",
         selector: "startAt",
         sortable: true,
         // maxWidth: "300px",
@@ -281,11 +270,12 @@ class ListDepartmentConfig extends Component {
   };
 
   handlePagination = (page) => {
-    let { parsedFilter, getData } = this.props;
-    let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 4;
+    let { parsedFilter, getDataSchedules } = this.props;
+    let perPage =
+      parsedFilter.perPage !== undefined ? parsedFilter.perPage : 10;
 
-    history.push(`/department?page=${page.selected + 1}&perPage=${perPage}`);
-    getData({ page: page.selected + 1, perPage: perPage });
+    history.push(`/department?page=${page.selected + 1}&limit=${perPage}`);
+    getDataSchedules({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
 
@@ -325,6 +315,7 @@ class ListDepartmentConfig extends Component {
           onPageChange={(page) => this.handlePagination(page)}
         />
         <Sidebar
+          params={this.props.parsedFilter}
           season={this.props.season}
           shift={this.props.shift}
           teacher={this.props.teacher}

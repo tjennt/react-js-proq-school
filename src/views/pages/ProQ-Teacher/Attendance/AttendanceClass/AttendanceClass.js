@@ -14,6 +14,8 @@ import "../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import Moment from "react-moment";
 import { API_ENDPOINT_IMG } from "../../../../../redux/constants";
+import { Button, Col, Row } from "reactstrap";
+import BreadCrumbs from "../../../../../components/@vuexy/breadCrumbs/BreadCrumb";
 // import { Popconfirm, message } from "antd";
 const selectedStyle = {
   rows: {
@@ -121,9 +123,9 @@ class ListStudentEducation extends Component {
 
   thumbView = this.props.thumbView;
   componentDidMount() {
-    let parsedFilter = queryString.parse(this.props.location.search);
+    let params = queryString.parse(this.props.location.search);
     let id = this.props.match.params.id;
-    this.props.getDataSchedulesTeacherId(parsedFilter, id);
+    this.props.getDataSchedulesTeacherId(params, id);
   }
   handleFilter = (e) => {
     this.setState({ value: e.target.value });
@@ -151,16 +153,14 @@ class ListStudentEducation extends Component {
   };
   switchAtten = (value, data) => {
     let id = this.props.match.params.id;
-    let parsedFilter = queryString.parse(this.props.location.search);
-    this.props.schedule(data, id, parsedFilter);
-    console.log(data);
+    let params = queryString.parse(this.props.location.search);
+    this.props.schedule(data, id, params);
     this.setState({
       ...this.state,
       switch: value,
     });
   };
   onRowClicked = (value) => {
-    console.log(value);
     this.setState({
       ...this.state,
       switch: true,
@@ -180,19 +180,36 @@ class ListStudentEducation extends Component {
     this.setState({ currentPage: page.selected });
   };
 
-  onSelectedRowsChange = (data) => {
-    console.log(data);
+  // onSelectedRowsChange = (data) => {
+  //   console.log(data);
+  // };
+  backHome = () => {
+    history.goBack();
   };
   render() {
     let { columns, value, data } = this.state;
 
     return (
       <div className="data-list">
+        <BreadCrumbs
+          breadCrumbTitle="Giáo viên"
+          breadCrumbParent="Danh sách"
+          breadCrumbActive="Điểm danh "
+        />
+        <Row>
+          <Col lg="6">
+            <Button color="primary" onClick={this.backHome}>
+              {" "}
+              Quay lại
+            </Button>
+          </Col>
+        </Row>
         <DataTable
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
           noHeader={true}
+          noDataComponent="Không có sinh viên"
           pointerOnHover
           selectableRowsHighlight
           onSelectedRowsChange={this.onSelectedRowsChange}

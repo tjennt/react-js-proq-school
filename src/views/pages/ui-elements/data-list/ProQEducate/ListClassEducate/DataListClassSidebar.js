@@ -53,7 +53,7 @@ class ClassEducateSidebar extends Component {
             specialization={this.props.specialization}
             initialValues={this.initialValues}
             onSubmitForm={this.handleSubmit}
-            handleSidebar={this.handleSidebar}
+            handleSidebar={handleSidebar}
           />
         </PerfectScrollbar>
       </div>

@@ -213,7 +213,6 @@ class ListMarkStudentEducation extends Component {
 
   render() {
     let { columns, value, sidebar, data } = this.state;
-    console.log(data);
     return (
       <div className="data-list">
         <Modal
