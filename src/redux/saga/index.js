@@ -16,14 +16,22 @@ import {
   updateApprovedAcceptSaga,
 } from "./trancSaga/trancSaga";
 import {
+  deleteDataStudentSaga,
   exportExcelStudentSaga,
   getStudentActionSaga,
+  updateDataStudentSaga,
 } from "./assistant/student";
 import {
   exportExcelTeacherSaga,
   getTeacherActionSaga,
+  updateDataTeacherSaga,
+  deleteDataTeacherSaga,
 } from "./assistant/teacher";
-import { getClassActionSaga } from "./assistant/class";
+import {
+  getClassActionSaga,
+  updateDataClassSaga,
+  deleteDataClassSaga,
+} from "./assistant/class";
 import { getSubjectActionSaga } from "./assistant/subject";
 import { getStageSaga } from "./assistant/stage";
 import {
@@ -67,7 +75,12 @@ function* rootSaga() {
   yield takeLatest(assType.GET_DATA_SEASON, getSeasonSaga);
   yield takeLatest(assType.EXPORT_EXCEL_STUDENT, exportExcelStudentSaga);
   yield takeLatest(assType.EXPORT_EXCEL_TEACHER, exportExcelTeacherSaga);
-
+  yield takeLatest(assType.UPDATE_DATA_STUDENT, updateDataStudentSaga);
+  yield takeLatest(assType.DELETE_DATA_STUDENT, deleteDataStudentSaga);
+  yield takeLatest(assType.UPDATE_DATA_TEACHER, updateDataTeacherSaga);
+  yield takeLatest(assType.DELETE_DATA_TEACHER, deleteDataTeacherSaga);
+  yield takeLatest(assType.UPDATE_DATA_CLASS, updateDataClassSaga);
+  yield takeLatest(assType.DELETE_DATA_CLASS, deleteDataClassSaga);
   //education
   yield takeLatest(
     educationType.IMPORT_EXCEL_STUDENT,

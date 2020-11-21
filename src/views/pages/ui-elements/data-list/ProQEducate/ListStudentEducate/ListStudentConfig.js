@@ -16,6 +16,8 @@ import {
   getData,
   getDataClass,
   exportExcelStudent,
+  updateDataStudent,
+  deleteDataStudent,
 } from "../../../../../../redux/actions/dataListAssistance/index";
 import { importExcelStudent } from "../../../../../../redux/actions/education/index";
 import Sidebar from "./DataListStudentSidebar";
@@ -43,7 +45,7 @@ const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
   function confirm(e) {
-    props.changeStatus(props.row);
+    props.deleteRow(props.row);
   }
   function cancel(e) {
     message.error("Hủy thay đổi trạng thái  !");
@@ -151,7 +153,6 @@ class ListStudentEducation extends Component {
             parsedFilter={this.props.parsedFilter}
             currentData={this.handleCurrentData}
             deleteRow={this.handleDelete}
-            changeStatus={(row) => this.changeStatus(row)}
           />
         ),
       },
@@ -197,21 +198,21 @@ class ListStudentEducation extends Component {
     this.setState({ sidebar: boolean });
     if (addNew === true) this.setState({ currentData: null, addNew: true });
   };
-  // handleDelete = (row) => {
-  //   this.props.deleteData(row);
-  //   this.props.getData(this.props.parsedFilter);
-  //   if (this.state.data.length - 1 === 0) {
-  //     history.push(
-  //       `/education/student?page=${parseInt(
-  //         this.props.parsedFilter.page - 1
-  //       )}&limit=${this.props.parsedFilter.perPage}`
-  //     );
-  //     this.props.getData({
-  //       page: this.props.parsedFilter.page - 1,
-  //       perPage: this.props.parsedFilter.perPage,
-  //     });
-  //   }
-  // };
+  handleDelete = (row) => {
+    const { getData, deleteDataStudent } = this.props;
+    deleteDataStudent(row.studentId._id, this.props.parsedFilter);
+    if (this.state.data.length - 1 === 0) {
+      history.push(
+        `/education/student?page=${parseInt(
+          this.props.parsedFilter.page - 1
+        )}&limit=${this.props.parsedFilter.perPage}`
+      );
+      getData({
+        page: this.props.parsedFilter.page - 1,
+        limit: this.props.parsedFilter.perPage,
+      });
+    }
+  };
   showModal = () => {
     this.setState({
       visible: true,
@@ -435,8 +436,8 @@ class ListStudentEducation extends Component {
         <Sidebar
           show={sidebar}
           data={currentData}
-          updateData={this.props.updateData}
-          addData={this.props.addData}
+          updateData={this.props.updateDataStudent}
+          // addData={this.props.addData}
           handleSidebar={this.handleSidebar}
           thumbView={this.props.thumbView}
           getData={this.props.getData}
@@ -460,14 +461,14 @@ const ExpandableTable = ({ data }) => {
         <tr>
           <th>Email </th>
           <th>Ngày sinh</th>
-          <th>Chuyên ngành</th>
+          <th>Identity Number</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>{data.studentId.identityNumber}</td>
+          <td>{data.email}</td>
           <td>{data.studentId.dob}</td>
-          <td>Lập trình web </td>
+          <td>{data.studentId.identityNumber} </td>
         </tr>
       </tbody>
     </Table>
@@ -485,4 +486,6 @@ export default connect(mapStateToProps, {
   importExcelStudent,
   getDataClass,
   exportExcelStudent,
+  updateDataStudent,
+  deleteDataStudent,
 })(ListStudentEducation);

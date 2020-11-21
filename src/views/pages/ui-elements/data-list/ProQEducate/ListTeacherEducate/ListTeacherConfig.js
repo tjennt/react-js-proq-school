@@ -15,6 +15,8 @@ import "antd/dist/antd.css";
 import {
   getDataTeacher,
   exportExcelTeacher,
+  updateDataTeacher,
+  deleteDataTeacher,
 } from "../../../../../../redux/actions/dataListAssistance/index";
 import { importExcelTeacer } from "../../../../../../redux/actions/education/index";
 
@@ -100,7 +102,7 @@ class ListTeacherConfig extends Component {
           <img
             height="85px"
             src={`${API_ENDPOINT_IMG_TEACHER}/${row.teacherId.avatar}`}
-            alt={row.avatar}
+            alt={row.teacherId.avatar}
           />
         ),
       },
@@ -262,21 +264,21 @@ class ListTeacherConfig extends Component {
   //   this.props.updateStatus(row, this.props.parsedFilter);
   //   this.props.getData(this.props.parsedFilter);
   // };
-  // handleDelete = (row) => {
-  //   this.props.deleteData(row);
-  //   this.props.getData(this.props.parsedFilter);
-  //   if (this.state.data.length - 1 === 0) {
-  //     history.push(
-  //       `/accountAdmin?page=${parseInt(
-  //         this.props.parsedFilter.page - 1
-  //       )}&perPage=${this.props.parsedFilter.perPage}`
-  //     );
-  //     this.props.getData({
-  //       page: this.props.parsedFilter.page - 1,
-  //       perPage: this.props.parsedFilter.perPage,
-  //     });
-  //   }
-  // };
+  handleDelete = (row) => {
+    this.props.deleteDataTeacher(row.teacherId._id, this.props.parsedFilter);
+    this.props.getDataTeacher(this.props.parsedFilter);
+    // if (this.state.data.length - 1 === 0) {
+    //   history.push(
+    //     `/education/teacher?page=${parseInt(
+    //       this.props.parsedFilter.page - 1
+    //     )}&limit=${this.props.parsedFilter.perPage}`
+    //   );
+    //   this.props.deleteDataTeacher({
+    //     page: this.props.parsedFilter.page - 1,
+    //     limit: this.props.parsedFilter.perPage,
+    //   });
+    // }
+  };
 
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
@@ -303,6 +305,7 @@ class ListTeacherConfig extends Component {
 
   render() {
     let { columns, data, value, currentData, sidebar } = this.state;
+    console.log(data);
     return (
       <div className="data-list">
         <Modal
@@ -443,8 +446,7 @@ class ListTeacherConfig extends Component {
         <Sidebar
           show={sidebar}
           data={currentData}
-          updateData={this.props.updateData}
-          addData={this.props.addData}
+          updateData={this.props.updateDataTeacher}
           handleSidebar={this.handleSidebar}
           thumbView={this.props.thumbView}
           getData={this.props.getData}
@@ -472,4 +474,6 @@ export default connect(mapStateToProps, {
   getDataTeacher,
   importExcelTeacer,
   exportExcelTeacher,
+  updateDataTeacher,
+  deleteDataTeacher,
 })(ListTeacherConfig);

@@ -6,3 +6,14 @@ export const getDataAssClassApi = (params) => {
     params,
   });
 };
+export const updateDataAssClassApi = (id, data) => {
+  return axiosService.put(
+    `${process.env.REACT_APP_API_ENDPOINT}/${url}/${id}`,
+    data
+  );
+};
+export const deleteDataAssClassApi = (id) => {
+  return axiosService.delete(
+    `${process.env.REACT_APP_API_ENDPOINT}/${url}/${id}`
+  );
+};

@@ -38,11 +38,11 @@ class axiosService {
   }
   put(url, body) {
     this.getHeaders();
-    return axios.instance.put(url, body);
+    return axios.put(url, body);
   }
   delete(url) {
     this.getHeaders();
-    return axios.instance.delete(url);
+    return axios.delete(url);
   }
 }
 export default new axiosService();

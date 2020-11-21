@@ -29,6 +29,20 @@ export const exportExcelStudent = (classArr, nameFile) => ({
     nameFile,
   },
 });
+export const updateDataStudent = (params, obj) => ({
+  type: assisType.UPDATE_DATA_STUDENT,
+  payload: {
+    params,
+    obj,
+  },
+});
+export const deleteDataStudent = (id, params) => ({
+  type: assisType.DELETE_DATA_STUDENT,
+  payload: {
+    id,
+    params,
+  },
+});
 /**
  * assistant teacher
  */
@@ -58,6 +72,20 @@ export const exportExcelTeacher = (nameFile) => ({
     nameFile,
   },
 });
+export const updateDataTeacher = (obj, params) => ({
+  type: assisType.UPDATE_DATA_TEACHER,
+  payload: {
+    obj,
+    params,
+  },
+});
+export const deleteDataTeacher = (id, params) => ({
+  type: assisType.DELETE_DATA_TEACHER,
+  payload: {
+    id,
+    params,
+  },
+});
 /**
  * assistant class
  */
@@ -79,6 +107,26 @@ export const getDataClassFaild = (error) => ({
   type: assisType.GET_DATA_CLASS_ASS_FAILD,
   payload: {
     error,
+  },
+});
+export const updateDataClass = (obj, params) => ({
+  type: assisType.UPDATE_DATA_CLASS,
+  payload: {
+    obj,
+    params,
+  },
+});
+export const deleteDataClass = (id, params) => ({
+  type: assisType.DELETE_DATA_CLASS,
+  payload: {
+    id,
+    params,
+  },
+});
+export const setTaskEditClass = (task) => ({
+  type: assisType.SET_TASK_CLASS,
+  payload: {
+    task,
   },
 });
 /**

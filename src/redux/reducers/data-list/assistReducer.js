@@ -17,6 +17,7 @@ const initialState = {
   dataSeason: [],
   total_page_season: 0,
   total_record_season: 0,
+  setTaskEditClass: null,
 };
 const assistantReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -70,6 +71,13 @@ const assistantReducer = (state = initialState, action) => {
         total_record_class: total_record,
       };
     }
+    case assType.SET_TASK_CLASS: {
+      const { task } = action.payload;
+      return {
+        ...state,
+        setTaskEditClass: task,
+      };
+    }
     /**
      * assistant subject
      */
@@ -86,6 +94,7 @@ const assistantReducer = (state = initialState, action) => {
         total_page_subject: total_page,
       };
     }
+
     /**
      * assistant stage
      */

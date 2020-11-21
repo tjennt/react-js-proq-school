@@ -1,11 +1,21 @@
 import { put, call } from "redux-saga/effects";
 // import { toastSuccess, toastError } from "../../../utility/toast/toastHelper";
 import {
+  deleteDataStudentApi,
   exportExcelStudentApi,
   getDataStudentApi,
+  updateDataStudentApi,
 } from "../../api/assistant/student";
-import { getDataSuccess } from "../../actions/dataListAssistance/index";
-import { toastError, toastWarning } from "../../../utility/toast/toastHelper";
+import {
+  getData,
+  getDataSuccess,
+} from "../../actions/dataListAssistance/index";
+import {
+  toastError,
+  toastSuccess,
+  toastWarning,
+} from "../../../utility/toast/toastHelper";
+import { message } from "antd";
 export function* getStudentActionSaga({ payload }) {
   const { params } = payload;
   const param = {
@@ -39,4 +49,31 @@ export function* exportExcelStudentSaga({ payload }) {
   } catch (error) {
     toastError(`Export không thành công vui lòng thử lại ! : ${error}`);
   }
+}
+
+export function* updateDataStudentSaga({ payload }) {
+  const { params, obj } = payload;
+  const dataReq = {
+    fullName: obj.fullname,
+    phone: obj.phone,
+    email: obj.email,
+    identityNumber: obj.identityNumber,
+    dob: obj.dob,
+    address: obj.address,
+  };
+  try {
+    const res = yield call(updateDataStudentApi, obj.id, dataReq);
+    console.log(res);
+    yield put(getData(params));
+    toastSuccess("Cập nhật thành công !");
+  } catch (error) {}
+}
+export function* deleteDataStudentSaga({ payload }) {
+  const { id, params } = payload;
+  try {
+    const res = yield call(deleteDataStudentApi, id);
+    console.log(res);
+    yield put(getData(params));
+    message.success("Xóa thành công !");
+  } catch (error) {}
 }
