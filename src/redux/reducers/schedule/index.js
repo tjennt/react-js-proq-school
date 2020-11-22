@@ -5,6 +5,7 @@ const initialState = {
   dataSubject: [],
   dataBothStudy: [],
   dataSpecial: [],
+  setTaskDataSpecial: null,
   dataSchedules: [],
   total_page_schedule: [],
   total_page_special: 0,
@@ -78,6 +79,13 @@ const scheduleReducer = (state = initialState, action) => {
         dataSpecial: data,
         total_page_special: total_page,
         total_record_special: total_record,
+      };
+    }
+    case scheduleType.SET_TASK_SPECIALIZATION: {
+      const { task } = action.payload;
+      return {
+        ...state,
+        setTaskDataSpecial: task,
       };
     }
     // schedules

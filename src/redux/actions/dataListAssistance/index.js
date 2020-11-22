@@ -151,6 +151,19 @@ export const getDataSubjectFaild = (error) => ({
     error,
   },
 });
+export const updateDataSubject = (obj, params) => ({
+  type: assisType.UPDATE_DATA_SUBJECT,
+  payload: {
+    obj,
+    params,
+  },
+});
+export const setTaskEditSubject = (task) => ({
+  type: assisType.SET_TASK_EDIT_SUBJECT,
+  payload: {
+    task,
+  },
+});
 /**
  * asssist stage
  */
@@ -183,11 +196,12 @@ export const getDataSeason = (params) => ({
     params,
   },
 });
-export const getDataSeasonSuccss = (data, total_page) => ({
+export const getDataSeasonSuccss = (data, total_page, total_item) => ({
   type: assisType.GET_DATA_SEASON_SUCCESS,
   payload: {
     data,
     total_page,
+    total_item,
   },
 });
 export const getDataSeasonFail = (error) => ({

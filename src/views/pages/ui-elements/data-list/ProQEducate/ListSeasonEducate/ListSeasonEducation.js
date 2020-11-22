@@ -68,10 +68,10 @@ class ListSeasonEducation extends Component {
     ) {
       return {
         data: props.dataList.dataSeason,
-        totalPages: props.dataList.total_page_student,
+        totalPages: props.dataList.total_page_season,
         // currentPage: parseInt(props.parsedFilter.page) - 1,
         // rowsPerPage: parseInt(props.parsedFilter.perPage),
-        totalRecords: props.dataList.total_record_student,
+        totalRecords: props.dataList.total_record_season,
         // sortIndex: props.dataList.sortIndex,
       };
     }

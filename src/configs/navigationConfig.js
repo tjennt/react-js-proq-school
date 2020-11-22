@@ -62,14 +62,14 @@ const navigationConfig = [
     groupTitle: "Phòng đào tạo",
     permissions: ["admin"],
   },
-  {
-    id: "totalDepartment",
-    title: "Tổng hợp",
-    type: "item",
-    icon: <Icon.Circle size={12} />,
-    permissions: ["admin"],
-    navLink: "/education/totalDepartment",
-  },
+  // {
+  //   id: "totalDepartment",
+  //   title: "Tổng hợp",
+  //   type: "item",
+  //   icon: <Icon.Circle size={12} />,
+  //   permissions: ["admin"],
+  //   navLink: "/education/totalDepartment",
+  // },
   {
     id: "generalDepartment",
     title: "Phân lớp",

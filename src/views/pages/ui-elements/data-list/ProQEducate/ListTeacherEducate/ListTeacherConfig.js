@@ -94,13 +94,13 @@ class ListTeacherConfig extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Avatar",
+        name: "Hình đại diện",
         selector: "name",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
           <img
-            height="85px"
+            height="70px"
             src={`${API_ENDPOINT_IMG_TEACHER}/${row.teacherId.avatar}`}
             alt={row.teacherId.avatar}
           />
@@ -352,7 +352,7 @@ class ListTeacherConfig extends Component {
                 <span className="align-middle">Tạo mới</span>
               </Button> */}
               <Button onClick={this.showModal} className=" ml-2" color="danger">
-                <Download size={15} /> Import excel
+                <Download size={15} /> Nhập excel
               </Button>
               <Button
                 onClick={this.showModalExportExcel}

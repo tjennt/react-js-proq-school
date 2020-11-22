@@ -11,8 +11,15 @@ import {
   getDataSeason,
   getDataTeacher,
 } from "../../../../../../redux/actions/dataListAssistance/index";
-import { addSchedules } from "../../../../../../redux/actions/schedule/index";
-import { getDataSubject } from "../../../../../../redux/actions/schedule/getDataSubject";
+import {
+  addSchedules,
+  updateSchedules,
+  deleteSchedules,
+} from "../../../../../../redux/actions/schedule/index";
+import {
+  getDataSubject,
+  getDataSubjectUpdate,
+} from "../../../../../../redux/actions/schedule/getDataSubject";
 import { getDataBothStudy } from "../../../../../../redux/actions/schedule/getDataBothStudy";
 import Sidebar from "./DepartmentSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
@@ -249,17 +256,17 @@ class ListDepartmentConfig extends Component {
     this.props.getData(this.props.parsedFilter);
   };
   handleDelete = (row) => {
-    this.props.deleteData(row);
-    this.props.getData(this.props.parsedFilter);
+    this.props.deleteSchedules(row.id, this.props.parsedFilter);
+    this.props.getDataSchedules(this.props.parsedFilter);
     if (this.state.data.length - 1 === 0) {
       history.push(
         `/accountAdmin?page=${parseInt(
           this.props.parsedFilter.page - 1
-        )}&perPage=${this.props.parsedFilter.perPage}`
+        )}&limit=${this.props.parsedFilter.perPage}`
       );
-      this.props.getData({
+      this.props.getDataSchedules({
         page: this.props.parsedFilter.page - 1,
-        perPage: this.props.parsedFilter.perPage,
+        limit: this.props.parsedFilter.perPage,
       });
     }
   };
@@ -322,11 +329,12 @@ class ListDepartmentConfig extends Component {
           classDepart={this.props.class}
           subjectClass={this.props.subjectClass}
           getDataSubject={this.props.getDataSubject}
+          getDataSubjectUpdate={this.props.getDataSubjectUpdate}
           getDataBothStudy={this.props.getDataBothStudy}
           dataClass={dataClass}
           show={sidebar}
           data={currentData}
-          updateData={this.props.updateData}
+          updateData={this.props.updateSchedules}
           addData={this.props.addSchedules}
           handleSidebar={this.handleSidebar}
         />
@@ -361,4 +369,7 @@ export default connect(mapStateToProps, {
   getDataBothStudy,
   getDataTeacher,
   addSchedules,
+  updateSchedules,
+  deleteSchedules,
+  getDataSubjectUpdate,
 })(ListDepartmentConfig);

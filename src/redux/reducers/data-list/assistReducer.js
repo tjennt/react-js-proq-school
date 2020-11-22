@@ -18,6 +18,7 @@ const initialState = {
   total_page_season: 0,
   total_record_season: 0,
   setTaskEditClass: null,
+  setTaskEditSubject: null,
 };
 const assistantReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -94,7 +95,13 @@ const assistantReducer = (state = initialState, action) => {
         total_page_subject: total_page,
       };
     }
-
+    case assType.SET_TASK_EDIT_SUBJECT: {
+      const { task } = action.payload;
+      return {
+        ...state,
+        setTaskEditSubject: task,
+      };
+    }
     /**
      * assistant stage
      */
@@ -121,11 +128,12 @@ const assistantReducer = (state = initialState, action) => {
       };
     }
     case assType.GET_DATA_SEASON_SUCCESS: {
-      const { data, total_page } = action.payload;
+      const { data, total_page, total_item } = action.payload;
       return {
         ...state,
         dataSeason: data,
         total_page_season: total_page,
+        total_record_season: total_item,
       };
     }
     case "ADD_ADMIN":

@@ -10,7 +10,10 @@ class FormDepartment extends Component {
     id: "",
     season: null,
     nameClass: null,
+    idClass: null,
     subject: null,
+    idSubject: null,
+    subjectUpdate: null,
     days: [],
     start_time: "",
     start_timeReq: "",
@@ -30,6 +33,44 @@ class FormDepartment extends Component {
   };
   addNew = false;
   componentDidUpdate(prevProps, prevState) {
+    const { data } = this.props;
+    if (data !== null && prevProps.data === null) {
+      console.log(data);
+      if (data.id !== prevState.id) this.setState({ id: data.id });
+      if (data.idSeason !== prevState.season)
+        this.setState({ season: data.idSeason });
+      if (data.idClass !== prevState.nameClass)
+        this.setState({ nameClass: data.idClass });
+      this.props.getDataSubjectUpdate(data.id, data.idSeason, data.idClass);
+      if (data.idSubject !== prevState.subject)
+        this.setState({ subject: data.idSubject });
+      if (data.startAt !== prevState.start_time)
+        this.setState({ start_time: data.startAt });
+      if (data.startAt !== prevState.start_timeReq)
+        this.setState({ start_timeReq: data.startAt });
+      if (data.endAt !== prevState.end_time)
+        this.setState({ end_time: data.endAt });
+      if (data.endAt !== prevState.end_timeReq)
+        this.setState({ end_timeReq: data.endAt });
+      if (data.weekDays !== prevState.days)
+        this.setState({ days: data.weekDays });
+      if (data.shift !== prevState.ca) this.setState({ ca: data.shift });
+      if (data.idTeacher !== prevState.teacher)
+        this.setState({ teacher: data.idTeacher });
+    }
+    if (data === null && prevProps.data !== null) {
+      this.setState({
+        id: "",
+        season: "",
+        nameClass: "",
+        subject: "",
+        days: [],
+        start_time: "",
+        end_time: "",
+        ca: null,
+        teacher: null,
+      });
+    }
     if (this.addNew) {
       this.setState({
         id: "",
@@ -85,6 +126,9 @@ class FormDepartment extends Component {
   onChangeDate = (value) => {
     this.setState({ ...this.state, days: value, checkButton: true });
   };
+  handleChangeStart = () => {
+    this.setState({ ...this.state, checkStartTime: true });
+  };
   SearchCa = () => {
     this.props.getDataBothStudy(this.state);
     this.setState({
@@ -130,6 +174,7 @@ class FormDepartment extends Component {
       checkButton,
       checkDay,
       checkEndTime,
+      id,
     } = this.state;
     const optionMonday = [
       { label: "Chủ nhật", value: 0 },
@@ -197,6 +242,7 @@ class FormDepartment extends Component {
           <Label>Kì học *</Label>
           <Select
             style={{ width: "100%" }}
+            disabled={id ? true : false}
             placeholder="Vui lòng chọn giáo viên "
             value={this.state.season}
             onChange={this.handleChangeStage}
@@ -204,31 +250,65 @@ class FormDepartment extends Component {
             {children}
           </Select>
         </FormGroup>
-        <FormGroup>
-          <Label>Tên lớp *</Label>
-          <Select
-            style={{ width: "100%" }}
-            value={this.state.nameClass}
-            disabled={this.state.checkClass ? false : true}
-            placeholder="Vui lòng chọn lớp "
-            name="nameClass"
-            onChange={this.handleChange}
-          >
-            {optionClassDepart}
-          </Select>
-        </FormGroup>
-        <FormGroup>
-          <Label>Môn *</Label>
-          <Select
-            style={{ width: "100%" }}
-            placeholder="Vui lòng chọn môn"
-            value={this.state.subject}
-            disabled={checkSubject ? false : true}
-            onChange={this.handleChangeClass}
-          >
-            {optionSubjectClass}
-          </Select>
-        </FormGroup>
+        {id ? (
+          <div>
+            <FormGroup>
+              <Label>Tên lớp *</Label>
+              <Select
+                style={{ width: "100%" }}
+                value={this.state.nameClass}
+                disabled={true}
+                placeholder="Vui lòng chọn lớp "
+                name="nameClass"
+                onChange={this.handleChange}
+              >
+                {optionClassDepart}
+              </Select>
+            </FormGroup>
+            <FormGroup>
+              <Label>Môn *</Label>
+              <Select
+                style={{ width: "100%" }}
+                placeholder="Vui lòng chọn môn"
+                value={this.state.subject}
+                onBlur={this.handleChangeStart}
+                disabled={false}
+                onChange={this.handleChangeClass}
+              >
+                {optionSubjectClass}
+              </Select>
+            </FormGroup>
+          </div>
+        ) : (
+          <div>
+            <FormGroup>
+              <Label>Tên lớp *</Label>
+              <Select
+                style={{ width: "100%" }}
+                value={this.state.nameClass}
+                disabled={this.state.checkClass ? false : true}
+                placeholder="Vui lòng chọn lớp "
+                name="nameClass"
+                onChange={this.handleChange}
+              >
+                {optionClassDepart}
+              </Select>
+            </FormGroup>
+            <FormGroup>
+              <Label>Môn *</Label>
+              <Select
+                style={{ width: "100%" }}
+                placeholder="Vui lòng chọn môn"
+                value={this.state.subject}
+                disabled={checkSubject ? false : true}
+                onChange={this.handleChangeClass}
+              >
+                {optionSubjectClass}
+              </Select>
+            </FormGroup>
+          </div>
+        )}
+
         <FormGroup>
           <Label>Thời gian bắt đầu *</Label>
           <DatePicker
@@ -300,7 +380,7 @@ class FormDepartment extends Component {
         </FormGroup>
         <FormGroup>
           <Button
-            disabled={this.state.checkSubmit ? false : true}
+            disabled={this.state.checkSubmit || id ? false : true}
             color="primary"
             onClick={this.onSubmitForm}
             type="submit"

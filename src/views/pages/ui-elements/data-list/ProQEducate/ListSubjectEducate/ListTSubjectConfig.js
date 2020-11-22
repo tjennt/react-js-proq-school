@@ -5,7 +5,11 @@ import { history } from "../../../../../../history";
 import { ChevronLeft, ChevronRight, Edit, Plus, Trash } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import { getDataSubject } from "../../../../../../redux/actions/dataListAssistance/index";
+import {
+  getDataSubject,
+  setTaskEditSubject,
+  updateDataSubject,
+} from "../../../../../../redux/actions/dataListAssistance/index";
 import { addSubject } from "../../../../../../redux/actions/education/index";
 import Sidebar from "./DataListSubjectSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
@@ -181,6 +185,7 @@ class ListTSubjectConfig extends Component {
   };
 
   handleCurrentData = (obj) => {
+    this.props.setTaskEditSubject(obj);
     this.setState({ currentData: obj });
     this.handleSidebar(true);
   };
@@ -236,8 +241,8 @@ class ListTSubjectConfig extends Component {
         />
         <Sidebar
           show={sidebar}
-          data={currentData}
-          updateData={this.props.updateData}
+          data={this.props.editTask}
+          updateData={this.props.updateDataSubject}
           addData={this.props.addSubject}
           handleSidebar={this.handleSidebar}
           thumbView={this.props.thumbView}
@@ -259,10 +264,13 @@ class ListTSubjectConfig extends Component {
 const mapStateToProps = (state) => {
   return {
     dataList: state.assistantData,
+    editTask: state.assistantData.setTaskEditSubject,
   };
 };
 
 export default connect(mapStateToProps, {
   getDataSubject,
   addSubject,
+  setTaskEditSubject,
+  updateDataSubject,
 })(ListTSubjectConfig);

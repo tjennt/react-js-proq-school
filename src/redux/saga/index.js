@@ -32,7 +32,7 @@ import {
   updateDataClassSaga,
   deleteDataClassSaga,
 } from "./assistant/class";
-import { getSubjectActionSaga } from "./assistant/subject";
+import { getSubjectActionSaga, updateSubjectSaga } from "./assistant/subject";
 import { getStageSaga } from "./assistant/stage";
 import {
   addClassSaga,
@@ -44,11 +44,21 @@ import {
   importExcelStudentEduSaga,
   importExcelTeacherEduSaga,
 } from "./educationSaga";
-import { getDataSubjectSaga } from "./schedule/subjectSaga";
+import {
+  getDataSubjectSaga,
+  getDataSubjectUpdateSaga,
+} from "./schedule/subjectSaga";
 import { getDataBothStudySaga } from "./schedule/bothStudySaga";
 import { getSeasonSaga } from "./assistant/season";
-import { getSpecializationSaga } from "./schedule/specialization";
-import { addSchedulesSaga } from "./schedule/schedulesSaga";
+import {
+  getSpecializationSaga,
+  updateDataSpecialSaga,
+} from "./schedule/specialization";
+import {
+  addSchedulesSaga,
+  deleteScheduleSaga,
+  updateSchedulesSaga,
+} from "./schedule/schedulesSaga";
 import {
   getSchedulesTeacgerSaga,
   getTeacherDetailSaga,
@@ -81,6 +91,7 @@ function* rootSaga() {
   yield takeLatest(assType.DELETE_DATA_TEACHER, deleteDataTeacherSaga);
   yield takeLatest(assType.UPDATE_DATA_CLASS, updateDataClassSaga);
   yield takeLatest(assType.DELETE_DATA_CLASS, deleteDataClassSaga);
+  yield takeLatest(assType.UPDATE_DATA_SUBJECT, updateSubjectSaga);
   //education
   yield takeLatest(
     educationType.IMPORT_EXCEL_STUDENT,
@@ -96,13 +107,20 @@ function* rootSaga() {
   yield takeLatest(educationType.CREATE_SEASON, addSeasonSaga);
   yield takeLatest(educationType.GET_DATA_SCHEDULES, getSchedulesSaga);
   yield takeLatest(educationType.ADD_SEPCIALIZATION, addSpecializationSaga);
+  yield takeLatest(
+    scheduleType.UPDATE_DATA_SPECIALIZATION,
+    updateDataSpecialSaga
+  );
   /**
    * Schedule
    */
   yield takeLatest(scheduleType.GET_SUBJECT_FROM_CLASS, getDataSubjectSaga);
+  yield takeLatest(scheduleType.GET_SUBJECT_UPDATE, getDataSubjectUpdateSaga);
   yield takeLatest(scheduleType.GET_BOTHSTUDY, getDataBothStudySaga);
   yield takeLatest(scheduleType.GET_SPECIALIZATION, getSpecializationSaga);
   yield takeLatest(scheduleType.ADD_SCHEDULES, addSchedulesSaga);
+  yield takeLatest(scheduleType.UPDATE_SCHEDULES, updateSchedulesSaga);
+  yield takeLatest(scheduleType.DELETE_SCHEDULES, deleteScheduleSaga);
   yield takeLatest(teacherType.GET_SCHEDULES_TEACHER, getSchedulesTeacgerSaga);
   yield takeLatest(teacherType.GET_SCHEDULE_ID, getTeacherDetailSaga);
   yield takeLatest(teacherType.SCHEDULES, scheduleSaga);

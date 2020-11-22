@@ -7,6 +7,14 @@ export const getDataSubject = (season, idClass) => ({
     idClass,
   },
 });
+export const getDataSubjectUpdate = (id, season, idClass) => ({
+  type: subjectType.GET_SUBJECT_UPDATE,
+  payload: {
+    id,
+    season,
+    idClass,
+  },
+});
 export const getDataSubjectSuccess = (data) => ({
   type: subjectType.GET_SUBJECT_FROM_CLASS_SUCCESS,
   payload: {

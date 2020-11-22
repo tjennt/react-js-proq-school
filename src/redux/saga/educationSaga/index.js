@@ -22,7 +22,7 @@ import { addSubject } from "../../api/education/subject";
 import { addClassApi } from "../../api/education/class";
 import { addSpecializationApi } from "../../api/education/specialization";
 import { getDataSpecialization } from "../../actions/schedule/getDataSpecialization";
-
+import * as moment from "moment";
 /**
  * getSchedule
  */
@@ -36,18 +36,25 @@ export function* getSchedulesSaga({ payload }) {
     const res = yield call(getDataSchedulesApi, param);
     const { data } = res;
     if (data.success === true) {
+      console.log(data);
       let dataSchedule = data.payload.reduce(
         (arr, curr) => [
           ...arr,
           {
+            idClass: curr.class._id,
             class: curr.class.name,
             season: curr.season.name,
+            idSeason: curr.season._id,
             shift: curr.shift,
             weekDays: curr.weekDays,
             id: curr._id,
             subject: curr.subject.name,
+            idSubject: curr.subject._id,
             createdAt: curr.createAt,
+            endAt: curr.endAt,
             startAt: curr.startAt,
+            nameTeacher: curr.teacher.fullname,
+            idTeacher: curr.teacher._id,
           },
         ],
         []
@@ -177,8 +184,8 @@ export function* addSeasonSaga({ payload }) {
   const { obj, params } = payload;
   const dataReq = {
     name: obj.name,
-    startAt: obj.startAt,
-    endAt: obj.startEnd,
+    startAt: moment(obj.startAt).format("MM-DD-YYYY"),
+    endAt: moment(obj.startEnd).format("MM-DD-YYYY"),
   };
   try {
     const res = yield call(addSeasonApi, dataReq);

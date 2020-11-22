@@ -18,7 +18,7 @@ class teacherEducation extends React.Component {
     return (
       <React.Fragment>
         <Breadcrumbs
-          breadCrumbTitle="Phòng công tác "
+          breadCrumbTitle="Phòng đào tạo "
           breadCrumbParent="Danh sách"
           breadCrumbActive="Danh sách giảng viên"
         />

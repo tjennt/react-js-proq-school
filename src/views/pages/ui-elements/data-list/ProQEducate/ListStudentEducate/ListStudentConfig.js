@@ -96,13 +96,13 @@ class ListStudentEducation extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Avatar",
+        name: "Hình đại diện",
         selector: "name",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
           <img
-            height="80px"
+            height="60px"
             src={`${API_ENDPOINT_IMG}/${row.studentId.avatar}`}
             alt={row.avatar}
           />
@@ -341,7 +341,7 @@ class ListStudentEducation extends Component {
           <Row>
             <Col lg="6">
               <Button onClick={this.showModal} className=" ml-2" color="danger">
-                <Download size={15} /> Import
+                <Download size={15} /> Nhập excel
               </Button>
               <Button
                 onClick={this.showModalExportExcel}
@@ -367,7 +367,7 @@ class ListStudentEducation extends Component {
                     this.props.parsedFilter.limit
                       ? this.props.parsedFilter.limit
                       : 10
-                  } of ${this.state.totalRecords}`}</span>
+                  } của ${this.state.totalRecords}`}</span>
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>
