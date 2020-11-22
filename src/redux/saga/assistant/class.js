@@ -1,7 +1,15 @@
 import { put, call } from "redux-saga/effects";
-import { getDataAssClassApi } from "../../api/assistant/class";
-import { getDataClassSuccess } from "../../actions/dataListAssistance/index";
+import {
+  deleteDataAssClassApi,
+  getDataAssClassApi,
+  updateDataAssClassApi,
+} from "../../api/assistant/class";
+import {
+  getDataClass,
+  getDataClassSuccess,
+} from "../../actions/dataListAssistance/index";
 import { toastError, toastWarning } from "../../../utility/toast/toastHelper";
+import { message } from "antd";
 export function* getClassActionSaga({ payload }) {
   const { params } = payload;
   const param = {
@@ -21,4 +29,33 @@ export function* getClassActionSaga({ payload }) {
   } catch (error) {
     toastError(`Đã có lỗi xảy ra vui lòng thử lại ${error}`);
   }
+}
+export function* updateDataClassSaga({ payload }) {
+  const { obj, params } = payload;
+  const dataReq = {
+    name: obj.nameClass,
+    specialization: obj.specializate,
+    stage: obj.stage,
+  };
+  try {
+    const res = yield call(updateDataAssClassApi, obj.id, dataReq);
+    console.log(res);
+    const { data } = res;
+    if (data.success) {
+      yield put(getDataClass(params));
+      message.success("Cập nhật thành công ");
+    }
+  } catch (error) {}
+}
+export function* deleteDataClassSaga({ payload }) {
+  const { id, params } = payload;
+  try {
+    const res = yield call(deleteDataAssClassApi, id);
+    console.log(res);
+    const { data } = res;
+    if (data.success) {
+      yield put(getDataClass(params));
+      message.success("Xóa thành công!");
+    }
+  } catch (error) {}
 }

@@ -12,28 +12,38 @@ class ClassEducateSidebar extends Component {
   };
 
   handleSubmit = (obj, { resetForm }) => {
-    const { handleSidebar, data, addData, parsedFilter } = this.props;
+    const {
+      handleSidebar,
+      data,
+      addData,
+      parsedFilter,
+      updateData,
+    } = this.props;
     const panigate = {
       page: 1,
       limit: 10,
     };
     let params = parsedFilter || panigate;
-    if (!data) {
+    if (data === null) {
       addData(obj, params);
       handleSidebar(false, true);
       resetForm({});
     } else {
-      // updateData(values);
+      updateData(obj, params);
       handleSidebar(false, true);
     }
   };
   render() {
     let { show, handleSidebar, data } = this.props;
-    // let dataId = "";
-    // if (data) {
-    //   dataId = data.id;
-    // }
-    // let dataInititalEdit = [];
+    let dataInititalEdit = [];
+    if (data) {
+      dataInititalEdit = {
+        id: data._id,
+        nameClass: data.name,
+        stage: data.stage._id,
+        specializate: data.specialization._id,
+      };
+    }
     return (
       <div
         className={classnames("data-list-sidebar", {
@@ -51,7 +61,9 @@ class ClassEducateSidebar extends Component {
           <FormClass
             stage={this.props.stage}
             specialization={this.props.specialization}
-            initialValues={this.initialValues}
+            initialValues={
+              this.props.data ? dataInititalEdit : this.initialValues
+            }
             onSubmitForm={this.handleSubmit}
             handleSidebar={handleSidebar}
           />

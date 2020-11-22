@@ -4,14 +4,7 @@ import { getDataBothStudySuccess } from "../../actions/schedule/getDataBothStudy
 import { getDataBothStudyApi } from "../../api/schedule/bothStudy";
 export function* getDataBothStudySaga({ payload }) {
   const { state } = payload;
-  const {
-    days,
-    nameClass,
-    // start_time,
-    // end_time,
-    start_timeReq,
-    end_timeReq,
-  } = state;
+  const { days, nameClass, season, start_timeReq, end_timeReq } = state;
 
   // let timeStart = start_time ? moment(start_time).format("MM-DD-YYYY") : "";
   // let timeEnd = start_time ? moment(end_time).format("MM-DD-YYYY") : "";
@@ -20,6 +13,7 @@ export function* getDataBothStudySaga({ payload }) {
   const params = {
     classID: nameClass ? nameClass : "",
     startAt: start_timeReq,
+    seasonID: season,
     endAt: end_timeReq,
     days: arrDay.reduce((f, s) => `${f},${s}`),
   };
@@ -36,6 +30,6 @@ export function* getDataBothStudySaga({ payload }) {
       toastWarning("Vui lòng thử lại sau");
     }
   } catch (error) {
-    toastError("Đã có lỗi xảy ra vui lòng thử lại sau");
+    toastError("Ngày bắt đầu và kết thúc không thuộc trong kì học hiện tại");
   }
 }

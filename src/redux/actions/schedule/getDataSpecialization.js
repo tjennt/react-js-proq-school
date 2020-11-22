@@ -23,3 +23,16 @@ export const getDataSpecializationFaild = (error) => ({
     error,
   },
 });
+export const setEditSpecialization = (task) => ({
+  type: bothStudyType.SET_TASK_SPECIALIZATION,
+  payload: {
+    task,
+  },
+});
+export const updateSpecialization = (obj, params) => ({
+  type: bothStudyType.UPDATE_DATA_SPECIALIZATION,
+  payload: {
+    obj,
+    params,
+  },
+});

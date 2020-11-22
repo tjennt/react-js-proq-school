@@ -31,7 +31,11 @@ import {
 import { Popconfirm, message } from "antd";
 import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
-import { getDataSpecialization } from "../../../../../../redux/actions/schedule/getDataSpecialization";
+import {
+  getDataSpecialization,
+  updateSpecialization,
+  setEditSpecialization,
+} from "../../../../../../redux/actions/schedule/getDataSpecialization";
 import { addSpecialization } from "../../../../../../redux/actions/education/index";
 import { getDataSubject } from "../../../../../../redux/actions/dataListAssistance/index";
 
@@ -166,7 +170,11 @@ class ListSpecializationEducation extends Component {
   //     });
   //   }
   // };
-
+  handleCurrentData = (obj) => {
+    this.props.setEditSpecialization(obj);
+    this.setState({ currentData: obj });
+    this.handleSidebar(true);
+  };
   handlePagination = (page) => {
     let { parsedFilter, getDataSpecialization } = this.props;
     const { limit } = parsedFilter;
@@ -287,8 +295,8 @@ class ListSpecializationEducation extends Component {
         <Sidebar
           subject={this.props.subject}
           show={sidebar}
-          data={currentData}
-          updateData={this.props.updateData}
+          data={this.props.dataEdit}
+          updateData={this.props.updateSpecialization}
           addData={this.props.addSpecialization}
           handleSidebar={this.handleSidebar}
           parsedFilter={this.props.parsedFilter}
@@ -326,6 +334,7 @@ const mapStateToProps = (state) => {
   return {
     dataList: state.dataSchedule,
     subject: state.assistantData.dataSubject,
+    dataEdit: state.dataSchedule.setTaskDataSpecial,
   };
 };
 
@@ -335,4 +344,6 @@ export default connect(mapStateToProps, {
   getDataSpecialization,
   getDataSubject,
   addSpecialization,
+  setEditSpecialization,
+  updateSpecialization,
 })(ListSpecializationEducation);

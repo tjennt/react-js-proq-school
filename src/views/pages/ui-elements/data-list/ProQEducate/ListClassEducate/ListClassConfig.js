@@ -15,6 +15,9 @@ import "antd/dist/antd.css";
 import {
   getDataClass,
   getDataStage,
+  setTaskEditClass,
+  updateDataClass,
+  deleteDataClass,
 } from "../../../../../../redux/actions/dataListAssistance/index";
 import { getDataSpecialization } from "../../../../../../redux/actions/schedule/getDataSpecialization";
 import { addClass } from "../../../../../../redux/actions/education/index";
@@ -187,27 +190,31 @@ class ListClassEducateConfig extends Component {
     this.setState({ sidebar: boolean });
     if (addNew === true) this.setState({ currentData: null, addNew: true });
   };
-  // handleDelete = (row) => {
-  //   this.props.deleteData(row);
-  //   this.props.getData(this.props.parsedFilter);
-  //   if (this.state.data.length - 1 === 0) {
-  //     history.push(
-  //       `/accountAdmin?page=${parseInt(
-  //         this.props.parsedFilter.page - 1
-  //       )}&perPage=${this.props.parsedFilter.perPage}`
-  //     );
-  //     this.props.getData({
-  //       page: this.props.parsedFilter.page - 1,
-  //       perPage: this.props.parsedFilter.perPage,
-  //     });
-  //   }
-  // };
+  handleDelete = (row) => {
+    // this.props.getData(this.props.parsedFilter);
+    this.props.deleteDataClass(row._id,this.props.parsedFilter);
+    // if (this.state.data.length - 1 === 0) {
+    //   history.push(
+    //     `/accountAdmin?page=${parseInt(
+    //       this.props.parsedFilter.page - 1
+    //     )}&perPage=${this.props.parsedFilter.perPage}`
+    //   );
+    //   this.props.getData({
+    //     page: this.props.parsedFilter.page - 1,
+    //     perPage: this.props.parsedFilter.perPage,
+    //   });
+    // }
+  };
 
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
+    this.props.setTaskEditClass(obj);
     this.handleSidebar(true);
   };
-
+  handleAddData = () => {
+    this.handleSidebar(true, true);
+    this.props.setTaskEditClass(null);
+  };
   handlePagination = (page) => {
     let { parsedFilter, getDataClass } = this.props;
     const { limit } = parsedFilter;
@@ -233,7 +240,8 @@ class ListClassEducateConfig extends Component {
             <Col lg="3">
               <Button
                 color="primary"
-                onClick={() => this.handleSidebar(true, true)}
+                // onClick={() => this.handleSidebar(true, true)}
+                onClick={this.handleAddData}
                 outline={true}
               >
                 <Plus size={15} />
@@ -322,8 +330,8 @@ class ListClassEducateConfig extends Component {
           stage={this.props.stage}
           specialization={this.props.specialization}
           show={sidebar}
-          data={currentData}
-          updateData={this.props.updateData}
+          data={this.props.dataEdit}
+          updateData={this.props.updateDataClass}
           addData={this.props.addClass}
           handleSidebar={this.handleSidebar}
           parsedFilter={this.props.parsedFilter}
@@ -344,6 +352,7 @@ const mapStateToProps = (state) => {
     dataList: state.assistantData,
     stage: state.assistantData.dataStage,
     specialization: state.dataSchedule.dataSpecial,
+    dataEdit: state.assistantData.setTaskEditClass,
   };
 };
 
@@ -352,4 +361,7 @@ export default connect(mapStateToProps, {
   addClass,
   getDataStage,
   getDataSpecialization,
+  setTaskEditClass,
+  updateDataClass,
+  deleteDataClass,
 })(ListClassEducateConfig);

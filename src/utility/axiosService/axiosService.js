@@ -9,11 +9,21 @@ class axiosService {
       delete axios.defaults.headers.common["authorization"];
     }
   };
+
   handSuccess(response) {
     return response;
   }
   handError(error) {
     return Promise.reject(error);
+  }
+  getExportExcel(url, params) {
+    this.getHeaders();
+    return axios({
+      url: url, //your url
+      method: "GET",
+      responseType: "blob",
+      params, // important
+    });
   }
   get(url, params) {
     this.getHeaders();
@@ -28,11 +38,11 @@ class axiosService {
   }
   put(url, body) {
     this.getHeaders();
-    return axios.instance.put(url, body);
+    return axios.put(url, body);
   }
   delete(url) {
     this.getHeaders();
-    return axios.instance.delete(url);
+    return axios.delete(url);
   }
 }
 export default new axiosService();

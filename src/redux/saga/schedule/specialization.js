@@ -1,7 +1,17 @@
 import { put, call } from "redux-saga/effects";
-import { toastError, toastWarning } from "../../../utility/toast/toastHelper";
-import { getDataSpecializationApi } from "../../api/schedule/specialization";
-import { getDataSpecializationSuccess } from "../../actions/schedule/getDataSpecialization";
+import {
+  toastError,
+  toastSuccess,
+  toastWarning,
+} from "../../../utility/toast/toastHelper";
+import {
+  getDataSpecializationApi,
+  updateDataSpecialApi,
+} from "../../api/schedule/specialization";
+import {
+  getDataSpecialization,
+  getDataSpecializationSuccess,
+} from "../../actions/schedule/getDataSpecialization";
 export function* getSpecializationSaga({ payload }) {
   const { params } = payload;
   const param = {
@@ -24,5 +34,25 @@ export function* getSpecializationSaga({ payload }) {
     }
   } catch (error) {
     toastError(`Đã có lỗi xảy ra vui lòng thử lại ${error}`);
+  }
+}
+export function* updateDataSpecialSaga({ payload }) {
+  console.log(payload);
+  const { obj, params } = payload;
+  const dataReq = {
+    name: obj.nameSpecialization,
+    subject: obj.subject,
+  };
+  try {
+    const res = yield call(updateDataSpecialApi, obj.id, dataReq);
+    const { data } = res;
+    if (data.success) {
+      yield put(getDataSpecialization(params));
+      toastSuccess("Thêm dữ liệu thành công");
+    } else {
+      toastWarning("Vui lòng thử lại sau");
+    }
+  } catch (error) {
+    toastError(`Đã có lỗi xảy ra vui lòng thử lại sau ${error}`);
   }
 }

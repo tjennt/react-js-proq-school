@@ -12,18 +12,26 @@ import {
 } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import { getData } from "../../../../../../redux/actions/dataListAssistance/index";
+import {
+  getData,
+  getDataClass,
+  exportExcelStudent,
+  updateDataStudent,
+  deleteDataStudent,
+} from "../../../../../../redux/actions/dataListAssistance/index";
 import { importExcelStudent } from "../../../../../../redux/actions/education/index";
 import Sidebar from "./DataListStudentSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
+import Select from "react-select";
 import {
   Button,
   Col,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
+  Input,
   Row,
   Table,
   UncontrolledDropdown,
@@ -37,7 +45,7 @@ const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
   function confirm(e) {
-    props.changeStatus(props.row);
+    props.deleteRow(props.row);
   }
   function cancel(e) {
     message.error("Hủy thay đổi trạng thái  !");
@@ -88,13 +96,13 @@ class ListStudentEducation extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Avatar",
+        name: "Hình đại diện",
         selector: "name",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
           <img
-            height="80px"
+            height="60px"
             src={`${API_ENDPOINT_IMG}/${row.studentId.avatar}`}
             alt={row.avatar}
           />
@@ -145,7 +153,6 @@ class ListStudentEducation extends Component {
             parsedFilter={this.props.parsedFilter}
             currentData={this.handleCurrentData}
             deleteRow={this.handleDelete}
-            changeStatus={(row) => this.changeStatus(row)}
           />
         ),
       },
@@ -160,19 +167,26 @@ class ListStudentEducation extends Component {
     totalRecords: 0,
     sortIndex: [],
     addNew: "",
+    visibleExport: "",
     file: "",
+    nameFile: "",
+    classArr: null,
   };
 
   thumbView = this.props.thumbView;
 
   componentDidMount() {
-    const { parsedFilter } = this.props;
+    const { parsedFilter, getDataClass } = this.props;
 
     const paginate = {
       page: 1,
       limit: 10,
     };
     let limit = parsedFilter || paginate;
+    let params = {
+      limit: 10000,
+    };
+    getDataClass(params);
     this.props.getData(limit);
   }
   handleFilter = (e) => {
@@ -184,24 +198,29 @@ class ListStudentEducation extends Component {
     this.setState({ sidebar: boolean });
     if (addNew === true) this.setState({ currentData: null, addNew: true });
   };
-  // handleDelete = (row) => {
-  //   this.props.deleteData(row);
-  //   this.props.getData(this.props.parsedFilter);
-  //   if (this.state.data.length - 1 === 0) {
-  //     history.push(
-  //       `/education/student?page=${parseInt(
-  //         this.props.parsedFilter.page - 1
-  //       )}&limit=${this.props.parsedFilter.perPage}`
-  //     );
-  //     this.props.getData({
-  //       page: this.props.parsedFilter.page - 1,
-  //       perPage: this.props.parsedFilter.perPage,
-  //     });
-  //   }
-  // };
+  handleDelete = (row) => {
+    const { getData, deleteDataStudent } = this.props;
+    deleteDataStudent(row.studentId._id, this.props.parsedFilter);
+    if (this.state.data.length - 1 === 0) {
+      history.push(
+        `/education/student?page=${parseInt(
+          this.props.parsedFilter.page - 1
+        )}&limit=${this.props.parsedFilter.perPage}`
+      );
+      getData({
+        page: this.props.parsedFilter.page - 1,
+        limit: this.props.parsedFilter.perPage,
+      });
+    }
+  };
   showModal = () => {
     this.setState({
       visible: true,
+    });
+  };
+  showModalExportExcel = () => {
+    this.setState({
+      visibleExport: true,
     });
   };
   handleOk = (e) => {
@@ -215,7 +234,25 @@ class ListStudentEducation extends Component {
       visible: false,
     });
   };
-
+  handleChangeClass = (value) => {
+    this.setState({
+      ...this.state,
+      classArr: value,
+    });
+  };
+  handleOkStudent = (e) => {
+    const { classArr, nameFile } = this.state;
+    this.props.exportExcelStudent(classArr, nameFile);
+    this.setState({
+      ...this.state,
+      visibleExport: false,
+    });
+  };
+  handleCancelStudent = (e) => {
+    this.setState({
+      visibleExport: false,
+    });
+  };
   handleCancel = (e) => {
     this.setState({
       visible: false,
@@ -253,6 +290,13 @@ class ListStudentEducation extends Component {
 
   render() {
     let { columns, value, currentData, sidebar, data } = this.state;
+    let { classOption } = this.props;
+    const arrDataClass = classOption
+      ? classOption.reduce(
+          (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
+          []
+        )
+      : [];
     return (
       <div className="data-list">
         <Modal
@@ -274,14 +318,40 @@ class ListStudentEducation extends Component {
             </p>
           </Dragger>
         </Modal>
+        <Modal
+          destroyOnClose={true}
+          title="Xuất excel"
+          visible={this.state.visibleExport}
+          onOk={this.handleOkStudent}
+          onCancel={this.handleCancelStudent}
+        >
+          <Select
+            placeholder="Vui lòng chọn lớp"
+            value={this.state.classArr}
+            onChange={this.handleChangeClass}
+            options={arrDataClass}
+          />
+          <Input
+            onChange={(e) => this.setState({ nameFile: e.target.value })}
+            className="mt-2"
+            placeholder="Bạn có thể đặt tên file excel"
+          />
+        </Modal>
         <Col lg="12">
           <Row>
-            <Col lg="3">
+            <Col lg="6">
               <Button onClick={this.showModal} className=" ml-2" color="danger">
-                <Download size={15} /> Import
+                <Download size={15} /> Nhập excel
+              </Button>
+              <Button
+                onClick={this.showModalExportExcel}
+                className=" ml-2"
+                color="primary"
+              >
+                <Download size={15} /> Xuất excel
               </Button>
             </Col>
-            <Col lg="9">
+            <Col lg="6">
               <UncontrolledDropdown
                 style={{ backgroundColor: "#fff", borderRadius: "20px" }}
                 className="data-list-rows-dropdown  d-md-block d-none"
@@ -297,7 +367,7 @@ class ListStudentEducation extends Component {
                     this.props.parsedFilter.limit
                       ? this.props.parsedFilter.limit
                       : 10
-                  } of ${this.state.totalRecords}`}</span>
+                  } của ${this.state.totalRecords}`}</span>
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>
@@ -366,8 +436,8 @@ class ListStudentEducation extends Component {
         <Sidebar
           show={sidebar}
           data={currentData}
-          updateData={this.props.updateData}
-          addData={this.props.addData}
+          updateData={this.props.updateDataStudent}
+          // addData={this.props.addData}
           handleSidebar={this.handleSidebar}
           thumbView={this.props.thumbView}
           getData={this.props.getData}
@@ -391,14 +461,14 @@ const ExpandableTable = ({ data }) => {
         <tr>
           <th>Email </th>
           <th>Ngày sinh</th>
-          <th>Chuyên ngành</th>
+          <th>Identity Number</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>{data.studentId.identityNumber}</td>
+          <td>{data.email}</td>
           <td>{data.studentId.dob}</td>
-          <td>Lập trình web </td>
+          <td>{data.studentId.identityNumber} </td>
         </tr>
       </tbody>
     </Table>
@@ -407,10 +477,15 @@ const ExpandableTable = ({ data }) => {
 const mapStateToProps = (state) => {
   return {
     dataList: state.assistantData,
+    classOption: state.assistantData.dataClass,
   };
 };
 
 export default connect(mapStateToProps, {
   getData,
   importExcelStudent,
+  getDataClass,
+  exportExcelStudent,
+  updateDataStudent,
+  deleteDataStudent,
 })(ListStudentEducation);
