@@ -8,3 +8,21 @@ export const getDataScheduleStudentId = (id, params) => {
     }
   );
 };
+export const getDataScheduleStudentDetail = (id, params) => {
+  return axiosService.get(
+    `${process.env.REACT_APP_API_ENDPOINT}/${url}/detail/${id}`,
+    {
+      params,
+    }
+  );
+};
+export const getDataScheduleStudent = (params) => {
+  return axiosService.get(`${process.env.REACT_APP_API_ENDPOINT}/${url}`, {
+    params,
+  });
+};
+export const getDataProfileStudent = () => {
+  return axiosService.get(
+    `${process.env.REACT_APP_API_ENDPOINT}/student/profile`
+  );
+};

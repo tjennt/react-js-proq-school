@@ -62,11 +62,12 @@ export function* updateDataStudentSaga({ payload }) {
     address: obj.address,
   };
   try {
-    const res = yield call(updateDataStudentApi, obj.id, dataReq);
-    console.log(res);
+    yield call(updateDataStudentApi, obj.id, dataReq);
     yield put(getData(params));
     toastSuccess("Cập nhật thành công !");
-  } catch (error) {}
+  } catch (error) {
+    toastError(`Đã có lỗi xảy ra vui lòng thử lại !!! ${error}`);
+  }
 }
 export function* deleteDataStudentSaga({ payload }) {
   const { id, params } = payload;

@@ -61,11 +61,17 @@ import {
   updateSchedulesSaga,
 } from "./schedule/schedulesSaga";
 import {
+  getProfileTeacherSaga,
   getSchedulesTeacgerSaga,
   getTeacherDetailSaga,
   scheduleSaga,
 } from "./teacherSaga";
-import { getDataSchedulesIdSaga } from "./student/index";
+import {
+  getDataProfileStudentSaga,
+  getDataSchedulesDetailIdSaga,
+  getDataSchedulesIdSaga,
+  getDataScheduleStudentSaga,
+} from "./student/index";
 function* rootSaga() {
   //login //auth
   yield takeLatest(authType.LOGIN, loginActionSaga);
@@ -126,12 +132,25 @@ function* rootSaga() {
   yield takeLatest(teacherType.GET_SCHEDULES_TEACHER, getSchedulesTeacgerSaga);
   yield takeLatest(teacherType.GET_SCHEDULE_ID, getTeacherDetailSaga);
   yield takeLatest(teacherType.SCHEDULES, scheduleSaga);
+  yield takeLatest(teacherType.GET_PROFILE_TEACHER, getProfileTeacherSaga);
   /**
    * student
    */
   yield takeLatest(
     studentType.GET_DATA_SCHEDULE_STUDENT_ID,
     getDataSchedulesIdSaga
+  );
+  yield takeLatest(
+    studentType.GET_DATA_SCHEDULE_STUDENT_ID_DETAIL,
+    getDataSchedulesDetailIdSaga
+  );
+  yield takeLatest(
+    studentType.GET_DATA_SCHEDULE_STUDENT_ALL,
+    getDataScheduleStudentSaga
+  );
+  yield takeLatest(
+    studentType.GET_DATA_PROFILE_STUDENT,
+    getDataProfileStudentSaga
   );
 }
 export default rootSaga;

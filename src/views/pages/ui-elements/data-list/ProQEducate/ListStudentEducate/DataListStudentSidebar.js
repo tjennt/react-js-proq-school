@@ -68,8 +68,12 @@ class StudentEducationSidebar extends Component {
       limit: 4,
     };
     const params = dataParams || paginate;
+    const { fullname, phone, identityNumber, dob, address, email } = this.state;
+    if (!fullname || !phone || !identityNumber || !dob || !address || !email) {
+      toastWarning("Vui lòng nhập các trường *");
+      return false;
+    }
     this.props.updateData(params, obj);
-    console.log(obj);
     this.props.handleSidebar(false, true);
   };
 
@@ -122,12 +126,13 @@ class StudentEducationSidebar extends Component {
               type="text"
               id="email"
               value={email}
+              disabled={true}
               placeholder="Email"
               onChange={(e) => this.setState({ email: e.target.value })}
             />
           </FormGroup>
           <FormGroup>
-            <Label for="Number ">Number *</Label>
+            <Label for="Number ">Identity Number *</Label>
             <Input
               type="number"
               id="number"
@@ -141,6 +146,7 @@ class StudentEducationSidebar extends Component {
           <FormGroup>
             <Label for="dateBirth">Ngày sinh *</Label>
             <Flatpickr
+              style={{ backgroundColor: "#fff" }}
               className="form-control"
               // data-enable-time
               value={dob}

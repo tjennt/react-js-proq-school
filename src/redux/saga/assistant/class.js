@@ -45,7 +45,9 @@ export function* updateDataClassSaga({ payload }) {
       yield put(getDataClass(params));
       message.success("Cập nhật thành công ");
     }
-  } catch (error) {}
+  } catch (error) {
+    toastError("Tên lớp đã tồn tại");
+  }
 }
 export function* deleteDataClassSaga({ payload }) {
   const { id, params } = payload;

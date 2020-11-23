@@ -20,6 +20,7 @@ class DataListTeacherSidebar extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { data } = this.props;
+    console.log(data);
     if (data !== null && prevProps.data === null) {
       if (data.teacherId !== prevState.id)
         this.setState({ id: data.teacherId._id });
@@ -67,7 +68,11 @@ class DataListTeacherSidebar extends Component {
       limit: 4,
     };
     const params = dataParams || paginate;
-
+    const { fullname, email, phone, specialization, dob, address } = this.state;
+    if (!fullname || !email || !phone || !specialization || !dob || !address) {
+      toastWarning("Vui lòng nhập các trường *");
+      return false;
+    }
     this.props.updateData(obj, params);
     this.props.handleSidebar(false, true);
   };
@@ -118,6 +123,7 @@ class DataListTeacherSidebar extends Component {
             <Input
               type="text"
               id="email"
+              disabled={true}
               value={email}
               placeholder="Email"
               onChange={(e) => this.setState({ email: e.target.value })}
@@ -138,6 +144,7 @@ class DataListTeacherSidebar extends Component {
           <FormGroup>
             <Label for="dateBirth">Ngày sinh *</Label>
             <Flatpickr
+              style={{ backgroundColor: "#fff" }}
               className="form-control"
               // data-enable-time
               value={dob}

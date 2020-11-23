@@ -97,7 +97,7 @@ class ListStudentEducation extends Component {
     columns: [
       {
         name: "Hình đại diện",
-        selector: "name",
+        selector: "avatar",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
@@ -137,7 +137,46 @@ class ListStudentEducation extends Component {
         ),
       },
       {
-        name: " Ngày Tạo ",
+        name: "Email",
+        selector: "email",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p title={row.email} className="text-truncate text-bold-500 mb-0">
+            {row.email}
+          </p>
+        ),
+      },
+      {
+        name: "Ngày sinh",
+        selector: "dob",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p
+            title={row.studentId.dob}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.studentId.dob}
+          </p>
+        ),
+      },
+      {
+        name: "Identity number",
+        selector: "dob",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p
+            title={row.studentId.identityNumber}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.studentId.identityNumber}
+          </p>
+        ),
+      },
+      {
+        name: "Ngày tạo",
         selector: "date",
         sortable: true,
         // minWidth: "300px",
@@ -177,7 +216,6 @@ class ListStudentEducation extends Component {
 
   componentDidMount() {
     const { parsedFilter, getDataClass } = this.props;
-
     const paginate = {
       page: 1,
       limit: 10,
@@ -339,7 +377,7 @@ class ListStudentEducation extends Component {
         </Modal>
         <Col lg="12">
           <Row>
-            <Col lg="6">
+            <Col lg="5">
               <Button onClick={this.showModal} className=" ml-2" color="danger">
                 <Download size={15} /> Nhập excel
               </Button>
@@ -351,7 +389,13 @@ class ListStudentEducation extends Component {
                 <Download size={15} /> Xuất excel
               </Button>
             </Col>
-            <Col lg="6">
+            <Col lg="4">
+              <Select
+                options={arrDataClass}
+                styles={{ width: "20px", float: "left" }}
+              ></Select>
+            </Col>
+            <Col lg="3">
               <UncontrolledDropdown
                 style={{ backgroundColor: "#fff", borderRadius: "20px" }}
                 className="data-list-rows-dropdown  d-md-block d-none"
@@ -363,11 +407,18 @@ class ListStudentEducation extends Component {
                     borderRadius: "20px",
                   }}
                 >
-                  <span className="align-middle mx-50">{`${
-                    this.props.parsedFilter.limit
-                      ? this.props.parsedFilter.limit
-                      : 10
-                  } của ${this.state.totalRecords}`}</span>
+                  {this.state.totalRecords < 10 ? (
+                    <span className="align-middle mx-50">
+                      {this.state.totalRecords}
+                    </span>
+                  ) : (
+                    <span className="align-middle mx-50">{`${
+                      this.props.parsedFilter.limit
+                        ? this.props.parsedFilter.limit
+                        : 10
+                    } của ${this.state.totalRecords}`}</span>
+                  )}
+
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>
@@ -414,9 +465,6 @@ class ListStudentEducation extends Component {
           fixedHeader
           fixedHeaderScrollHeight={"55vh"}
           noDataComponent="Không có dữ liệu học sinh"
-          expandableRows
-          expandOnRowClicked
-          expandableRowsComponent={<ExpandableTable />}
         />
         <ReactPaginate
           previousLabel={<ChevronLeft size={15} />}
@@ -454,26 +502,6 @@ class ListStudentEducation extends Component {
     );
   }
 }
-const ExpandableTable = ({ data }) => {
-  return (
-    <Table responsive striped>
-      <thead>
-        <tr>
-          <th>Email </th>
-          <th>Ngày sinh</th>
-          <th>Identity Number</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{data.email}</td>
-          <td>{data.studentId.dob}</td>
-          <td>{data.studentId.identityNumber} </td>
-        </tr>
-      </tbody>
-    </Table>
-  );
-};
 const mapStateToProps = (state) => {
   return {
     dataList: state.assistantData,

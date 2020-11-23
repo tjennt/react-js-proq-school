@@ -6,7 +6,7 @@ import InputField from "../../../../../../utility/customFields/inputField";
 import SelectField from "../../../../../../utility/customFields/selectFields";
 
 function FormClass(props) {
-  const { initialValues, stage, specialization, handleSidebar } = props;
+  const { initialValues, stage, specialization, handleSidebar, data } = props;
   const validationSchema = Yup.object().shape({
     nameClass: Yup.string().required("Vui lòng nhập lớp!"),
     stage: Yup.string().required("Vui lòng chọn khóa!"),
@@ -49,6 +49,7 @@ function FormClass(props) {
             <Field
               name="stage"
               label="Khóa *"
+              isDisabled={data ? true : false}
               value={initialValues.stage}
               placeholder="Vui lòng chọn khóa "
               component={SelectField}
@@ -57,6 +58,7 @@ function FormClass(props) {
             <Field
               name="specializate"
               label="Chuyên ngành *"
+              isDisabled={data ? true : false}
               value={initialValues.specializate}
               placeholder="Vui lòng chọn Chuyên ngành "
               component={SelectField}

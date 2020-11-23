@@ -27,6 +27,18 @@ import {
 import { Popconfirm, message } from "antd";
 import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
+const selectedStyle = {
+  rows: {
+    selectedHighlighStyle: {
+      backgroundColor: "rgba(115,103,240,.05)",
+      color: "#7367F0 !important",
+      boxShadow: "0 0 1px 0 #7367F0 !important",
+      "&:hover": {
+        transform: "translateY(0px) !important",
+      },
+    },
+  },
+};
 class ListSeasonStudent extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
@@ -129,8 +141,6 @@ class ListSeasonStudent extends Component {
     getData({ page: parsedFilter.page, limit: value });
   };
   onRowClicked = (state) => {
-    console.log(state._id);
-
     history.push(`/student/schedule/${state._id}`);
   };
   render() {
@@ -204,6 +214,8 @@ class ListSeasonStudent extends Component {
           fixedHeader
           pointerOnHover
           onRowClicked={this.onRowClicked}
+          highlightOnHover
+          customStyles={selectedStyle}
           fixedHeaderScrollHeight={"55vh"}
           noDataComponent="Không có dữ liệu học sinh"
         />
