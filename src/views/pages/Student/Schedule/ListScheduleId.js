@@ -57,7 +57,7 @@ const ActionsComponent = (props) => {
   );
 };
 
-class AttendanceClassListText extends Component {
+class ListScheduleId extends Component {
   static getDerivedStateFromProps(props, state) {
     if (props.dataList.data !== state.data.length) {
       return {
@@ -239,4 +239,4 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getDataSchedulesTeacher,
-})(AttendanceClassListText);
+})(ListScheduleId);

@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
-import { history } from "../../../../history";
+import { history } from "../../../../../history";
 import { ChevronLeft, ChevronRight, Eye } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import { getDataSchedulesTeacher } from "../../../../redux/actions/teacher/index";
-import "../../../../assets/scss/plugins/extensions/react-paginate.scss";
-import "../../../../assets/scss/pages/data-list.scss";
-import "../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
+import { getDataScheduleId } from "../../../../../redux/actions/student";
+import "../../../../../assets/scss/plugins/extensions/react-paginate.scss";
+import "../../../../../assets/scss/pages/data-list.scss";
+import "../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import ReactPaginate from "react-paginate";
 import Moment from "react-moment";
 // import { Popconfirm, message } from "antd";
@@ -57,7 +57,7 @@ const ActionsComponent = (props) => {
   );
 };
 
-class AttendanceClassListText extends Component {
+class ListSchedules extends Component {
   static getDerivedStateFromProps(props, state) {
     if (props.dataList.data !== state.data.length) {
       return {
@@ -164,7 +164,8 @@ class AttendanceClassListText extends Component {
 
   thumbView = this.props.thumbView;
   componentDidMount() {
-    this.props.getDataSchedulesTeacher();
+    console.log(this.props);
+    this.props.getDataScheduleId(this.props.match.params.id);
   }
   handleDelete = (row) => {
     this.props.deleteData(row);
@@ -238,5 +239,5 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-  getDataSchedulesTeacher,
-})(AttendanceClassListText);
+  getDataScheduleId,
+})(ListSchedules);

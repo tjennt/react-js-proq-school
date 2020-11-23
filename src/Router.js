@@ -117,6 +117,9 @@ const scheduleStudent = lazy(() =>
 const AttendanceStudent = lazy(() =>
   import("./views/pages/Student/Attendance/AttendanceStudent")
 );
+const ListSchedules = lazy(() =>
+  import("./views/pages/Student/ListSeasonEducate/ListSchedules")
+);
 //chat
 const Chat = lazy(() => import("./views/apps/chat/Chat"));
 //acount admin
@@ -232,9 +235,14 @@ class AppRouter extends React.Component {
           {/* <AppRoute path="/teacher/email" component={commingSoon} />
           <AppRoute path="/teacher/liveStream" component={commingSoon} /> */}
           {/* student */}
-          <AppRoute path="/student/news" component={StudyStudent} />
+          <AppRoute exact path="/student/news" component={StudyStudent} />
           <AppRoute path="/student/score" component={markStudent} />
-          <AppRoute path="/student/schedule" component={scheduleStudent} />
+          <AppRoute
+            exact
+            path="/student/schedule"
+            component={scheduleStudent}
+          />
+          <AppRoute path="/student/schedule/:id" component={ListSchedules} />
           <AppRoute path="/student/attendance" component={AttendanceStudent} />
           <AppRoute path="/chat" component={Chat} />
           {/* Admin */}

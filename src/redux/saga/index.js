@@ -5,6 +5,7 @@ import * as assType from "../constants/assistant";
 import * as educationType from "../constants/education";
 import * as scheduleType from "../constants/schedule/index";
 import * as teacherType from "../constants/teacher";
+import * as studentType from "../constants/student";
 import {
   loginActionSaga,
   loginWithGoogleSaga,
@@ -64,6 +65,7 @@ import {
   getTeacherDetailSaga,
   scheduleSaga,
 } from "./teacherSaga";
+import { getDataSchedulesIdSaga } from "./student/index";
 function* rootSaga() {
   //login //auth
   yield takeLatest(authType.LOGIN, loginActionSaga);
@@ -124,5 +126,12 @@ function* rootSaga() {
   yield takeLatest(teacherType.GET_SCHEDULES_TEACHER, getSchedulesTeacgerSaga);
   yield takeLatest(teacherType.GET_SCHEDULE_ID, getTeacherDetailSaga);
   yield takeLatest(teacherType.SCHEDULES, scheduleSaga);
+  /**
+   * student
+   */
+  yield takeLatest(
+    studentType.GET_DATA_SCHEDULE_STUDENT_ID,
+    getDataSchedulesIdSaga
+  );
 }
 export default rootSaga;

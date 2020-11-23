@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col } from "reactstrap";
 import Breadcrumbs from "./../../../../components/@vuexy/breadCrumbs/BreadCrumb";
-import ListScheduleStudent from "./ListScheduleStudentConfig";
+import ListSeasonStudent from "./ListSeasonStudent";
 import queryString from "query-string";
 // import { getToken } from "./../../../../utility/auth/setAuthToken";
 import { connect } from "react-redux";
@@ -24,7 +24,7 @@ class ScheduleStudent extends React.Component {
         />
         <Row>
           <Col sm="12">
-            <ListScheduleStudent
+            <ListSeasonStudent
               thumbView={true}
               parsedFilter={queryString.parse(this.props.location.search)}
             />
