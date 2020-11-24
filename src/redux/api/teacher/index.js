@@ -21,3 +21,8 @@ export const scheduleApi = (data) => {
     data
   );
 };
+export const getDataProfileTeacherApi = () => {
+  return axiosService.get(
+    `${process.env.REACT_APP_API_ENDPOINT}/teacher/profile`
+  );
+};

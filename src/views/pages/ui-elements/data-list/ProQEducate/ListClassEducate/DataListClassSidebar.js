@@ -59,6 +59,7 @@ class ClassEducateSidebar extends Component {
           options={{ wheelPropagation: false }}
         >
           <FormClass
+            data={data}
             stage={this.props.stage}
             specialization={this.props.specialization}
             initialValues={

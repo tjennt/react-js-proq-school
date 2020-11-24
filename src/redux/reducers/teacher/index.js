@@ -4,6 +4,7 @@ const initialState = {
   dataDetail: [],
   total_page: 0,
   total_item: 0,
+  dataProfile: null,
 };
 const teacherReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -35,6 +36,18 @@ const teacherReducer = (state = initialState, action) => {
       return {
         ...state,
         dataDetail: data,
+      };
+    }
+    case teacherType.GET_PROFILE_TEACHER: {
+      return {
+        ...state,
+      };
+    }
+    case teacherType.GET_PROFILE_TEACHER_SUCCESS: {
+      const { data } = action.payload;
+      return {
+        ...state,
+        dataProfile: data,
       };
     }
     default:

@@ -118,7 +118,7 @@ class ListDepartmentConfig extends Component {
         name: "Tên lớp",
         selector: "class",
         sortable: true,
-        minWidth: "200px",
+        minWidth: "120px",
         cell: (row) => (
           <p title={row.class} className="text-truncate text-bold-500 mb-0">
             {row.class}
@@ -152,16 +152,41 @@ class ListDepartmentConfig extends Component {
         name: "Học kì",
         selector: "season",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "200px",
         cell: (row) => (
           <p title={row.season} className="text-truncate text-bold-500 mb-0">
             {row.season}
           </p>
         ),
       },
+      // {
+      //   name: "Khóa",
+      //   selector: "season",
+      //   sortable: true,
+      //   // minWidth: "300px",
+      //   cell: (row) => (
+      //     <p title={row.season} className="text-truncate text-bold-500 mb-0">
+      //       {row.season}
+      //     </p>
+      //   ),
+      // },
+      {
+        name: "Giáo viên",
+        selector: "teacher",
+        sortable: true,
+        minWidth: "180px",
+        cell: (row) => (
+          <p
+            title={row.nameTeacher}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.nameTeacher}
+          </p>
+        ),
+      },
       {
         name: "Thứ",
-        selector: "subjects",
+        selector: "day",
         sortable: true,
         minWidth: "300px",
         cell: (row) => <ActionDay row={row} />,
@@ -170,12 +195,20 @@ class ListDepartmentConfig extends Component {
         name: "Ngày bắt đầu",
         selector: "startAt",
         sortable: true,
-        // maxWidth: "300px",
+        minWidth: "200px",
         cell: (row) => <Moment format="DD/MM/YYYY">{row.startAt}</Moment>,
+      },
+      {
+        name: "Ngày kết thúc",
+        selector: "endAt",
+        sortable: true,
+        minWidth: "200px",
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.endAt}</Moment>,
       },
       {
         name: "Thao tác",
         sortable: true,
+        minWidth: "200px",
         cell: (row) => (
           <ActionsComponent
             row={row}

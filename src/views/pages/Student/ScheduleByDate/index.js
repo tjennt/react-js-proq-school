@@ -1,12 +1,12 @@
 import React from "react";
 import { Row, Col } from "reactstrap";
 import Breadcrumbs from "./../../../../components/@vuexy/breadCrumbs/BreadCrumb";
-import ListSeasonStudent from "./ListSeasonStudent";
+import ListSchedulesDate from "./ListSchedulesDate";
 import queryString from "query-string";
 // import { getToken } from "./../../../../utility/auth/setAuthToken";
 import { connect } from "react-redux";
 import { logoutWithJWT } from "./../../../../redux/actions/auth/loginActions";
-class ScheduleStudent extends React.Component {
+class ScheduleStudentByDate extends React.Component {
   // componentDidMount() {
   //   let token = getToken();
   //   if (!token) {
@@ -20,11 +20,11 @@ class ScheduleStudent extends React.Component {
         <Breadcrumbs
           breadCrumbTitle="Sinh viên "
           breadCrumbParent="Thông báo "
-          breadCrumbActive="Lịch học của sinh viên"
+          breadCrumbActive="Lịch học của sinh viên theo ngày"
         />
         <Row>
           <Col sm="12">
-            <ListSeasonStudent
+            <ListSchedulesDate
               thumbView={true}
               parsedFilter={queryString.parse(this.props.location.search)}
             />
@@ -35,4 +35,4 @@ class ScheduleStudent extends React.Component {
   }
 }
 
-export default connect(null, { logoutWithJWT })(ScheduleStudent);
+export default connect(null, { logoutWithJWT })(ScheduleStudentByDate);

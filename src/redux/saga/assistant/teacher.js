@@ -6,7 +6,6 @@ import {
   updateDataTeacherApi,
 } from "../../api/assistant/teacher";
 import {
-  getData,
   getDataTeacher,
   getDataTeacherSuccess,
 } from "../../actions/dataListAssistance/index";
@@ -16,7 +15,7 @@ import {
   toastWarning,
 } from "../../../utility/toast/toastHelper";
 import { message } from "antd";
-import create from "@ant-design/icons/lib/components/IconFont";
+import * as moment from "moment";
 export function* getTeacherActionSaga({ payload }) {
   const { params } = payload;
   const param = {
@@ -27,26 +26,23 @@ export function* getTeacherActionSaga({ payload }) {
     const res = yield call(getDataAssTeachers, param);
     const { data } = res;
     if (data.success === true) {
-      // console.log(data.payload);
-      // const dataRes = data.payload.reduce(
-      //   (arr, curr) => [
-      //     ...arr,
-      //     {
-      //       id: curr.teacherId._id,
-      //       avatar: curr.teacherId.avatar,
-      //       fullName: curr.teacherId.fullname,
-      //       teacherCode: curr.teacherId.teacherCode,
-      //       specialization: curr.teacherId.specialization,
-      //       phone: curr.teacherId.phone,
-      //       createAt: curr.createAt,
-      //       email: curr.email,
-      //     },
-      //   ],
-      //   []
-      // );
-      // console.log(dataRes);
+      console.log(data.payload);
+      const dataRes = data.payload.reduce(
+        (arr, curr) => [
+          ...arr,
+          {
+            status: curr.status,
+            _id: curr._id,
+            teacherId: curr.teacherId,
+            createdAt: curr.createdAt,
+            email: curr.email,
+          },
+        ],
+        []
+      );
+      console.log(dataRes);
       yield put(
-        getDataTeacherSuccess(data.payload, data.total_page, data.total_item)
+        getDataTeacherSuccess(dataRes, data.total_page, data.total_item)
       );
     } else {
       toastWarning("Vui lòng thử lại sau !");
@@ -73,12 +69,13 @@ export function* exportExcelTeacherSaga({ payload }) {
 }
 export function* updateDataTeacherSaga({ payload }) {
   const { params, obj } = payload;
+  console.log(obj);
   const dataReq = {
-    fullName: obj.fullname,
+    fullname: obj.fullname,
     phone: obj.phone,
     email: obj.email,
     specialization: obj.specialization,
-    dob: obj.dob,
+    dob: moment(obj.dob).format("MM-DD-YYYY"),
     address: obj.address,
   };
   try {

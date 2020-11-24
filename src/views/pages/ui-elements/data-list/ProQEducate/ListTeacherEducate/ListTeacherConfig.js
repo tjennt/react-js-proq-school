@@ -39,6 +39,7 @@ import { InboxOutlined } from "@ant-design/icons";
 import ReactPaginate from "react-paginate";
 import Moment from "react-moment";
 import { API_ENDPOINT_IMG_TEACHER } from "../../../../../../redux/constants";
+import { newDate } from "../../../../../../utility/config";
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
@@ -167,7 +168,7 @@ class ListTeacherConfig extends Component {
         selector: "date",
         sortable: true,
         // minWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.createAt}</Moment>,
+        cell: (row) => <p>{newDate(row.createdAt)}</p>,
       },
       {
         name: "Thao tác",
@@ -305,7 +306,6 @@ class ListTeacherConfig extends Component {
 
   render() {
     let { columns, data, value, currentData, sidebar } = this.state;
-    console.log(data);
     return (
       <div className="data-list">
         <Modal

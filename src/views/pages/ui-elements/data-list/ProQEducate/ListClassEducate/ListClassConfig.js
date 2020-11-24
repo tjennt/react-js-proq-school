@@ -192,7 +192,7 @@ class ListClassEducateConfig extends Component {
   };
   handleDelete = (row) => {
     // this.props.getData(this.props.parsedFilter);
-    this.props.deleteDataClass(row._id,this.props.parsedFilter);
+    this.props.deleteDataClass(row._id, this.props.parsedFilter);
     // if (this.state.data.length - 1 === 0) {
     //   history.push(
     //     `/accountAdmin?page=${parseInt(
@@ -260,11 +260,17 @@ class ListClassEducateConfig extends Component {
                     borderRadius: "20px",
                   }}
                 >
-                  <span className="align-middle mx-50">{`${
-                    this.props.parsedFilter.page
-                      ? this.props.parsedFilter.page
-                      : 1
-                  } of ${this.state.totalRecords}`}</span>
+                  {this.state.totalRecords < 10 ? (
+                    <span className="align-middle mx-50">
+                      {this.state.totalRecords}
+                    </span>
+                  ) : (
+                    <span className="align-middle mx-50">{`${
+                      this.props.parsedFilter.page
+                        ? this.props.parsedFilter.page
+                        : 1
+                    } of ${this.state.totalRecords}`}</span>
+                  )}
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>

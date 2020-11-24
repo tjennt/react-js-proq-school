@@ -4,8 +4,10 @@ import {
   getDataSchedulesTeacherId,
   getDataSchedulesTeacherIdSuccess,
   getDataSchedulesTeacherSuccess,
+  getProfileTeacherSuccess,
 } from "../../actions/teacher";
 import {
+  getDataProfileTeacherApi,
   getDataTeacherApi,
   getDataTeacherDetailApi,
   scheduleApi,
@@ -102,6 +104,16 @@ export function* scheduleSaga({ payload }) {
       }
     } else {
       toastWarning("Điểm danh thất bại !");
+    }
+  } catch (error) {}
+}
+export function* getProfileTeacherSaga() {
+  try {
+    const res = yield call(getDataProfileTeacherApi);
+    console.log(res);
+    const { data } = res;
+    if (data.success) {
+      yield put(getProfileTeacherSuccess(data.payload));
     }
   } catch (error) {}
 }

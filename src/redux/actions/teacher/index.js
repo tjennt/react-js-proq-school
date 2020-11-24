@@ -47,3 +47,12 @@ export const schedule = (data, id, params) => ({
     params,
   },
 });
+export const getProfileTeacher = () => ({
+  type: teacherType.GET_PROFILE_TEACHER,
+});
+export const getProfileTeacherSuccess = (data) => ({
+  type: teacherType.GET_PROFILE_TEACHER_SUCCESS,
+  payload: {
+    data,
+  },
+});

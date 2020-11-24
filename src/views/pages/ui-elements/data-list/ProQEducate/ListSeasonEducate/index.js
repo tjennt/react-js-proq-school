@@ -20,7 +20,7 @@ class ListSeasonEducate extends React.Component {
         <Breadcrumbs
           breadCrumbTitle="Phòng đào tạo "
           breadCrumbParent="Danh sách"
-          breadCrumbActive="Danh sách khóa học"
+          breadCrumbActive="Danh sách kì"
         />
         <Row>
           <Col sm="12">

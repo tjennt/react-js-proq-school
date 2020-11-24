@@ -3,7 +3,7 @@ import { Row, Col } from "reactstrap";
 import BreadCrumbs from "../../../../components/@vuexy/breadCrumbs/BreadCrumb";
 import queryString from "query-string";
 
-import ListSchedules from "./AttendanceClassListText";
+import AttendanceClassListText from "./AttendanceClassListText";
 class Attendance extends Component {
   render() {
     return (
@@ -15,7 +15,7 @@ class Attendance extends Component {
         />
         <Row>
           <Col sm="12">
-            <ListSchedules
+            <AttendanceClassListText
               parsedFilter={queryString.parse(this.props.location.search)}
             />
           </Col>

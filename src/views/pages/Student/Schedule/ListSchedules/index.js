@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
-import { history } from "../../../../history";
+import { history } from "../../../../../history";
 import { ChevronLeft, ChevronRight, Eye } from "react-feather";
 import { connect } from "react-redux";
+import { Row, Col, Button } from "reactstrap";
 import "antd/dist/antd.css";
-import { getDataSchedulesTeacher } from "../../../../redux/actions/teacher/index";
-import "../../../../assets/scss/plugins/extensions/react-paginate.scss";
-import "../../../../assets/scss/pages/data-list.scss";
-import "../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
+import { getDataScheduleId } from "../../../../../redux/actions/student";
+import "../../../../../assets/scss/plugins/extensions/react-paginate.scss";
+import "../../../../../assets/scss/pages/data-list.scss";
+import "../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import ReactPaginate from "react-paginate";
 import Moment from "react-moment";
+import BreadCrumbs from "../../../../../components/@vuexy/breadCrumbs/BreadCrumb";
 // import { Popconfirm, message } from "antd";
 const selectedStyle = {
   rows: {
@@ -34,7 +36,7 @@ const chipText = {
 };
 const ActionDay = (props) => {
   const { row } = props;
-  let weekDays = row.weekDays;
+  let weekDays = row.day;
   return (
     <div style={{ display: "inline-flex" }}>
       {weekDays.map((item) => (
@@ -57,7 +59,7 @@ const ActionsComponent = (props) => {
   );
 };
 
-class AttendanceClassListText extends Component {
+class ListSchedules extends Component {
   static getDerivedStateFromProps(props, state) {
     if (props.dataList.data !== state.data.length) {
       return {
@@ -78,7 +80,7 @@ class AttendanceClassListText extends Component {
         name: "Tên lớp",
         selector: "class",
         sortable: true,
-        minWidth: "200px",
+        minWidth: "150px",
         cell: (row) => (
           <p title={row.class} className="text-truncate text-bold-500 mb-0">
             {row.class}
@@ -89,7 +91,7 @@ class AttendanceClassListText extends Component {
         name: "Môn",
         selector: "subjects",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "150px",
         cell: (row) => (
           <p title={row.subject} className="text-truncate text-bold-500 mb-0">
             {row.subject}
@@ -101,7 +103,7 @@ class AttendanceClassListText extends Component {
         name: "Ca",
         selector: "shift",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "150px",
         cell: (row) => (
           <p title={row.shift} className="text-truncate text-bold-500 mb-0">
             {row.shift}
@@ -109,29 +111,25 @@ class AttendanceClassListText extends Component {
         ),
       },
       {
-        name: "Học kì",
-        selector: "season",
-        sortable: true,
-        // minWidth: "300px",
-        cell: (row) => (
-          <p title={row.season} className="text-truncate text-bold-500 mb-0">
-            {row.season}
-          </p>
-        ),
-      },
-      {
         name: "Thứ",
         selector: "subjects",
         sortable: true,
-        minWidth: "300px",
+        minWidth: "150px",
         cell: (row) => <ActionDay row={row} />,
       },
       {
-        name: "Ngày",
+        name: "Ngày bắt đầu",
         selector: "startAt",
         sortable: true,
-        // maxWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.startAt}</Moment>,
+        minWidth: "150px",
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.start_at}</Moment>,
+      },
+      {
+        name: "Ngày kết thúc",
+        selector: "endAt",
+        sortable: true,
+        minWidth: "150px",
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.endAt}</Moment>,
       },
       {
         name: "Thao tác",
@@ -164,7 +162,8 @@ class AttendanceClassListText extends Component {
 
   thumbView = this.props.thumbView;
   componentDidMount() {
-    this.props.getDataSchedulesTeacher();
+    console.log(this.props);
+    this.props.getDataScheduleId(this.props.match.params.id);
   }
   handleDelete = (row) => {
     this.props.deleteData(row);
@@ -183,7 +182,7 @@ class AttendanceClassListText extends Component {
   };
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
-    history.push(`/teacher/attendance/${obj.id}`);
+    // history.push(`/teacher/attendance/${obj.id}`);
   };
 
   handlePagination = (page) => {
@@ -200,18 +199,32 @@ class AttendanceClassListText extends Component {
     this.setState({ selectedRows: state.selectedRows }); // triggers MyComponent to re-render with new state
   };
   onRowClicked = (state) => {
-    history.push(`/teacher/attendance/${state.id}`);
+    console.log(state);
+    history.push(`/student/schedule/detail/${state.id}`);
+  };
+  goBack = () => {
+    history.goBack();
   };
   render() {
     let { columns, value, data } = this.state;
     return (
       <div className="data-list">
+        <BreadCrumbs
+          breadCrumbTitle="Sinh viên "
+          breadCrumbParent="Thông báo "
+          breadCrumbActive="Lịch học của sinh viên"
+        />
+        <Row>
+          <Col lg="6">
+            <Button onClick={this.goBack}> Quay lại </Button>
+          </Col>
+        </Row>
         <DataTable
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
           noHeader={true}
-          subHeader
+          noDataComponent="Không có lịch học"
           pointerOnHover
           onRowClicked={this.onRowClicked}
           highlightOnHover
@@ -233,10 +246,10 @@ class AttendanceClassListText extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    dataList: state.dataTeacher,
+    dataList: state.scheduleStudent,
   };
 };
 
 export default connect(mapStateToProps, {
-  getDataSchedulesTeacher,
-})(AttendanceClassListText);
+  getDataScheduleId,
+})(ListSchedules);

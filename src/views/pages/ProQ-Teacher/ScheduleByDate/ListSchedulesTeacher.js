@@ -1,28 +1,13 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import { history } from "../../../../history";
-import { ChevronLeft, ChevronRight, Eye } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import { getDataSchedulesTeacher } from "../../../../redux/actions/teacher/index";
+import { getDataScheduleAll } from "../../../../redux/actions/student/index";
 import "../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../assets/scss/pages/data-list.scss";
 import "../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import ReactPaginate from "react-paginate";
-import Moment from "react-moment";
-// import { Popconfirm, message } from "antd";
-const selectedStyle = {
-  rows: {
-    selectedHighlighStyle: {
-      backgroundColor: "rgba(115,103,240,.05)",
-      color: "#7367F0 !important",
-      boxShadow: "0 0 1px 0 #7367F0 !important",
-      "&:hover": {
-        transform: "translateY(0px) !important",
-      },
-    },
-  },
-};
+import { newDate } from "../../../../utility/config";
 const chipText = {
   0: "Chủ nhật",
   1: "Thứ 2",
@@ -34,7 +19,7 @@ const chipText = {
 };
 const ActionDay = (props) => {
   const { row } = props;
-  let weekDays = row.weekDays;
+  let weekDays = row.days;
   return (
     <div style={{ display: "inline-flex" }}>
       {weekDays.map((item) => (
@@ -43,26 +28,11 @@ const ActionDay = (props) => {
     </div>
   );
 };
-const ActionsComponent = (props) => {
-  return (
-    <div className="data-list-action">
-      <Eye
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-    </div>
-  );
-};
-
-class AttendanceClassListText extends Component {
+class ListSchedulesTeacher extends Component {
   static getDerivedStateFromProps(props, state) {
-    if (props.dataList.data !== state.data.length) {
+    if (props.dataList.dataAllSchedule !== state.data.length) {
       return {
-        data: props.dataList.data,
-        totalPages: props.dataList.total_page,
+        data: props.dataList.dataAllSchedule,
       };
     }
 
@@ -75,13 +45,13 @@ class AttendanceClassListText extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Tên lớp",
-        selector: "class",
+        name: "Giảng viên",
+        selector: "teacher",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.class} className="text-truncate text-bold-500 mb-0">
-            {row.class}
+          <p title={row.teacher} className="text-truncate text-bold-500 mb-0">
+            {row.teacher}
           </p>
         ),
       },
@@ -127,26 +97,18 @@ class AttendanceClassListText extends Component {
         cell: (row) => <ActionDay row={row} />,
       },
       {
-        name: "Ngày",
+        name: "Ngày bắt đầu",
         selector: "startAt",
         sortable: true,
         // maxWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.startAt}</Moment>,
+        cell: (row) => <p>{newDate(row.startAt)}</p>,
       },
       {
-        name: "Thao tác",
+        name: "Ngày kết thúc",
+        selector: "endAt",
         sortable: true,
-        cell: (row) => (
-          <ActionsComponent
-            row={row}
-            getData={this.props.getData}
-            parsedFilter={this.props.parsedFilter}
-            dataId={this.state.currentData}
-            currentData={this.handleCurrentData}
-            deleteRow={this.handleDelete}
-            changeStatus={(row) => this.changeStatus(row)}
-          />
-        ),
+        // maxWidth: "300px",
+        cell: (row) => <p>{newDate(row.endAt)}</p>,
       },
     ],
     allData: [],
@@ -164,23 +126,8 @@ class AttendanceClassListText extends Component {
 
   thumbView = this.props.thumbView;
   componentDidMount() {
-    this.props.getDataSchedulesTeacher();
+    this.props.getDataScheduleAll();
   }
-  handleDelete = (row) => {
-    this.props.deleteData(row);
-    this.props.getData(this.props.parsedFilter);
-    if (this.state.data.length - 1 === 0) {
-      history.push(
-        `/teacher/attendance?page=${parseInt(
-          this.props.parsedFilter.page - 1
-        )}&perPage=${this.props.parsedFilter.perPage}`
-      );
-      this.props.getData({
-        page: this.props.parsedFilter.page - 1,
-        perPage: this.props.parsedFilter.perPage,
-      });
-    }
-  };
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
     history.push(`/teacher/attendance/${obj.id}`);
@@ -196,12 +143,7 @@ class AttendanceClassListText extends Component {
     getData({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
-  updateState = (state) => {
-    this.setState({ selectedRows: state.selectedRows }); // triggers MyComponent to re-render with new state
-  };
-  onRowClicked = (state) => {
-    history.push(`/teacher/attendance/${state.id}`);
-  };
+
   render() {
     let { columns, value, data } = this.state;
     return (
@@ -212,11 +154,9 @@ class AttendanceClassListText extends Component {
           columns={columns}
           noHeader={true}
           subHeader
-          pointerOnHover
-          onRowClicked={this.onRowClicked}
-          highlightOnHover
-          customStyles={selectedStyle}
+          noDataComponent="không có lịch dạy"
         />
+        {/*         
         <ReactPaginate
           previousLabel={<ChevronLeft size={15} />}
           nextLabel={<ChevronRight size={15} />}
@@ -226,17 +166,18 @@ class AttendanceClassListText extends Component {
           containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
           activeClassName="active"
           onPageChange={(page) => this.handlePagination(page)}
-        />
+        /> */}
       </div>
     );
   }
 }
+
 const mapStateToProps = (state) => {
   return {
-    dataList: state.dataTeacher,
+    dataList: state.scheduleStudent,
   };
 };
 
 export default connect(mapStateToProps, {
-  getDataSchedulesTeacher,
-})(AttendanceClassListText);
+  getDataScheduleAll,
+})(ListSchedulesTeacher);

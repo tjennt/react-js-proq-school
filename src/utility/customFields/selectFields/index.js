@@ -20,7 +20,7 @@ SelectField.defaultProps = {
   options: [],
 };
 function SelectField(props) {
-  const { field, form, options, label, placeholder } = props;
+  const { field, form, options, label, placeholder, isDisabled } = props;
   const { name, value } = field;
   const { errors, touched } = form;
   const showError = errors[name] && touched[name];
@@ -47,6 +47,7 @@ function SelectField(props) {
         {...field}
         value={selectedOption}
         isClearable={true}
+        isDisabled={isDisabled}
         onChange={handleSelectedOptionChange}
         placeholder={placeholder}
         options={options}
