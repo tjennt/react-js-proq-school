@@ -7,6 +7,14 @@ export const getDataTeacherApi = (params) => {
     params,
   });
 };
+export const getSchedulesAllApi = (params) => {
+  return axiosService.get(
+    `${process.env.REACT_APP_API_ENDPOINT}/${urlTeacher}`,
+    {
+      params,
+    }
+  );
+};
 export const getDataTeacherDetailApi = (id, params) => {
   return axiosService.get(
     `${process.env.REACT_APP_API_ENDPOINT}/${urlTeacher}/${id}`,

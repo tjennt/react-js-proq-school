@@ -34,7 +34,7 @@ import {
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
-import { message, Modal, Popconfirm, Upload } from "antd";
+import { message, Modal, Popconfirm, Tooltip, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import ReactPaginate from "react-paginate";
 import Moment from "react-moment";
@@ -52,22 +52,26 @@ const ActionsComponent = (props) => {
   }
   return (
     <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-      <Popconfirm
-        title="Bạn có chắc chắn xóa dữ liệu không?"
-        onConfirm={confirm}
-        onCancel={cancel}
-        okText="Có "
-        cancelText="Không "
-      >
-        <Trash className="cursor-pointer" size={20} />
-      </Popconfirm>
+      <Tooltip placement="topLeft" title="Chỉnh sửa">
+        <Edit
+          className="cursor-pointer mr-1"
+          size={20}
+          onClick={() => {
+            return props.currentData(props.row);
+          }}
+        />
+      </Tooltip>
+      <Tooltip placement="topLeft" title="Xóa">
+        <Popconfirm
+          title="Bạn có chắc chắn xóa giảng viên?"
+          onConfirm={confirm}
+          onCancel={cancel}
+          okText="Có "
+          cancelText="Không "
+        >
+          <Trash className="cursor-pointer" size={20} />
+        </Popconfirm>
+      </Tooltip>
     </div>
   );
 };
@@ -424,7 +428,7 @@ class ListTeacherConfig extends Component {
           noHeader={true}
           fixedHeader
           fixedHeaderScrollHeight={"55vh"}
-          noDataComponent="Không có dữ liệu"
+          noDataComponent="Không có giảng viên"
           expandOnRowClicked
         />
         <ReactPaginate

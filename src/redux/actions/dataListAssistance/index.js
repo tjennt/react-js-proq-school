@@ -138,11 +138,12 @@ export const getDataSubject = (params) => ({
     params,
   },
 });
-export const getDataSubjectSuccess = (data, total_page) => ({
+export const getDataSubjectSuccess = (data, total_page, total_item) => ({
   type: assisType.GET_DATA_SUBJECT_ASS_SUCCESS,
   payload: {
     data,
     total_page,
+    total_item,
   },
 });
 export const getDataSubjectFaild = (error) => ({

@@ -35,7 +35,7 @@ function FormClass(props) {
       onSubmit={props.onSubmitForm}
     >
       {(formikProps) => {
-        const { isValid } = formikProps;
+        const { isValid, isSubmitting } = formikProps;
         return (
           <Form>
             <Field
@@ -49,6 +49,7 @@ function FormClass(props) {
             <Field
               name="stage"
               label="Khóa *"
+              isClearable={isSubmitting}
               isDisabled={data ? true : false}
               value={initialValues.stage}
               placeholder="Vui lòng chọn khóa "

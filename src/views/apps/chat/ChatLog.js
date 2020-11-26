@@ -1,32 +1,72 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Input, Button } from "reactstrap";
-import { Menu, Send } from "react-feather";
+import { Menu, MessageSquare, Send, Smile } from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { connect } from "react-redux";
 import { togglePinned, sendMessage } from "../../../redux/actions/chat/index";
 import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg";
+import {
+  getMessageIdGroup,
+  sendChat,
+  receiveChatSocket,
+} from "../../../redux/actions/chatProQ";
+import io from "socket.io-client";
+import ReactEmoji from "react-emoji";
+import "emoji-mart/css/emoji-mart.css";
+import { Picker } from "emoji-mart";
 
+let socket;
 class ChatLog extends React.Component {
   // static getDerivedStateFromProps(props, state) {
-  //   if (
-  //     props.activeUser !== state.activeChat ||
-  //     props.activeChat !== state.activeChat
-  //   ) {
+  //   // console.log(props.activeChatID);
+  //   const { dataJoin } = props.activeChatID;
+  //   // if (dataJoin !== state.idGroupID) {
+  //   //   props.getMessageIdGroup(props.activeChatID.dataJoin._id);
+  //   // }
+
+  //   if (dataJoin !== state.idGroupID) {
   //     return {
-  //       activeUser: props.activeUser,
-  //       activeChat: props.activeChat,
+  //       idGroupID: dataJoin,
+  //       // activeChat: props.activeChat,
   //     };
   //   }
   //   // Return null if the state hasn't changed
   //   return null;
   // }
+
   state = {
+    idGroupID: null,
     msg: "",
     activeUser: null,
     activeChat: null,
+    showEmojis: false,
   };
-
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.activeChatID !== null) {
+      if (this.props.activeChatID._id !== prevState.idGroupID) {
+        this.setState({ idGroupID: this.props.activeChatID._id });
+        this.props.getMessageIdGroup(this.props.activeChatID._id);
+      }
+    }
+    // if (this.state.idGroupID) {
+    //   console.log(this.state.idGroupID._id);
+    // }
+    this.scrollToBottom();
+  }
+  showEmojis = (e) => {
+    this.setState(
+      {
+        showEmojis: true,
+      },
+      () => document.addEventListener("click", this.closeMenu)
+    );
+  };
+  hideEmojs = () => {
+    this.setState({
+      showEmojis: false,
+    });
+  };
   // handleSendMessage = (id, isPinned, text) => {
   //   if (text.length > 0) {
   //     this.props.sendMessage(id, isPinned, text);
@@ -36,9 +76,10 @@ class ChatLog extends React.Component {
   //   }
   // };
   componentDidMount() {
-    this.scrollToBottom();
-  }
-  componentDidUpdate() {
+    socket = io(`https://server-dev.asia`);
+    this.props.receiveChatSocket(socket);
+    // console.log(socket);
+    // socket.on("SEND_MESSAGE_CHAT", (data) => console.log(data));
     this.scrollToBottom();
   }
 
@@ -56,9 +97,30 @@ class ChatLog extends React.Component {
     const chatContainer = ReactDOM.findDOMNode(this.chatArea);
     chatContainer.scrollTop = chatContainer.scrollHeight;
   };
-
+  handlleMessage = (e) => {
+    e.preventDefault();
+    this.props.sendChat(this.state.idGroupID, this.state.msg);
+    this.setState({
+      ...this.state,
+      msg: "",
+    });
+  };
+  changeInput = (e) => {
+    this.setState({
+      ...this.state,
+      msg: e.target.value,
+    });
+  };
+  addEmoji = (emoji) => {
+    console.log(emoji);
+    this.setState({
+      msg: `${this.state.msg}${emoji.native}`,
+    });
+  };
   render() {
-    const { activeUser } = this.state;
+    const { chatContent, idUserMe } = this.props;
+    const { idGroupID } = this.state;
+    console.log(idGroupID);
     // let activeUserUid = activeUser && activeUser.uid ? activeUser.uid : null,
     //   activeChat =
     //     activeUser && activeUser.uid
@@ -152,14 +214,18 @@ class ChatLog extends React.Component {
     //     );
     //   })
     // : null;
-
     return (
       <div className="content-right">
-        <div className="chat-app-window">
-          <div
-            className={`active-chat "d-block"
-            }`}
-          >
+        <div className="chat-app-window ">
+          <div className={`start-chat-area ${idGroupID ? "d-none" : "d-flex"}`}>
+            <span className="mb-1 start-chat-icon">
+              <MessageSquare size={50} />
+            </span>
+            <h4 className="py-50 px-1 sidebar-toggle start-chat-text">
+              Vui lòng chọn trò chuyện
+            </h4>
+          </div>
+          <div className={` active-chat ${idGroupID ? "d-block" : "d-none"}`}>
             <div className="chat_navbar">
               <header className="chat_header d-flex justify-content-between align-items-center p-1">
                 <div className="d-flex align-items-center">
@@ -212,70 +278,77 @@ class ChatLog extends React.Component {
               <div className="chats">
                 <React.Fragment>
                   {" "}
-                  <div
-                    className={`chat  chat-right 
-                   `}
-                  >
-                    <div className="chat-avatar">
-                      <div className="avatar m-0">
-                        <img
-                          src={userImg}
-                          alt="chat avatar"
-                          height="40"
-                          width="40"
-                        />
-                      </div>
-                    </div>
-                    <div className="chat-body">
-                      <div className="chat-content">Bắt đầu </div>
-                    </div>
-                  </div>
-                  <div
-                    className={`chat chat-left
-                   `}
-                  >
-                    <div className="chat-avatar">
-                      <div className="avatar m-0">
-                        <img
-                          src={userImg}
-                          alt="chat avatar"
-                          height="40"
-                          width="40"
-                        />
-                      </div>
-                    </div>
-                    <div className="chat-body">
-                      <div className="chat-content">Kết thúc</div>
-                    </div>
-                  </div>
+                  {chatContent
+                    ? chatContent.map((content) => (
+                        <div key={content._id}>
+                          {
+                            (content.group = idGroupID ? (
+                              <div
+                                className={`${
+                                  content.from === idUserMe
+                                    ? "chat  chat-right"
+                                    : "chat chat-left"
+                                }`}
+                              >
+                                <div className="chat-avatar">
+                                  <div className="avatar m-0">
+                                    <img
+                                      src={userImg}
+                                      alt="chat avatar"
+                                      height="40"
+                                      width="40"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="chat-body">
+                                  <div className="chat-content">
+                                    {ReactEmoji.emojify(content.content)}
+                                  </div>
+                                </div>
+                              </div>
+                            ) : null)
+                          }
+                        </div>
+                      ))
+                    : "Không có tin nhắn"}
                 </React.Fragment>
               </div>
             </PerfectScrollbar>
             <div className="chat-app-form">
               <form
-                className="chat-app-input d-flex align-items-center"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  this.handleSendMessage(
-                    activeUser.uid,
-                    false,
-                    this.state.msg,
-                    activeUser
-                  );
-                }}
+                className="chat-app-input d-flex align-items-center justify-content-between"
+                onSubmit={this.handlleMessage}
               >
                 <Input
                   type="text"
-                  className="message mr-1 ml-50"
-                  placeholder="Type your message"
+                  className="message mr-1 ml-50 w-75"
+                  placeholder="Vui lòng nhập tin nhắn "
                   value={this.state.msg}
-                  onChange={(e) => {
-                    e.preventDefault();
-                    this.setState({
-                      msg: e.target.value,
-                    });
-                  }}
+                  onChange={this.changeInput}
                 />
+                {this.state.showEmojis ? (
+                  <span
+                    // style={styles.emojiPicker}
+                    className="emoji-mart"
+                    // onLeave={true}
+                    onSelect={this.addEmoji}
+                    onMouseLeave={this.hideEmojs}
+                    ref={(el) => (this.emojiPicker = el)}
+                  >
+                    <Picker
+                      onSelect={this.addEmoji}
+                      emojiTooltip={true}
+                      title="weChat"
+                    />
+                  </span>
+                ) : null}
+                <p
+                  // style={styles.getEmojiButton}
+                  onClick={this.showEmojis}
+                >
+                  <Smile style={{ cursor: "pointer" }} />
+                  {/* {String.fromCodePoint(0x1f60a)} */}
+                </p>
                 <Button color="primary">
                   <Send className="d-lg-none" size={15} />
                   <span className="d-lg-block d-none">Send</span>
@@ -291,6 +364,14 @@ class ChatLog extends React.Component {
 const mapStateToProps = (state) => {
   return {
     chat: state.chatApp.chats,
+    chatContent: state.chatProq.contentMessageIdGroup,
+    idUserMe: state.auth.login.values.loggedInUser._id,
   };
 };
-export default connect(mapStateToProps, { togglePinned, sendMessage })(ChatLog);
+export default connect(mapStateToProps, {
+  togglePinned,
+  sendMessage,
+  getMessageIdGroup,
+  sendChat,
+  receiveChatSocket,
+})(ChatLog);

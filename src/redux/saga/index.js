@@ -6,6 +6,7 @@ import * as educationType from "../constants/education";
 import * as scheduleType from "../constants/schedule/index";
 import * as teacherType from "../constants/teacher";
 import * as studentType from "../constants/student";
+import * as chatType from "../constants/chat";
 import {
   loginActionSaga,
   loginWithGoogleSaga,
@@ -65,6 +66,7 @@ import {
   getSchedulesTeacgerSaga,
   getTeacherDetailSaga,
   scheduleSaga,
+  getDataSchedulesAllSaga,
 } from "./teacherSaga";
 import {
   getDataProfileStudentSaga,
@@ -72,6 +74,12 @@ import {
   getDataSchedulesIdSaga,
   getDataScheduleStudentSaga,
 } from "./student/index";
+import {
+  getAllGroupSaga,
+  getMessageGroupByIdSaga,
+  joinFriend,
+  sendChatSaga,
+} from "./chat";
 function* rootSaga() {
   //login //auth
   yield takeLatest(authType.LOGIN, loginActionSaga);
@@ -132,6 +140,7 @@ function* rootSaga() {
   yield takeLatest(teacherType.GET_SCHEDULES_TEACHER, getSchedulesTeacgerSaga);
   yield takeLatest(teacherType.GET_SCHEDULE_ID, getTeacherDetailSaga);
   yield takeLatest(teacherType.SCHEDULES, scheduleSaga);
+  yield takeLatest(teacherType.GET_SCHEDULES_ALL, getDataSchedulesAllSaga);
   yield takeLatest(teacherType.GET_PROFILE_TEACHER, getProfileTeacherSaga);
   /**
    * student
@@ -152,5 +161,12 @@ function* rootSaga() {
     studentType.GET_DATA_PROFILE_STUDENT,
     getDataProfileStudentSaga
   );
+  /**
+   * chat
+   */
+  yield takeLatest(chatType.JOIN_FRIEND, joinFriend);
+  yield takeLatest(chatType.GET_MESSAGE_ID_GROUP, getMessageGroupByIdSaga);
+  yield takeLatest(chatType.SEND_CHAT, sendChatSaga);
+  yield takeLatest(chatType.GET_ALL_DATA_GROUP, getAllGroupSaga);
 }
 export default rootSaga;

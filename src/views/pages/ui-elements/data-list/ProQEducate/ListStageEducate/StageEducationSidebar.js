@@ -12,11 +12,11 @@ class StageEducationSidebar extends Component {
     startAt: "",
     startEnd: "",
   };
-  handleSubmit = (obj) => {
+  handleSubmit = (obj, { resetForm }) => {
     const { addData, parsedFilter, handleSidebar } = this.props;
     // this.props.updateData(obj, params);
     handleSidebar(false, true);
-
+    resetForm();
     addData(obj, parsedFilter);
     // this.props.handleSidebar(false, true);
   };

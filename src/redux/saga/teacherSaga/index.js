@@ -5,11 +5,13 @@ import {
   getDataSchedulesTeacherIdSuccess,
   getDataSchedulesTeacherSuccess,
   getProfileTeacherSuccess,
+  getSchedulesAllSuccess,
 } from "../../actions/teacher";
 import {
   getDataProfileTeacherApi,
   getDataTeacherApi,
   getDataTeacherDetailApi,
+  getSchedulesAllApi,
   scheduleApi,
 } from "../../api/teacher/index";
 import moment from "moment";
@@ -114,6 +116,41 @@ export function* getProfileTeacherSaga() {
     const { data } = res;
     if (data.success) {
       yield put(getProfileTeacherSuccess(data.payload));
+    }
+  } catch (error) {}
+}
+export function* getDataSchedulesAllSaga({ payload }) {
+  const { params } = payload;
+  console.log(params);
+  const param = {
+    page: params ? params.page : "",
+    limit: params ? params.limit : "",
+  };
+  try {
+    const res = yield call(getSchedulesAllApi, params);
+    console.log(res);
+    const { data } = res;
+    console.log(data);
+    if (data.success) {
+      const dataRes = data.payload.reduce(
+        (arr, curr) => [
+          ...arr,
+          {
+            class: curr.class.name,
+            season: curr.season.name,
+            shift: curr.shift,
+            subject: curr.subject.name,
+            startAt: curr.startAt,
+            endAt: curr.endAt,
+            weeksDay: curr.weekDays,
+            id: curr._id,
+          },
+        ],
+        []
+      );
+      yield put(
+        getSchedulesAllSuccess(dataRes, data.total_page, data.total_item)
+      );
     }
   } catch (error) {}
 }

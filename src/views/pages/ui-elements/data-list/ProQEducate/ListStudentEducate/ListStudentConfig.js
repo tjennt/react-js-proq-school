@@ -36,7 +36,7 @@ import {
   Table,
   UncontrolledDropdown,
 } from "reactstrap";
-import { Popconfirm, message, Modal, Upload } from "antd";
+import { Popconfirm, message, Modal, Upload, Tooltip } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
@@ -52,22 +52,26 @@ const ActionsComponent = (props) => {
   }
   return (
     <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-      <Popconfirm
-        title="Bạn có chắc chắn xóa sinh viên?"
-        onConfirm={confirm}
-        onCancel={cancel}
-        okText="Có "
-        cancelText="Không "
-      >
-        <Trash className="cursor-pointer" size={20} />
-      </Popconfirm>
+      <Tooltip placement="topLeft" title="Chỉnh sửa">
+        <Edit
+          className="cursor-pointer mr-1"
+          size={20}
+          onClick={() => {
+            return props.currentData(props.row);
+          }}
+        />
+      </Tooltip>
+      <Tooltip placement="topLeft" title="Xóa">
+        <Popconfirm
+          title="Bạn có chắc chắn xóa sinh viên?"
+          onConfirm={confirm}
+          onCancel={cancel}
+          okText="Có "
+          cancelText="Không "
+        >
+          <Trash className="cursor-pointer" size={20} />
+        </Popconfirm>
+      </Tooltip>
     </div>
   );
 };

@@ -35,7 +35,6 @@ class FormDepartment extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { data } = this.props;
     if (data !== null && prevProps.data === null) {
-      console.log(data);
       if (data.id !== prevState.id) this.setState({ id: data.id });
       if (data.idSeason !== prevState.season)
         this.setState({ season: data.idSeason });
@@ -237,6 +236,27 @@ class FormDepartment extends Component {
         </Option>
       );
     });
+    let dateMin = "";
+    if (this.state.season) {
+      dateMin = season
+        .reduce(
+          (arr, curr) =>
+            curr._id === this.state.season ? [...arr, curr.createdAt] : arr,
+          []
+        )
+        .toString();
+    }
+    let dateMax = "";
+    if (this.state.season) {
+      dateMax = season
+        .reduce(
+          (arr, curr) =>
+            curr._id === this.state.season ? [...arr, curr.endAt] : arr,
+          []
+        )
+        .toString();
+    }
+    console.log(dateMax);
     return (
       <Form>
         <FormGroup>
@@ -313,9 +333,11 @@ class FormDepartment extends Component {
         <FormGroup>
           <Label>Thời gian bắt đầu *</Label>
           <DatePicker
+            minDate={dateMin}
             value={this.state.start_time}
             disabled={checkStartTime ? false : true}
             dateFormat="MM-DD-YYYY"
+            maxDate={dateMax}
             style={{ width: "80%" }}
             onChange={this.onChangeValueDateStart}
           />
@@ -324,10 +346,12 @@ class FormDepartment extends Component {
         <FormGroup>
           <Label>Thời gian kết thúc *</Label>
           <DatePicker
+            minDate={dateMin}
             value={this.state.end_time}
             disabled={checkEndTime ? false : true}
             style={{ width: "80%" }}
             dateFormat="MM-DD-YYYY"
+            maxDate={dateMax}
             onChange={this.onChangeValueDateEnd}
           />
           {/* <ErrorMessage name={name} component={FormFeedback} /> */}

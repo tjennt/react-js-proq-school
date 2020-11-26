@@ -144,6 +144,7 @@ $chat-image-back-color: #dfdbe5;
     .chat-user-list {
       height: calc(100% - 5rem);
       margin-top: 5rem;
+      transition: 0.5s;
       width: $chat-sidebar-width;
       ul {
         padding-left: 0;
@@ -165,7 +166,7 @@ $chat-image-back-color: #dfdbe5;
           overflow: hidden;
         }
         .contact-info {
-          width: calc(100% - 1rem - 50px);
+          width: calc(100% - 1rem - 100px);
           margin-top: 0.3rem;
           .truncate {
             margin: 0;
@@ -440,3 +441,18 @@ $chat-image-back-color: #dfdbe5;
     }
   }
 }
+.toggle-emoji {
+      border: none;
+      width: 50px;
+      height: auto;
+      padding: 0;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+.emoji-mart {
+      position: absolute;
+      bottom: 60px;
+      right: 10px;
+    }

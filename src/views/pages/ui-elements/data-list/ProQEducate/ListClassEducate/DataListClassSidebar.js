@@ -25,8 +25,8 @@ class ClassEducateSidebar extends Component {
     };
     let params = parsedFilter || panigate;
     if (data === null) {
-      addData(obj, params);
-      handleSidebar(false, true);
+      // addData(obj, params);
+      // handleSidebar(false, true);
       resetForm({});
     } else {
       updateData(obj, params);

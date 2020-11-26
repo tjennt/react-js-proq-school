@@ -20,7 +20,7 @@ class ScheduleTeacherByDate extends React.Component {
         <Breadcrumbs
           breadCrumbTitle="Giảng viên"
           breadCrumbParent="Lịch dạy "
-          breadCrumbActive="Lịch học của giảng viên"
+          breadCrumbActive="Lịch dạy của giảng viên"
         />
         <Row>
           <Col sm="12">

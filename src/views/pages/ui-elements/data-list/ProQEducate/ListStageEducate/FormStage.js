@@ -9,8 +9,8 @@ function FormStage(props) {
   const { initialValues } = props;
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Vui lòng nhập tên!"),
-    startAt: Yup.date().required("Vui lòng chọn ngày !"),
-    startEnd: Yup.date().required("Vui lòng chọn ngày!"),
+    startAt: Yup.string().required("Vui lòng chọn ngày !"),
+    startEnd: Yup.string().required("Vui lòng chọn ngày!"),
   });
 
   return (
@@ -40,7 +40,6 @@ function FormStage(props) {
               component={datePickerField}
             />
             <Field
-              format="dd/mm/yyyy"
               name="startEnd"
               label="Thời gian kết thúc"
               placeholder="Vui lòng nhập chọn thời gian kết thúc "

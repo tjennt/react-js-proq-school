@@ -29,6 +29,7 @@ import Moment from "react-moment";
 import { Button, Col } from "reactstrap";
 import { message, Popconfirm } from "antd";
 import ReactPaginate from "react-paginate";
+import { newDate } from "../../../../../../utility/config";
 const chipText = {
   0: "Chủ nhật",
   1: "Thứ 2",
@@ -196,14 +197,14 @@ class ListDepartmentConfig extends Component {
         selector: "startAt",
         sortable: true,
         minWidth: "200px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.startAt}</Moment>,
+        cell: (row) => <p>{newDate(row.startAt)}</p>,
       },
       {
         name: "Ngày kết thúc",
         selector: "endAt",
         sortable: true,
         minWidth: "200px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.endAt}</Moment>,
+        cell: (row) => <p>{newDate(row.endAt)}</p>,
       },
       {
         name: "Thao tác",

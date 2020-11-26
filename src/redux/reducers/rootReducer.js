@@ -12,6 +12,7 @@ import scheduleReducer from "./schedule";
 import uiReducer from "./ui/loadingReducer";
 import teacherReducer from "./teacher";
 import schedule from "./student";
+import rootChat from "./chatProq";
 
 const persistConfig = {
   key: "root",
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   dataTeacher: teacherReducer,
   scheduleStudent: schedule,
   ui: uiReducer,
+  chatProq: rootChat,
 });
 
 export default persistReducer(persistConfig, rootReducer);

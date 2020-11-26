@@ -29,29 +29,32 @@ import {
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
-import { Popconfirm, message, Modal, Upload } from "antd";
+import { Modal, Upload, Tooltip } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
+import { newDate } from "../../../../../../utility/config";
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
-  function confirm(e) {
-    props.changeStatus(props.row);
-  }
-  function cancel(e) {
-    message.error("Hủy thay đổi trạng thái  !");
-  }
+  // function confirm(e) {
+  //   props.changeStatus(props.row);
+  // }
+  // function cancel(e) {
+  //   message.error("Hủy thay đổi trạng thái  !");
+  // }
   return (
     <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-      <Popconfirm
+      <Tooltip placement="topLeft" title="Chỉnh sửa">
+        <Edit
+          className="cursor-pointer mr-1"
+          size={20}
+          onClick={() => {
+            return props.currentData(props.row);
+          }}
+        />
+      </Tooltip>
+
+      {/* <Popconfirm
         title="Bạn có chắc chắn xóa sinh viên?"
         onConfirm={confirm}
         onCancel={cancel}
@@ -59,7 +62,7 @@ const ActionsComponent = (props) => {
         cancelText="Không "
       >
         <Trash className="cursor-pointer" size={20} />
-      </Popconfirm>
+      </Popconfirm> */}
     </div>
   );
 };
@@ -103,14 +106,14 @@ class ListStageEducation extends Component {
         selector: "date_start",
         sortable: true,
         minWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.startAt}</Moment>,
+        cell: (row) => <p>{newDate(row.startAt)}</p>,
       },
       {
         name: " Ngày kết thúc",
         selector: "date_end",
         sortable: true,
         minWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.endAt}</Moment>,
+        cell: (row) => <p>{newDate(row.endAt)}</p>,
       },
       {
         name: "Thao tác",
@@ -323,7 +326,7 @@ class ListStageEducation extends Component {
           noHeader={true}
           fixedHeader
           fixedHeaderScrollHeight={"55vh"}
-          noDataComponent="Không có dữ liệu học sinh"
+          noDataComponent="Không có kì học"
         />
         <ReactPaginate
           previousLabel={<ChevronLeft size={15} />}
