@@ -5,15 +5,17 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import classnames from "classnames";
 import { toastWarning } from "../../../../../../utility/toast/toastHelper";
 import "antd/dist/antd.css";
-import { Upload } from "antd";
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/themes/light.css";
 
 class StudentEducationSidebar extends Component {
   state = {
     id: "",
     fullname: "",
     email: "",
-    imgUpdate: "",
     phone: "",
+    identityNumber: "",
+    dob: "",
     address: "",
   };
   addNew = false;
@@ -21,63 +23,69 @@ class StudentEducationSidebar extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { data } = this.props;
     if (data !== null && prevProps.data === null) {
-      if (data.id !== prevState.id) this.setState({ id: data.id });
-      if (data.fullname !== prevState.fullname)
-        this.setState({ fullname: data.fullname });
+      if (data.studentId_id !== prevState.id)
+        this.setState({ id: data.studentId._id });
+      if (data.studentId.fullName !== prevState.fullname)
+        this.setState({ fullname: data.studentId.fullName });
       if (data.email !== prevState.email) this.setState({ email: data.email });
-      if (data.active !== prevState.active)
-        this.setState({ active: data.active });
-      if (data.role !== prevState.role) this.setState({ role: data.role });
+      if (data.studentId.phone !== prevState.phone)
+        this.setState({ phone: data.studentId.phone });
+      if (data.studentId.identityNumber !== prevState.identityNumber)
+        this.setState({ identityNumber: data.studentId.identityNumber });
+      if (data.studentId.dob !== prevState.dob)
+        this.setState({ dob: data.studentId.dob });
+      if (data.studentId.address !== prevState.address)
+        this.setState({ address: data.studentId.address });
     }
     if (data === null && prevProps.data !== null) {
       this.setState({
         fullname: "",
+        phone: "",
+        identityNumber: "",
+        dob: "",
+        address: "",
         email: "",
-        active: null,
-        role: "ADMIN",
-        password: "",
       });
     }
     if (this.addNew) {
       this.setState({
         id: "",
         fullname: "",
+        phone: "",
+        identityNumber: "",
+        dob: "",
+        address: "",
         email: "",
-        active: null,
-        role: "ADMIN",
-        password: "",
       });
     }
     this.addNew = false;
   }
 
   handleSubmit = (obj) => {
-    const { fullname, email, password } = this.state;
-    let params = Object.keys(this.props.dataParams).length
-      ? this.props.dataParams
-      : { page: 1, limit: 10 };
-    if (this.props.data !== null) {
-      this.props.updateData(obj, params);
-      this.props.handleSidebar(false, true);
-    } else {
-      if (!fullname | !email | !password) {
-        toastWarning("Vui lòng nhập đầy đủ các trường *");
-      } else {
-        this.addNew = true;
-        this.props.addData(obj, params);
-        this.props.handleSidebar(false, true);
-      }
+    const { dataParams } = this.props;
+    const paginate = {
+      page: 1,
+      limit: 4,
+    };
+    const params = dataParams || paginate;
+    const { fullname, phone, identityNumber, dob, address, email } = this.state;
+    if (!fullname || !phone || !identityNumber || !dob || !address || !email) {
+      toastWarning("Vui lòng nhập các trường *");
+      return false;
     }
-    this.props.getData(params);
+    this.props.updateData(params, obj);
+    this.props.handleSidebar(false, true);
   };
-  onChange = ({ fileList: newFileList }) => {
+
+  changeDate = (date, dateString) => {
     this.setState({
-      imgUpdate: newFileList,
+      ...this.state,
+      dob: dateString,
     });
   };
   render() {
     let { show, handleSidebar, data } = this.props;
-    let { imgUpdate, fullname, email, phone, address } = this.state;
+    let { identityNumber, fullname, dob, email, phone, address } = this.state;
     return (
       <div
         className={classnames("data-list-sidebar", {
@@ -93,17 +101,6 @@ class StudentEducationSidebar extends Component {
           options={{ wheelPropagation: false }}
         >
           <FormGroup>
-            <Upload
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              fileList={imgUpdate}
-              onChange={this.onChange}
-              listType="picture-card"
-            >
-              {imgUpdate.length < 1 && "+ Tải hình"}
-            </Upload>
-          </FormGroup>
-
-          <FormGroup>
             <Label for="data-name">Tên *</Label>
             <Input
               type="text"
@@ -114,24 +111,47 @@ class StudentEducationSidebar extends Component {
             />
           </FormGroup>
           <FormGroup>
-            <Label for="data-email">Email *</Label>
+            <Label for="data-phone">Số điện thoại *</Label>
+            <Input
+              type="number"
+              id="data-phone"
+              value={phone}
+              placeholder="Nhập Số điện thoại"
+              onChange={(e) => this.setState({ phone: e.target.value })}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="email">Email *</Label>
             <Input
               type="text"
-              id="data-email"
+              id="email"
               value={email}
+              disabled={true}
               placeholder="Email"
               onChange={(e) => this.setState({ email: e.target.value })}
             />
           </FormGroup>
           <FormGroup>
-            <Label for="password">Số điện thoại *</Label>
+            <Label for="Number ">Identity Number *</Label>
             <Input
-              type="phone"
-              id="phone"
-              value={phone}
-              placeholder="Mật khẩu"
-              onChange={(e) => this.setState({ phone: e.target.value })}
+              type="number"
+              id="number"
+              value={identityNumber}
+              placeholder="Number"
+              onChange={(e) =>
+                this.setState({ identityNumber: e.target.value })
+              }
             />
+          </FormGroup>
+          <FormGroup>
+            <Label for="dateBirth">Ngày sinh *</Label>
+            <Flatpickr
+              style={{ backgroundColor: "#fff" }}
+              className="form-control"
+              // data-enable-time
+              value={dob}
+              onChange={this.changeDate}
+            ></Flatpickr>
           </FormGroup>
           <FormGroup>
             <Label for="address">Địa chỉ *</Label>
@@ -139,7 +159,7 @@ class StudentEducationSidebar extends Component {
               type="address"
               id="address"
               value={address}
-              placeholder="Mật khẩu"
+              placeholder="Vui lòng nhập địa chỉ"
               onChange={(e) => this.setState({ address: e.target.value })}
             />
           </FormGroup>

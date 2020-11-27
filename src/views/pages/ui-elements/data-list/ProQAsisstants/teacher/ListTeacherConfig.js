@@ -4,9 +4,12 @@ import classnames from "classnames";
 import { history } from "../../../../../../history";
 // import { Plus } from "react-feather";
 import { connect } from "react-redux";
-import { API_ENDPOINT } from "../../../../../../redux/constants/index";
+import { API_ENDPOINT_IMG_TEACHER } from "../../../../../../redux/constants/index";
 import "antd/dist/antd.css";
-import { getDataTeacher } from "../../../../../../redux/actions/dataListAssistance/index";
+import {
+  getDataTeacher,
+  exportExcelTeacher,
+} from "../../../../../../redux/actions/dataListAssistance/index";
 import Sidebar from "./DataListTeachertSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
@@ -31,7 +34,6 @@ import {
 import Moment from "react-moment";
 import Modal from "antd/lib/modal/Modal";
 
-import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
 class ListTeacherConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
@@ -63,7 +65,7 @@ class ListTeacherConfig extends Component {
         cell: (row) => (
           <img
             height="50px"
-            src={`${API_ENDPOINT}/${row.teacherId.avatar}`}
+            src={`${API_ENDPOINT_IMG_TEACHER}/${row.teacherId.avatar}`}
             alt={row.avatar}
           />
         ),
@@ -162,17 +164,8 @@ class ListTeacherConfig extends Component {
       visible: true,
     });
   };
-  onChangeExcel = (file) => {
-    this.setState({
-      ...this.state,
-      file: file,
-    });
-  };
   handleOk = (e) => {
-    let { parsedFilter, importExcelTeacer } = this.props;
-    const { file } = this.state;
-    let fileReq = file.file.originFileObj;
-    importExcelTeacer(fileReq, parsedFilter);
+    this.props.exportExcelTeacher(this.state.nameFile);
     this.setState({
       ...this.state,
       visible: false,
@@ -369,4 +362,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getDataTeacher,
+  exportExcelTeacher,
 })(ListTeacherConfig);

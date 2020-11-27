@@ -19,7 +19,7 @@ class SpecializationSidebar extends Component {
     };
     let params = parsedFilter || paginate;
     if (this.props.data !== null) {
-      // this.props.updateData(obj, params);
+      this.props.updateData(obj, params);
       this.props.handleSidebar(false, true);
     } else {
       this.props.addData(obj, params);
@@ -28,6 +28,14 @@ class SpecializationSidebar extends Component {
   };
   render() {
     let { show, handleSidebar, data } = this.props;
+    let dataEdit = [];
+    if (data) {
+      dataEdit = {
+        id: data._id,
+        nameSpecialization: data.name,
+        subject: data.subject.map((item) => item._id),
+      };
+    }
     return (
       <div
         className={classnames("data-list-sidebar", {
@@ -44,7 +52,7 @@ class SpecializationSidebar extends Component {
         >
           <FormSpecialization
             subject={this.props.subject}
-            initialState={this.initialState}
+            initialState={data ? dataEdit : this.initialState}
             onSubmitForm={this.handleSubmit}
           />
         </PerfectScrollbar>

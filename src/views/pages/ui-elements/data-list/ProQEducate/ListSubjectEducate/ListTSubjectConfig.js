@@ -2,18 +2,37 @@ import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import classnames from "classnames";
 import { history } from "../../../../../../history";
-import { ChevronLeft, ChevronRight, Edit, Plus, Trash } from "react-feather";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Edit,
+  Plus,
+  Trash,
+} from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import { getDataSubject } from "../../../../../../redux/actions/dataListAssistance/index";
+import {
+  getDataSubject,
+  setTaskEditSubject,
+  updateDataSubject,
+} from "../../../../../../redux/actions/dataListAssistance/index";
 import { addSubject } from "../../../../../../redux/actions/education/index";
 import Sidebar from "./DataListSubjectSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import { Button } from "reactstrap";
+import {
+  Button,
+  Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Row,
+  UncontrolledDropdown,
+} from "reactstrap";
 import Moment from "react-moment";
-import { message, Popconfirm } from "antd";
+import { message, Popconfirm, Tooltip } from "antd";
 import ReactPaginate from "react-paginate";
 const ActionsComponent = (props) => {
   function confirm(e) {
@@ -25,14 +44,16 @@ const ActionsComponent = (props) => {
   }
   return (
     <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-      <Popconfirm
+      <Tooltip placement="topLeft" title="Chỉnh sửa">
+        <Edit
+          className="cursor-pointer mr-1"
+          size={20}
+          onClick={() => {
+            return props.currentData(props.row);
+          }}
+        />
+      </Tooltip>
+      {/* <Popconfirm
         title="Bạn có chắc chắn xóa dữ liệu không?"
         onConfirm={confirm}
         onCancel={cancel}
@@ -40,23 +61,7 @@ const ActionsComponent = (props) => {
         cancelText="Không "
       >
         <Trash className="cursor-pointer" size={20} />
-      </Popconfirm>
-    </div>
-  );
-};
-const CustomHeader = (props) => {
-  return (
-    <div className="data-list-header d-flex justify-content-between flex-wrap">
-      <div className="actions-left d-flex flex-wrap">
-        <Button
-          color="primary"
-          onClick={() => props.handleSidebar(true, true)}
-          outline={true}
-        >
-          <Plus size={15} />
-          <span className="align-middle">Tạo mới</span>
-        </Button>
-      </div>
+      </Popconfirm> */}
     </div>
   );
 };
@@ -69,10 +74,7 @@ class ListTSubjectConfig extends Component {
       return {
         data: props.dataList.dataSubject,
         totalPages: props.dataList.total_page_subject,
-        currentPage: parseInt(props.parsedFilter.page) - 1,
-        rowsPerPage: parseInt(props.parsedFilter.perPage),
-        totalRecords: props.dataList.totalRecords,
-        sortIndex: props.dataList.sortIndex,
+        totalRecords: props.dataList.total_item_subject,
       };
     }
 
@@ -181,10 +183,14 @@ class ListTSubjectConfig extends Component {
   };
 
   handleCurrentData = (obj) => {
+    this.props.setTaskEditSubject(obj);
     this.setState({ currentData: obj });
     this.handleSidebar(true);
   };
-
+  handleAddData = () => {
+    this.handleSidebar(true, true);
+    this.props.setTaskEditSubject(null);
+  };
   handlePagination = (page) => {
     let { parsedFilter, getDataSubject } = this.props;
     let perPage =
@@ -196,28 +202,102 @@ class ListTSubjectConfig extends Component {
     getDataSubject({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
+  handleRowsPerPage = (value) => {
+    let { parsedFilter, getDataSubject } = this.props;
 
+    let page = parsedFilter.page !== undefined ? parsedFilter.page : 1;
+    history.push(`/education/subject?page=${page}&limit=${value}`);
+    this.setState({ rowsPerPage: value });
+    getDataSubject({ page: parsedFilter.page, limit: value });
+  };
   render() {
     let { columns, data, value, currentData, sidebar } = this.state;
     return (
       <div className="data-list">
+        <Col lg="12">
+          <Row>
+            <Col lg="3">
+              <Button
+                color="primary"
+                // onClick={() => this.handleSidebar(true, true)}
+                onClick={this.handleAddData}
+                outline={true}
+              >
+                <Plus size={15} />
+                <span className="align-middle">Tạo mới</span>
+              </Button>
+            </Col>
+            <Col lg="9">
+              <UncontrolledDropdown
+                style={{ backgroundColor: "#fff", borderRadius: "20px" }}
+                className="data-list-rows-dropdown  d-md-block d-none"
+              >
+                <DropdownToggle
+                  disabled={this.state.totalRecords < 10 ? true : false}
+                  className="sort-dropdown"
+                  style={{
+                    float: "right",
+                    borderRadius: "20px",
+                  }}
+                >
+                  {this.state.totalRecords < 10 ? (
+                    <span className="align-middle mx-50">
+                      {this.state.totalRecords}
+                    </span>
+                  ) : (
+                    <span className="align-middle mx-50">{`${
+                      this.props.parsedFilter.page
+                        ? this.props.parsedFilter.page
+                        : 1
+                    } of ${this.state.totalRecords}`}</span>
+                  )}
+                  <ChevronDown size={15} />
+                </DropdownToggle>
+                <DropdownMenu tag="div" right>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(10)}
+                  >
+                    10
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(20)}
+                  >
+                    20
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(30)}
+                  >
+                    30
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(50)}
+                  >
+                    50
+                  </DropdownItem>
+                  <DropdownItem
+                    tag="a"
+                    onClick={() => this.handleRowsPerPage(100)}
+                  >
+                    100
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Col>
+          </Row>
+        </Col>
         <DataTable
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
           fixedHeader
           fixedHeaderScrollHeight={"55vh"}
-          noDataComponent="Không có dữ liệu"
+          noDataComponent="Không có môn"
           noHeader
           subHeader
-          subHeaderComponent={
-            <CustomHeader
-              handleSidebar={this.handleSidebar}
-              showModal={this.showModal}
-              handleFilter={this.handleFilter}
-              handleRowsPerPage={this.handleRowsPerPage}
-            />
-          }
         />
         <ReactPaginate
           previousLabel={<ChevronLeft size={15} />}
@@ -236,8 +316,8 @@ class ListTSubjectConfig extends Component {
         />
         <Sidebar
           show={sidebar}
-          data={currentData}
-          updateData={this.props.updateData}
+          data={this.props.editTask}
+          updateData={this.props.updateDataSubject}
           addData={this.props.addSubject}
           handleSidebar={this.handleSidebar}
           thumbView={this.props.thumbView}
@@ -259,10 +339,13 @@ class ListTSubjectConfig extends Component {
 const mapStateToProps = (state) => {
   return {
     dataList: state.assistantData,
+    editTask: state.assistantData.setTaskEditSubject,
   };
 };
 
 export default connect(mapStateToProps, {
   getDataSubject,
   addSubject,
+  setTaskEditSubject,
+  updateDataSubject,
 })(ListTSubjectConfig);

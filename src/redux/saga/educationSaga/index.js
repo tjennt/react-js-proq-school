@@ -22,7 +22,7 @@ import { addSubject } from "../../api/education/subject";
 import { addClassApi } from "../../api/education/class";
 import { addSpecializationApi } from "../../api/education/specialization";
 import { getDataSpecialization } from "../../actions/schedule/getDataSpecialization";
-
+import * as moment from "moment";
 /**
  * getSchedule
  */
@@ -41,14 +41,20 @@ export function* getSchedulesSaga({ payload }) {
         (arr, curr) => [
           ...arr,
           {
+            idClass: curr.class._id,
             class: curr.class.name,
             season: curr.season.name,
+            idSeason: curr.season._id,
             shift: curr.shift,
             weekDays: curr.weekDays,
             id: curr._id,
             subject: curr.subject.name,
+            idSubject: curr.subject._id,
             createdAt: curr.createAt,
+            endAt: curr.endAt,
             startAt: curr.startAt,
+            nameTeacher: curr.teacher.fullname,
+            idTeacher: curr.teacher._id,
           },
         ],
         []
@@ -124,7 +130,7 @@ export function* addClassSaga({ payload }) {
       toastWarning("Thêm dữ liệu thất bại!");
     }
   } catch (error) {
-    toastError("Đã có lỗi xảy ra vui lòng thử lại");
+    toastError("Lớp đã tồn tại vui lòng thử lại");
   }
 }
 /**
@@ -155,9 +161,11 @@ export function* addStageSaga({ payload }) {
   const { obj, params } = payload;
   const dataReq = {
     name: obj.name,
-    startAt: obj.startAt,
-    endAt: obj.startEnd,
+    startAt: moment(obj.startAt).format("MM-DD-YYYY"),
+    endAt: moment(obj.startEnd).format("MM-DD-YYYY"),
   };
+  console.log(moment(obj.startAt).format("MM-DD-YYYY"));
+  console.log(dataReq);
   try {
     const res = yield call(addStageApi, dataReq);
     const { data } = res;
@@ -176,22 +184,23 @@ export function* addStageSaga({ payload }) {
  */
 export function* addSeasonSaga({ payload }) {
   const { obj, params } = payload;
+
   const dataReq = {
     name: obj.name,
-    startAt: obj.startAt,
-    endAt: obj.startEnd,
+    startAt: moment(obj.startAt).format("MM-DD-YYYY"),
+    endAt: moment(obj.startEnd).format("MM-DD-YYYY"),
   };
   try {
     const res = yield call(addSeasonApi, dataReq);
     const { data } = res;
     if (data.success) {
       yield put(getDataSeason(params));
-      toastSuccess("Đã có lỗi xảy ra vui lòng thử lại");
+      toastSuccess("Thêm dữ liệu thành công");
     } else {
       toastWarning("Vui lòng thử lại sau");
     }
   } catch (error) {
-    toastError(`Đã có lỗi xảy ra vui lòng thử lại sau ${error}`);
+    toastError(`Kỳ học hiện tại bị trùng vào các kì  Summer 2021`);
   }
 }
 /**
@@ -208,7 +217,7 @@ export function* addSpecializationSaga({ payload }) {
     const { data } = res;
     if (data.success) {
       yield put(getDataSpecialization(params));
-      toastSuccess("Đã có lỗi xảy ra vui lòng thử lại");
+      toastSuccess("Thêm dữ liệu thành công");
     } else {
       toastWarning("Vui lòng thử lại sau");
     }

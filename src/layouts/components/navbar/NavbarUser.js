@@ -1,19 +1,18 @@
 import React from "react";
-import { history } from "../../../history";
+// import { history } from "../../../history";
 import {
   UncontrolledDropdown,
   DropdownMenu,
   DropdownItem,
   DropdownToggle,
   Badge,
-  Button,
-  Input,
 } from "reactstrap";
 import * as Icon from "react-feather";
 import { connect } from "react-redux";
 import { logoutWithJWT } from "./../../../redux/actions/auth/loginActions";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import NotificationItem from "./NotificationItem";
+import { toastSuccess } from "../../../utility/toast/toastHelper";
 import socket from "socket.io-client";
 
 let io;
@@ -46,26 +45,26 @@ class NavbarUser extends React.PureComponent {
   };
   componentDidMount() {
     io = socket(`https://server-dev.asia`);
-    console.log(io);
-    io.emit("PING", {});
-    io.on("PONG", (data) => console.log(data));
-    // io.emit("client-send-message-to-server", {
-    //   message: "xin chao tui la reactj1",
-    // });
-    io.on("server-send-message-to-client", (data) => console.log(data));
-  }
-  socket = () => {
-    const { text } = this.state;
-    const { token, idUser } = this.props;
-    const data = {
-      text,
-      token,
-      idUser,
-    };
-    io.emit("client-send-message-to-server", {
-      message: data,
+    io.on("SEND_MESSAGE_CHAT", (data) => {
+      if (data.from !== this.props.idUser) {
+        toastSuccess("Bạn có tin nhắn mới");
+      } else {
+        return false;
+      }
     });
-  };
+  }
+  // socket = () => {
+  //   const { text } = this.state;
+  //   const { token, idUser } = this.props;
+  //   const data = {
+  //     text,
+  //     token,
+  //     idUser,
+  //   };
+  //   io.emit("client-send-message-to-server", {
+  //     message: data,
+  //   });
+  // };
   render() {
     return (
       <ul className="nav navbar-nav navbar-nav-user float-right">

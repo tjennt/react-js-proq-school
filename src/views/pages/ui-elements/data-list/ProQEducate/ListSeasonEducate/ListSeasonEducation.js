@@ -31,6 +31,7 @@ import {
 import { Popconfirm, message } from "antd";
 import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
+import { newDate } from "../../../../../../utility/config";
 
 const ActionsComponent = (props) => {
   function confirm(e) {
@@ -68,10 +69,10 @@ class ListSeasonEducation extends Component {
     ) {
       return {
         data: props.dataList.dataSeason,
-        totalPages: props.dataList.total_page_student,
+        totalPages: props.dataList.total_page_season,
         // currentPage: parseInt(props.parsedFilter.page) - 1,
         // rowsPerPage: parseInt(props.parsedFilter.perPage),
-        totalRecords: props.dataList.total_record_student,
+        totalRecords: props.dataList.total_record_season,
         // sortIndex: props.dataList.sortIndex,
       };
     }
@@ -103,14 +104,14 @@ class ListSeasonEducation extends Component {
         selector: "date_start",
         sortable: true,
         minWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.startAt}</Moment>,
+        cell: (row) => <p>{newDate(row.startAt)}</p>,
       },
       {
         name: " Ngày kết thúc",
         selector: "date_end",
         sortable: true,
         minWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.endAt}</Moment>,
+        cell: (row) => <p>{newDate(row.endAt)}</p>,
       },
       {
         name: "Thao tác",
@@ -250,19 +251,24 @@ class ListSeasonEducation extends Component {
                 className="data-list-rows-dropdown  d-md-block d-none"
               >
                 <DropdownToggle
+                  disabled={this.state.totalRecords < 10 ? true : false}
                   className="sort-dropdown"
                   style={{
                     float: "right",
                     borderRadius: "20px",
                   }}
                 >
-                  <span className="align-middle mx-50">{`${
-                    this.state.totalRecords
-                  } of ${
-                    this.props.parsedFilter.limit
-                      ? this.props.parsedFilter.limit
-                      : 1
-                  }`}</span>
+                  {this.state.totalRecords < 10 ? (
+                    <span className="align-middle mx-50">
+                      {this.state.totalRecords}
+                    </span>
+                  ) : (
+                    <span className="align-middle mx-50">{`${
+                      this.props.parsedFilter.page
+                        ? this.props.parsedFilter.page
+                        : 1
+                    } of ${this.state.totalRecords}`}</span>
+                  )}
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>
@@ -308,7 +314,7 @@ class ListSeasonEducation extends Component {
           noHeader={true}
           fixedHeader
           fixedHeaderScrollHeight={"55vh"}
-          noDataComponent="Không có dữ liệu học sinh"
+          noDataComponent="Không có khóa học"
         />
         <ReactPaginate
           previousLabel={<ChevronLeft size={15} />}

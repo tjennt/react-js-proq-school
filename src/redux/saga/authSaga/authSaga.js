@@ -1,11 +1,7 @@
 import { put, call, delay } from "redux-saga/effects";
 import { loginJWt, loginWithGoogle } from "../../api/auth";
 import { setUserCookie } from "../../../utility/auth/setAuthToken";
-import {
-  changeRole,
-  logoutSuccess,
-  loginSuccess,
-} from "../../actions/auth/loginActions";
+import { changeRole, loginSuccess } from "../../actions/auth/loginActions";
 import { history } from "../../../history";
 import { toastSuccess, toastError } from "../../../utility/toast/toastHelper";
 import { hideLoading } from "../../actions/ui";
@@ -49,7 +45,6 @@ export function* loginWithGoogleSaga({ payload }) {
     const res = yield call(loginWithGoogle, authData);
     yield delay(500);
     const { data } = res;
-    console.log(data);
     if (data.success === true) {
       yield put(loginSuccess(data.payload));
       setUserCookie(data.payload.token);

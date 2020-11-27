@@ -42,7 +42,9 @@
 .login-tabs-container {
   min-height: 505px;
 }
-
+.button-bg{
+  background-color: #ff4128cc !important;
+}
 // Unlock btn spacing in sm
 
 @media (max-width: 400px) {

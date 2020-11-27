@@ -5,3 +5,9 @@ export const getDataSpecializationApi = (params) => {
     params,
   });
 };
+export const updateDataSpecialApi = (id, data) => {
+  return axiosService.put(
+    `${process.env.REACT_APP_API_ENDPOINT}/${url}/${id}`,
+    data
+  );
+};

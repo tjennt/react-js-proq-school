@@ -5,3 +5,9 @@ export const getDataSceduleApi = (params) => {
     params,
   });
 };
+export const getDataSchedulesUpdate = (params) => {
+  return axiosService.get(
+    `${process.env.REACT_APP_API_ENDPOINT}/staff/schedulesUpdate`,
+    { params }
+  );
+};

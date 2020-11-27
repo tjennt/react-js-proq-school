@@ -20,15 +20,16 @@ SelectField.defaultProps = {
   options: [],
 };
 function SelectField(props) {
-  const { field, form, options, label, placeholder } = props;
+  const { field, form, options, label, placeholder, isDisabled } = props;
   const { name, value } = field;
   const { errors, touched } = form;
   const showError = errors[name] && touched[name];
 
-  const selectedOption = options.find((option) => option.value === value);
-
+  const selectedOption = value
+    ? options.find((option) => option.value === value)
+    : [];
   const handleSelectedOptionChange = (selectedOption) => {
-    const selectedValue = selectedOption ? selectedOption.value : "";
+    const selectedValue = selectedOption ? selectedOption.value : [];
 
     const changeEvent = {
       target: {
@@ -47,12 +48,12 @@ function SelectField(props) {
         {...field}
         value={selectedOption}
         isClearable={true}
+        isDisabled={isDisabled}
         onChange={handleSelectedOptionChange}
         placeholder={placeholder}
-        // isdisabled={disabled}
         options={options}
-        className={showError ? "is-invalid" : ""}
       ></Select>
+      <div className={showError ? "is-invalid" : ""}></div>
       <ErrorMessage name={name} component={FormFeedback} />
     </FormGroup>
   );

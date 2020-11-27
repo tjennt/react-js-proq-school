@@ -8,12 +8,16 @@ import {
   ChevronRight,
   Download,
   Edit,
-  Plus,
   Trash,
 } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import { getDataTeacher } from "../../../../../../redux/actions/dataListAssistance/index";
+import {
+  getDataTeacher,
+  exportExcelTeacher,
+  updateDataTeacher,
+  deleteDataTeacher,
+} from "../../../../../../redux/actions/dataListAssistance/index";
 import { importExcelTeacer } from "../../../../../../redux/actions/education/index";
 
 import Sidebar from "./DataListTeachertSidebar";
@@ -26,17 +30,16 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
+  Input,
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
-import { message, Modal, Popconfirm, Upload } from "antd";
+import { message, Modal, Popconfirm, Tooltip, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import ReactPaginate from "react-paginate";
 import Moment from "react-moment";
-import {
-  API_ENDPOINT,
-  API_ENDPOINT_IMG,
-} from "../../../../../../redux/constants";
+import { API_ENDPOINT_IMG_TEACHER } from "../../../../../../redux/constants";
+import { newDate } from "../../../../../../utility/config";
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
@@ -49,22 +52,26 @@ const ActionsComponent = (props) => {
   }
   return (
     <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-      <Popconfirm
-        title="Bạn có chắc chắn xóa dữ liệu không?"
-        onConfirm={confirm}
-        onCancel={cancel}
-        okText="Có "
-        cancelText="Không "
-      >
-        <Trash className="cursor-pointer" size={20} />
-      </Popconfirm>
+      <Tooltip placement="topLeft" title="Chỉnh sửa">
+        <Edit
+          className="cursor-pointer mr-1"
+          size={20}
+          onClick={() => {
+            return props.currentData(props.row);
+          }}
+        />
+      </Tooltip>
+      <Tooltip placement="topLeft" title="Xóa">
+        <Popconfirm
+          title="Bạn có chắc chắn xóa giảng viên?"
+          onConfirm={confirm}
+          onCancel={cancel}
+          okText="Có "
+          cancelText="Không "
+        >
+          <Trash className="cursor-pointer" size={20} />
+        </Popconfirm>
+      </Tooltip>
     </div>
   );
 };
@@ -92,15 +99,15 @@ class ListTeacherConfig extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Avatar",
+        name: "Hình đại diện",
         selector: "name",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
           <img
-            height="85px"
-            src={`${API_ENDPOINT}/${row.teacherId.avatar}`}
-            alt={row.avatar}
+            height="70px"
+            src={`${API_ENDPOINT_IMG_TEACHER}/${row.teacherId.avatar}`}
+            alt={row.teacherId.avatar}
           />
         ),
       },
@@ -165,7 +172,7 @@ class ListTeacherConfig extends Component {
         selector: "date",
         sortable: true,
         // minWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.createAt}</Moment>,
+        cell: (row) => <p>{newDate(row.createdAt)}</p>,
       },
       {
         name: "Thao tác",
@@ -192,6 +199,8 @@ class ListTeacherConfig extends Component {
     totalRecords: 0,
     sortIndex: [],
     addNew: "",
+    visibleExport: "",
+    nameFile: "",
   };
 
   thumbView = this.props.thumbView;
@@ -209,6 +218,24 @@ class ListTeacherConfig extends Component {
   showModal = () => {
     this.setState({
       visible: true,
+    });
+  };
+  showModalExportExcel = () => {
+    this.setState({
+      visibleExport: true,
+    });
+  };
+  handleOkTeacher = (e) => {
+    const { nameFile } = this.state;
+    this.props.exportExcelTeacher(nameFile);
+    this.setState({
+      ...this.state,
+      visibleExport: false,
+    });
+  };
+  handleCancelTeacher = (e) => {
+    this.setState({
+      visibleExport: false,
     });
   };
   onChangeExcel = (file) => {
@@ -242,21 +269,21 @@ class ListTeacherConfig extends Component {
   //   this.props.updateStatus(row, this.props.parsedFilter);
   //   this.props.getData(this.props.parsedFilter);
   // };
-  // handleDelete = (row) => {
-  //   this.props.deleteData(row);
-  //   this.props.getData(this.props.parsedFilter);
-  //   if (this.state.data.length - 1 === 0) {
-  //     history.push(
-  //       `/accountAdmin?page=${parseInt(
-  //         this.props.parsedFilter.page - 1
-  //       )}&perPage=${this.props.parsedFilter.perPage}`
-  //     );
-  //     this.props.getData({
-  //       page: this.props.parsedFilter.page - 1,
-  //       perPage: this.props.parsedFilter.perPage,
-  //     });
-  //   }
-  // };
+  handleDelete = (row) => {
+    this.props.deleteDataTeacher(row.teacherId._id, this.props.parsedFilter);
+    this.props.getDataTeacher(this.props.parsedFilter);
+    // if (this.state.data.length - 1 === 0) {
+    //   history.push(
+    //     `/education/teacher?page=${parseInt(
+    //       this.props.parsedFilter.page - 1
+    //     )}&limit=${this.props.parsedFilter.perPage}`
+    //   );
+    //   this.props.deleteDataTeacher({
+    //     page: this.props.parsedFilter.page - 1,
+    //     limit: this.props.parsedFilter.perPage,
+    //   });
+    // }
+  };
 
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
@@ -304,22 +331,42 @@ class ListTeacherConfig extends Component {
             </p>
           </Dragger>
         </Modal>
+        <Modal
+          destroyOnClose={true}
+          title="Xuất excel"
+          visible={this.state.visibleExport}
+          onOk={this.handleOkTeacher}
+          onCancel={this.handleCancelTeacher}
+        >
+          <Input
+            onChange={(e) => this.setState({ nameFile: e.target.value })}
+            className="mt-2"
+            placeholder="Bạn có thể đặt tên file excel"
+          />
+        </Modal>
         <Col lg="12">
           <Row>
-            <Col lg="4">
-              <Button
+            <Col lg="6">
+              {/* <Button
                 color="primary"
                 onClick={() => this.handleSidebar(true, true)}
                 outline={true}
               >
                 <Plus size={15} />
                 <span className="align-middle">Tạo mới</span>
-              </Button>
+              </Button> */}
               <Button onClick={this.showModal} className=" ml-2" color="danger">
-                <Download size={15} /> Import excel
+                <Download size={15} /> Nhập excel
+              </Button>
+              <Button
+                onClick={this.showModalExportExcel}
+                className=" ml-2"
+                color="primary"
+              >
+                <Download size={15} /> Xuất excel
               </Button>
             </Col>
-            <Col lg="8">
+            <Col lg="6">
               <UncontrolledDropdown
                 style={{ backgroundColor: "#fff", borderRadius: "20px" }}
                 className="data-list-rows-dropdown  d-md-block d-none"
@@ -332,12 +379,10 @@ class ListTeacherConfig extends Component {
                   }}
                 >
                   <span className="align-middle mx-50">{`${
-                    this.state.totalRecords
-                  } of ${
                     this.props.parsedFilter.limit
                       ? this.props.parsedFilter.limit
-                      : 1
-                  }`}</span>
+                      : 10
+                  } of ${this.state.totalRecords}`}</span>
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>
@@ -380,11 +425,10 @@ class ListTeacherConfig extends Component {
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
-          noHeader
+          noHeader={true}
           fixedHeader
           fixedHeaderScrollHeight={"55vh"}
-          subHeader
-          noDataComponent="Không có dữ liệu"
+          noDataComponent="Không có giảng viên"
           expandOnRowClicked
         />
         <ReactPaginate
@@ -406,8 +450,7 @@ class ListTeacherConfig extends Component {
         <Sidebar
           show={sidebar}
           data={currentData}
-          updateData={this.props.updateData}
-          addData={this.props.addData}
+          updateData={this.props.updateDataTeacher}
           handleSidebar={this.handleSidebar}
           thumbView={this.props.thumbView}
           getData={this.props.getData}
@@ -434,4 +477,7 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   getDataTeacher,
   importExcelTeacer,
+  exportExcelTeacher,
+  updateDataTeacher,
+  deleteDataTeacher,
 })(ListTeacherConfig);

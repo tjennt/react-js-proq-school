@@ -49,10 +49,10 @@ class Layout extends React.Component {
     if (!token) {
       history.push("/login");
     }
-    let role = localStorage.getItem("role");
-    if (role === "student") {
-      history.push("/student/news");
-    }
+    // let role = localStorage.getItem("role");
+    // if (role === "student") {
+    //   history.push("/student/news");
+    // }
     if (window !== "undefined") {
       window.addEventListener("resize", this.handleWindowResize);
     }

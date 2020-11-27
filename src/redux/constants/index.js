@@ -1,6 +1,7 @@
 export const API_ENDPOINT = "https://server-dev.asia/v1";
-export const API_ENDPOINT_IMG =
-  "https://server-dev.asia/v1/uploads/user-avatar";
+export const API_ENDPOINT_IMG = "https://server-dev.asia/uploads/user-avatar";
+export const API_ENDPOINT_IMG_TEACHER = "https://server-dev.asia";
+
 // export const API_ENDPOINT1 = "http://122.248.226.220";
 // export const API_ENDPOINT = "http://122.248.226.220:2208";
 

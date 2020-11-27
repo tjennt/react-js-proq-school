@@ -39,10 +39,33 @@ export const getDataSchedulesTeacherIdFail = (error) => ({
     error,
   },
 });
-export const schedule = (data, id) => ({
+export const schedule = (data, id, params) => ({
   type: teacherType.SCHEDULES,
   payload: {
     data,
     id,
+    params,
+  },
+});
+export const getProfileTeacher = () => ({
+  type: teacherType.GET_PROFILE_TEACHER,
+});
+export const getProfileTeacherSuccess = (data) => ({
+  type: teacherType.GET_PROFILE_TEACHER_SUCCESS,
+  payload: {
+    data,
+  },
+});
+export const getSchedulesAll = (params) => ({
+  type: teacherType.GET_SCHEDULES_ALL,
+  payload: {
+    params,
+  },
+});
+export const getSchedulesAllSuccess = (data, total_page) => ({
+  type: teacherType.GET_SCHEDULES_ALL_SUCCESS,
+  payload: {
+    data,
+    total_page,
   },
 });

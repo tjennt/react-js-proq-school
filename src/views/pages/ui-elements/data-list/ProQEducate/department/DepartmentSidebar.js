@@ -4,16 +4,13 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import classnames from "classnames";
 import FormDepartment from "./FormDepartment";
 class DepartmentSidebar extends Component {
-  state = {
-    addData: false,
-  };
   handleSubmit = (state) => {
-    const { handleSidebar, data, addData } = this.props;
+    const { handleSidebar, data, addData, updateData, params } = this.props;
     if (!data) {
-      addData(state);
+      addData(state, params);
       handleSidebar(false, true);
     } else {
-      // updateData(values);
+      updateData(state);
       handleSidebar(false, true);
     }
   };
@@ -30,6 +27,7 @@ class DepartmentSidebar extends Component {
       shift,
       teacher,
       getDataBothStudy,
+      getDataSubjectUpdate,
     } = this.props;
     // let dataId = "";
     // if (data) {
@@ -51,12 +49,15 @@ class DepartmentSidebar extends Component {
           options={{ wheelPropagation: false }}
         >
           <FormDepartment
+            data={this.props.data}
+            addDataStatus={this.state}
             teacher={teacher}
             season={season}
             shift={shift}
             classDepart={classDepart}
             subjectClass={subjectClass}
             dataClass={dataClass}
+            getDataSubjectUpdate={getDataSubjectUpdate}
             getDataBothStudy={getDataBothStudy}
             getDataSubject={getDataSubject}
             initialValues={this.initialValues}

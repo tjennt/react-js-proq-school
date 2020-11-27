@@ -62,14 +62,14 @@ const navigationConfig = [
     groupTitle: "Phòng đào tạo",
     permissions: ["admin"],
   },
-  {
-    id: "totalDepartment",
-    title: "Tổng hợp",
-    type: "item",
-    icon: <Icon.Circle size={12} />,
-    permissions: ["admin"],
-    navLink: "/education/totalDepartment",
-  },
+  // {
+  //   id: "totalDepartment",
+  //   title: "Tổng hợp",
+  //   type: "item",
+  //   icon: <Icon.Circle size={12} />,
+  //   permissions: ["admin"],
+  //   navLink: "/education/totalDepartment",
+  // },
   {
     id: "generalDepartment",
     title: "Phân lớp",
@@ -80,14 +80,14 @@ const navigationConfig = [
   },
   {
     id: "listDepartment",
-    title: "Danh sách",
+    title: "Quản lý",
     type: "collapse",
     icon: <Icon.Circle size={12} />,
     permissions: ["admin"],
     children: [
       {
         id: "listStudentDepartment",
-        title: "Ds.Sinh viên",
+        title: "Sinh viên",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],
@@ -95,7 +95,7 @@ const navigationConfig = [
       },
       {
         id: "listTeacherDepartment",
-        title: "Ds.Giảng viên",
+        title: "Giảng viên",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],
@@ -103,7 +103,7 @@ const navigationConfig = [
       },
       {
         id: "listClassDepartment",
-        title: "Ds.Lớp",
+        title: "Lớp học",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],
@@ -111,7 +111,7 @@ const navigationConfig = [
       },
       {
         id: "listSubjectDepartment",
-        title: "Ds.Môn ",
+        title: "Môn học ",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],
@@ -119,7 +119,7 @@ const navigationConfig = [
       },
       {
         id: "listStage",
-        title: "Ds.Khóa học",
+        title: "Khóa học",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],
@@ -127,7 +127,7 @@ const navigationConfig = [
       },
       {
         id: "listSeason",
-        title: "Ds.Kì học",
+        title: "Kì học",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],
@@ -135,7 +135,7 @@ const navigationConfig = [
       },
       {
         id: "listSpecialization",
-        title: "Ds.Chuyên ngành",
+        title: "Chuyên ngành",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],
@@ -149,14 +149,14 @@ const navigationConfig = [
     groupTitle: "Giảng viên",
     permissions: ["teacher"],
   },
-  // {
-  //   id: "generalTeacher",
-  //   title: "Lớp dạy",
-  //   type: "item",
-  //   icon: <Icon.Circle size={12} />,
-  //   permissions: ["admin", "teacher"],
-  //   navLink: "/teacher/listClass",
-  // },
+  {
+    id: "schedules",
+    title: "Lịch dạy",
+    type: "item",
+    icon: <Icon.Circle size={12} />,
+    permissions: ["teacher"],
+    navLink: "/teacher/schedule",
+  },
   {
     id: "attendance",
     title: "Điểm danh",
@@ -164,6 +164,14 @@ const navigationConfig = [
     icon: <Icon.Circle size={12} />,
     permissions: ["teacher"],
     navLink: "/teacher/attendance",
+  },
+  {
+    id: "profile",
+    title: "Thông tin giảng viên",
+    type: "item",
+    icon: <Icon.Circle size={12} />,
+    permissions: ["teacher"],
+    navLink: "/teacher/profile",
   },
   {
     id: "emailTeacher",
@@ -222,19 +230,27 @@ const navigationConfig = [
   },
   {
     id: "scheduleStudent",
-    title: "Lịch học",
+    title: "Lịch học theo kì",
     type: "item",
     icon: <Icon.Circle size={12} />,
     permissions: ["admin", "student"],
     navLink: "/student/schedule",
   },
   {
-    id: "attendanceCheckList",
-    title: "Điểm danh",
+    id: "scheduleYouStudent",
+    title: "Lịch học của bạn",
     type: "item",
     icon: <Icon.Circle size={12} />,
     permissions: ["admin", "student"],
-    navLink: "/student/attendance",
+    navLink: "/student/scheduleDate",
+  },
+  {
+    id: "profile",
+    title: "Thông tin sinh viên",
+    type: "item",
+    icon: <Icon.Circle size={12} />,
+    permissions: ["admin", "student"],
+    navLink: "/student/profile",
   },
   {
     id: "leaningStudent",

@@ -2,16 +2,19 @@ import { call, put } from "redux-saga/effects";
 import { toastError, toastWarning } from "../../../utility/toast/toastHelper";
 import { getDataBothStudySuccess } from "../../actions/schedule/getDataBothStudy";
 import { getDataBothStudyApi } from "../../api/schedule/bothStudy";
-// import { getDataSemesterSuccess } from "../../actions/schedule/getDataSemster";
 export function* getDataBothStudySaga({ payload }) {
   const { state } = payload;
-  const { days, nameClass, start_time, end_time } = state;
+  const { days, nameClass, season, start_timeReq, end_timeReq } = state;
 
-  let arrDay = days.length && days.map((day) => day.value);
+  // let timeStart = start_time ? moment(start_time).format("MM-DD-YYYY") : "";
+  // let timeEnd = start_time ? moment(end_time).format("MM-DD-YYYY") : "";
+
+  let arrDay = days.length && days.map((day) => day);
   const params = {
-    classID: nameClass ? nameClass.value : "",
-    startAt: start_time || "",
-    endAt: end_time || "",
+    classID: nameClass ? nameClass : "",
+    startAt: start_timeReq,
+    seasonID: season,
+    endAt: end_timeReq,
     days: arrDay.reduce((f, s) => `${f},${s}`),
   };
   try {
@@ -27,6 +30,6 @@ export function* getDataBothStudySaga({ payload }) {
       toastWarning("Vui lòng thử lại sau");
     }
   } catch (error) {
-    toastError("Đã có lỗi xảy ra vui lòng thử lại sau");
+    toastError("Ngày bắt đầu và kết thúc không thuộc trong kì học hiện tại");
   }
 }

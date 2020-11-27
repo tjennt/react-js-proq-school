@@ -4,36 +4,47 @@ import { X } from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import classnames from "classnames";
 import { toastWarning } from "../../../../../../utility/toast/toastHelper";
-import { Upload } from "antd";
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/themes/light.css";
 class DataListTeacherSidebar extends Component {
   state = {
     id: "",
     fullname: "",
     email: "",
-    imgUpdate: "",
     phone: "",
+    specialization: "",
+    dob: "",
     address: "",
   };
   addNew = false;
 
   componentDidUpdate(prevProps, prevState) {
     const { data } = this.props;
+    console.log(data);
     if (data !== null && prevProps.data === null) {
-      if (data.id !== prevState.id) this.setState({ id: data.id });
-      if (data.fullname !== prevState.fullname)
-        this.setState({ fullname: data.fullname });
+      if (data.teacherId !== prevState.id)
+        this.setState({ id: data.teacherId._id });
+      if (data.teacherId.fullname !== prevState.fullname)
+        this.setState({ fullname: data.teacherId.fullname });
       if (data.email !== prevState.email) this.setState({ email: data.email });
-      if (data.active !== prevState.active)
-        this.setState({ active: data.active });
-      if (data.role !== prevState.role) this.setState({ role: data.role });
+      if (data.teacherId.phone !== prevState.phone)
+        this.setState({ phone: data.teacherId.phone });
+      if (data.teacherId.specialization !== prevState.specialization)
+        this.setState({ specialization: data.teacherId.specialization });
+      if (data.teacherId.dob !== prevState.dob)
+        this.setState({ dob: data.teacherId.dob });
+      if (data.teacherId.address !== prevState.address)
+        this.setState({ address: data.teacherId.address });
     }
     if (data === null && prevProps.data !== null) {
       this.setState({
+        id: "",
         fullname: "",
         email: "",
-        active: null,
-        role: "ADMIN",
-        password: "",
+        phone: "",
+        specialization: "",
+        dob: "",
+        address: "",
       });
     }
     if (this.addNew) {
@@ -41,32 +52,29 @@ class DataListTeacherSidebar extends Component {
         id: "",
         fullname: "",
         email: "",
-        active: null,
-        role: "ADMIN",
-        password: "",
+        phone: "",
+        specialization: "",
+        dob: "",
+        address: "",
       });
     }
     this.addNew = false;
   }
 
   handleSubmit = (obj) => {
-    const { fullname, email, password } = this.state;
-    let params = Object.keys(this.props.dataParams).length
-      ? this.props.dataParams
-      : { page: 1, limit: 10 };
-    if (this.props.data !== null) {
-      this.props.updateData(obj, params);
-      this.props.handleSidebar(false, true);
-    } else {
-      if (!fullname | !email | !password) {
-        toastWarning("Vui lòng nhập đầy đủ các trường *");
-      } else {
-        this.addNew = true;
-        this.props.addData(obj, params);
-        this.props.handleSidebar(false, true);
-      }
+    const { dataParams } = this.props;
+    const paginate = {
+      page: 1,
+      limit: 4,
+    };
+    const params = dataParams || paginate;
+    const { fullname, email, phone, specialization, dob, address } = this.state;
+    if (!fullname || !email || !phone || !specialization || !dob || !address) {
+      toastWarning("Vui lòng nhập các trường *");
+      return false;
     }
-    this.props.getData(params);
+    this.props.updateData(obj, params);
+    this.props.handleSidebar(false, true);
   };
   onChange = ({ fileList: newFileList }) => {
     this.setState({
@@ -75,7 +83,7 @@ class DataListTeacherSidebar extends Component {
   };
   render() {
     let { show, handleSidebar, data } = this.props;
-    let { imgUpdate, fullname, email, phone, address } = this.state;
+    let { specialization, dob, fullname, email, phone, address } = this.state;
     return (
       <div
         className={classnames("data-list-sidebar", {
@@ -91,17 +99,6 @@ class DataListTeacherSidebar extends Component {
           options={{ wheelPropagation: false }}
         >
           <FormGroup>
-            <Upload
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              fileList={imgUpdate}
-              onChange={this.onChange}
-              listType="picture-card"
-            >
-              {imgUpdate.length < 1 && "+ Tải hình"}
-            </Upload>
-          </FormGroup>
-
-          <FormGroup>
             <Label for="data-name">Tên *</Label>
             <Input
               type="text"
@@ -112,24 +109,47 @@ class DataListTeacherSidebar extends Component {
             />
           </FormGroup>
           <FormGroup>
-            <Label for="data-email">Email *</Label>
+            <Label for="data-phone">Số điện thoại *</Label>
+            <Input
+              type="number"
+              id="data-phone"
+              value={phone}
+              placeholder="Nhập Số điện thoại"
+              onChange={(e) => this.setState({ phone: e.target.value })}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="email">Email *</Label>
             <Input
               type="text"
-              id="data-email"
+              id="email"
+              disabled={true}
               value={email}
               placeholder="Email"
               onChange={(e) => this.setState({ email: e.target.value })}
             />
           </FormGroup>
           <FormGroup>
-            <Label for="password">Số điện thoại *</Label>
+            <Label for="specialization ">Chuyên ngành *</Label>
             <Input
-              type="phone"
-              id="phone"
-              value={phone}
-              placeholder="Mật khẩu"
-              onChange={(e) => this.setState({ phone: e.target.value })}
+              type="text"
+              id="specialization"
+              value={specialization}
+              placeholder="specialization"
+              onChange={(e) =>
+                this.setState({ specialization: e.target.value })
+              }
             />
+          </FormGroup>
+          <FormGroup>
+            <Label for="dateBirth">Ngày sinh *</Label>
+            <Flatpickr
+              style={{ backgroundColor: "#fff" }}
+              className="form-control"
+              // data-enable-time
+              value={dob}
+              onChange={this.changeDate}
+            ></Flatpickr>
           </FormGroup>
           <FormGroup>
             <Label for="address">Địa chỉ *</Label>
@@ -137,7 +157,7 @@ class DataListTeacherSidebar extends Component {
               type="address"
               id="address"
               value={address}
-              placeholder="Mật khẩu"
+              placeholder="Vui lòng nhập địa chỉ"
               onChange={(e) => this.setState({ address: e.target.value })}
             />
           </FormGroup>

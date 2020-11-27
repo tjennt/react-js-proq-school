@@ -11,8 +11,15 @@ import {
   getDataSeason,
   getDataTeacher,
 } from "../../../../../../redux/actions/dataListAssistance/index";
-import { addSchedules } from "../../../../../../redux/actions/schedule/index";
-import { getDataSubject } from "../../../../../../redux/actions/schedule/getDataSubject";
+import {
+  addSchedules,
+  updateSchedules,
+  deleteSchedules,
+} from "../../../../../../redux/actions/schedule/index";
+import {
+  getDataSubject,
+  getDataSubjectUpdate,
+} from "../../../../../../redux/actions/schedule/getDataSubject";
 import { getDataBothStudy } from "../../../../../../redux/actions/schedule/getDataBothStudy";
 import Sidebar from "./DepartmentSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
@@ -22,6 +29,7 @@ import Moment from "react-moment";
 import { Button, Col } from "reactstrap";
 import { message, Popconfirm } from "antd";
 import ReactPaginate from "react-paginate";
+import { newDate } from "../../../../../../utility/config";
 const chipText = {
   0: "Chủ nhật",
   1: "Thứ 2",
@@ -111,7 +119,7 @@ class ListDepartmentConfig extends Component {
         name: "Tên lớp",
         selector: "class",
         sortable: true,
-        minWidth: "200px",
+        minWidth: "120px",
         cell: (row) => (
           <p title={row.class} className="text-truncate text-bold-500 mb-0">
             {row.class}
@@ -145,41 +153,63 @@ class ListDepartmentConfig extends Component {
         name: "Học kì",
         selector: "season",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "200px",
         cell: (row) => (
           <p title={row.season} className="text-truncate text-bold-500 mb-0">
             {row.season}
           </p>
         ),
       },
+      // {
+      //   name: "Khóa",
+      //   selector: "season",
+      //   sortable: true,
+      //   // minWidth: "300px",
+      //   cell: (row) => (
+      //     <p title={row.season} className="text-truncate text-bold-500 mb-0">
+      //       {row.season}
+      //     </p>
+      //   ),
+      // },
       {
-        name: "Thứ",
-        selector: "subjects",
+        name: "Giáo viên",
+        selector: "teacher",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "180px",
         cell: (row) => (
-          <p title={row.subject} className="text-truncate text-bold-500 mb-0">
-            {row.subject}
+          <p
+            title={row.nameTeacher}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.nameTeacher}
           </p>
         ),
       },
       {
         name: "Thứ",
-        selector: "subjects",
+        selector: "day",
         sortable: true,
         minWidth: "300px",
         cell: (row) => <ActionDay row={row} />,
       },
       {
-        name: "Ngày",
+        name: "Ngày bắt đầu",
         selector: "startAt",
         sortable: true,
-        // maxWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.startAt}</Moment>,
+        minWidth: "200px",
+        cell: (row) => <p>{newDate(row.startAt)}</p>,
+      },
+      {
+        name: "Ngày kết thúc",
+        selector: "endAt",
+        sortable: true,
+        minWidth: "200px",
+        cell: (row) => <p>{newDate(row.endAt)}</p>,
       },
       {
         name: "Thao tác",
         sortable: true,
+        minWidth: "200px",
         cell: (row) => (
           <ActionsComponent
             row={row}
@@ -260,17 +290,17 @@ class ListDepartmentConfig extends Component {
     this.props.getData(this.props.parsedFilter);
   };
   handleDelete = (row) => {
-    this.props.deleteData(row);
-    this.props.getData(this.props.parsedFilter);
+    this.props.deleteSchedules(row.id, this.props.parsedFilter);
+    this.props.getDataSchedules(this.props.parsedFilter);
     if (this.state.data.length - 1 === 0) {
       history.push(
         `/accountAdmin?page=${parseInt(
           this.props.parsedFilter.page - 1
-        )}&perPage=${this.props.parsedFilter.perPage}`
+        )}&limit=${this.props.parsedFilter.perPage}`
       );
-      this.props.getData({
+      this.props.getDataSchedules({
         page: this.props.parsedFilter.page - 1,
-        perPage: this.props.parsedFilter.perPage,
+        limit: this.props.parsedFilter.perPage,
       });
     }
   };
@@ -281,11 +311,12 @@ class ListDepartmentConfig extends Component {
   };
 
   handlePagination = (page) => {
-    let { parsedFilter, getData } = this.props;
-    let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 4;
+    let { parsedFilter, getDataSchedules } = this.props;
+    let perPage =
+      parsedFilter.perPage !== undefined ? parsedFilter.perPage : 10;
 
-    history.push(`/department?page=${page.selected + 1}&perPage=${perPage}`);
-    getData({ page: page.selected + 1, perPage: perPage });
+    history.push(`/department?page=${page.selected + 1}&limit=${perPage}`);
+    getDataSchedules({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
 
@@ -325,17 +356,19 @@ class ListDepartmentConfig extends Component {
           onPageChange={(page) => this.handlePagination(page)}
         />
         <Sidebar
+          params={this.props.parsedFilter}
           season={this.props.season}
           shift={this.props.shift}
           teacher={this.props.teacher}
           classDepart={this.props.class}
           subjectClass={this.props.subjectClass}
           getDataSubject={this.props.getDataSubject}
+          getDataSubjectUpdate={this.props.getDataSubjectUpdate}
           getDataBothStudy={this.props.getDataBothStudy}
           dataClass={dataClass}
           show={sidebar}
           data={currentData}
-          updateData={this.props.updateData}
+          updateData={this.props.updateSchedules}
           addData={this.props.addSchedules}
           handleSidebar={this.handleSidebar}
         />
@@ -370,4 +403,7 @@ export default connect(mapStateToProps, {
   getDataBothStudy,
   getDataTeacher,
   addSchedules,
+  updateSchedules,
+  deleteSchedules,
+  getDataSubjectUpdate,
 })(ListDepartmentConfig);

@@ -10,23 +10,25 @@ class DataListSubjectSidebar extends Component {
   };
 
   handleSubmit = (obj, { resetForm }) => {
-    const { handleSidebar, data, addData } = this.props;
-    if (!data) {
-      addData(obj);
+    const { handleSidebar, data, addData, updateData, dataParams } = this.props;
+    if (data === null) {
+      addData(obj, dataParams);
       handleSidebar(false, true);
       resetForm({});
     } else {
-      // updateData(values);
+      updateData(obj, dataParams);
       handleSidebar(false, true);
     }
   };
   render() {
     let { show, handleSidebar, data } = this.props;
-    // let dataId = "";
-    // if (data) {
-    //   dataId = data.id;
-    // }
-    // let dataInititalEdit = [];
+    let dataInititalEdit = [];
+    if (data) {
+      dataInititalEdit = {
+        id: data._id,
+        nameSubject: data.name,
+      };
+    }
     return (
       <div
         className={classnames("data-list-sidebar", {
@@ -42,9 +44,9 @@ class DataListSubjectSidebar extends Component {
           options={{ wheelPropagation: false }}
         >
           <FormSubject
-            initialValues={this.initialValues}
+            initialValues={data ? dataInititalEdit : this.initialValues}
             onSubmitForm={this.handleSubmit}
-            handleSidebar={this.handleSidebar}
+            handleSidebar={handleSidebar}
           />
         </PerfectScrollbar>
       </div>

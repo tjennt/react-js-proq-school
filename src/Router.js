@@ -17,6 +17,9 @@ const studentAssistant = lazy(() =>
 const teacherAssistant = lazy(() =>
   import("./views/pages/ui-elements/data-list/ProQAsisstants/teacher/teacher")
 );
+const ScheduleTeacherByDate = lazy(() =>
+  import("./views/pages/ProQ-Teacher/ScheduleByDate/index")
+);
 const searchStudent = lazy(() =>
   import(
     "./views/pages/ui-elements/data-list/ProQAsisstants/SearchStudentProQ/SearchProQ"
@@ -41,7 +44,11 @@ const GeneralTeacher = lazy(() =>
 const ListClassTeacher = lazy(() =>
   import("./views/pages/ProQ-Teacher/GeneralTeacher/ListView")
 );
-
+const ListAttdance = lazy(() =>
+  import(
+    "./views/pages/ProQ-Teacher/Attendance/AttendanceClass/AttendanceClass"
+  )
+);
 const Attendance = lazy(() =>
   import("./views/pages/ProQ-Teacher/Attendance/Attendance")
 );
@@ -102,6 +109,11 @@ const Specialization = lazy(() =>
     "./views/pages/ui-elements/data-list/ProQEducate/ListSpecializationEducate/specialization"
   )
 );
+const ListSchedulesDetail = lazy(() =>
+  import(
+    "./views/pages/Student/Schedule/ListSchedules/ListSchedulesDetail/index"
+  )
+);
 //student
 const StudyStudent = lazy(() => import("./views/pages/Student/Study"));
 const markStudent = lazy(() =>
@@ -112,6 +124,18 @@ const scheduleStudent = lazy(() =>
 );
 const AttendanceStudent = lazy(() =>
   import("./views/pages/Student/Attendance/AttendanceStudent")
+);
+const ListSchedules = lazy(() =>
+  import("./views/pages/Student/Schedule/ListSchedules")
+);
+const ScheduleStudentByDate = lazy(() =>
+  import("./views/pages/Student/ScheduleByDate/index")
+);
+const ManagerProfile = lazy(() =>
+  import("./views/pages/Student/managerProfile/manegerProfile")
+);
+const ManagerProfileTeacher = lazy(() =>
+  import("./views/pages/ProQ-Teacher/ProfileTeacher/index")
 );
 //chat
 const Chat = lazy(() => import("./views/apps/chat/Chat"));
@@ -136,6 +160,7 @@ const BlogAdmin = lazy(() =>
 );
 const BlogDetail = lazy(() => import("./views/pages/Student/Study/blogDetail"));
 // Set Layout and Component Using App Route
+const commingsoon = lazy(() => import("./views/pages/misc/Maintenance"));
 const RouteConfig = ({ component: Component, fullLayout, ...rest }) => (
   <Route
     {...rest}
@@ -214,6 +239,15 @@ class AppRouter extends React.Component {
           {/* teacher */}
           <AppRoute
             exact
+            path="/teacher/profile"
+            component={ManagerProfileTeacher}
+          />
+          <AppRoute
+            path="/teacher/schedule"
+            component={ScheduleTeacherByDate}
+          />
+          <AppRoute
+            exact
             path="/teacher/listClass"
             component={GeneralTeacher}
           />
@@ -222,13 +256,32 @@ class AppRouter extends React.Component {
             component={ListClassTeacher}
           />
           <AppRoute path="/student/news/:id" component={BlogDetail} />
-          <AppRoute path="/teacher/attendance" component={Attendance} />
-          {/* <AppRoute path="/teacher/email" component={commingSoon} />
-          <AppRoute path="/teacher/liveStream" component={commingSoon} /> */}
+          <AppRoute exact path="/teacher/attendance" component={Attendance} />
+          <AppRoute path="/teacher/attendance/:id" component={ListAttdance} />
+          <AppRoute
+            path="/student/scheduleDate"
+            component={ScheduleStudentByDate}
+          />
+          {/* {/* <AppRoute path="/teacher/email" component={commingSoon} /> */}
+          <AppRoute path="/student/document" component={commingsoon} />
           {/* student */}
-          <AppRoute path="/student/news" component={StudyStudent} />
+          <AppRoute exact path="/student/news" component={StudyStudent} />
           <AppRoute path="/student/score" component={markStudent} />
-          <AppRoute path="/student/schedule" component={scheduleStudent} />
+          <AppRoute
+            exact
+            path="/student/schedule"
+            component={scheduleStudent}
+          />
+          <AppRoute
+            exact
+            path="/student/schedule/:id"
+            component={ListSchedules}
+          />
+          <AppRoute
+            path="/student/schedule/detail/:id"
+            component={ListSchedulesDetail}
+          />
+          <AppRoute path="/student/profile" component={ManagerProfile} />
           <AppRoute path="/student/attendance" component={AttendanceStudent} />
           <AppRoute path="/chat" component={Chat} />
           {/* Admin */}
@@ -245,7 +298,6 @@ class AppRouter extends React.Component {
             component={AccountAdminDepartment}
           />
           <AppRoute path="/admin/blog" component={BlogAdmin} />
-
           <AppRoute component={login} fullLayout />
         </Switch>
       </Router>

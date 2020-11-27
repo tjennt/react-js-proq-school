@@ -6,3 +6,14 @@ export const addSchedulesApi = (data) => {
     data
   );
 };
+export const updateSchedulesApi = (id, data) => {
+  return axiosService.put(
+    `${process.env.REACT_APP_API_ENDPOINT}/${url}/${id}`,
+    data
+  );
+};
+export const deleteSchedulesApi = (id) => {
+  return axiosService.delete(
+    `${process.env.REACT_APP_API_ENDPOINT}/${url}/${id}`
+  );
+};

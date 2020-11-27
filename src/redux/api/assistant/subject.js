@@ -5,3 +5,9 @@ export const getDataAssSubjectApi = (params) => {
     params,
   });
 };
+export const updateDataSubjectApi = (id, data) => {
+  return axiosService.put(
+    `${process.env.REACT_APP_API_ENDPOINT}/${url}/${id}`,
+    data
+  );
+};

@@ -15,6 +15,9 @@ import "antd/dist/antd.css";
 import {
   getDataClass,
   getDataStage,
+  setTaskEditClass,
+  updateDataClass,
+  deleteDataClass,
 } from "../../../../../../redux/actions/dataListAssistance/index";
 import { getDataSpecialization } from "../../../../../../redux/actions/schedule/getDataSpecialization";
 import { addClass } from "../../../../../../redux/actions/education/index";
@@ -33,7 +36,7 @@ import {
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
-import { message, Popconfirm } from "antd";
+import { message, Popconfirm, Tooltip } from "antd";
 import ReactPaginate from "react-paginate";
 const ActionsComponent = (props) => {
   function confirm(e) {
@@ -45,22 +48,26 @@ const ActionsComponent = (props) => {
   }
   return (
     <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-      <Popconfirm
-        title="Bạn có chắc chắn xóa dữ liệu không?"
-        onConfirm={confirm}
-        onCancel={cancel}
-        okText="Có "
-        cancelText="Không "
-      >
-        <Trash className="cursor-pointer" size={20} />
-      </Popconfirm>
+      <Tooltip placement="topLeft" title="Chỉnh sửa">
+        <Edit
+          className="cursor-pointer mr-1"
+          size={20}
+          onClick={() => {
+            return props.currentData(props.row);
+          }}
+        />
+      </Tooltip>
+      <Tooltip placement="topLeft" title="Xóa">
+        <Popconfirm
+          title="Bạn có chắc chắn xóa dữ liệu không?"
+          onConfirm={confirm}
+          onCancel={cancel}
+          okText="Có "
+          cancelText="Không "
+        >
+          <Trash className="cursor-pointer" size={20} />
+        </Popconfirm>
+      </Tooltip>
     </div>
   );
 };
@@ -128,7 +135,7 @@ class ListClassEducateConfig extends Component {
       },
 
       {
-        name: "Thời gian bắt đầu",
+        name: "Ngày tạo lớp",
         selector: "dateCreate",
         sortable: true,
         // minWidth: "300px",
@@ -187,27 +194,31 @@ class ListClassEducateConfig extends Component {
     this.setState({ sidebar: boolean });
     if (addNew === true) this.setState({ currentData: null, addNew: true });
   };
-  // handleDelete = (row) => {
-  //   this.props.deleteData(row);
-  //   this.props.getData(this.props.parsedFilter);
-  //   if (this.state.data.length - 1 === 0) {
-  //     history.push(
-  //       `/accountAdmin?page=${parseInt(
-  //         this.props.parsedFilter.page - 1
-  //       )}&perPage=${this.props.parsedFilter.perPage}`
-  //     );
-  //     this.props.getData({
-  //       page: this.props.parsedFilter.page - 1,
-  //       perPage: this.props.parsedFilter.perPage,
-  //     });
-  //   }
-  // };
+  handleDelete = (row) => {
+    // this.props.getData(this.props.parsedFilter);
+    this.props.deleteDataClass(row._id, this.props.parsedFilter);
+    // if (this.state.data.length - 1 === 0) {
+    //   history.push(
+    //     `/accountAdmin?page=${parseInt(
+    //       this.props.parsedFilter.page - 1
+    //     )}&perPage=${this.props.parsedFilter.perPage}`
+    //   );
+    //   this.props.getData({
+    //     page: this.props.parsedFilter.page - 1,
+    //     perPage: this.props.parsedFilter.perPage,
+    //   });
+    // }
+  };
 
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
+    this.props.setTaskEditClass(obj);
     this.handleSidebar(true);
   };
-
+  handleAddData = () => {
+    this.handleSidebar(true, true);
+    this.props.setTaskEditClass(null);
+  };
   handlePagination = (page) => {
     let { parsedFilter, getDataClass } = this.props;
     const { limit } = parsedFilter;
@@ -233,7 +244,8 @@ class ListClassEducateConfig extends Component {
             <Col lg="3">
               <Button
                 color="primary"
-                onClick={() => this.handleSidebar(true, true)}
+                // onClick={() => this.handleSidebar(true, true)}
+                onClick={this.handleAddData}
                 outline={true}
               >
                 <Plus size={15} />
@@ -246,17 +258,24 @@ class ListClassEducateConfig extends Component {
                 className="data-list-rows-dropdown  d-md-block d-none"
               >
                 <DropdownToggle
+                  disabled={this.state.totalRecords < 10 ? true : false}
                   className="sort-dropdown"
                   style={{
                     float: "right",
                     borderRadius: "20px",
                   }}
                 >
-                  <span className="align-middle mx-50">{`${
-                    this.props.parsedFilter.page
-                      ? this.props.parsedFilter.page
-                      : 1
-                  } of ${this.state.totalRecords}`}</span>
+                  {this.state.totalRecords < 10 ? (
+                    <span className="align-middle mx-50">
+                      {this.state.totalRecords}
+                    </span>
+                  ) : (
+                    <span className="align-middle mx-50">{`${
+                      this.props.parsedFilter.page
+                        ? this.props.parsedFilter.page
+                        : 1
+                    } of ${this.state.totalRecords}`}</span>
+                  )}
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>
@@ -300,7 +319,7 @@ class ListClassEducateConfig extends Component {
           data={value.length ? "" : data}
           columns={columns}
           noHeader
-          noDataComponent="Không có dữ liệu"
+          noDataComponent="Không có lớp"
           subHeader
         />
         <ReactPaginate
@@ -322,8 +341,8 @@ class ListClassEducateConfig extends Component {
           stage={this.props.stage}
           specialization={this.props.specialization}
           show={sidebar}
-          data={currentData}
-          updateData={this.props.updateData}
+          data={this.props.dataEdit}
+          updateData={this.props.updateDataClass}
           addData={this.props.addClass}
           handleSidebar={this.handleSidebar}
           parsedFilter={this.props.parsedFilter}
@@ -344,6 +363,7 @@ const mapStateToProps = (state) => {
     dataList: state.assistantData,
     stage: state.assistantData.dataStage,
     specialization: state.dataSchedule.dataSpecial,
+    dataEdit: state.assistantData.setTaskEditClass,
   };
 };
 
@@ -352,4 +372,7 @@ export default connect(mapStateToProps, {
   addClass,
   getDataStage,
   getDataSpecialization,
+  setTaskEditClass,
+  updateDataClass,
+  deleteDataClass,
 })(ListClassEducateConfig);

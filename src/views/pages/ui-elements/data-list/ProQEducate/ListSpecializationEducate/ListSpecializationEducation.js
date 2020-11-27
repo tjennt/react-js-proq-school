@@ -28,12 +28,17 @@ import {
   Table,
   UncontrolledDropdown,
 } from "reactstrap";
-import { Popconfirm, message } from "antd";
+import { Popconfirm, message, Tooltip } from "antd";
 import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
-import { getDataSpecialization } from "../../../../../../redux/actions/schedule/getDataSpecialization";
+import {
+  getDataSpecialization,
+  updateSpecialization,
+  setEditSpecialization,
+} from "../../../../../../redux/actions/schedule/getDataSpecialization";
 import { addSpecialization } from "../../../../../../redux/actions/education/index";
 import { getDataSubject } from "../../../../../../redux/actions/dataListAssistance/index";
+import { newDate } from "../../../../../../utility/config";
 
 const ActionsComponent = (props) => {
   function confirm(e) {
@@ -44,14 +49,17 @@ const ActionsComponent = (props) => {
   }
   return (
     <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
+      <Tooltip placement="topLeft" title="Chỉnh sửa">
+        <Edit
+          className="cursor-pointer mr-1"
+          size={20}
+          onClick={() => {
+            return props.currentData(props.row);
+          }}
+        />
+      </Tooltip>
       <Popconfirm
+        disabled={true}
         title="Bạn có chắc chắn xóa sinh viên?"
         onConfirm={confirm}
         onCancel={cancel}
@@ -72,7 +80,7 @@ class ListSpecializationEducation extends Component {
       return {
         data: props.dataList.dataSpecial,
         totalPages: props.dataList.total_page_special,
-        totalRecords: props.dataList.total_record_student,
+        totalRecords: props.dataList.total_record_special,
       };
     }
 
@@ -100,7 +108,7 @@ class ListSpecializationEducation extends Component {
         selector: "date",
         sortable: true,
         // minWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.createdAt}</Moment>,
+        cell: (row) => <p format="DD/MM/YYYY">{newDate(row.createdAt)}</p>,
       },
       {
         name: "Thao tác",
@@ -166,24 +174,28 @@ class ListSpecializationEducation extends Component {
   //     });
   //   }
   // };
-
+  handleCurrentData = (obj) => {
+    this.props.setEditSpecialization(obj);
+    this.setState({ currentData: obj });
+    this.handleSidebar(true);
+  };
   handlePagination = (page) => {
-    let { parsedFilter, getData } = this.props;
+    let { parsedFilter, getDataSpecialization } = this.props;
     const { limit } = parsedFilter;
     let perPage = limit || 10;
     history.push(
-      `/education/student?page=${page.selected + 1}&limit=${perPage}`
+      `/education/specialization?page=${page.selected + 1}&limit=${perPage}`
     );
-    getData({ page: page.selected + 1, limit: perPage });
+    getDataSpecialization({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
   handleRowsPerPage = (value) => {
-    let { parsedFilter, getData } = this.props;
+    let { parsedFilter, getDataSpecialization } = this.props;
 
     let page = parsedFilter.page !== undefined ? parsedFilter.page : 1;
-    history.push(`/education/student?page=${page}&limit=${value}`);
+    history.push(`/education/specialization?page=${page}&limit=${value}`);
     this.setState({ rowsPerPage: value });
-    getData({ page: parsedFilter.page, limit: value });
+    getDataSpecialization({ page: parsedFilter.page, limit: value });
   };
 
   render() {
@@ -208,19 +220,24 @@ class ListSpecializationEducation extends Component {
                 className="data-list-rows-dropdown  d-md-block d-none"
               >
                 <DropdownToggle
+                  disabled={this.state.totalRecords < 10 ? true : false}
                   className="sort-dropdown"
                   style={{
                     float: "right",
                     borderRadius: "20px",
                   }}
                 >
-                  <span className="align-middle mx-50">{`${
-                    this.state.totalRecords
-                  } of ${
-                    this.props.parsedFilter.limit
-                      ? this.props.parsedFilter.limit
-                      : 1
-                  }`}</span>
+                  {this.state.totalRecords < 10 ? (
+                    <span className="align-middle mx-50">
+                      {this.state.totalRecords}
+                    </span>
+                  ) : (
+                    <span className="align-middle mx-50">{`${
+                      this.props.parsedFilter.page
+                        ? this.props.parsedFilter.page
+                        : 1
+                    } of ${this.state.totalRecords}`}</span>
+                  )}
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>
@@ -266,7 +283,7 @@ class ListSpecializationEducation extends Component {
           noHeader={true}
           fixedHeader
           fixedHeaderScrollHeight={"55vh"}
-          noDataComponent="Không có dữ liệu học sinh"
+          noDataComponent="Không có chuyên ngành"
           expandableRows
           expandOnRowClicked
           expandableRowsComponent={<ExpandableTable data={data} />}
@@ -289,8 +306,8 @@ class ListSpecializationEducation extends Component {
         <Sidebar
           subject={this.props.subject}
           show={sidebar}
-          data={currentData}
-          updateData={this.props.updateData}
+          data={this.props.dataEdit}
+          updateData={this.props.updateSpecialization}
           addData={this.props.addSpecialization}
           handleSidebar={this.handleSidebar}
           parsedFilter={this.props.parsedFilter}
@@ -307,20 +324,20 @@ class ListSpecializationEducation extends Component {
 }
 const ExpandableTable = ({ data }) => {
   return (
-    <Table responsive striped>
-      <thead>
+    <Table responsive dark>
+      {/* <thead>
         <tr>
           <th>Môn </th>
         </tr>
-      </thead>
-      <tbody>
+      </thead> */}
+      <thead>
         {data &&
           data.subject.map((item) => (
             <tr key={item._id}>
               <td> {item.name} </td>
             </tr>
           ))}
-      </tbody>
+      </thead>
     </Table>
   );
 };
@@ -328,6 +345,7 @@ const mapStateToProps = (state) => {
   return {
     dataList: state.dataSchedule,
     subject: state.assistantData.dataSubject,
+    dataEdit: state.dataSchedule.setTaskDataSpecial,
   };
 };
 
@@ -337,4 +355,6 @@ export default connect(mapStateToProps, {
   getDataSpecialization,
   getDataSubject,
   addSpecialization,
+  setEditSpecialization,
+  updateSpecialization,
 })(ListSpecializationEducation);

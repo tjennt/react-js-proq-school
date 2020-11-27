@@ -8,7 +8,7 @@ import { getData } from "./../../../redux/actions/dataListAssistance/index";
 import "./../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../assets/scss/pages/data-list.scss";
 import "./../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import { Button, Card, CardBody, Col, Row } from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 import { Modal, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 

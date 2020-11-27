@@ -22,6 +22,27 @@ export const getDataFaild = (error) => ({
     error,
   },
 });
+export const exportExcelStudent = (classArr, nameFile) => ({
+  type: assisType.EXPORT_EXCEL_STUDENT,
+  payload: {
+    classArr,
+    nameFile,
+  },
+});
+export const updateDataStudent = (params, obj) => ({
+  type: assisType.UPDATE_DATA_STUDENT,
+  payload: {
+    params,
+    obj,
+  },
+});
+export const deleteDataStudent = (id, params) => ({
+  type: assisType.DELETE_DATA_STUDENT,
+  payload: {
+    id,
+    params,
+  },
+});
 /**
  * assistant teacher
  */
@@ -43,6 +64,26 @@ export const getDataTeacherFaild = (error) => ({
   type: assisType.GET_DATA_TEACHER_ASS_FAILD,
   payload: {
     error,
+  },
+});
+export const exportExcelTeacher = (nameFile) => ({
+  type: assisType.EXPORT_EXCEL_TEACHER,
+  payload: {
+    nameFile,
+  },
+});
+export const updateDataTeacher = (obj, params) => ({
+  type: assisType.UPDATE_DATA_TEACHER,
+  payload: {
+    obj,
+    params,
+  },
+});
+export const deleteDataTeacher = (id, params) => ({
+  type: assisType.DELETE_DATA_TEACHER,
+  payload: {
+    id,
+    params,
   },
 });
 /**
@@ -68,6 +109,26 @@ export const getDataClassFaild = (error) => ({
     error,
   },
 });
+export const updateDataClass = (obj, params) => ({
+  type: assisType.UPDATE_DATA_CLASS,
+  payload: {
+    obj,
+    params,
+  },
+});
+export const deleteDataClass = (id, params) => ({
+  type: assisType.DELETE_DATA_CLASS,
+  payload: {
+    id,
+    params,
+  },
+});
+export const setTaskEditClass = (task) => ({
+  type: assisType.SET_TASK_CLASS,
+  payload: {
+    task,
+  },
+});
 /**
  * assistant subject
  */
@@ -77,17 +138,31 @@ export const getDataSubject = (params) => ({
     params,
   },
 });
-export const getDataSubjectSuccess = (data, total_page) => ({
+export const getDataSubjectSuccess = (data, total_page, total_item) => ({
   type: assisType.GET_DATA_SUBJECT_ASS_SUCCESS,
   payload: {
     data,
     total_page,
+    total_item,
   },
 });
 export const getDataSubjectFaild = (error) => ({
   type: assisType.GET_DATA_SUBJECT_ASS_FAILD,
   payload: {
     error,
+  },
+});
+export const updateDataSubject = (obj, params) => ({
+  type: assisType.UPDATE_DATA_SUBJECT,
+  payload: {
+    obj,
+    params,
+  },
+});
+export const setTaskEditSubject = (task) => ({
+  type: assisType.SET_TASK_EDIT_SUBJECT,
+  payload: {
+    task,
   },
 });
 /**
@@ -99,11 +174,12 @@ export const getDataStage = (params) => ({
     params,
   },
 });
-export const getDataStageSuccss = (data, total_page) => ({
+export const getDataStageSuccss = (data, total_page, total_record) => ({
   type: assisType.GET_DATA_STAGE_SUCCESS,
   payload: {
     data,
     total_page,
+    total_record,
   },
 });
 export const getDataStageFail = (error) => ({
@@ -121,11 +197,12 @@ export const getDataSeason = (params) => ({
     params,
   },
 });
-export const getDataSeasonSuccss = (data, total_page) => ({
+export const getDataSeasonSuccss = (data, total_page, total_item) => ({
   type: assisType.GET_DATA_SEASON_SUCCESS,
   payload: {
     data,
     total_page,
+    total_item,
   },
 });
 export const getDataSeasonFail = (error) => ({

@@ -29,29 +29,32 @@ import {
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
-import { Popconfirm, message, Modal, Upload } from "antd";
+import { Modal, Upload, Tooltip } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
+import { newDate } from "../../../../../../utility/config";
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
-  function confirm(e) {
-    props.changeStatus(props.row);
-  }
-  function cancel(e) {
-    message.error("Hủy thay đổi trạng thái  !");
-  }
+  // function confirm(e) {
+  //   props.changeStatus(props.row);
+  // }
+  // function cancel(e) {
+  //   message.error("Hủy thay đổi trạng thái  !");
+  // }
   return (
     <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-      <Popconfirm
+      <Tooltip placement="topLeft" title="Chỉnh sửa">
+        <Edit
+          className="cursor-pointer mr-1"
+          size={20}
+          onClick={() => {
+            return props.currentData(props.row);
+          }}
+        />
+      </Tooltip>
+
+      {/* <Popconfirm
         title="Bạn có chắc chắn xóa sinh viên?"
         onConfirm={confirm}
         onCancel={cancel}
@@ -59,7 +62,7 @@ const ActionsComponent = (props) => {
         cancelText="Không "
       >
         <Trash className="cursor-pointer" size={20} />
-      </Popconfirm>
+      </Popconfirm> */}
     </div>
   );
 };
@@ -74,7 +77,7 @@ class ListStageEducation extends Component {
         totalPages: props.dataList.toal_page_stage,
         // currentPage: parseInt(props.parsedFilter.page) - 1,
         // rowsPerPage: parseInt(props.parsedFilter.perPage),
-        totalRecords: props.dataList.total_record_student,
+        totalRecords: props.dataList.total_record_stage,
         // sortIndex: props.dataList.sortIndex,
       };
     }
@@ -103,14 +106,14 @@ class ListStageEducation extends Component {
         selector: "date_start",
         sortable: true,
         minWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.startAt}</Moment>,
+        cell: (row) => <p>{newDate(row.startAt)}</p>,
       },
       {
         name: " Ngày kết thúc",
         selector: "date_end",
         sortable: true,
         minWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.endAt}</Moment>,
+        cell: (row) => <p>{newDate(row.endAt)}</p>,
       },
       {
         name: "Thao tác",
@@ -210,22 +213,20 @@ class ListStageEducation extends Component {
     });
   };
   handlePagination = (page) => {
-    let { parsedFilter, getData } = this.props;
+    let { parsedFilter, getDataStage } = this.props;
     const { limit } = parsedFilter;
     let perPage = limit || 10;
-    history.push(
-      `/education/student?page=${page.selected + 1}&limit=${perPage}`
-    );
-    getData({ page: page.selected + 1, limit: perPage });
+    history.push(`/education/stage?page=${page.selected + 1}&limit=${perPage}`);
+    getDataStage({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
   handleRowsPerPage = (value) => {
-    let { parsedFilter, getData } = this.props;
+    let { parsedFilter, getDataStage } = this.props;
 
     let page = parsedFilter.page !== undefined ? parsedFilter.page : 1;
-    history.push(`/education/student?page=${page}&limit=${value}`);
+    history.push(`/education/stage?page=${page}&limit=${value}`);
     this.setState({ rowsPerPage: value });
-    getData({ page: parsedFilter.page, limit: value });
+    getDataStage({ page: parsedFilter.page, limit: value });
   };
 
   render() {
@@ -276,12 +277,10 @@ class ListStageEducation extends Component {
                   }}
                 >
                   <span className="align-middle mx-50">{`${
-                    this.state.totalRecords
-                  } of ${
                     this.props.parsedFilter.limit
                       ? this.props.parsedFilter.limit
-                      : 1
-                  }`}</span>
+                      : 10
+                  } of ${this.state.totalRecords}`}</span>
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>
@@ -327,7 +326,7 @@ class ListStageEducation extends Component {
           noHeader={true}
           fixedHeader
           fixedHeaderScrollHeight={"55vh"}
-          noDataComponent="Không có dữ liệu học sinh"
+          noDataComponent="Không có kì học"
         />
         <ReactPaginate
           previousLabel={<ChevronLeft size={15} />}

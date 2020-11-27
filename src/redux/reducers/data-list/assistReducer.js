@@ -8,13 +8,18 @@ const initialState = {
   total_record_teacher: 0,
   dataSubject: [],
   total_page_subject: 0,
+  total_item_subject: 0,
   dataClass: [],
   total_page_class: 0,
   total_record_class: 0,
   dataStage: [],
   total_page_stage: 0,
+  total_record_stage: 0,
   dataSeason: [],
   total_page_season: 0,
+  total_record_season: 0,
+  setTaskEditClass: null,
+  setTaskEditSubject: null,
 };
 const assistantReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -68,6 +73,13 @@ const assistantReducer = (state = initialState, action) => {
         total_record_class: total_record,
       };
     }
+    case assType.SET_TASK_CLASS: {
+      const { task } = action.payload;
+      return {
+        ...state,
+        setTaskEditClass: task,
+      };
+    }
     /**
      * assistant subject
      */
@@ -77,11 +89,19 @@ const assistantReducer = (state = initialState, action) => {
       };
     }
     case assType.GET_DATA_SUBJECT_ASS_SUCCESS: {
-      const { data, total_page } = action.payload;
+      const { data, total_page, total_item } = action.payload;
       return {
         ...state,
         dataSubject: data,
         total_page_subject: total_page,
+        total_item_subject: total_item,
+      };
+    }
+    case assType.SET_TASK_EDIT_SUBJECT: {
+      const { task } = action.payload;
+      return {
+        ...state,
+        setTaskEditSubject: task,
       };
     }
     /**
@@ -93,11 +113,12 @@ const assistantReducer = (state = initialState, action) => {
       };
     }
     case assType.GET_DATA_STAGE_SUCCESS: {
-      const { data, total_page } = action.payload;
+      const { data, total_page, total_record } = action.payload;
       return {
         ...state,
         dataStage: data,
         toal_page_stage: total_page,
+        total_record_stage: total_record,
       };
     }
     /**
@@ -109,11 +130,12 @@ const assistantReducer = (state = initialState, action) => {
       };
     }
     case assType.GET_DATA_SEASON_SUCCESS: {
-      const { data, total_page } = action.payload;
+      const { data, total_page, total_item } = action.payload;
       return {
         ...state,
         dataSeason: data,
         total_page_season: total_page,
+        total_record_season: total_item,
       };
     }
     case "ADD_ADMIN":

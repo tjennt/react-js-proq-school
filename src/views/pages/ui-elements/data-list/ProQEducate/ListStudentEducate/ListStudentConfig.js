@@ -8,62 +8,70 @@ import {
   ChevronRight,
   Download,
   Edit,
-  Plus,
   Trash,
 } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import { getData } from "../../../../../../redux/actions/dataListAssistance/index";
+import {
+  getData,
+  getDataClass,
+  exportExcelStudent,
+  updateDataStudent,
+  deleteDataStudent,
+} from "../../../../../../redux/actions/dataListAssistance/index";
 import { importExcelStudent } from "../../../../../../redux/actions/education/index";
 import Sidebar from "./DataListStudentSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
+import Select from "react-select";
 import {
   Button,
   Col,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
+  Input,
   Row,
   Table,
   UncontrolledDropdown,
 } from "reactstrap";
-import { Popconfirm, message, Modal, Upload } from "antd";
+import { Popconfirm, message, Modal, Upload, Tooltip } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
-import {
-  API_ENDPOINT,
-  API_ENDPOINT_IMG,
-} from "../../../../../../redux/constants";
+import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
   function confirm(e) {
-    props.changeStatus(props.row);
+    props.deleteRow(props.row);
   }
   function cancel(e) {
     message.error("Hủy thay đổi trạng thái  !");
   }
   return (
     <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-      <Popconfirm
-        title="Bạn có chắc chắn xóa sinh viên?"
-        onConfirm={confirm}
-        onCancel={cancel}
-        okText="Có "
-        cancelText="Không "
-      >
-        <Trash className="cursor-pointer" size={20} />
-      </Popconfirm>
+      <Tooltip placement="topLeft" title="Chỉnh sửa">
+        <Edit
+          className="cursor-pointer mr-1"
+          size={20}
+          onClick={() => {
+            return props.currentData(props.row);
+          }}
+        />
+      </Tooltip>
+      <Tooltip placement="topLeft" title="Xóa">
+        <Popconfirm
+          title="Bạn có chắc chắn xóa sinh viên?"
+          onConfirm={confirm}
+          onCancel={cancel}
+          okText="Có "
+          cancelText="Không "
+        >
+          <Trash className="cursor-pointer" size={20} />
+        </Popconfirm>
+      </Tooltip>
     </div>
   );
 };
@@ -92,13 +100,13 @@ class ListStudentEducation extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Avatar",
-        selector: "name",
+        name: "Hình đại diện",
+        selector: "avatar",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
           <img
-            height="80px"
+            height="60px"
             src={`${API_ENDPOINT_IMG}/${row.studentId.avatar}`}
             alt={row.avatar}
           />
@@ -133,7 +141,46 @@ class ListStudentEducation extends Component {
         ),
       },
       {
-        name: " Ngày Tạo ",
+        name: "Email",
+        selector: "email",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p title={row.email} className="text-truncate text-bold-500 mb-0">
+            {row.email}
+          </p>
+        ),
+      },
+      {
+        name: "Ngày sinh",
+        selector: "dob",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p
+            title={row.studentId.dob}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.studentId.dob}
+          </p>
+        ),
+      },
+      {
+        name: "Identity number",
+        selector: "dob",
+        sortable: true,
+        // minWidth: "300px",
+        cell: (row) => (
+          <p
+            title={row.studentId.identityNumber}
+            className="text-truncate text-bold-500 mb-0"
+          >
+            {row.studentId.identityNumber}
+          </p>
+        ),
+      },
+      {
+        name: "Ngày tạo",
         selector: "date",
         sortable: true,
         // minWidth: "300px",
@@ -149,7 +196,6 @@ class ListStudentEducation extends Component {
             parsedFilter={this.props.parsedFilter}
             currentData={this.handleCurrentData}
             deleteRow={this.handleDelete}
-            changeStatus={(row) => this.changeStatus(row)}
           />
         ),
       },
@@ -164,19 +210,25 @@ class ListStudentEducation extends Component {
     totalRecords: 0,
     sortIndex: [],
     addNew: "",
+    visibleExport: "",
     file: "",
+    nameFile: "",
+    classArr: null,
   };
 
   thumbView = this.props.thumbView;
 
   componentDidMount() {
-    const { parsedFilter } = this.props;
-
+    const { parsedFilter, getDataClass } = this.props;
     const paginate = {
       page: 1,
       limit: 10,
     };
     let limit = parsedFilter || paginate;
+    let params = {
+      limit: 10000,
+    };
+    getDataClass(params);
     this.props.getData(limit);
   }
   handleFilter = (e) => {
@@ -188,24 +240,29 @@ class ListStudentEducation extends Component {
     this.setState({ sidebar: boolean });
     if (addNew === true) this.setState({ currentData: null, addNew: true });
   };
-  // handleDelete = (row) => {
-  //   this.props.deleteData(row);
-  //   this.props.getData(this.props.parsedFilter);
-  //   if (this.state.data.length - 1 === 0) {
-  //     history.push(
-  //       `/education/student?page=${parseInt(
-  //         this.props.parsedFilter.page - 1
-  //       )}&limit=${this.props.parsedFilter.perPage}`
-  //     );
-  //     this.props.getData({
-  //       page: this.props.parsedFilter.page - 1,
-  //       perPage: this.props.parsedFilter.perPage,
-  //     });
-  //   }
-  // };
+  handleDelete = (row) => {
+    const { getData, deleteDataStudent } = this.props;
+    deleteDataStudent(row.studentId._id, this.props.parsedFilter);
+    if (this.state.data.length - 1 === 0) {
+      history.push(
+        `/education/student?page=${parseInt(
+          this.props.parsedFilter.page - 1
+        )}&limit=${this.props.parsedFilter.perPage}`
+      );
+      getData({
+        page: this.props.parsedFilter.page - 1,
+        limit: this.props.parsedFilter.perPage,
+      });
+    }
+  };
   showModal = () => {
     this.setState({
       visible: true,
+    });
+  };
+  showModalExportExcel = () => {
+    this.setState({
+      visibleExport: true,
     });
   };
   handleOk = (e) => {
@@ -219,7 +276,25 @@ class ListStudentEducation extends Component {
       visible: false,
     });
   };
-
+  handleChangeClass = (value) => {
+    this.setState({
+      ...this.state,
+      classArr: value,
+    });
+  };
+  handleOkStudent = (e) => {
+    const { classArr, nameFile } = this.state;
+    this.props.exportExcelStudent(classArr, nameFile);
+    this.setState({
+      ...this.state,
+      visibleExport: false,
+    });
+  };
+  handleCancelStudent = (e) => {
+    this.setState({
+      visibleExport: false,
+    });
+  };
   handleCancel = (e) => {
     this.setState({
       visible: false,
@@ -257,6 +332,13 @@ class ListStudentEducation extends Component {
 
   render() {
     let { columns, value, currentData, sidebar, data } = this.state;
+    let { classOption } = this.props;
+    const arrDataClass = classOption
+      ? classOption.reduce(
+          (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
+          []
+        )
+      : [];
     return (
       <div className="data-list">
         <Modal
@@ -278,22 +360,46 @@ class ListStudentEducation extends Component {
             </p>
           </Dragger>
         </Modal>
+        <Modal
+          destroyOnClose={true}
+          title="Xuất excel"
+          visible={this.state.visibleExport}
+          onOk={this.handleOkStudent}
+          onCancel={this.handleCancelStudent}
+        >
+          <Select
+            placeholder="Vui lòng chọn lớp"
+            value={this.state.classArr}
+            onChange={this.handleChangeClass}
+            options={arrDataClass}
+          />
+          <Input
+            onChange={(e) => this.setState({ nameFile: e.target.value })}
+            className="mt-2"
+            placeholder="Bạn có thể đặt tên file excel"
+          />
+        </Modal>
         <Col lg="12">
           <Row>
-            <Col lg="3">
-              <Button
-                color="primary"
-                onClick={() => this.handleSidebar(true, true)}
-                outline={true}
-              >
-                <Plus size={15} />
-                <span className="align-middle">Tạo mới</span>
-              </Button>
+            <Col lg="5">
               <Button onClick={this.showModal} className=" ml-2" color="danger">
-                <Download size={15} /> Import
+                <Download size={15} /> Nhập excel
+              </Button>
+              <Button
+                onClick={this.showModalExportExcel}
+                className=" ml-2"
+                color="primary"
+              >
+                <Download size={15} /> Xuất excel
               </Button>
             </Col>
-            <Col lg="9">
+            <Col lg="4">
+              <Select
+                options={arrDataClass}
+                styles={{ width: "20px", float: "left" }}
+              ></Select>
+            </Col>
+            <Col lg="3">
               <UncontrolledDropdown
                 style={{ backgroundColor: "#fff", borderRadius: "20px" }}
                 className="data-list-rows-dropdown  d-md-block d-none"
@@ -305,13 +411,18 @@ class ListStudentEducation extends Component {
                     borderRadius: "20px",
                   }}
                 >
-                  <span className="align-middle mx-50">{`${
-                    this.state.totalRecords
-                  } of ${
-                    this.props.parsedFilter.limit
-                      ? this.props.parsedFilter.limit
-                      : 1
-                  }`}</span>
+                  {this.state.totalRecords < 10 ? (
+                    <span className="align-middle mx-50">
+                      {this.state.totalRecords}
+                    </span>
+                  ) : (
+                    <span className="align-middle mx-50">{`${
+                      this.props.parsedFilter.limit
+                        ? this.props.parsedFilter.limit
+                        : 10
+                    } của ${this.state.totalRecords}`}</span>
+                  )}
+
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>
@@ -358,9 +469,6 @@ class ListStudentEducation extends Component {
           fixedHeader
           fixedHeaderScrollHeight={"55vh"}
           noDataComponent="Không có dữ liệu học sinh"
-          expandableRows
-          expandOnRowClicked
-          expandableRowsComponent={<ExpandableTable />}
         />
         <ReactPaginate
           previousLabel={<ChevronLeft size={15} />}
@@ -380,8 +488,8 @@ class ListStudentEducation extends Component {
         <Sidebar
           show={sidebar}
           data={currentData}
-          updateData={this.props.updateData}
-          addData={this.props.addData}
+          updateData={this.props.updateDataStudent}
+          // addData={this.props.addData}
           handleSidebar={this.handleSidebar}
           thumbView={this.props.thumbView}
           getData={this.props.getData}
@@ -398,33 +506,18 @@ class ListStudentEducation extends Component {
     );
   }
 }
-const ExpandableTable = ({ data }) => {
-  return (
-    <Table responsive striped>
-      <thead>
-        <tr>
-          <th>Email </th>
-          <th>Ngày sinh</th>
-          <th>Chuyên ngành</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{data.studentId.identityNumber}</td>
-          <td>{data.studentId.dob}</td>
-          <td>Lập trình web </td>
-        </tr>
-      </tbody>
-    </Table>
-  );
-};
 const mapStateToProps = (state) => {
   return {
     dataList: state.assistantData,
+    classOption: state.assistantData.dataClass,
   };
 };
 
 export default connect(mapStateToProps, {
   getData,
   importExcelStudent,
+  getDataClass,
+  exportExcelStudent,
+  updateDataStudent,
+  deleteDataStudent,
 })(ListStudentEducation);

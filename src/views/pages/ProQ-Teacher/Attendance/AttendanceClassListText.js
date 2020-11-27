@@ -4,7 +4,6 @@ import { history } from "../../../../history";
 import { ChevronLeft, ChevronRight, Eye } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import queryString from "query-string";
 import { getDataSchedulesTeacher } from "../../../../redux/actions/teacher/index";
 import "../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../assets/scss/pages/data-list.scss";
@@ -58,8 +57,7 @@ const ActionsComponent = (props) => {
   );
 };
 
-class ListStudentEducation extends Component {
-  parsedFilter = queryString.parse(this.props.location.search);
+class AttendanceClassListText extends Component {
   static getDerivedStateFromProps(props, state) {
     if (props.dataList.data !== state.data.length) {
       return {
@@ -118,17 +116,6 @@ class ListStudentEducation extends Component {
         cell: (row) => (
           <p title={row.season} className="text-truncate text-bold-500 mb-0">
             {row.season}
-          </p>
-        ),
-      },
-      {
-        name: "Thứ",
-        selector: "subjects",
-        sortable: true,
-        // minWidth: "300px",
-        cell: (row) => (
-          <p title={row.subject} className="text-truncate text-bold-500 mb-0">
-            {row.subject}
           </p>
         ),
       },
@@ -196,7 +183,7 @@ class ListStudentEducation extends Component {
   };
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
-    history.push(`${this.props.match.url}/${obj.id}`);
+    history.push(`/teacher/attendance/${obj.id}`);
   };
 
   handlePagination = (page) => {
@@ -213,7 +200,7 @@ class ListStudentEducation extends Component {
     this.setState({ selectedRows: state.selectedRows }); // triggers MyComponent to re-render with new state
   };
   onRowClicked = (state) => {
-    history.push(`${this.props.match.url}/${state.id}`);
+    history.push(`/teacher/attendance/${state.id}`);
   };
   render() {
     let { columns, value, data } = this.state;
@@ -252,4 +239,4 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getDataSchedulesTeacher,
-})(ListStudentEducation);
+})(AttendanceClassListText);
