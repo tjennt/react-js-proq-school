@@ -3,7 +3,7 @@ import DataTable from "react-data-table-component";
 import { history } from "../../../../history";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
-import { getDataScheduleAll } from "../../../../redux/actions/student/index";
+import { getSchedulesAll } from "../../../../redux/actions/teacher";
 import "../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../assets/scss/pages/data-list.scss";
 import "../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
@@ -19,10 +19,11 @@ const chipText = {
 };
 const ActionDay = (props) => {
   const { row } = props;
-  let weekDays = row.days;
+  console.log(row);
+  // let weekDays = row.weekDay;
   return (
     <div style={{ display: "inline-flex" }}>
-      {weekDays.map((item) => (
+      {row.weeksDay.map((item) => (
         <p key={item}> {chipText[item]}, </p>
       ))}
     </div>
@@ -30,9 +31,10 @@ const ActionDay = (props) => {
 };
 class ListSchedulesTeacher extends Component {
   static getDerivedStateFromProps(props, state) {
-    if (props.dataList.dataAllSchedule !== state.data.length) {
+    if (props.dataList.dataSchedules !== state.data.length) {
       return {
-        data: props.dataList.dataAllSchedule,
+        data: props.dataList.dataSchedules,
+        totalPages: props.dataList.total_page_schedule,
       };
     }
 
@@ -45,24 +47,24 @@ class ListSchedulesTeacher extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Giảng viên",
-        selector: "teacher",
+        name: "Lớp",
+        selector: "class",
         sortable: true,
         minWidth: "200px",
         cell: (row) => (
-          <p title={row.teacher} className="text-truncate text-bold-500 mb-0">
-            {row.teacher}
+          <p title={row.class} className="text-truncate text-bold-500 mb-0">
+            {row.class}
           </p>
         ),
       },
       {
-        name: "Môn",
-        selector: "subjects",
+        name: "Kì",
+        selector: "season",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.subject} className="text-truncate text-bold-500 mb-0">
-            {row.subject}
+          <p title={row.season} className="text-truncate text-bold-500 mb-0">
+            {row.season}
           </p>
         ),
       },
@@ -79,13 +81,13 @@ class ListSchedulesTeacher extends Component {
         ),
       },
       {
-        name: "Học kì",
-        selector: "season",
+        name: "môn ",
+        selector: "subject",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => (
-          <p title={row.season} className="text-truncate text-bold-500 mb-0">
-            {row.season}
+          <p title={row.subject} className="text-truncate text-bold-500 mb-0">
+            {row.subject}
           </p>
         ),
       },
@@ -93,7 +95,7 @@ class ListSchedulesTeacher extends Component {
         name: "Thứ",
         selector: "subjects",
         sortable: true,
-        minWidth: "300px",
+        minWidth: "350px",
         cell: (row) => <ActionDay row={row} />,
       },
       {
@@ -126,7 +128,13 @@ class ListSchedulesTeacher extends Component {
 
   thumbView = this.props.thumbView;
   componentDidMount() {
-    this.props.getDataScheduleAll();
+    const { parsedFilter } = this.props;
+    const paginate = {
+      page: 1,
+      limit: 10,
+    };
+    const params = parsedFilter || paginate;
+    this.props.getSchedulesAll(params);
   }
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
@@ -174,10 +182,10 @@ class ListSchedulesTeacher extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    dataList: state.scheduleStudent,
+    dataList: state.dataTeacher,
   };
 };
 
 export default connect(mapStateToProps, {
-  getDataScheduleAll,
+  getSchedulesAll,
 })(ListSchedulesTeacher);

@@ -8,6 +8,7 @@ const initialState = {
   total_record_teacher: 0,
   dataSubject: [],
   total_page_subject: 0,
+  total_item_subject: 0,
   dataClass: [],
   total_page_class: 0,
   total_record_class: 0,
@@ -88,11 +89,12 @@ const assistantReducer = (state = initialState, action) => {
       };
     }
     case assType.GET_DATA_SUBJECT_ASS_SUCCESS: {
-      const { data, total_page } = action.payload;
+      const { data, total_page, total_item } = action.payload;
       return {
         ...state,
         dataSubject: data,
         total_page_subject: total_page,
+        total_item_subject: total_item,
       };
     }
     case assType.SET_TASK_EDIT_SUBJECT: {

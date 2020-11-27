@@ -23,12 +23,12 @@ const Footer = (props) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            CatBack,
+            PROQ,
           </a>
           All rights reserved
         </span>
         <span className="float-md-right d-none d-md-block">
-          <span className="align-middle">CatBack-Admin & Made with</span>{" "}
+          <span className="align-middle">System-School & Made with</span>{" "}
           <Heart className="text-danger" size={15} />
         </span>
       </p>

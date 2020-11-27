@@ -161,9 +161,11 @@ export function* addStageSaga({ payload }) {
   const { obj, params } = payload;
   const dataReq = {
     name: obj.name,
-    startAt: obj.startAt,
-    endAt: obj.startEnd,
+    startAt: moment(obj.startAt).format("MM-DD-YYYY"),
+    endAt: moment(obj.startEnd).format("MM-DD-YYYY"),
   };
+  console.log(moment(obj.startAt).format("MM-DD-YYYY"));
+  console.log(dataReq);
   try {
     const res = yield call(addStageApi, dataReq);
     const { data } = res;
@@ -182,6 +184,7 @@ export function* addStageSaga({ payload }) {
  */
 export function* addSeasonSaga({ payload }) {
   const { obj, params } = payload;
+
   const dataReq = {
     name: obj.name,
     startAt: moment(obj.startAt).format("MM-DD-YYYY"),
@@ -197,7 +200,7 @@ export function* addSeasonSaga({ payload }) {
       toastWarning("Vui lòng thử lại sau");
     }
   } catch (error) {
-    toastError(`Đã có lỗi xảy ra vui lòng thử lại sau ${error}`);
+    toastError(`Kỳ học hiện tại bị trùng vào các kì  Summer 2021`);
   }
 }
 /**

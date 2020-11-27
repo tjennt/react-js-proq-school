@@ -56,3 +56,16 @@ export const getProfileTeacherSuccess = (data) => ({
     data,
   },
 });
+export const getSchedulesAll = (params) => ({
+  type: teacherType.GET_SCHEDULES_ALL,
+  payload: {
+    params,
+  },
+});
+export const getSchedulesAllSuccess = (data, total_page) => ({
+  type: teacherType.GET_SCHEDULES_ALL_SUCCESS,
+  payload: {
+    data,
+    total_page,
+  },
+});

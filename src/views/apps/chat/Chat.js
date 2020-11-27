@@ -6,6 +6,11 @@ import ChatLog from "./ChatLog";
 import ReceiverSidebar from "./receiverProfile";
 import UserSidebar from "./UserSidebar";
 import "../../../assets/scss/pages/app-chat.scss";
+import {
+  joinFriend,
+  getAllDataGroup,
+} from "../../../redux/actions/chatProQ/index";
+import { connect } from "react-redux";
 const mql = window.matchMedia(`(min-width: 992px)`);
 
 class Chat extends React.Component {
@@ -64,7 +69,10 @@ class Chat extends React.Component {
           receiverProfile: false,
         });
   };
-
+  joinFriend = (value) => {
+    this.setState({ ...this.state, activeChatID: value });
+    this.props.joinFriend(value);
+  };
   handleUserSidebar = (status) => {
     status === "open"
       ? this.setState({
@@ -97,6 +105,8 @@ class Chat extends React.Component {
             <Sidebar
               sidebar={
                 <ChatSidebarContent
+                  getAllDataGroup={this.props.getAllDataGroup}
+                  joinFriend={this.joinFriend}
                   activeChatID={this.state.activeChatID}
                   handleActiveChat={this.handleActiveChat}
                   handleUserSidebar={this.handleUserSidebar}
@@ -119,6 +129,7 @@ class Chat extends React.Component {
           handleUserSidebar={this.handleUserSidebar}
         />
         <ChatLog
+          activeChatID={this.props.chatGroup}
           activeChat={this.state.activeChat}
           activeUser={this.state.activeUser}
           handleReceiverSidebar={this.handleReceiverSidebar}
@@ -135,5 +146,9 @@ class Chat extends React.Component {
     );
   }
 }
-
-export default Chat;
+const mapStateToProps = (state) => {
+  return {
+    chatGroup: state.chatProq.dataJoin,
+  };
+};
+export default connect(mapStateToProps, { joinFriend, getAllDataGroup })(Chat);

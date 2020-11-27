@@ -36,7 +36,7 @@ import {
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
-import { message, Popconfirm } from "antd";
+import { message, Popconfirm, Tooltip } from "antd";
 import ReactPaginate from "react-paginate";
 const ActionsComponent = (props) => {
   function confirm(e) {
@@ -48,22 +48,26 @@ const ActionsComponent = (props) => {
   }
   return (
     <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-      <Popconfirm
-        title="Bạn có chắc chắn xóa dữ liệu không?"
-        onConfirm={confirm}
-        onCancel={cancel}
-        okText="Có "
-        cancelText="Không "
-      >
-        <Trash className="cursor-pointer" size={20} />
-      </Popconfirm>
+      <Tooltip placement="topLeft" title="Chỉnh sửa">
+        <Edit
+          className="cursor-pointer mr-1"
+          size={20}
+          onClick={() => {
+            return props.currentData(props.row);
+          }}
+        />
+      </Tooltip>
+      <Tooltip placement="topLeft" title="Xóa">
+        <Popconfirm
+          title="Bạn có chắc chắn xóa dữ liệu không?"
+          onConfirm={confirm}
+          onCancel={cancel}
+          okText="Có "
+          cancelText="Không "
+        >
+          <Trash className="cursor-pointer" size={20} />
+        </Popconfirm>
+      </Tooltip>
     </div>
   );
 };
@@ -254,6 +258,7 @@ class ListClassEducateConfig extends Component {
                 className="data-list-rows-dropdown  d-md-block d-none"
               >
                 <DropdownToggle
+                  disabled={this.state.totalRecords < 10 ? true : false}
                   className="sort-dropdown"
                   style={{
                     float: "right",
@@ -314,7 +319,7 @@ class ListClassEducateConfig extends Component {
           data={value.length ? "" : data}
           columns={columns}
           noHeader
-          noDataComponent="Không có dữ liệu"
+          noDataComponent="Không có lớp"
           subHeader
         />
         <ReactPaginate

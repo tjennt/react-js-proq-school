@@ -80,14 +80,14 @@ const navigationConfig = [
   },
   {
     id: "listDepartment",
-    title: "Danh sách",
+    title: "Quản lý",
     type: "collapse",
     icon: <Icon.Circle size={12} />,
     permissions: ["admin"],
     children: [
       {
         id: "listStudentDepartment",
-        title: "Ds.Sinh viên",
+        title: "Sinh viên",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],
@@ -95,7 +95,7 @@ const navigationConfig = [
       },
       {
         id: "listTeacherDepartment",
-        title: "Ds.Giảng viên",
+        title: "Giảng viên",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],
@@ -103,7 +103,7 @@ const navigationConfig = [
       },
       {
         id: "listClassDepartment",
-        title: "Ds.Lớp",
+        title: "Lớp học",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],
@@ -111,7 +111,7 @@ const navigationConfig = [
       },
       {
         id: "listSubjectDepartment",
-        title: "Ds.Môn ",
+        title: "Môn học ",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],
@@ -119,7 +119,7 @@ const navigationConfig = [
       },
       {
         id: "listStage",
-        title: "Ds.Khóa học",
+        title: "Khóa học",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],
@@ -127,7 +127,7 @@ const navigationConfig = [
       },
       {
         id: "listSeason",
-        title: "Ds.Kì học",
+        title: "Kì học",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],
@@ -135,7 +135,7 @@ const navigationConfig = [
       },
       {
         id: "listSpecialization",
-        title: "Ds.Chuyên ngành",
+        title: "Chuyên ngành",
         type: "item",
         icon: <Icon.FileText size={18} />,
         permissions: ["admin"],

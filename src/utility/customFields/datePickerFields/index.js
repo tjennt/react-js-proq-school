@@ -2,9 +2,7 @@ import { FormGroup, Label, FormFeedback } from "reactstrap";
 import { ErrorMessage } from "formik";
 import React from "react";
 import PropTypes from "prop-types";
-import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
-import { DatePicker } from "antd";
-import moment from "moment";
+import DatePicker from "reactstrap-date-picker";
 datePickerField.propTypes = {
   field: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
@@ -20,30 +18,30 @@ datePickerField.defaultProps = {
   placeholder: "",
   disable: false,
 };
-const dateFormatList = ["MM/DD/YYYY", "DD/MM/YY"];
 
 function datePickerField(props) {
   const { field, form, label } = props;
-  const { name } = field;
+  const { name, value } = field;
   const { errors, touched } = form;
   const showError = errors[name] && touched[name];
 
-  const onChangeValue = (date, dateString) => {
-    form.setFieldValue(name, dateString);
+  const onChangeValue = (value, formattedValue) => {
+    form.setFieldValue(name, value);
   };
   return (
     <FormGroup>
       {label && <Label for="name">{label}</Label>}
       <DatePicker
-        format={dateFormatList}
-        style={{ height: "40px", width: "100%" }}
-        ranges={{
-          Ngày: [moment().startOf("days"), moment().endOf("days")],
-          Tuần: [moment().startOf("week"), moment().endOf("week")],
-          Tháng: [moment().startOf("month"), moment().endOf("month")],
-          Quý: [moment().startOf("quarter"), moment().endOf("quarter")],
-          Năm: [moment().startOf("year"), moment().endOf("year")],
-        }}
+        dateFormat="DD-MM-YYYY"
+        value={value}
+        style={{ height: "40px", width: "80%" }}
+        // ranges={{
+        //   Ngày: [moment().startOf("days"), moment().endOf("days")],
+        //   Tuần: [moment().startOf("week"), moment().endOf("week")],
+        //   Tháng: [moment().startOf("month"), moment().endOf("month")],
+        //   Quý: [moment().startOf("quarter"), moment().endOf("quarter")],
+        //   Năm: [moment().startOf("year"), moment().endOf("year")],
+        // }}
         onChange={onChangeValue}
       />
       <div className={showError ? "is-invalid" : ""}></div>

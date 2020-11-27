@@ -28,7 +28,7 @@ import {
   Table,
   UncontrolledDropdown,
 } from "reactstrap";
-import { Popconfirm, message } from "antd";
+import { Popconfirm, message, Tooltip } from "antd";
 import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
 import {
@@ -38,6 +38,7 @@ import {
 } from "../../../../../../redux/actions/schedule/getDataSpecialization";
 import { addSpecialization } from "../../../../../../redux/actions/education/index";
 import { getDataSubject } from "../../../../../../redux/actions/dataListAssistance/index";
+import { newDate } from "../../../../../../utility/config";
 
 const ActionsComponent = (props) => {
   function confirm(e) {
@@ -48,14 +49,17 @@ const ActionsComponent = (props) => {
   }
   return (
     <div className="data-list-action">
-      <Edit
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
+      <Tooltip placement="topLeft" title="Chỉnh sửa">
+        <Edit
+          className="cursor-pointer mr-1"
+          size={20}
+          onClick={() => {
+            return props.currentData(props.row);
+          }}
+        />
+      </Tooltip>
       <Popconfirm
+        disabled={true}
         title="Bạn có chắc chắn xóa sinh viên?"
         onConfirm={confirm}
         onCancel={cancel}
@@ -104,7 +108,7 @@ class ListSpecializationEducation extends Component {
         selector: "date",
         sortable: true,
         // minWidth: "300px",
-        cell: (row) => <Moment format="DD/MM/YYYY">{row.createdAt}</Moment>,
+        cell: (row) => <p format="DD/MM/YYYY">{newDate(row.createdAt)}</p>,
       },
       {
         name: "Thao tác",
@@ -216,17 +220,24 @@ class ListSpecializationEducation extends Component {
                 className="data-list-rows-dropdown  d-md-block d-none"
               >
                 <DropdownToggle
+                  disabled={this.state.totalRecords < 10 ? true : false}
                   className="sort-dropdown"
                   style={{
                     float: "right",
                     borderRadius: "20px",
                   }}
                 >
-                  <span className="align-middle mx-50">{`${
-                    this.props.parsedFilter.limit
-                      ? this.props.parsedFilter.limit
-                      : 10
-                  } of ${this.state.totalRecords}`}</span>
+                  {this.state.totalRecords < 10 ? (
+                    <span className="align-middle mx-50">
+                      {this.state.totalRecords}
+                    </span>
+                  ) : (
+                    <span className="align-middle mx-50">{`${
+                      this.props.parsedFilter.page
+                        ? this.props.parsedFilter.page
+                        : 1
+                    } of ${this.state.totalRecords}`}</span>
+                  )}
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>
@@ -272,7 +283,7 @@ class ListSpecializationEducation extends Component {
           noHeader={true}
           fixedHeader
           fixedHeaderScrollHeight={"55vh"}
-          noDataComponent="Không có dữ liệu học sinh"
+          noDataComponent="Không có chuyên ngành"
           expandableRows
           expandOnRowClicked
           expandableRowsComponent={<ExpandableTable data={data} />}
@@ -313,20 +324,20 @@ class ListSpecializationEducation extends Component {
 }
 const ExpandableTable = ({ data }) => {
   return (
-    <Table responsive striped>
-      <thead>
+    <Table responsive dark>
+      {/* <thead>
         <tr>
           <th>Môn </th>
         </tr>
-      </thead>
-      <tbody>
+      </thead> */}
+      <thead>
         {data &&
           data.subject.map((item) => (
             <tr key={item._id}>
               <td> {item.name} </td>
             </tr>
           ))}
-      </tbody>
+      </thead>
     </Table>
   );
 };
