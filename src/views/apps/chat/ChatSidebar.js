@@ -10,34 +10,15 @@ import {
 import { X, Search } from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { connect } from "react-redux";
-import {
-  getChats,
-  getContactChats,
-  searchContacts,
-  markSeenAllMessages,
-} from "../../../redux/actions/chat/index";
 import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg";
 import { newDate } from "../../../utility/config";
-// import {} from "../../../redux/"
+import { searchChatUser } from "../../../redux/actions/chatProQ";
+import {
+  API_ENDPOINT_IMG,
+  API_ENDPOINT_IMG_TEACHER,
+} from "../../../redux/constants";
 
 class ChatSidebar extends React.Component {
-  // static getDerivedStateFromProps(props, state) {
-  //   if (
-  //     props.chat.chatContacts.length !== state.chatContacts ||
-  //     props.chat.contacts.length !== state.contacts ||
-  //     props.chat.chats.length !== state.chats ||
-  //     props.chat.status !== state.status
-  //   ) {
-  //     return {
-  //       chatsContacts: props.chat.chatContacts,
-  //       contacts: props.chat.contacts,
-  //       chats: props.chat.chats,
-  //       status: props.chat.status,
-  //     };
-  //   }
-  //   // Return null if the state hasn't changed
-  //   return null;
-  // }
   state = {
     chatsContacts: [],
     contacts: [],
@@ -46,28 +27,17 @@ class ChatSidebar extends React.Component {
     value: "",
   };
 
-  // getChatContents = () => {
-  //   this.props.getChats();
-  //   this.props.getContactChats();
-  // };
   componentDidMount() {
     this.props.getAllDataGroup();
   }
-  // async componentDidMount() {
-  //   await this.getChatContents();
-  //   this.setState({
-  //     chatsContacts: this.props.chat.chatContacts,
-  //     contacts: this.props.chat.contacts,
-  //     chats: this.props.chat.chats,
-  //     status: this.props.chat.status,
-  //   });
-  // }
-  handleChat = (item) => {
-    console.log(item);
-  };
   handleOnChange = (e) => {
     this.setState({ value: e.target.value });
-    // this.props.searchContacts(e.target.value);
+  };
+  searchChatUser = () => {
+    this.props.searchChatUser(this.state.value);
+  };
+  joinFriendSearch = (item) => {
+    this.props.joinFriend(item._id);
   };
   joinFriend = (item) => {
     const { idUserMe } = this.props;
@@ -80,7 +50,7 @@ class ChatSidebar extends React.Component {
   };
   render() {
     const { status, value } = this.state;
-    const { chatGroup, idUserMe } = this.props;
+    const { chatGroup, idUserMe, dataUserSearch } = this.props;
     return (
       <Card className="sidebar-content h-100">
         <span
@@ -110,15 +80,24 @@ class ChatSidebar extends React.Component {
                 />
               </div>
             </div>
-            <FormGroup className="position-relative has-icon-left mx-1 my-0 w-100">
+            <FormGroup className="position-relative  mx-1 my-0 w-100">
               <Input
                 className="round"
                 type="text"
-                placeholder="Search contact or start a new chat"
-                // onChange={(e) => this.handleOnChange(e)}
-                // value={value}
+                placeholder="Tìm kiếm"
+                onChange={(e) => this.handleOnChange(e)}
+                value={value}
+                onKeyPress={(event) => {
+                  if (event.key === "Enter") {
+                    this.searchChatUser();
+                  }
+                }}
               />
-              <div className="form-control-position">
+              <div
+                onClick={this.searchChatUser}
+                className="form-control-position"
+                style={{ cursor: "pointer" }}
+              >
                 <Search size={15} />
               </div>
             </FormGroup>
@@ -130,16 +109,37 @@ class ChatSidebar extends React.Component {
             wheelPropagation: false,
           }}
         >
-          {/* <FormGroup className="position-relative has-icon-left mx-1 my-0 w-70 mt-2">
-            <Input
-              className="round"
-              type="text"
-              placeholder="nhập text demo id"
-              onChange={(e) => this.handleOnChange(e)}
-              value={value}
-            />
-            <Button onClick={this.joinFriend}> Tạo group </Button>
-          </FormGroup> */}
+          {dataUserSearch.length > 0 ? (
+            <div>
+              <h3 className="primary p-1 mb-0"> Kết quả tìm kiếm </h3>
+              {dataUserSearch.map((item) => (
+                <ul
+                  onClick={() => this.joinFriendSearch(item)}
+                  key={item._id}
+                  className="chat-users-list-wrapper media-list"
+                >
+                  <li>
+                    <div className="pr-1">
+                      <span className="avatar avatar-md m-0">
+                        <img
+                          src={`${API_ENDPOINT_IMG}/${item.avatar}`}
+                          alt={userImg}
+                          height="38"
+                          width="38"
+                        />
+                      </span>
+                    </div>
+                    <div className="user-chat-info">
+                      <div className="contact-info">
+                        <div>{item.fullName}</div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              ))}
+            </div>
+          ) : null}
+
           <h3 className="primary p-1 mb-0">Trò truyện </h3>
           {chatGroup
             ? chatGroup.map((item) => (
@@ -152,7 +152,7 @@ class ChatSidebar extends React.Component {
                     <div className="pr-1">
                       <span className="avatar avatar-md m-0">
                         <img
-                          src={userImg}
+                          src={`${API_ENDPOINT_IMG_TEACHER}/${item.avatar}`}
                           alt={userImg}
                           height="38"
                           width="38"
@@ -176,7 +176,7 @@ class ChatSidebar extends React.Component {
                         <div className="unseen-msg">
                           <Badge
                             className="badge-md float-right"
-                            color="primary"
+                            color="success"
                             pill
                           >
                             online
@@ -199,11 +199,9 @@ const mapStateToProps = (state) => {
     chat: state.chatApp.chats,
     chatGroup: state.chatProq.dataGroup,
     idUserMe: state.auth.login.values.loggedInUser._id,
+    dataUserSearch: state.chatProq.dataSearch,
   };
 };
 export default connect(mapStateToProps, {
-  getChats,
-  getContactChats,
-  searchContacts,
-  markSeenAllMessages,
+  searchChatUser,
 })(ChatSidebar);

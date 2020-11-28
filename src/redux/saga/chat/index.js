@@ -3,12 +3,14 @@ import {
   getAllDataGroupSuccess,
   getMessageIdGroupSuccess,
   joinFriendSuccss,
+  searchChatUserSuccess,
 } from "../../actions/chatProQ";
 import {
   joinFriendApi,
   getMessageGroupByIdApi,
   sendChat,
   getAllGroupApi,
+  searchUserApi,
 } from "../../api/chat";
 export function* joinFriend({ payload }) {
   const { idFriend } = payload;
@@ -48,6 +50,25 @@ export function* getAllGroupSaga() {
     const { data } = res;
     if (data.success) {
       yield put(getAllDataGroupSuccess(data.payload));
+    }
+  } catch (error) {}
+}
+export function* searchUserSaga({ payload }) {
+  const { text } = payload;
+  let param = {};
+  if (text) {
+    param = {
+      text: text,
+    };
+  } else {
+    param = {};
+  }
+
+  try {
+    const res = yield call(searchUserApi, param);
+    const { data } = res;
+    if (data.success) {
+      yield put(searchChatUserSuccess(data.payload));
     }
   } catch (error) {}
 }

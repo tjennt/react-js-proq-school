@@ -17,3 +17,11 @@ export const sendChat = (id, data) => {
 export const getAllGroupApi = () => {
   return axiosService.get(`${process.env.REACT_APP_API_ENDPOINT}/${url}`);
 };
+export const searchUserApi = (params) => {
+  return axiosService.get(
+    `${process.env.REACT_APP_API_ENDPOINT}/users/search`,
+    {
+      params,
+    }
+  );
+};

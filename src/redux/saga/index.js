@@ -1,4 +1,4 @@
-import { takeLatest } from "redux-saga/effects";
+import { takeEvery, takeLatest } from "redux-saga/effects";
 import * as authType from "../constants/auth";
 import * as trancType from "../constants/tranc";
 import * as assType from "../constants/assistant";
@@ -78,6 +78,7 @@ import {
   getAllGroupSaga,
   getMessageGroupByIdSaga,
   joinFriend,
+  searchUserSaga,
   sendChatSaga,
 } from "./chat";
 function* rootSaga() {
@@ -168,5 +169,6 @@ function* rootSaga() {
   yield takeLatest(chatType.GET_MESSAGE_ID_GROUP, getMessageGroupByIdSaga);
   yield takeLatest(chatType.SEND_CHAT, sendChatSaga);
   yield takeLatest(chatType.GET_ALL_DATA_GROUP, getAllGroupSaga);
+  yield takeLatest(chatType.SEARCH_USER_CHAT, searchUserSaga);
 }
 export default rootSaga;

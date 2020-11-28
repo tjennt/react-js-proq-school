@@ -3,6 +3,7 @@ let initialState = {
   dataJoin: null,
   contentMessageIdGroup: [],
   dataGroup: [],
+  dataSearch: [],
 };
 const rootChat = (state = initialState, action) => {
   switch (action.type) {
@@ -48,6 +49,19 @@ const rootChat = (state = initialState, action) => {
       return {
         ...state,
         dataGroup: data,
+      };
+    }
+    case chatType.SEARCH_USER_CHAT: {
+      return {
+        ...state,
+      };
+    }
+    case chatType.SEARCH_CHAT_USER_SUCCESS: {
+      const { data } = action.payload;
+      console.log(data);
+      return {
+        ...state,
+        dataSearch: data,
       };
     }
     default:
