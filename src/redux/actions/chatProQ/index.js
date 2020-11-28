@@ -56,3 +56,15 @@ export const getAllDataGroupSuccess = (data) => ({
     data,
   },
 });
+export const searchChatUser = (text) => ({
+  type: chatType.SEARCH_USER_CHAT,
+  payload: {
+    text,
+  },
+});
+export const searchChatUserSuccess = (data) => ({
+  type: chatType.SEARCH_CHAT_USER_SUCCESS,
+  payload: {
+    data,
+  },
+});

@@ -77,7 +77,7 @@ class LoginJWT extends React.Component {
                     cookiePolicy={"single_host_origin"}
                   />
                   <Button.Ripple
-                    className="ml-4 mt-1"
+                    className="ml-4 mt-1 button-bg"
                     color="primary"
                     type="submit"
                   >

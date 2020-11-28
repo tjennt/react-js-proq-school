@@ -82,6 +82,7 @@
     "react-toastify": "^5.5.0",
     "react-toggle": "~4.1.1",
     "react-treebeard": "~3.2.3",
+    "react-web-gifted-chat": "^0.6.7",
     "reactstrap": "^8.4.1",
     "reactstrap-date-picker": "0.0.11",
     "recharts": "~1.8.5",

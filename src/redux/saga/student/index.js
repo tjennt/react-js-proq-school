@@ -81,7 +81,7 @@ export function* getDataScheduleStudentSaga({ payload }) {
     console.log(res);
     const { data } = res;
     if (data.success) {
-      const dataRes = data.payload[1].reduce(
+      const dataRes = data.payload.reduce(
         (arr, curr) => [
           ...arr,
           {
