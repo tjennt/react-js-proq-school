@@ -25,6 +25,7 @@ class ChatSidebar extends React.Component {
   }
   handleOnChange = (e) => {
     this.setState({ value: e.target.value });
+    this.props.searchChatUser(this.state.value);
   };
   searchChatUser = () => {
     this.props.searchChatUser(this.state.value);
