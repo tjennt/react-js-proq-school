@@ -52,6 +52,13 @@ class NavbarUser extends React.PureComponent {
         return false;
       }
     });
+    io.on("ON_NOTIFY", (data) => {
+      if (this.props.role === "student") {
+        toastSuccess("Bạn có thông báo mới từ trường !!!!");
+      } else {
+        return false;
+      }
+    });
   }
   // socket = () => {
   //   const { text } = this.state;

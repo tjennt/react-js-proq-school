@@ -15,6 +15,7 @@ import io from "socket.io-client";
 import ReactEmoji from "react-emoji";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
+import { API_ENDPOINT_IMG } from "../../../redux/constants";
 
 let socket;
 class ChatLog extends React.Component {
@@ -38,6 +39,8 @@ class ChatLog extends React.Component {
   state = {
     idGroupID: null,
     msg: "",
+    contactName: null,
+    avatar: null,
     activeUser: null,
     activeChat: null,
     showEmojis: false,
@@ -47,6 +50,18 @@ class ChatLog extends React.Component {
       if (this.props.activeChatID._id !== prevState.idGroupID) {
         this.setState({ idGroupID: this.props.activeChatID._id });
         this.props.getMessageIdGroup(this.props.activeChatID._id);
+      }
+    }
+    if (this.props.contactUserChat !== null) {
+      if (this.props.contactUserChat.user.fullName !== prevState.contactName) {
+        this.setState({
+          contactName: this.props.contactUserChat.user.fullName,
+        });
+      }
+      if (this.props.contactUserChat.user.avatar !== prevState.avatar) {
+        this.setState({
+          avatar: this.props.contactUserChat.user.avatar,
+        });
       }
     }
     // if (this.state.idGroupID) {
@@ -119,101 +134,9 @@ class ChatLog extends React.Component {
   };
   render() {
     const { chatContent, idUserMe } = this.props;
-    const { idGroupID } = this.state;
+    const { idGroupID, contactName, avatar } = this.state;
     console.log(idGroupID);
-    // let activeUserUid = activeUser && activeUser.uid ? activeUser.uid : null,
-    //   activeChat =
-    //     activeUser && activeUser.uid
-    //       ? this.props.chat.chats[activeUserUid]
-    //       : null;
 
-    // let renderChats =
-    //   activeChat && activeChat !== undefined && activeChat.msg
-    //     ? activeChat.msg.map((chat, i) => {
-    //         let renderSentTime = () => {
-    //           if (
-    //             i > 0 &&
-    //             !this.handleTime(chat.time, activeChat.msg[i - 1].time)
-    //           ) {
-    //             return (
-    //               <div className="divider">
-    //                 <div className="divider-text">
-    //                   {new Date().getDate() +
-    //                     " " +
-    //                     new Date().toLocaleString("default", {
-    //                       month: "short",
-    //                     })}
-    //                 </div>
-    //               </div>
-    //             );
-    //           }
-    //         };
-    //         let renderAvatar = () => {
-    //           if (i > 0) {
-    //             if (
-    //               chat.isSent === true &&
-    //               activeChat.msg[i - 1].isSent !== true
-    //             ) {
-    //               return (
-    //                 <div className="chat-avatar">
-    //                   <div className="avatar m-0">
-    //                     <img
-    //                       src={userImg}
-    //                       alt="chat avatar"
-    //                       height="40"
-    //                       width="40"
-    //                     />
-    //                   </div>
-    //                 </div>
-    //               );
-    //             } else if (chat.isSent !== true) {
-    //               return (
-    //                 <div className="chat-avatar">
-    //                   <div className="avatar m-0">
-    //                     <img
-    //                       src={activeUser.photoURL}
-    //                       alt="chat avatar"
-    //                       height="40"
-    //                       width="40"
-    //                     />
-    //                   </div>
-    //                 </div>
-    //               );
-    //             } else {
-    //               return "";
-    //             }
-    //           } else {
-    //             return (
-    //               <div className="chat-avatar">
-    //                 <div className="avatar m-0">
-    //                   <img
-    //                     src={chat.isSent ? userImg : activeUser.photoURL}
-    //                     alt="chat avatar"
-    //                     height="40"
-    //                     width="40"
-    //                   />
-    //                 </div>
-    //               </div>
-    //             );
-    //           }
-    //         };
-    //         return (
-    //       <React.Fragment key={i}>
-    //         {renderSentTime()}
-    //         <div
-    //           className={`chat ${
-    //             chat.isSent !== true ? "chat-left" : "chat-right"
-    //           }`}
-    //         >
-    //           {renderAvatar()}
-    //           <div className="chat-body">
-    //             <div className="chat-content">{chat.textContent}</div>
-    //           </div>
-    //         </div>
-    //       </React.Fragment>
-    //     );
-    //   })
-    // : null;
     return (
       <div className="content-right">
         <div className="chat-app-window ">
@@ -239,10 +162,15 @@ class ChatLog extends React.Component {
                     className="avatar user-profile-toggle m-0 m-0 mr-1"
                     onClick={() => this.props.handleReceiverSidebar("open")}
                   >
-                    <img src={userImg} alt={userImg} height="40" width="40" />
+                    <img
+                      src={`${API_ENDPOINT_IMG}/${avatar}`}
+                      alt={userImg}
+                      height="40"
+                      width="40"
+                    />
                     <span className={"avatar-status-online"} />
                   </div>
-                  <h6 className="mb-0">linh </h6>
+                  <h6 className="mb-0">{contactName}</h6>
                 </div>
                 {/* <span
                   className="favorite"

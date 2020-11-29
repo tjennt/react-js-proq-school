@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Card,
-  FormGroup,
-  Input,
-  Badge,
-  Button,
-  ListGroupItem,
-} from "reactstrap";
+import { Card, FormGroup, Input, Badge } from "reactstrap";
 import { X, Search } from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { connect } from "react-redux";
@@ -15,7 +8,7 @@ import { newDate } from "../../../utility/config";
 import { searchChatUser } from "../../../redux/actions/chatProQ";
 import {
   API_ENDPOINT_IMG,
-  API_ENDPOINT_IMG_TEACHER,
+  // API_ENDPOINT_IMG_TEACHER,
 } from "../../../redux/constants";
 
 class ChatSidebar extends React.Component {
@@ -32,14 +25,18 @@ class ChatSidebar extends React.Component {
   }
   handleOnChange = (e) => {
     this.setState({ value: e.target.value });
+    this.props.searchChatUser(this.state.value);
   };
   searchChatUser = () => {
     this.props.searchChatUser(this.state.value);
   };
   joinFriendSearch = (item) => {
-    this.props.joinFriend(item._id);
+    const value = "";
+    this.props.searchChatUser(value);
+    this.props.joinFriend(item.idUser);
   };
   joinFriend = (item) => {
+    console.log(item);
     const { idUserMe } = this.props;
     const value = item.members
       .filter((person) => person !== idUserMe)
@@ -47,6 +44,7 @@ class ChatSidebar extends React.Component {
         return filteredPerson;
       });
     this.props.joinFriend(value.toString());
+    this.props.setContactUser(item);
   };
   render() {
     const { status, value } = this.state;
@@ -152,7 +150,7 @@ class ChatSidebar extends React.Component {
                     <div className="pr-1">
                       <span className="avatar avatar-md m-0">
                         <img
-                          src={`${API_ENDPOINT_IMG_TEACHER}/${item.avatar}`}
+                          src={`${API_ENDPOINT_IMG}/${item.user.avatar}`}
                           alt={userImg}
                           height="38"
                           width="38"
@@ -161,11 +159,7 @@ class ChatSidebar extends React.Component {
                     </div>
                     <div className="user-chat-info">
                       <div className="contact-info">
-                        {item.members
-                          .filter((person) => person !== idUserMe)
-                          .map((filteredPerson) => (
-                            <div key={filteredPerson}>{filteredPerson}</div>
-                          ))}
+                        <div>{item.user.fullName}</div>
                         <p className="truncate"> {item.lastMessage}</p>
                       </div>
                       <div className="contact-meta d-flex- flex-column">

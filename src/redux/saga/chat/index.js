@@ -1,5 +1,6 @@
 import { call, put } from "redux-saga/effects";
 import {
+  getAllDataGroup,
   getAllDataGroupSuccess,
   getMessageIdGroupSuccess,
   joinFriendSuccss,
@@ -28,6 +29,7 @@ export function* getMessageGroupByIdSaga({ payload }) {
     const res = yield call(getMessageGroupByIdApi, idGroup);
     const { data } = res;
     if (data.success) {
+      yield put(getAllDataGroup());
       yield put(getMessageIdGroupSuccess(data.payload.reverse()));
     }
   } catch (error) {}
