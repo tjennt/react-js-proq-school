@@ -382,7 +382,11 @@ class ListStudentEducation extends Component {
         <Col lg="12">
           <Row>
             <Col lg="5">
-              <Button onClick={this.showModal} className=" ml-2" color="danger">
+              <Button
+                onClick={this.showModal}
+                className=" ml-2"
+                color="success"
+              >
                 <Download size={15} /> Nhập excel
               </Button>
               <Button

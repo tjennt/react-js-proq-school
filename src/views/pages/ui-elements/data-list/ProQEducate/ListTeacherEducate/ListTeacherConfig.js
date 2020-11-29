@@ -355,7 +355,11 @@ class ListTeacherConfig extends Component {
                 <Plus size={15} />
                 <span className="align-middle">Tạo mới</span>
               </Button> */}
-              <Button onClick={this.showModal} className=" ml-2" color="danger">
+              <Button
+                onClick={this.showModal}
+                className=" ml-2"
+                color="success"
+              >
                 <Download size={15} /> Nhập excel
               </Button>
               <Button

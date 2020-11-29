@@ -23,6 +23,7 @@ class Chat extends React.Component {
     activeUser: null,
     receiverProfile: false,
     userSidebar: false,
+    contactUserChat: null,
   };
   // mounted = false
   handleUserSidebar = (status) => {
@@ -69,6 +70,9 @@ class Chat extends React.Component {
           receiverProfile: false,
         });
   };
+  setContactUser = (value) => {
+    this.setState({ ...this.state, contactUserChat: value });
+  };
   joinFriend = (value) => {
     this.setState({ ...this.state, activeChatID: value });
     this.props.joinFriend(value);
@@ -107,6 +111,7 @@ class Chat extends React.Component {
                 <ChatSidebarContent
                   getAllDataGroup={this.props.getAllDataGroup}
                   joinFriend={this.joinFriend}
+                  setContactUser={this.setContactUser}
                   activeChatID={this.state.activeChatID}
                   handleActiveChat={this.handleActiveChat}
                   handleUserSidebar={this.handleUserSidebar}
@@ -129,6 +134,7 @@ class Chat extends React.Component {
           handleUserSidebar={this.handleUserSidebar}
         />
         <ChatLog
+          contactUserChat={this.state.contactUserChat}
           activeChatID={this.props.chatGroup}
           activeChat={this.state.activeChat}
           activeUser={this.state.activeUser}

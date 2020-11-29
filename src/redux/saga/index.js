@@ -7,6 +7,7 @@ import * as scheduleType from "../constants/schedule/index";
 import * as teacherType from "../constants/teacher";
 import * as studentType from "../constants/student";
 import * as chatType from "../constants/chat";
+import * as blogType from "../constants/blog";
 import {
   loginActionSaga,
   loginWithGoogleSaga,
@@ -81,6 +82,13 @@ import {
   searchUserSaga,
   sendChatSaga,
 } from "./chat";
+import {
+  addBlogSaga,
+  deleteNotifySaga,
+  getCategorySaga,
+  getNotifySaga,
+  updateBlogSaga,
+} from "./blog";
 function* rootSaga() {
   //login //auth
   yield takeLatest(authType.LOGIN, loginActionSaga);
@@ -170,5 +178,13 @@ function* rootSaga() {
   yield takeLatest(chatType.SEND_CHAT, sendChatSaga);
   yield takeLatest(chatType.GET_ALL_DATA_GROUP, getAllGroupSaga);
   yield takeLatest(chatType.SEARCH_USER_CHAT, searchUserSaga);
+  /**
+   * notify
+   */
+  yield takeLatest(blogType.GET_CATEGORY, getCategorySaga);
+  yield takeLatest(blogType.ADD_BLOG, addBlogSaga);
+  yield takeLatest(blogType.GET_ALL_NOTIFY, getNotifySaga);
+  yield takeLatest(blogType.UPDATE_BLOG, updateBlogSaga);
+  yield takeLatest(blogType.DELETE_BLOG, deleteNotifySaga);
 }
 export default rootSaga;
