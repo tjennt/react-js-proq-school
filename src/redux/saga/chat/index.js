@@ -29,7 +29,6 @@ export function* getMessageGroupByIdSaga({ payload }) {
     const res = yield call(getMessageGroupByIdApi, idGroup);
     const { data } = res;
     if (data.success) {
-      yield put(getAllDataGroup());
       yield put(getMessageIdGroupSuccess(data.payload.reverse()));
     }
   } catch (error) {}
@@ -41,14 +40,12 @@ export function* sendChatSaga({ payload }) {
     content: msg,
   };
   try {
-    const res = yield call(sendChat, idGroup, data);
-    console.log(res);
+    yield call(sendChat, idGroup, data);
   } catch (error) {}
 }
 export function* getAllGroupSaga() {
   try {
     const res = yield call(getAllGroupApi);
-    console.log(res);
     const { data } = res;
     if (data.success) {
       yield put(getAllDataGroupSuccess(data.payload));

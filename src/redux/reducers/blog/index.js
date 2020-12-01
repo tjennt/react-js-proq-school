@@ -6,6 +6,12 @@ const initialtState = {
   total_page: 0,
   total_item: 0,
   setTaskEdit: null,
+  dataNotiFee: [],
+  total_page_fee: 0,
+  dataNotiActivity: [],
+  total_page_activity: 0,
+  dataNotiLearning: [],
+  total_page_learning: 0,
 };
 const rootBlog = (state = initialtState, action) => {
   switch (action.type) {
@@ -45,6 +51,45 @@ const rootBlog = (state = initialtState, action) => {
       return {
         ...state,
         setTaskEdit: data,
+      };
+    }
+    case blogType.GET_NOTI_FEE_STUDENT: {
+      return {
+        ...state,
+      };
+    }
+    case blogType.GET_NOTI_FEE_STUDENT_SUCCESS: {
+      const { data, total_page } = action.payload;
+      return {
+        ...state,
+        dataNotiFee: data,
+        total_page_fee: total_page,
+      };
+    }
+    case blogType.GET_NOTI_ACTIVITY_STUDENT: {
+      return {
+        ...state,
+      };
+    }
+    case blogType.GET_NOTI_ACTIVITY_STUDENT_SUCCESS: {
+      const { data, total_page } = action.payload;
+      return {
+        ...state,
+        dataNotiActivity: data,
+        total_page_activity: total_page,
+      };
+    }
+    case blogType.GET_NOTI_LEARNING_STUDENT: {
+      return {
+        ...state,
+      };
+    }
+    case blogType.GET_NOTI_LEARNING_STUDENT_SUCCESS: {
+      const { data, total_page } = action.payload;
+      return {
+        ...state,
+        dataNotiLearning: data,
+        total_page_learning: total_page,
       };
     }
     default:

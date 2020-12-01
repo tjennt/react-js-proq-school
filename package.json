@@ -47,6 +47,7 @@
     "react-bootstrap-sweetalert": "^5.1.9",
     "react-chartjs": "^1.2.0",
     "react-chartjs-2": "^2.9.0",
+    "react-content-loader": "^5.1.4",
     "react-contexify": "~4.1.1",
     "react-copy-to-clipboard": "~5.0.2",
     "react-country-flag": "^2.0.1",

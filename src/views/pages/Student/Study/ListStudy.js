@@ -6,7 +6,15 @@ import Select from "react-select";
 import "../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import ReactPaginate from "react-paginate";
 import { ChevronLeft, ChevronRight } from "react-feather";
-
+import {
+  getDataNotiFee,
+  getDataNotiLearning,
+  getDataNotiActivity,
+} from "../../../../redux/actions/blog";
+import { connect } from "react-redux";
+import ItemFee from "./ItemFee";
+import ItemLearning from "./ItemLearning";
+import NotNoti from "./LoadingNoti/NotNoti";
 const optionsCategory = [
   { value: 0, label: "Thông tin học tập" },
   { value: 1, label: "Thông tin hoạt động" },
@@ -15,7 +23,13 @@ const optionsCategory = [
 class ListStudy extends React.Component {
   state = {
     category: 0,
+    imageFound: [{ id: "0" }, { id: "1" }, { id: "2" }],
   };
+  componentDidMount() {
+    this.props.getDataNotiFee();
+    this.props.getDataNotiLearning();
+    this.props.getDataNotiActivity();
+  }
   handleSelectedOptionChange = (value) => {
     this.setState({
       ...this.state,
@@ -54,17 +68,26 @@ class ListStudy extends React.Component {
           </Badge>
 
           <Row>
-            <ItemStudy />
-            <ItemStudy />
-            <ItemStudy />
-            <ItemStudy />
+            {!this.props.loading ? (
+              this.props.dataLearning.map((item) => (
+                <ItemLearning item={item} />
+              ))
+            ) : (
+              <Row>
+                {this.state.imageFound.map((item) => (
+                  <Col key={item.id} lg="4">
+                    <NotNoti />
+                  </Col>
+                ))}
+              </Row>
+            )}
           </Row>
           <ReactPaginate
             previousLabel={<ChevronLeft size={15} />}
             nextLabel={<ChevronRight size={15} />}
             breakLabel="..."
             breakClassName="break-me"
-            pageCount={10}
+            pageCount={this.props.dataBlogTotalPage.total_page_learning}
             containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
             activeClassName="active"
             // forcePage={
@@ -80,17 +103,24 @@ class ListStudy extends React.Component {
             Thông tin hoạt động{" "}
           </Badge>
           <Row>
-            <ItemStudy />
-            <ItemStudy />
-            <ItemStudy />
-            <ItemStudy />
+            {!this.props.loading ? (
+              this.props.dataActivity.map((item) => <ItemStudy item={item} />)
+            ) : (
+              <Row>
+                {this.state.imageFound.map((item) => (
+                  <Col key={item.id} lg="4">
+                    <NotNoti />
+                  </Col>
+                ))}
+              </Row>
+            )}
           </Row>
           <ReactPaginate
             previousLabel={<ChevronLeft size={15} />}
             nextLabel={<ChevronRight size={15} />}
             breakLabel="..."
             breakClassName="break-me"
-            pageCount={10}
+            pageCount={this.props.dataBlogTotalPage.total_page_activity}
             containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
             activeClassName="active"
             // forcePage={
@@ -106,17 +136,24 @@ class ListStudy extends React.Component {
             Thông tin học phí
           </Badge>
           <Row>
-            <ItemStudy />
-            <ItemStudy />
-            <ItemStudy />
-            <ItemStudy />
+            {!this.props.loading ? (
+              this.props.dataFee.map((item) => <ItemFee item={item} />)
+            ) : (
+              <Row>
+                {this.state.imageFound.map((item) => (
+                  <Col key={item.id} lg="4">
+                    <NotNoti />
+                  </Col>
+                ))}
+              </Row>
+            )}
           </Row>
           <ReactPaginate
             previousLabel={<ChevronLeft size={15} />}
             nextLabel={<ChevronRight size={15} />}
             breakLabel="..."
             breakClassName="break-me"
-            pageCount={10}
+            pageCount={this.props.dataBlogTotalPage.total_page_fee}
             containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
             activeClassName="active"
             // forcePage={
@@ -131,4 +168,17 @@ class ListStudy extends React.Component {
     );
   }
 }
-export default ListStudy;
+const mapStateToProps = (state) => {
+  return {
+    dataFee: state.dataBlog.dataNotiFee,
+    dataActivity: state.dataBlog.dataNotiActivity,
+    dataLearning: state.dataBlog.dataNotiLearning,
+    dataBlogTotalPage: state.dataBlog,
+    loading: state.ui.showLoading,
+  };
+};
+export default connect(mapStateToProps, {
+  getDataNotiFee,
+  getDataNotiLearning,
+  getDataNotiActivity,
+})(ListStudy);

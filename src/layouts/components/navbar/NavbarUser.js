@@ -46,17 +46,17 @@ class NavbarUser extends React.PureComponent {
   componentDidMount() {
     io = socket(`https://server-dev.asia`);
     io.on("SEND_MESSAGE_CHAT", (data) => {
-      if (data.from !== this.props.idUser) {
-        toastSuccess("Bạn có tin nhắn mới");
-      } else {
-        return false;
+      if (this.props.role === "student" || this.props.role === "teacher") {
+        if (data.from !== this.props.idUser) {
+          toastSuccess("Bạn có tin nhắn mới");
+        } else {
+          return false;
+        }
       }
     });
     io.on("ON_NOTIFY", (data) => {
-      if (this.props.role === "student") {
+      if (this.props.role === "student" || this.props.role === "teacher") {
         toastSuccess("Bạn có thông báo mới từ trường !!!!");
-      } else {
-        return false;
       }
     });
   }

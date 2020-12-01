@@ -49,3 +49,48 @@ export const deleteTask = (id, params) => ({
     params,
   },
 });
+
+/**
+ * student
+ */
+export const getDataNotiFee = (params) => ({
+  type: blogType.GET_NOTI_FEE_STUDENT,
+  payload: {
+    params,
+  },
+});
+export const getDataNotiFeeSuccess = (data, total_page) => ({
+  type: blogType.GET_NOTI_FEE_STUDENT_SUCCESS,
+  payload: {
+    data,
+    total_page,
+  },
+});
+
+export const getDataNotiActivity = (params) => ({
+  type: blogType.GET_NOTI_ACTIVITY_STUDENT,
+  payload: {
+    params,
+  },
+});
+export const getDataNotiActivitySuccess = (data, total_page) => ({
+  type: blogType.GET_NOTI_ACTIVITY_STUDENT_SUCCESS,
+  payload: {
+    data,
+    total_page,
+  },
+});
+
+export const getDataNotiLearning = (params) => ({
+  type: blogType.GET_NOTI_LEARNING_STUDENT,
+  payload: {
+    params,
+  },
+});
+export const getDataNotiLearningSuccess = (data, total_page) => ({
+  type: blogType.GET_NOTI_LEARNING_STUDENT_SUCCESS,
+  payload: {
+    data,
+    total_page,
+  },
+});

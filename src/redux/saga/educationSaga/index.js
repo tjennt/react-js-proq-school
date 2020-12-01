@@ -15,14 +15,23 @@ import {
 } from "../../../utility/toast/toastHelper";
 import { importExcelTeacherApi } from "../../api/education/teacher";
 import { addStageApi } from "../../api/education/stage";
-import { addSeasonApi } from "../../api/education/season";
+import {
+  addSeasonApi,
+  deleteSeasonApi,
+  updateSeasonApi,
+} from "../../api/education/season";
 import { getDataSchedulesSuccess } from "../../actions/education";
 import { getDataSchedulesApi } from "../../api/education/schedule";
 import { addSubject } from "../../api/education/subject";
 import { addClassApi } from "../../api/education/class";
-import { addSpecializationApi } from "../../api/education/specialization";
+import {
+  addSpecializationApi,
+  deleteSpecializationApi,
+  updateSpecializationApi,
+} from "../../api/education/specialization";
 import { getDataSpecialization } from "../../actions/schedule/getDataSpecialization";
 import * as moment from "moment";
+import { message } from "antd";
 /**
  * getSchedule
  */
@@ -203,6 +212,40 @@ export function* addSeasonSaga({ payload }) {
     toastError(`Kỳ học hiện tại bị trùng vào các kì  Summer 2021`);
   }
 }
+export function* updateSeasonSaga({ payload }) {
+  const { obj, params } = payload;
+
+  const dataReq = {
+    name: obj.name,
+    startAt: moment(obj.startAt).format("MM-DD-YYYY"),
+    endAt: moment(obj.startEnd).format("MM-DD-YYYY"),
+  };
+  try {
+    const res = yield call(updateSeasonApi, obj.id, dataReq);
+    const { data } = res;
+    if (data.success) {
+      yield put(getDataSeason(params));
+      toastSuccess("Cập nhật dữ liệu thành công");
+    } else {
+      toastWarning("Vui lòng thử lại sau");
+    }
+  } catch (error) {
+    toastError(`Kỳ học hiện tại bị trùng vào các kì  Summer 2021`);
+  }
+}
+export function* deleteSeasonSaga({ payload }) {
+  const { obj, params } = payload;
+  try {
+    const res = yield call(deleteSeasonApi, obj._id);
+    const { data } = res;
+    if (data.success) {
+      yield put(getDataSeason(params));
+      message.success("Xóa dữ liệu thành công ");
+    }
+  } catch (error) {
+    toastError("VUi lòng thử lại sau ");
+  }
+}
 /**
  * create specialization
  */
@@ -223,5 +266,38 @@ export function* addSpecializationSaga({ payload }) {
     }
   } catch (error) {
     toastError(`Đã có lỗi xảy ra vui lòng thử lại sau ${error}`);
+  }
+}
+export function* updateSpecializationSaga({ payload }) {
+  const { obj, params } = payload;
+  const dataReq = {
+    name: obj.nameSpecialization,
+    subject: obj.subject,
+  };
+  try {
+    const res = yield call(updateSpecializationApi, obj.id, dataReq);
+    const { data } = res;
+    if (data.success) {
+      yield put(getDataSpecialization(params));
+      toastSuccess("Thêm dữ liệu thành công");
+    } else {
+      toastWarning("Vui lòng thử lại sau");
+    }
+  } catch (error) {
+    toastError(`Đã có lỗi xảy ra vui lòng thử lại sau ${error}`);
+  }
+}
+export function* deleteSpecialSaga({ payload }) {
+  const { obj, params } = payload;
+  console.log(obj);
+  try {
+    const res = yield call(deleteSpecializationApi, obj._id);
+    const { data } = res;
+    if (data.success) {
+      yield put(getDataSeason(params));
+      message.success("Xóa dữ liệu thành công ");
+    }
+  } catch (error) {
+    toastError("VUi lòng thử lại sau ");
   }
 }

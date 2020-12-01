@@ -36,14 +36,7 @@ class ChatSidebar extends React.Component {
     this.props.joinFriend(item.idUser);
   };
   joinFriend = (item) => {
-    console.log(item);
-    const { idUserMe } = this.props;
-    const value = item.members
-      .filter((person) => person !== idUserMe)
-      .map((filteredPerson) => {
-        return filteredPerson;
-      });
-    this.props.joinFriend(value.toString());
+    this.props.joinFriend(item.user._id);
     this.props.setContactUser(item);
   };
   render() {

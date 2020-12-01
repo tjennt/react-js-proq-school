@@ -47,6 +47,13 @@ export const receiveChatSocket = (socket) => {
     });
   };
 };
+// export const receiveChatSocket = (data) => ({
+//   type: chatType.RECEIEVE_CHAT_SOCKET,
+//   payload: {
+//     data,
+//   },
+// });
+
 export const getAllDataGroup = () => ({
   type: chatType.GET_ALL_DATA_GROUP,
 });

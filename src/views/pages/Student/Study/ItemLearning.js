@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Card, CardBody, CardHeader, CardTitle, Col } from "reactstrap";
 import { newDate } from "../../../../utility/config";
 
-const ItemStudy = (props) => {
+const ItemLearning = (props) => {
   const { item } = props;
   return (
     <Col lg="3" className="mt-2">
@@ -33,4 +33,4 @@ const ItemStudy = (props) => {
   );
 };
 
-export default ItemStudy;
+export default ItemLearning;

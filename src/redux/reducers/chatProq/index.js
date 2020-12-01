@@ -36,7 +36,7 @@ const rootChat = (state = initialState, action) => {
       state.contentMessageIdGroup.push(data);
       return {
         ...state,
-        contentMessageIdGroup: state.contentMessageIdGroup,
+        // contentMessageIdGroup: state.contentMessageIdGroup.concat(data),
       };
     }
     case chatType.GET_ALL_DATA_GROUP: {

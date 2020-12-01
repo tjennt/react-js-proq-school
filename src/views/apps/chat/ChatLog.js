@@ -19,23 +19,6 @@ import { API_ENDPOINT_IMG } from "../../../redux/constants";
 
 let socket;
 class ChatLog extends React.Component {
-  // static getDerivedStateFromProps(props, state) {
-  //   // console.log(props.activeChatID);
-  //   const { dataJoin } = props.activeChatID;
-  //   // if (dataJoin !== state.idGroupID) {
-  //   //   props.getMessageIdGroup(props.activeChatID.dataJoin._id);
-  //   // }
-
-  //   if (dataJoin !== state.idGroupID) {
-  //     return {
-  //       idGroupID: dataJoin,
-  //       // activeChat: props.activeChat,
-  //     };
-  //   }
-  //   // Return null if the state hasn't changed
-  //   return null;
-  // }
-
   state = {
     idGroupID: null,
     msg: "",
@@ -44,6 +27,7 @@ class ChatLog extends React.Component {
     activeUser: null,
     activeChat: null,
     showEmojis: false,
+    chatContent: [],
   };
   componentDidUpdate(prevProps, prevState) {
     if (this.props.activeChatID !== null) {
@@ -51,6 +35,8 @@ class ChatLog extends React.Component {
         this.setState({ idGroupID: this.props.activeChatID._id });
         this.props.getMessageIdGroup(this.props.activeChatID._id);
       }
+    }
+    if (this.props.chatContent !== null) {
     }
     if (this.props.contactUserChat !== null) {
       if (this.props.contactUserChat.user.fullName !== prevState.contactName) {
@@ -64,9 +50,6 @@ class ChatLog extends React.Component {
         });
       }
     }
-    // if (this.state.idGroupID) {
-    //   console.log(this.state.idGroupID._id);
-    // }
     this.scrollToBottom();
   }
   showEmojis = (e) => {
@@ -93,8 +76,6 @@ class ChatLog extends React.Component {
   componentDidMount() {
     socket = io(`https://server-dev.asia`);
     this.props.receiveChatSocket(socket);
-    // console.log(socket);
-    // socket.on("SEND_MESSAGE_CHAT", (data) => console.log(data));
     this.scrollToBottom();
   }
 
@@ -127,7 +108,6 @@ class ChatLog extends React.Component {
     });
   };
   addEmoji = (emoji) => {
-    console.log(emoji);
     this.setState({
       msg: `${this.state.msg}${emoji.native}`,
     });
@@ -135,8 +115,6 @@ class ChatLog extends React.Component {
   render() {
     const { chatContent, idUserMe } = this.props;
     const { idGroupID, contactName, avatar } = this.state;
-    console.log(idGroupID);
-
     return (
       <div className="content-right">
         <div className="chat-app-window ">
