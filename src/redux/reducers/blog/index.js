@@ -12,6 +12,7 @@ const initialtState = {
   total_page_activity: 0,
   dataNotiLearning: [],
   total_page_learning: 0,
+  allNotiSocket: null,
 };
 const rootBlog = (state = initialtState, action) => {
   switch (action.type) {
@@ -90,6 +91,34 @@ const rootBlog = (state = initialtState, action) => {
         ...state,
         dataNotiLearning: data,
         total_page_learning: total_page,
+      };
+    }
+    case blogType.GET_NOTI_SOCKET_ACTIVITY: {
+      const { data } = action;
+      return {
+        ...state,
+        dataNotiActivity: [data].concat(state.dataNotiActivity),
+      };
+    }
+    case blogType.GET_NOTI_SOCKET_FEE: {
+      const { data } = action;
+      return {
+        ...state,
+        dataNotiFee: [data].concat(state.dataNotiFee),
+      };
+    }
+    case blogType.GET_NOTI_SOCKET_LEARNING: {
+      const { data } = action;
+      return {
+        ...state,
+        dataNotiLearning: [data].concat(state.dataNotiLearning),
+      };
+    }
+    case blogType.GET_ALL_NOTI_SOCKET: {
+      const { data } = action.payload;
+      return {
+        ...state,
+        allNotiSocket: data,
       };
     }
     default:

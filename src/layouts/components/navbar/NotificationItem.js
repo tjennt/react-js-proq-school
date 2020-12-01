@@ -5,7 +5,7 @@ import "../../../assets/scss/components/notification.scss";
 
 function NotificationItem(props) {
   const notificationItem = () => {
-    props.checkNotification();
+    props.checkUserSeen();
   };
   return (
     <div className="d-flex justify-content-between">
@@ -20,9 +20,7 @@ function NotificationItem(props) {
           <Media heading className=" media-heading" tag="h6">
             Có thông báo mới !
           </Media>
-          <p className="notification-text">
-            Có thông báo mới đến từ phòng đào tạo
-          </p>
+          <p className="notification-text">{props.allNotiSocket.title}</p>
         </Media>
         <small>
           <time className="media-meta" dateTime="2015-06-11T18:29:20+08:00">

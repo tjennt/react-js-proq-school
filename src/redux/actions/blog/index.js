@@ -1,3 +1,4 @@
+import { toastSuccess } from "../../../utility/toast/toastHelper";
 import * as blogType from "../../constants/blog";
 export const getCategory = () => ({
   type: blogType.GET_CATEGORY,
@@ -93,4 +94,50 @@ export const getDataNotiLearningSuccess = (data, total_page) => ({
     data,
     total_page,
   },
+});
+/**
+ * get noti socket
+ */
+export const getAllNotiSocket = (data) => ({
+  type: blogType.GET_ALL_NOTI_SOCKET,
+  payload: {
+    data,
+  },
+});
+export const getnotiSocket = (socket, role) => {
+  return (dispatch) => {
+    socket.on("ON_NOTIFY", (data) => {
+      if (role === "student" || role === "teacher") {
+        toastSuccess("Có thông báo mới!!!!");
+      } else {
+        return false;
+      }
+      dispatch(getAllNotiSocket(data));
+      switch (data.type) {
+        case "activity":
+          dispatch({
+            type: blogType.GET_NOTI_SOCKET_ACTIVITY,
+            data: data,
+          });
+          break;
+        case "fee":
+          dispatch({
+            type: blogType.GET_NOTI_SOCKET_FEE,
+            data: data,
+          });
+          break;
+        case "learning":
+          dispatch({
+            type: blogType.GET_NOTI_SOCKET_LEARNING,
+            data: data,
+          });
+          break;
+        default:
+          return false;
+      }
+    });
+  };
+};
+export const checkUserSeenNoti = () => ({
+  type: blogType.CHECK_USER_SEEN_NOTI,
 });

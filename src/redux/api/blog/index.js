@@ -55,3 +55,8 @@ export const getDataLearningNoti = (params) => {
     }
   );
 };
+export const checkUserSendNoti = () => {
+  return axiosService.get(
+    `${process.env.REACT_APP_API_ENDPOINT}/staff/view-notify`
+  );
+};

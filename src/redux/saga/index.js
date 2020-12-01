@@ -1,4 +1,4 @@
-import {  takeLatest } from "redux-saga/effects";
+import { takeLatest } from "redux-saga/effects";
 import * as authType from "../constants/auth";
 import * as trancType from "../constants/tranc";
 import * as assType from "../constants/assistant";
@@ -88,6 +88,7 @@ import {
 } from "./chat";
 import {
   addBlogSaga,
+  checkUserSendNotiSaga,
   deleteNotifySaga,
   getCategorySaga,
   getDataNotiActivitySaga,
@@ -205,5 +206,6 @@ function* rootSaga() {
   yield takeLatest(blogType.GET_NOTI_FEE_STUDENT, getDataNotiFeeSaga);
   yield takeLatest(blogType.GET_NOTI_ACTIVITY_STUDENT, getDataNotiActivitySaga);
   yield takeLatest(blogType.GET_NOTI_LEARNING_STUDENT, getDataNotiLearningSaga);
+  yield takeLatest(blogType.CHECK_USER_SEEN_NOTI, checkUserSendNotiSaga);
 }
 export default rootSaga;

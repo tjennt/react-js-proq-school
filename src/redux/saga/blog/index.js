@@ -6,6 +6,7 @@ import {
   getDataNotiFeeSuccess,
   getDataNotiActivitySuccess,
   getDataNotiLearningSuccess,
+  getAllNotiSocket,
 } from "../../actions/blog";
 import {
   addBlogApi,
@@ -16,6 +17,7 @@ import {
   getNotiApi,
   updateBlogApi,
   getDataLearningNoti,
+  checkUserSendNoti,
 } from "../../api/blog";
 import { toastError, toastSuccess } from "../../../utility/toast/toastHelper";
 import { message } from "antd";
@@ -155,4 +157,11 @@ export function* getDataNotiLearningSaga({ payload }) {
     yield put(hideLoading());
     toastError("Vui lòng thử lại sau");
   }
+}
+export function* checkUserSendNotiSaga() {
+  try {
+    yield call(checkUserSendNoti);
+    const data = null;
+    yield put(getAllNotiSocket(data));
+  } catch (error) {}
 }
