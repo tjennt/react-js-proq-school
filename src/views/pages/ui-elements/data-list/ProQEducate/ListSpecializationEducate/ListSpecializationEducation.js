@@ -204,7 +204,7 @@ class ListSpecializationEducation extends Component {
     this.props.setEditSpecialization(null);
   };
   render() {
-    let { columns, value, currentData, sidebar, data } = this.state;
+    let { columns, value, sidebar, data } = this.state;
     return (
       <div className="data-list">
         <Col lg="12">

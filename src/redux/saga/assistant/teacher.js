@@ -26,7 +26,6 @@ export function* getTeacherActionSaga({ payload }) {
     const res = yield call(getDataAssTeachers, param);
     const { data } = res;
     if (data.success === true) {
-      console.log(data.payload);
       const dataRes = data.payload.reduce(
         (arr, curr) => [
           ...arr,
@@ -40,7 +39,6 @@ export function* getTeacherActionSaga({ payload }) {
         ],
         []
       );
-      console.log(dataRes);
       yield put(
         getDataTeacherSuccess(dataRes, data.total_page, data.total_item)
       );
@@ -69,7 +67,6 @@ export function* exportExcelTeacherSaga({ payload }) {
 }
 export function* updateDataTeacherSaga({ payload }) {
   const { params, obj } = payload;
-  console.log(obj);
   const dataReq = {
     fullname: obj.fullname,
     phone: obj.phone,
@@ -79,8 +76,7 @@ export function* updateDataTeacherSaga({ payload }) {
     address: obj.address,
   };
   try {
-    const res = yield call(updateDataTeacherApi, obj.id, dataReq);
-    console.log(res);
+     yield call(updateDataTeacherApi, obj.id, dataReq);
     yield put(getDataTeacher(params));
     toastSuccess("Cập nhật thành công !");
   } catch (error) {}
@@ -88,8 +84,7 @@ export function* updateDataTeacherSaga({ payload }) {
 export function* deleteDataTeacherSaga({ payload }) {
   const { id, params } = payload;
   try {
-    const res = yield call(deleteDataUpdateApi, id);
-    console.log(res);
+     yield call(deleteDataUpdateApi, id);
     yield put(getDataTeacher(params));
     message.success("Xóa thành công !");
   } catch (error) {}

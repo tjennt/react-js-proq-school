@@ -180,9 +180,7 @@ class ListStudentEducation extends Component {
     this.setState({ currentPage: page.selected });
   };
 
-  // onSelectedRowsChange = (data) => {
-  //   console.log(data);
-  // };
+  
   backHome = () => {
     history.goBack();
   };

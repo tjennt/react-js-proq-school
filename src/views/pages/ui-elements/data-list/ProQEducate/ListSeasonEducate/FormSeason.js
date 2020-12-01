@@ -7,7 +7,6 @@ import datePickerField from "../../../../../../utility/customFields/datePickerFi
 
 function FormSeason(props) {
   const { initialValues } = props;
-  console.log(initialValues);
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Vui lòng nhập tiêu đề!"),
     startAt: Yup.date().required("Vui lòng chọn !"),

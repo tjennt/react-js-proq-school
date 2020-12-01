@@ -37,7 +37,6 @@ export function* getSpecializationSaga({ payload }) {
   }
 }
 export function* updateDataSpecialSaga({ payload }) {
-  console.log(payload);
   const { obj, params } = payload;
   const dataReq = {
     name: obj.nameSpecialization,

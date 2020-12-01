@@ -236,7 +236,7 @@ class ListClassEducateConfig extends Component {
     getDataClass({ page: parsedFilter.page, limit: value });
   };
   render() {
-    let { columns, data, value, currentData, sidebar } = this.state;
+    let { columns, data, value, sidebar } = this.state;
     return (
       <div className="data-list">
         <Col lg="12">

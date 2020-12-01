@@ -8,7 +8,6 @@ import {
   ChevronRight,
   Edit,
   Plus,
-  Trash,
 } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
@@ -32,16 +31,16 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 import Moment from "react-moment";
-import { message, Popconfirm, Tooltip } from "antd";
+import {  Tooltip } from "antd";
 import ReactPaginate from "react-paginate";
 const ActionsComponent = (props) => {
-  function confirm(e) {
-    props.deleteRow(props.row);
-  }
+  // function confirm(e) {
+  //   props.deleteRow(props.row);
+  // }
 
-  function cancel(e) {
-    message.error("Hủy xóa dữ liệu !");
-  }
+  // function cancel(e) {
+  //   message.error("Hủy xóa dữ liệu !");
+  // }
   return (
     <div className="data-list-action">
       <Tooltip placement="topLeft" title="Chỉnh sửa">
@@ -211,7 +210,7 @@ class ListTSubjectConfig extends Component {
     getDataSubject({ page: parsedFilter.page, limit: value });
   };
   render() {
-    let { columns, data, value, currentData, sidebar } = this.state;
+    let { columns, data, value, sidebar } = this.state;
     return (
       <div className="data-list">
         <Col lg="12">

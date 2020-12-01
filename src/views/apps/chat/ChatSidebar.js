@@ -41,7 +41,7 @@ class ChatSidebar extends React.Component {
   };
   render() {
     const { status, value } = this.state;
-    const { chatGroup, idUserMe, dataUserSearch } = this.props;
+    const { chatGroup, dataUserSearch } = this.props;
     return (
       <Card className="sidebar-content h-100">
         <span

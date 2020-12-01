@@ -58,7 +58,6 @@ const rootChat = (state = initialState, action) => {
     }
     case chatType.SEARCH_CHAT_USER_SUCCESS: {
       const { data } = action.payload;
-      console.log(data);
       return {
         ...state,
         dataSearch: data,

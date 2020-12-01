@@ -12,7 +12,6 @@ class ManagerProfile extends Component {
   }
   render() {
     const { dataProfile } = this.props.profile;
-    console.log(dataProfile);
     return (
       <div>
         <Breadcrumbs

@@ -19,8 +19,6 @@ const chipText = {
 };
 const ActionDay = (props) => {
   const { row } = props;
-  console.log(row);
-  // let weekDays = row.weekDay;
   return (
     <div style={{ display: "inline-flex" }}>
       {row.weeksDay.map((item) => (

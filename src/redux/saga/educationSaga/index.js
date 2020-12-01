@@ -45,7 +45,6 @@ export function* getSchedulesSaga({ payload }) {
     const res = yield call(getDataSchedulesApi, param);
     const { data } = res;
     if (data.success === true) {
-      console.log(data);
       let dataSchedule = data.payload.reduce(
         (arr, curr) => [
           ...arr,
@@ -173,8 +172,6 @@ export function* addStageSaga({ payload }) {
     startAt: moment(obj.startAt).format("MM-DD-YYYY"),
     endAt: moment(obj.startEnd).format("MM-DD-YYYY"),
   };
-  console.log(moment(obj.startAt).format("MM-DD-YYYY"));
-  console.log(dataReq);
   try {
     const res = yield call(addStageApi, dataReq);
     const { data } = res;
@@ -289,7 +286,6 @@ export function* updateSpecializationSaga({ payload }) {
 }
 export function* deleteSpecialSaga({ payload }) {
   const { obj, params } = payload;
-  console.log(obj);
   try {
     const res = yield call(deleteSpecializationApi, obj._id);
     const { data } = res;

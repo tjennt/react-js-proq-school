@@ -38,7 +38,6 @@ class AdminBlogSidebar extends Component {
         category: data.type,
       };
     }
-    console.log(dataInititalEdit);
     return (
       <div
         className={classnames("data-list-sidebarBlog", {

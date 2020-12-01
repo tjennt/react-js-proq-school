@@ -1,6 +1,5 @@
 import { call, put } from "redux-saga/effects";
 import {
-  getAllDataGroup,
   getAllDataGroupSuccess,
   getMessageIdGroupSuccess,
   joinFriendSuccss,
@@ -35,7 +34,6 @@ export function* getMessageGroupByIdSaga({ payload }) {
 }
 export function* sendChatSaga({ payload }) {
   const { idGroup, msg } = payload;
-  console.log(payload);
   const data = {
     content: msg,
   };

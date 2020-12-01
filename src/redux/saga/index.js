@@ -1,4 +1,4 @@
-import { takeEvery, takeLatest } from "redux-saga/effects";
+import {  takeLatest } from "redux-saga/effects";
 import * as authType from "../constants/auth";
 import * as trancType from "../constants/tranc";
 import * as assType from "../constants/assistant";
