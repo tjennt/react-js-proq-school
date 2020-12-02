@@ -1,15 +1,20 @@
 import React from "react";
 import { Card, FormGroup, Input, Badge } from "reactstrap";
-import { X, Search } from "react-feather";
+import { X, PlusCircle } from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { connect } from "react-redux";
 import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg";
 import { newDate } from "../../../utility/config";
 import { searchChatUser } from "../../../redux/actions/chatProQ";
+import AsyncSelect from "react-select/async";
 import {
   API_ENDPOINT_IMG,
   // API_ENDPOINT_IMG_TEACHER,
 } from "../../../redux/constants";
+import { Modal } from "antd";
+import "antd/dist/antd.css";
+import Axios from "axios";
+import { getToken } from "../../../utility/auth/setAuthToken";
 
 class ChatSidebar extends React.Component {
   state = {
@@ -18,6 +23,8 @@ class ChatSidebar extends React.Component {
     messages: [],
     status: null,
     value: "",
+    inputValue: [],
+    isModalVisible: false,
   };
 
   componentDidMount() {
@@ -30,6 +37,13 @@ class ChatSidebar extends React.Component {
   searchChatUser = () => {
     this.props.searchChatUser(this.state.value);
   };
+  handleOk = () => {};
+  handleCancel = () => {
+    this.setState({
+      ...this.state,
+      isModalVisible: false,
+    });
+  };
   joinFriendSearch = (item) => {
     const value = "";
     this.props.searchChatUser(value);
@@ -39,11 +53,71 @@ class ChatSidebar extends React.Component {
     this.props.joinFriend(item.user._id);
     this.props.setContactUser(item);
   };
+  showModal = () => {
+    this.setState({
+      ...this.state,
+      isModalVisible: true,
+    });
+  };
+  config = {
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmJkMzkyMWY2YmJhMTc1ZDdkZDY1MDkiLCJ0ZWFjaGVySWQiOm51bGwsInN0dWRlbnRJZCI6eyJhdmF0YXIiOiJkZWZhdWx0LmpwZyIsInN0YXR1cyI6MCwiX2lkIjoiNWZiZDM5MjFmNmJiYTE3NWQ3ZGQ2NTA1Iiwic3R1ZGVudENvZGUiOiJwczAwMDQ4OTgiLCJmdWxsTmFtZSI6IkNow6J1IFRo4bq_IE5pbmgiLCJkb2IiOiIyMC8xMC8xOTgwIiwiYWRkcmVzcyI6IjEyMCBUaGljaCBxdWFuZyBkdWMiLCJpZGVudGl0eU51bWJlciI6IjEyMzQ1Njc4OSIsInBob25lIjoiMTIzNDU2Nzg5IiwiZW1haWwiOiJsaW5oY3RwczA5OTEyQGZwdC5lZHUudm4iLCJjbGFzcyI6IjVmYmQzOTBlZjZiYmExNzVkN2RkNjUwNCIsImNyZWF0ZWRBdCI6IjIwMjAtMTEtMjRUMTY6NDc6MjkuNDk0WiIsInVwZGF0ZWRBdCI6IjIwMjAtMTEtMjRUMTY6NDc6MjkuNDk0WiJ9LCJhY2Nlc3MiOiJzdHVkZW50IiwiaWF0IjoxNjA2OTIzNDY4LCJleHAiOjE2MDc3ODc0Njh9.2KMNWQw0d6WGrvrrjqkwgpgskYjFz9blbQo1Pc_0QmU`,
+    },
+  };
+  handleChangeSearch = (selectedOption) => {
+    this.setState({
+      ...this.state,
+      inputValue: selectedOption,
+    });
+  };
+  fetchData = (inputValue, callback) => {
+    if (!inputValue) {
+      callback([]);
+    } else {
+      setTimeout(() => {
+        Axios.get(
+          `https://server-dev.asia/v1/users/search?text=${inputValue}`,
+          this.config
+        )
+          .then((data) => {
+            console.log(data);
+            const tempArray = [];
+            data.data.payload.forEach((element) => {
+              tempArray.push({
+                label: `${element.fullName}`,
+                value: element._id,
+              });
+            });
+            callback(tempArray);
+          })
+          .catch((error) => {
+            console.log(error, "catch the hoop");
+          });
+      });
+    }
+  };
   render() {
-    const { status, value } = this.state;
+    const { status, value, isModalVisible } = this.state;
     const { chatGroup, dataUserSearch } = this.props;
     return (
       <Card className="sidebar-content h-100">
+        <Modal
+          title="Taọ nhóm chat"
+          visible={isModalVisible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <AsyncSelect
+            isMulti
+            // labelKey={"fullName"}
+            // valueKey={"_id"}
+            // options={optionUser}
+            onChange={this.handleChangeSearch}
+            defaultOptions={false}
+            loadOptions={this.fetchData}
+          />
+        </Modal>
         <span
           className="sidebar-close-icon"
           onClick={() => this.props.mainSidebar(false)}
@@ -74,6 +148,7 @@ class ChatSidebar extends React.Component {
             <FormGroup className="position-relative  mx-1 my-0 w-100">
               <Input
                 className="round"
+                style={{ width: "80%" }}
                 type="text"
                 placeholder="Tìm kiếm"
                 onChange={(e) => this.handleOnChange(e)}
@@ -84,12 +159,19 @@ class ChatSidebar extends React.Component {
                   }
                 }}
               />
-              <div
+              {/* <div
                 onClick={this.searchChatUser}
                 className="form-control-position"
                 style={{ cursor: "pointer" }}
               >
                 <Search size={15} />
+              </div> */}
+              <div
+                onClick={this.showModal}
+                className="form-control-position"
+                style={{ cursor: "pointer" }}
+              >
+                <PlusCircle size={20} />
               </div>
             </FormGroup>
           </div>
@@ -130,7 +212,6 @@ class ChatSidebar extends React.Component {
               ))}
             </div>
           ) : null}
-
           <h3 className="primary p-1 mb-0">Trò truyện </h3>
           {chatGroup
             ? chatGroup.map((item) => (
