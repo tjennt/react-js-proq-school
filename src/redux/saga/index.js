@@ -90,6 +90,7 @@ import {
   addBlogSaga,
   checkUserSendNotiSaga,
   deleteNotifySaga,
+  getBlogDetailSaga,
   getCategorySaga,
   getDataNotiActivitySaga,
   getDataNotiFeeSaga,
@@ -207,5 +208,6 @@ function* rootSaga() {
   yield takeLatest(blogType.GET_NOTI_ACTIVITY_STUDENT, getDataNotiActivitySaga);
   yield takeLatest(blogType.GET_NOTI_LEARNING_STUDENT, getDataNotiLearningSaga);
   yield takeLatest(blogType.CHECK_USER_SEEN_NOTI, checkUserSendNotiSaga);
+  yield takeLatest(blogType.GET_NOTI_DETAIL, getBlogDetailSaga);
 }
 export default rootSaga;

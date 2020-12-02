@@ -60,3 +60,8 @@ export const checkUserSendNoti = () => {
     `${process.env.REACT_APP_API_ENDPOINT}/staff/view-notify`
   );
 };
+export const getBlogDetailApi = (id) => {
+  return axiosService.get(
+    `${process.env.REACT_APP_API_ENDPOINT}/staff/get-notify/${id}`
+  );
+};

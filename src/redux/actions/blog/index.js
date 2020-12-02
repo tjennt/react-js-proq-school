@@ -141,3 +141,15 @@ export const getnotiSocket = (socket, role) => {
 export const checkUserSeenNoti = () => ({
   type: blogType.CHECK_USER_SEEN_NOTI,
 });
+export const getBlogDetail = (id) => ({
+  type: blogType.GET_NOTI_DETAIL,
+  payload: {
+    id,
+  },
+});
+export const getBlogDetailSuccess = (data) => ({
+  type: blogType.GET_NOTI_DETAIL_SUCCESS,
+  payload: {
+    data,
+  },
+});

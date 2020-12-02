@@ -7,6 +7,7 @@ import {
   getDataNotiActivitySuccess,
   getDataNotiLearningSuccess,
   getAllNotiSocket,
+  getBlogDetailSuccess,
 } from "../../actions/blog";
 import {
   addBlogApi,
@@ -18,6 +19,7 @@ import {
   updateBlogApi,
   getDataLearningNoti,
   checkUserSendNoti,
+  getBlogDetailApi,
 } from "../../api/blog";
 import { toastError, toastSuccess } from "../../../utility/toast/toastHelper";
 import { message } from "antd";
@@ -163,5 +165,15 @@ export function* checkUserSendNotiSaga() {
     yield call(checkUserSendNoti);
     const data = null;
     yield put(getAllNotiSocket(data));
+  } catch (error) {}
+}
+export function* getBlogDetailSaga({ payload }) {
+  const { id } = payload;
+  try {
+    const res = yield call(getBlogDetailApi, id);
+    const { data } = res;
+    if (data.success) {
+      yield put(getBlogDetailSuccess(data.payload));
+    }
   } catch (error) {}
 }

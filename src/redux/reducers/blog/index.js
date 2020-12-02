@@ -13,6 +13,7 @@ const initialtState = {
   dataNotiLearning: [],
   total_page_learning: 0,
   allNotiSocket: null,
+  blogDetail: null,
 };
 const rootBlog = (state = initialtState, action) => {
   switch (action.type) {
@@ -119,6 +120,18 @@ const rootBlog = (state = initialtState, action) => {
       return {
         ...state,
         allNotiSocket: data,
+      };
+    }
+    case blogType.GET_NOTI_DETAIL: {
+      return {
+        ...state,
+      };
+    }
+    case blogType.GET_NOTI_DETAIL_SUCCESS: {
+      const { data } = action.payload;
+      return {
+        ...state,
+        blogDetail: data,
       };
     }
     default:
