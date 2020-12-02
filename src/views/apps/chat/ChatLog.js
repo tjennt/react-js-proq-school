@@ -74,6 +74,8 @@ class ChatLog extends React.Component {
   //   }
   // };
   componentDidMount() {
+    try { socket.disconnect(); } catch (error) { }
+    
     socket = io(`https://server-dev.asia`);
     this.props.receiveChatSocket(socket);
     this.scrollToBottom();
