@@ -20,7 +20,6 @@ class DataListTeacherSidebar extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { data } = this.props;
-    console.log(data);
     if (data !== null && prevProps.data === null) {
       if (data.teacherId !== prevState.id)
         this.setState({ id: data.teacherId._id });

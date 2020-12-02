@@ -1,6 +1,5 @@
 import { call, put } from "redux-saga/effects";
 import {
-  getAllDataGroup,
   getAllDataGroupSuccess,
   getMessageIdGroupSuccess,
   joinFriendSuccss,
@@ -29,26 +28,22 @@ export function* getMessageGroupByIdSaga({ payload }) {
     const res = yield call(getMessageGroupByIdApi, idGroup);
     const { data } = res;
     if (data.success) {
-      yield put(getAllDataGroup());
       yield put(getMessageIdGroupSuccess(data.payload.reverse()));
     }
   } catch (error) {}
 }
 export function* sendChatSaga({ payload }) {
   const { idGroup, msg } = payload;
-  console.log(payload);
   const data = {
     content: msg,
   };
   try {
-    const res = yield call(sendChat, idGroup, data);
-    console.log(res);
+    yield call(sendChat, idGroup, data);
   } catch (error) {}
 }
 export function* getAllGroupSaga() {
   try {
     const res = yield call(getAllGroupApi);
-    console.log(res);
     const { data } = res;
     if (data.success) {
       yield put(getAllDataGroupSuccess(data.payload));

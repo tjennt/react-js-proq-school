@@ -17,9 +17,6 @@ export default function ManagerItem(props) {
   const [passwordOld, setPasswordOld] = useState("");
   const [passwordNew, setPassWordNew] = useState("");
   const [visible, setVisible] = useState(false);
-  const showModal = () => {
-    setVisible(true);
-  };
   const handleOk = () => {
     updateManager(passwordOld, passwordNew);
     setVisible(false);

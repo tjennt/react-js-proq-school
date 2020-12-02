@@ -14,6 +14,8 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import NotificationItem from "./NotificationItem";
 import { toastSuccess } from "../../../utility/toast/toastHelper";
 import socket from "socket.io-client";
+import { getnotiSocket, checkUserSeenNoti } from "../../../redux/actions/blog";
+import NoNotificationItem from "./NoNotificationItem";
 
 let io;
 const UserDropdown = (props) => {
@@ -46,20 +48,21 @@ class NavbarUser extends React.PureComponent {
   componentDidMount() {
     io = socket(`https://server-dev.asia`);
     io.on("SEND_MESSAGE_CHAT", (data) => {
-      if (data.from !== this.props.idUser) {
-        toastSuccess("Bạn có tin nhắn mới");
-      } else {
-        return false;
+      if (this.props.role === "student" || this.props.role === "teacher") {
+        if (data.from !== this.props.idUser) {
+          toastSuccess("Bạn có tin nhắn mới");
+        } else {
+          return false;
+        }
       }
     });
-    io.on("ON_NOTIFY", (data) => {
-      if (this.props.role === "student") {
-        toastSuccess("Bạn có thông báo mới từ trường !!!!");
-      } else {
-        return false;
-      }
-    });
+    if (this.props.role === "student" || this.props.role === "teacher") {
+      this.props.getnotiSocket(io, this.props.role);
+    }
   }
+  checkUserSeen = () => {
+    this.props.checkUserSeenNoti();
+  };
   // socket = () => {
   //   const { text } = this.state;
   //   const { token, idUser } = this.props;
@@ -73,6 +76,8 @@ class NavbarUser extends React.PureComponent {
   //   });
   // };
   render() {
+    const { allNotiSocket } = this.props;
+    console.log(allNotiSocket);
     return (
       <ul className="nav navbar-nav navbar-nav-user float-right">
         {/* <Input onChange={(e) => this.setState({ text: e.target.value })} /> */}
@@ -81,19 +86,34 @@ class NavbarUser extends React.PureComponent {
           tag="li"
           className="dropdown-notification nav-item"
         >
-          <DropdownToggle tag="a" className="nav-link nav-link-label">
-            <Icon.Bell size={21} />
-            <Badge pill color="primary" className="badge-up">
-              {" "}
-              5{" "}
-            </Badge>
-          </DropdownToggle>
+          {allNotiSocket && allNotiSocket.viewers.length <= 0 ? (
+            <DropdownToggle tag="a" className="nav-link nav-link-label">
+              <Icon.Bell size={21} />
+              <Badge pill color="primary" className="badge-up">
+                {" "}
+                !{" "}
+              </Badge>
+            </DropdownToggle>
+          ) : (
+            <DropdownToggle
+              disabled={false}
+              tag="a"
+              className="nav-link nav-link-label"
+            >
+              <Icon.Bell size={21} />
+            </DropdownToggle>
+          )}
           <DropdownMenu tag="ul" right className="dropdown-menu-media">
             <li className="dropdown-menu-header">
-              <div className="dropdown-header mt-0">
-                <h3 className="text-white">5 Yêu cầu </h3>
-                <span className="notification-title">Yêu cầu rút tiền </span>
-              </div>
+              {allNotiSocket ? (
+                <div className="dropdown-header mt-0">
+                  <h3 className="text-white">Có thông báo mới</h3>
+                </div>
+              ) : (
+                <div className="dropdown-header mt-0">
+                  <h3 className="text-white">Chưa có thông báo mới</h3>
+                </div>
+              )}
             </li>
             <PerfectScrollbar
               className="media-list overflow-hidden position-relative"
@@ -101,12 +121,14 @@ class NavbarUser extends React.PureComponent {
                 wheelPropagation: false,
               }}
             >
-              <NotificationItem checkNotification={this.checkNotification} />
-              <NotificationItem checkNotification={this.checkNotification} />
-              <NotificationItem checkNotification={this.checkNotification} />
-              <NotificationItem checkNotification={this.checkNotification} />
-              <NotificationItem checkNotification={this.checkNotification} />
-              <NotificationItem checkNotification={this.checkNotification} />
+              {allNotiSocket ? (
+                <NotificationItem
+                  checkUserSeen={this.checkUserSeen}
+                  allNotiSocket={allNotiSocket}
+                />
+              ) : (
+                <NoNotificationItem />
+              )}
             </PerfectScrollbar>
           </DropdownMenu>
         </UncontrolledDropdown>
@@ -141,6 +163,11 @@ const mapStateToProps = (state) => {
     role: state.auth.login.userRole,
     token: state.auth.login.values.loggedInUser.token,
     idUser: state.auth.login.values.loggedInUser._id,
+    allNotiSocket: state.dataBlog.allNotiSocket,
   };
 };
-export default connect(mapStateToProps, { logoutWithJWT })(NavbarUser);
+export default connect(mapStateToProps, {
+  logoutWithJWT,
+  getnotiSocket,
+  checkUserSeenNoti,
+})(NavbarUser);

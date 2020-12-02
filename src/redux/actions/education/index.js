@@ -83,11 +83,45 @@ export const addSeason = (obj, params) => ({
     params,
   },
 });
+export const setTaskSeason = (task) => ({
+  type: educationType.SET_TASK_SEASON,
+  payload: {
+    task,
+  },
+});
+export const updateSeason = (obj, params) => ({
+  type: educationType.UPDATE_SEASON,
+  payload: {
+    obj,
+    params,
+  },
+});
+export const deleteSeason = (obj, params) => ({
+  type: educationType.DELETE_TASK_SEASON,
+  payload: {
+    obj,
+    params,
+  },
+});
 /**
- * create season
+ * create specail
  */
 export const addSpecialization = (obj, params) => ({
   type: educationType.ADD_SEPCIALIZATION,
+  payload: {
+    obj,
+    params,
+  },
+});
+export const updateSpecialization = (obj, params) => ({
+  type: educationType.UPDATE_SEPCIALIZATION,
+  payload: {
+    obj,
+    params,
+  },
+});
+export const deleteSpecialization = (obj, params) => ({
+  type: educationType.DELETE_SEPCIALIZATION,
   payload: {
     obj,
     params,

@@ -1,10 +1,8 @@
 import { Formik, Form, Field } from "formik";
 import React from "react";
-import { Button, Col, FormGroup, Label, Row } from "reactstrap";
-import datePickerField from "../../../../../utility/customFields/datePickerFields";
+import { Button, Col, FormGroup,  Row } from "reactstrap";
 import InputField from "../../../../../utility/customFields/inputField";
 import SelectField from "../../../../../utility/customFields/selectFields";
-import { Editor } from "@tinymce/tinymce-react";
 import InputTextTinyField from "../../../../../utility/customFields/inputTiny/inputTiny";
 // import * as Yup from "yup";
 

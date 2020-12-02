@@ -15,14 +15,14 @@ const navigationConfig = [
     permissions: ["admin", "teacher"],
     navLink: "/",
   },
-  {
-    id: "searchStudentAssistant",
-    title: "Tra cứu",
-    type: "item",
-    icon: <Icon.Circle size={12} />,
-    permissions: ["admin"],
-    navLink: "/assistant/search",
-  },
+  // {
+  //   id: "searchStudentAssistant",
+  //   title: "Tra cứu",
+  //   type: "item",
+  //   icon: <Icon.Circle size={12} />,
+  //   permissions: ["admin"],
+  //   navLink: "/assistant/search",
+  // },
   {
     id: "list ",
     title: "Danh sách ",

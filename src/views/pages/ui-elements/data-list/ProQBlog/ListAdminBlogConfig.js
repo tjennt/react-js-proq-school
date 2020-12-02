@@ -25,7 +25,7 @@ import {
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
-import { message, Popconfirm, Tooltip } from "antd";
+import { message, Popconfirm } from "antd";
 import {
   getCategory,
   addBlog,

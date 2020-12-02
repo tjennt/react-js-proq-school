@@ -37,7 +37,6 @@ import {
 import { message, Modal, Popconfirm, Tooltip, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import ReactPaginate from "react-paginate";
-import Moment from "react-moment";
 import { API_ENDPOINT_IMG_TEACHER } from "../../../../../../redux/constants";
 import { newDate } from "../../../../../../utility/config";
 const { Dragger } = Upload;

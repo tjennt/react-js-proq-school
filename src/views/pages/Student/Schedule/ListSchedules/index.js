@@ -162,7 +162,6 @@ class ListSchedules extends Component {
 
   thumbView = this.props.thumbView;
   componentDidMount() {
-    console.log(this.props);
     this.props.getDataScheduleId(this.props.match.params.id);
   }
   handleDelete = (row) => {
@@ -199,7 +198,6 @@ class ListSchedules extends Component {
     this.setState({ selectedRows: state.selectedRows }); // triggers MyComponent to re-render with new state
   };
   onRowClicked = (state) => {
-    console.log(state);
     history.push(`/student/schedule/detail/${state.id}`);
   };
   goBack = () => {

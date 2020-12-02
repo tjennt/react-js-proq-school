@@ -12,16 +12,37 @@ class SeasonEducationSidebar extends Component {
     startAt: "",
     startEnd: "",
   };
-  handleSubmit = (obj) => {
-    const { addData, parsedFilter, handleSidebar } = this.props;
-    // this.props.updateData(obj, params);
-    handleSidebar(false, true);
-
-    addData(obj, parsedFilter);
-    // this.props.handleSidebar(false, true);
+  handleSubmit = (obj, { resetForm }) => {
+    const {
+      addData,
+      parsedFilter,
+      handleSidebar,
+      seasonEdit,
+      updateData,
+    } = this.props;
+    if (seasonEdit === null) {
+      handleSidebar(false, true);
+      addData(obj, parsedFilter);
+      resetForm({});
+    } else {
+      updateData(obj, parsedFilter);
+      handleSidebar(false, true);
+      resetForm({});
+    }
   };
   render() {
-    let { show, handleSidebar, data } = this.props;
+    let { show, handleSidebar, seasonEdit } = this.props;
+    let taskEditSeason = [];
+    let id = "";
+    if (seasonEdit) {
+      id = seasonEdit._id;
+      taskEditSeason = {
+        id: seasonEdit._id,
+        name: seasonEdit.name,
+        startAt: seasonEdit.startAt,
+        startEnd: seasonEdit.endAt,
+      };
+    }
     return (
       <div
         className={classnames("data-list-sidebar", {
@@ -29,7 +50,7 @@ class SeasonEducationSidebar extends Component {
         })}
       >
         <div className="data-list-sidebar-header mt-2 px-2 d-flex justify-content-between">
-          <h4>{data !== null ? "Cập nhật" : "Thêm dữ liệu"}</h4>
+          <h4>{id !== null ? "Cập nhật" : "Thêm dữ liệu"}</h4>
           <X size={20} onClick={() => handleSidebar(false, true)} />
         </div>
         <PerfectScrollbar
@@ -38,7 +59,7 @@ class SeasonEducationSidebar extends Component {
         >
           <FormSeason
             onSubmitForm={this.handleSubmit}
-            initialValues={this.initialState}
+            initialValues={id ? taskEditSeason : this.initialState}
           />
         </PerfectScrollbar>
       </div>

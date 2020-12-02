@@ -1,4 +1,4 @@
-import { takeEvery, takeLatest } from "redux-saga/effects";
+import { takeLatest } from "redux-saga/effects";
 import * as authType from "../constants/auth";
 import * as trancType from "../constants/tranc";
 import * as assType from "../constants/assistant";
@@ -43,9 +43,13 @@ import {
   addSpecializationSaga,
   addStageSaga,
   addSubjectSaga,
+  deleteSeasonSaga,
+  deleteSpecialSaga,
   getSchedulesSaga,
   importExcelStudentEduSaga,
   importExcelTeacherEduSaga,
+  updateSeasonSaga,
+  updateSpecializationSaga,
 } from "./educationSaga";
 import {
   getDataSubjectSaga,
@@ -84,8 +88,13 @@ import {
 } from "./chat";
 import {
   addBlogSaga,
+  checkUserSendNotiSaga,
   deleteNotifySaga,
+  getBlogDetailSaga,
   getCategorySaga,
+  getDataNotiActivitySaga,
+  getDataNotiFeeSaga,
+  getDataNotiLearningSaga,
   getNotifySaga,
   updateBlogSaga,
 } from "./blog";
@@ -126,12 +135,21 @@ function* rootSaga() {
     educationType.IMPORT_EXCEL_TEACHER,
     importExcelTeacherEduSaga
   );
+
   yield takeLatest(educationType.ADD_CLASS, addClassSaga);
   yield takeLatest(educationType.ADD_SUBJECT, addSubjectSaga);
   yield takeLatest(educationType.CREATE_STAGE, addStageSaga);
   yield takeLatest(educationType.CREATE_SEASON, addSeasonSaga);
+  yield takeLatest(educationType.UPDATE_SEASON, updateSeasonSaga);
+  yield takeLatest(educationType.DELETE_TASK_SEASON, deleteSeasonSaga);
   yield takeLatest(educationType.GET_DATA_SCHEDULES, getSchedulesSaga);
   yield takeLatest(educationType.ADD_SEPCIALIZATION, addSpecializationSaga);
+  yield takeLatest(educationType.DELETE_SEPCIALIZATION, deleteSpecialSaga);
+  yield takeLatest(
+    educationType.UPDATE_SEPCIALIZATION,
+    updateSpecializationSaga
+  );
+
   yield takeLatest(
     scheduleType.UPDATE_DATA_SPECIALIZATION,
     updateDataSpecialSaga
@@ -186,5 +204,10 @@ function* rootSaga() {
   yield takeLatest(blogType.GET_ALL_NOTIFY, getNotifySaga);
   yield takeLatest(blogType.UPDATE_BLOG, updateBlogSaga);
   yield takeLatest(blogType.DELETE_BLOG, deleteNotifySaga);
+  yield takeLatest(blogType.GET_NOTI_FEE_STUDENT, getDataNotiFeeSaga);
+  yield takeLatest(blogType.GET_NOTI_ACTIVITY_STUDENT, getDataNotiActivitySaga);
+  yield takeLatest(blogType.GET_NOTI_LEARNING_STUDENT, getDataNotiLearningSaga);
+  yield takeLatest(blogType.CHECK_USER_SEEN_NOTI, checkUserSendNotiSaga);
+  yield takeLatest(blogType.GET_NOTI_DETAIL, getBlogDetailSaga);
 }
 export default rootSaga;

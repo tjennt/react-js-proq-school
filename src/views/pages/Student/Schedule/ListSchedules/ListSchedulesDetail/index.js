@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import { history } from "../../../../../../history";
-import { ChevronLeft, ChevronRight, Eye } from "react-feather";
+import { ChevronLeft, ChevronRight } from "react-feather";
 import { connect } from "react-redux";
 import { Row, Col, Button } from "reactstrap";
 import "antd/dist/antd.css";
@@ -10,7 +10,6 @@ import "../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import ReactPaginate from "react-paginate";
-import Moment from "react-moment";
 import BreadCrumbs from "../../../../../../components/@vuexy/breadCrumbs/BreadCrumb";
 import { newDate } from "../../../../../../utility/config";
 // import { Popconfirm, message } from "antd";
@@ -26,20 +25,6 @@ const selectedStyle = {
     },
   },
 };
-const ActionsComponent = (props) => {
-  return (
-    <div className="data-list-action">
-      <Eye
-        className="cursor-pointer mr-1"
-        size={20}
-        onClick={() => {
-          return props.currentData(props.row);
-        }}
-      />
-    </div>
-  );
-};
-
 class ListSchedulesDetail extends Component {
   static getDerivedStateFromProps(props, state) {
     if (props.dataList.dataDetail !== state.data.length) {
@@ -109,7 +94,6 @@ class ListSchedulesDetail extends Component {
 
   thumbView = this.props.thumbView;
   componentDidMount() {
-    console.log(this.props);
     this.props.getDataScheduleDetailId(this.props.match.params.id);
   }
   handleDelete = (row) => {

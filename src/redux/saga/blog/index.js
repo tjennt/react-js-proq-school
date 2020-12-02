@@ -1,18 +1,29 @@
-import { call, put } from "redux-saga/effects";
+import { call, delay, put } from "redux-saga/effects";
 import {
   getCategorySuccess,
   getNotifyAllSuccess,
   getNotifyAll,
+  getDataNotiFeeSuccess,
+  getDataNotiActivitySuccess,
+  getDataNotiLearningSuccess,
+  getAllNotiSocket,
+  getBlogDetailSuccess,
 } from "../../actions/blog";
 import {
   addBlogApi,
   deleteNotiApi,
+  getDataActivityNoti,
   getDataCategoryApi,
+  getDataFeeNoti,
   getNotiApi,
   updateBlogApi,
+  getDataLearningNoti,
+  checkUserSendNoti,
+  getBlogDetailApi,
 } from "../../api/blog";
-import { toastSuccess } from "../../../utility/toast/toastHelper";
+import { toastError, toastSuccess } from "../../../utility/toast/toastHelper";
 import { message } from "antd";
+import { hideLoading, showLoading } from "../../actions/ui";
 export function* getCategorySaga() {
   try {
     const res = yield call(getDataCategoryApi);
@@ -81,6 +92,88 @@ export function* deleteNotifySaga({ payload }) {
     if (data.success) {
       yield put(getNotifyAll(params));
       message.success("Xoá thành công ");
+    }
+  } catch (error) {}
+}
+/**
+ * student
+ */
+export function* getDataNotiFeeSaga({ payload }) {
+  const { params } = payload;
+  yield put(showLoading());
+  const param = {
+    page: params ? params.page : "",
+    limit: params ? params.limit : "",
+  };
+  try {
+    const res = yield call(getDataFeeNoti, param);
+    const { data } = res;
+    if (data.success) {
+      yield delay(500);
+      yield put(hideLoading());
+      yield put(getDataNotiFeeSuccess(data.payload, data.total_page));
+    }
+  } catch (error) {
+    yield put(hideLoading());
+    toastError("Vui lòng thử lại sau");
+  }
+}
+export function* getDataNotiActivitySaga({ payload }) {
+  const { params } = payload;
+  yield put(showLoading());
+
+  const param = {
+    page: params ? params.page : "",
+    limit: params ? params.limit : "",
+  };
+  try {
+    const res = yield call(getDataActivityNoti, param);
+    const { data } = res;
+    if (data.success) {
+      yield delay(500);
+      yield put(hideLoading());
+      yield put(getDataNotiActivitySuccess(data.payload, data.total_page));
+    }
+  } catch (error) {
+    yield put(hideLoading());
+    toastError("Vui lòng thử lại sau");
+  }
+}
+export function* getDataNotiLearningSaga({ payload }) {
+  const { params } = payload;
+  yield put(showLoading());
+
+  const param = {
+    page: params ? params.page : "",
+    limit: params ? params.limit : "",
+  };
+  try {
+    const res = yield call(getDataLearningNoti, param);
+    const { data } = res;
+    if (data.success) {
+      yield delay(500);
+      yield put(hideLoading());
+      yield put(getDataNotiLearningSuccess(data.payload, data.total_page));
+    }
+  } catch (error) {
+    yield put(hideLoading());
+    toastError("Vui lòng thử lại sau");
+  }
+}
+export function* checkUserSendNotiSaga() {
+  try {
+    yield call(checkUserSendNoti);
+    const data = null;
+    yield put(getAllNotiSocket(data));
+  } catch (error) {}
+}
+export function* getBlogDetailSaga({ payload }) {
+  const { id } = payload;
+  try {
+    const res = yield call(getBlogDetailApi, id);
+    const { data } = res;
+    if (data.success) {
+      yield put(getBlogDetailSuccess(data.payload));
     }
   } catch (error) {}
 }

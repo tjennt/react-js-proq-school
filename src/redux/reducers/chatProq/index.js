@@ -36,7 +36,7 @@ const rootChat = (state = initialState, action) => {
       state.contentMessageIdGroup.push(data);
       return {
         ...state,
-        contentMessageIdGroup: state.contentMessageIdGroup,
+        // contentMessageIdGroup: state.contentMessageIdGroup.concat(data),
       };
     }
     case chatType.GET_ALL_DATA_GROUP: {
@@ -58,7 +58,6 @@ const rootChat = (state = initialState, action) => {
     }
     case chatType.SEARCH_CHAT_USER_SUCCESS: {
       const { data } = action.payload;
-      console.log(data);
       return {
         ...state,
         dataSearch: data,

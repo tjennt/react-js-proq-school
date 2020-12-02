@@ -5,9 +5,6 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Edit,
-  Plus,
-  Trash,
 } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
@@ -16,7 +13,6 @@ import "../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../assets/scss/pages/data-list.scss";
 import "../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import {
-  Button,
   Col,
   DropdownItem,
   DropdownMenu,
@@ -24,7 +20,6 @@ import {
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
-import { Popconfirm, message } from "antd";
 import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
 const selectedStyle = {

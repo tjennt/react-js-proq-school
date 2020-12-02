@@ -205,7 +205,6 @@ class FormDepartment extends Component {
         </Option>
       );
     });
-    console.log(season);
     let optionClassDepart = classDepart.map((item) => {
       return (
         <Option key={item._id} value={item._id}>
@@ -256,7 +255,6 @@ class FormDepartment extends Component {
         )
         .toString();
     }
-    console.log(dateMax);
     return (
       <Form>
         <FormGroup>

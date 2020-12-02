@@ -8,7 +8,6 @@ import {
   ChevronRight,
   Edit,
   Plus,
-  Trash,
 } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";

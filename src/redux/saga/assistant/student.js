@@ -72,8 +72,7 @@ export function* updateDataStudentSaga({ payload }) {
 export function* deleteDataStudentSaga({ payload }) {
   const { id, params } = payload;
   try {
-    const res = yield call(deleteDataStudentApi, id);
-    console.log(res);
+     yield call(deleteDataStudentApi, id);
     yield put(getData(params));
     message.success("Xóa thành công !");
   } catch (error) {}

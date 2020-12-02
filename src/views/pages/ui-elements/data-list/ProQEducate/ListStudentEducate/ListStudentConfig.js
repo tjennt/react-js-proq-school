@@ -33,7 +33,6 @@ import {
   DropdownToggle,
   Input,
   Row,
-  Table,
   UncontrolledDropdown,
 } from "reactstrap";
 import { Popconfirm, message, Modal, Upload, Tooltip } from "antd";

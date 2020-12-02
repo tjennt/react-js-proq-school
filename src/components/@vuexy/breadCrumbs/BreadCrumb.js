@@ -1,7 +1,5 @@
 import React from "react";
 import { Breadcrumb, BreadcrumbItem } from "reactstrap";
-import { Home } from "react-feather";
-import { NavLink } from "react-router-dom";
 class BreadCrumbs extends React.Component {
   render() {
     return (

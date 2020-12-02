@@ -22,5 +22,46 @@ export const getNotiApi = (params) => {
   );
 };
 export const deleteNotiApi = (id) => {
-  return axiosService.delete(`${process.env.REACT_APP_API_ENDPOINT}/staff/notify/${id}`)
-}
+  return axiosService.delete(
+    `${process.env.REACT_APP_API_ENDPOINT}/staff/notify/${id}`
+  );
+};
+/**
+ * student
+ */
+export const getDataFeeNoti = (params) => {
+  return axiosService.get(
+    `${process.env.REACT_APP_API_ENDPOINT}/staff/notify/fee`,
+    {
+      params,
+    }
+  );
+};
+
+export const getDataActivityNoti = (params) => {
+  return axiosService.get(
+    `${process.env.REACT_APP_API_ENDPOINT}/staff/notify/activity`,
+    {
+      params,
+    }
+  );
+};
+
+export const getDataLearningNoti = (params) => {
+  return axiosService.get(
+    `${process.env.REACT_APP_API_ENDPOINT}/staff/notify/learning`,
+    {
+      params,
+    }
+  );
+};
+export const checkUserSendNoti = () => {
+  return axiosService.get(
+    `${process.env.REACT_APP_API_ENDPOINT}/staff/view-notify`
+  );
+};
+export const getBlogDetailApi = (id) => {
+  return axiosService.get(
+    `${process.env.REACT_APP_API_ENDPOINT}/staff/get-notify/${id}`
+  );
+};
