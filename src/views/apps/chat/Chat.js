@@ -24,6 +24,7 @@ class Chat extends React.Component {
     receiverProfile: false,
     userSidebar: false,
     contactUserChat: null,
+    idGroupChat:null
   };
   // mounted = false
   handleUserSidebar = (status) => {
@@ -42,6 +43,7 @@ class Chat extends React.Component {
       activeChatID: id,
       activeUser: user,
       activeChat: chats,
+      
     });
   };
 
@@ -77,6 +79,9 @@ class Chat extends React.Component {
     this.setState({ ...this.state, activeChatID: value });
     this.props.joinFriend(value);
   };
+  getIdGroup =(value)=>{
+    this.setState({ idGroupChat: value });
+  }
   handleUserSidebar = (status) => {
     status === "open"
       ? this.setState({
@@ -88,6 +93,7 @@ class Chat extends React.Component {
   };
 
   render() {
+    console.log(this.state.activeChatID)
     return (
       <div className="chat-application position-relative">
         <div
@@ -111,6 +117,7 @@ class Chat extends React.Component {
                 <ChatSidebarContent
                   getAllDataGroup={this.props.getAllDataGroup}
                   joinFriend={this.joinFriend}
+                  getIdGroup={this.getIdGroup}
                   setContactUser={this.setContactUser}
                   activeChatID={this.state.activeChatID}
                   handleActiveChat={this.handleActiveChat}
@@ -136,6 +143,7 @@ class Chat extends React.Component {
         <ChatLog
           contactUserChat={this.state.contactUserChat}
           activeChatID={this.props.chatGroup}
+          idGroupChat = {this.state.idGroupChat}
           activeChat={this.state.activeChat}
           activeUser={this.state.activeUser}
           handleReceiverSidebar={this.handleReceiverSidebar}

@@ -5,11 +5,11 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { connect } from "react-redux";
 import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg";
 import { newDate } from "../../../utility/config";
-import { searchChatUser } from "../../../redux/actions/chatProQ";
+import { searchChatUser,addChatGroup } from "../../../redux/actions/chatProQ";
 import AsyncSelect from "react-select/async";
 import {
   API_ENDPOINT_IMG,
-  // API_ENDPOINT_IMG_TEACHER,
+  API_ENDPOINT_IMG_TEACHER,
 } from "../../../redux/constants";
 import { Modal } from "antd";
 import "antd/dist/antd.css";
@@ -37,7 +37,13 @@ class ChatSidebar extends React.Component {
   searchChatUser = () => {
     this.props.searchChatUser(this.state.value);
   };
-  handleOk = () => {};
+  handleOk = () => {
+    this.props.addChatGroup(this.state.inputValue)
+    this.setState({
+      ...this.state,
+      isModalVisible:false
+    })
+  };
   handleCancel = () => {
     this.setState({
       ...this.state,
@@ -50,7 +56,12 @@ class ChatSidebar extends React.Component {
     this.props.joinFriend(item.idUser);
   };
   joinFriend = (item) => {
-    this.props.joinFriend(item.user._id);
+    if(item.info){
+      this.props.getIdGroup(item._id);
+    }else{
+            this.props.joinFriend(item.user._id);
+      console.log("Get single")
+    }
     this.props.setContactUser(item);
   };
   showModal = () => {
@@ -70,6 +81,7 @@ class ChatSidebar extends React.Component {
       ...this.state,
       inputValue: selectedOption,
     });
+    
   };
   fetchData = (inputValue, callback) => {
     if (!inputValue) {
@@ -81,12 +93,11 @@ class ChatSidebar extends React.Component {
           this.config
         )
           .then((data) => {
-            console.log(data);
             const tempArray = [];
             data.data.payload.forEach((element) => {
               tempArray.push({
                 label: `${element.fullName}`,
-                value: element._id,
+                value: element.idUser,
               });
             });
             callback(tempArray);
@@ -195,7 +206,7 @@ class ChatSidebar extends React.Component {
                     <div className="pr-1">
                       <span className="avatar avatar-md m-0">
                         <img
-                          src={`${API_ENDPOINT_IMG}/${item.avatar}`}
+                          src={ item.avatar ?` ${API_ENDPOINT_IMG}/${item.avatar}`:"" }
                           alt={userImg}
                           height="38"
                           width="38"
@@ -224,7 +235,7 @@ class ChatSidebar extends React.Component {
                     <div className="pr-1">
                       <span className="avatar avatar-md m-0">
                         <img
-                          src={`${API_ENDPOINT_IMG}/${item.user.avatar}`}
+                          src={ item.avatar ?` ${API_ENDPOINT_IMG_TEACHER}/${item.avatar}`:""}
                           alt={userImg}
                           height="38"
                           width="38"
@@ -233,7 +244,7 @@ class ChatSidebar extends React.Component {
                     </div>
                     <div className="user-chat-info">
                       <div className="contact-info">
-                        <div>{item.user.fullName}</div>
+                        <div>{item.name?item.name:""}</div>
                         <p className="truncate"> {item.lastMessage}</p>
                       </div>
                       <div className="contact-meta d-flex- flex-column">
@@ -272,4 +283,5 @@ const mapStateToProps = (state) => {
 };
 export default connect(mapStateToProps, {
   searchChatUser,
+  addChatGroup
 })(ChatSidebar);

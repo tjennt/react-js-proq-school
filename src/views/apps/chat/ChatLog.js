@@ -21,6 +21,7 @@ let socket;
 class ChatLog extends React.Component {
   state = {
     idGroupID: null,
+    idGroupChat:null,
     msg: "",
     contactName: null,
     avatar: null,
@@ -36,20 +37,25 @@ class ChatLog extends React.Component {
         this.props.getMessageIdGroup(this.props.activeChatID._id);
       }
     }
-    if (this.props.chatContent !== null) {
-    }
-    if (this.props.contactUserChat !== null) {
-      if (this.props.contactUserChat.user.fullName !== prevState.contactName) {
-        this.setState({
-          contactName: this.props.contactUserChat.user.fullName,
-        });
-      }
-      if (this.props.contactUserChat.user.avatar !== prevState.avatar) {
-        this.setState({
-          avatar: this.props.contactUserChat.user.avatar,
-        });
+    if (this.props.idGroupChat !== null) {
+      console.log(this.props.idGroupChat)
+      if (this.props.idGroupChat._id !== prevState.idGroupChat) {
+        this.setState({ idGroupChat: this.props.idGroupChat._id });
+        this.props.getMessageIdGroup(this.props.idGroupChat._id);
       }
     }
+    // if (this.props.contactUserChat !== null) {
+    //   if (this.props.contactUserChat.user.fullName !== prevState.contactName) {
+    //     this.setState({
+    //       contactName: this.props.contactUserChat.user.fullName,
+    //     });
+    //   }
+    //   if (this.props.contactUserChat.user.avatar !== prevState.avatar) {
+    //     this.setState({
+    //       avatar: this.props.contactUserChat.user.avatar,
+    //     });
+    //   }
+    // }
     this.scrollToBottom();
   }
   showEmojis = (e) => {
@@ -152,7 +158,7 @@ class ChatLog extends React.Component {
                   </div>
                   <h6 className="mb-0">{contactName}</h6>
                 </div>
-                {/* <span
+                {/* <spanß
                   className="favorite"
                   onClick={() => {
                     if (activeChat) {
