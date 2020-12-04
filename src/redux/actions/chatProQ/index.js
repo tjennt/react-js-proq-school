@@ -82,3 +82,16 @@ export const addChatGroup =(data,params)=>({
     data,params
   }
 })
+export const saveGroupChat =(id)=>({
+  type:chatType.STORE_SAVE_GROUP_CHAT,
+  payload:{
+    id
+  }
+})
+
+export const setContact=(value) =>({
+  type:chatType.SET_CONTACT,
+  payload:{
+    value
+  }
+})

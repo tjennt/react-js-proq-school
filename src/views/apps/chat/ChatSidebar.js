@@ -15,7 +15,7 @@ import { Modal } from "antd";
 import "antd/dist/antd.css";
 import Axios from "axios";
 import { getToken } from "../../../utility/auth/setAuthToken";
-
+let config
 class ChatSidebar extends React.Component {
   state = {
     chatsContacts: [],
@@ -29,6 +29,13 @@ class ChatSidebar extends React.Component {
 
   componentDidMount() {
     this.props.getAllDataGroup();
+    let  token = getToken()
+    config = {
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      authorization: `Bearer ${token}`,
+    },
+  };
   }
   handleOnChange = (e) => {
     this.setState({ value: e.target.value });
@@ -57,10 +64,11 @@ class ChatSidebar extends React.Component {
   };
   joinFriend = (item) => {
     if(item.info){
+      console.log("group")
       this.props.getIdGroup(item._id);
     }else{
-            this.props.joinFriend(item.user._id);
-      console.log("Get single")
+      console.log("single")
+      this.props.joinFriend(item.user._id);
     }
     this.props.setContactUser(item);
   };
@@ -70,12 +78,7 @@ class ChatSidebar extends React.Component {
       isModalVisible: true,
     });
   };
-  config = {
-    headers: {
-      "content-type": "application/json; charset=utf-8",
-      authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmJkMzkyMWY2YmJhMTc1ZDdkZDY1MDkiLCJ0ZWFjaGVySWQiOm51bGwsInN0dWRlbnRJZCI6eyJhdmF0YXIiOiJkZWZhdWx0LmpwZyIsInN0YXR1cyI6MCwiX2lkIjoiNWZiZDM5MjFmNmJiYTE3NWQ3ZGQ2NTA1Iiwic3R1ZGVudENvZGUiOiJwczAwMDQ4OTgiLCJmdWxsTmFtZSI6IkNow6J1IFRo4bq_IE5pbmgiLCJkb2IiOiIyMC8xMC8xOTgwIiwiYWRkcmVzcyI6IjEyMCBUaGljaCBxdWFuZyBkdWMiLCJpZGVudGl0eU51bWJlciI6IjEyMzQ1Njc4OSIsInBob25lIjoiMTIzNDU2Nzg5IiwiZW1haWwiOiJsaW5oY3RwczA5OTEyQGZwdC5lZHUudm4iLCJjbGFzcyI6IjVmYmQzOTBlZjZiYmExNzVkN2RkNjUwNCIsImNyZWF0ZWRBdCI6IjIwMjAtMTEtMjRUMTY6NDc6MjkuNDk0WiIsInVwZGF0ZWRBdCI6IjIwMjAtMTEtMjRUMTY6NDc6MjkuNDk0WiJ9LCJhY2Nlc3MiOiJzdHVkZW50IiwiaWF0IjoxNjA2OTIzNDY4LCJleHAiOjE2MDc3ODc0Njh9.2KMNWQw0d6WGrvrrjqkwgpgskYjFz9blbQo1Pc_0QmU`,
-    },
-  };
+  
   handleChangeSearch = (selectedOption) => {
     this.setState({
       ...this.state,
@@ -89,8 +92,7 @@ class ChatSidebar extends React.Component {
     } else {
       setTimeout(() => {
         Axios.get(
-          `https://server-dev.asia/v1/users/search?text=${inputValue}`,
-          this.config
+          `https://server-dev.asia/v1/users/search?text=${inputValue}`,config
         )
           .then((data) => {
             const tempArray = [];
@@ -234,17 +236,26 @@ class ChatSidebar extends React.Component {
                   <li>
                     <div className="pr-1">
                       <span className="avatar avatar-md m-0">
-                        <img
+                      {item.type ==="group" ?
+                          <img
+                          src={`${API_ENDPOINT_IMG_TEACHER}/${item.avatarGroup.name}`}
+                          alt={item.avatarGroup.name}
+                          height="38"
+                          width="38"
+                        />
+                       : <img
                           src={ item.avatar ?` ${API_ENDPOINT_IMG_TEACHER}/${item.avatar}`:""}
                           alt={userImg}
                           height="38"
                           width="38"
-                        />
+                        /> }
+                        
                       </span>
                     </div>
                     <div className="user-chat-info">
                       <div className="contact-info">
-                        <div>{item.name?item.name:""}</div>
+                      {item.user ? <div> {item.user.fullName}</div> : <div>Nhóm {item.name}</div>  }
+                       
                         <p className="truncate"> {item.lastMessage}</p>
                       </div>
                       <div className="contact-meta d-flex- flex-column">

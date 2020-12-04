@@ -4,6 +4,8 @@ let initialState = {
   contentMessageIdGroup: [],
   dataGroup: [],
   dataSearch: [],
+  SaveIdGroup:null,
+  contact:null
 };
 const rootChat = (state = initialState, action) => {
   switch (action.type) {
@@ -62,6 +64,20 @@ const rootChat = (state = initialState, action) => {
         ...state,
         dataSearch: data,
       };
+    }
+    case chatType.STORE_SAVE_GROUP_CHAT:{
+      const {id} = action.payload
+      return{
+        ...state,
+        SaveIdGroup:id
+      }
+    }
+    case chatType.SET_CONTACT:{
+      const {value} = action.payload
+      return{
+        ...state,
+        contact:value
+      }
     }
     default:
       return state;

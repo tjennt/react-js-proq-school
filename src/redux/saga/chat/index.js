@@ -17,7 +17,7 @@ import {
 export function* joinFriend({ payload }) {
   const { idFriend } = payload;
   try {
-    const res = yield call(joinFriendApi, idFriend);
+    const res = yield call(joinFriendApi, idFriend||"");
     const { data } = res;
     if (data.success) {
       yield put(joinFriendSuccss(data.payload));
@@ -25,9 +25,10 @@ export function* joinFriend({ payload }) {
   } catch (error) {}
 }
 export function* getMessageGroupByIdSaga({ payload }) {
-  const { idGroup } = payload;
+  const { idGroup } = payload;   
+  console.log(idGroup)
   try {
-    const res = yield call(getMessageGroupByIdApi, idGroup);
+    const res = yield call(getMessageGroupByIdApi, idGroup||"");
     const { data } = res;
     if (data.success) {
       yield put(getMessageIdGroupSuccess(data.payload.reverse()));
