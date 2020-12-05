@@ -3,6 +3,7 @@ import Sidebar from "react-sidebar";
 import { ContextLayout } from "../../../utility/context/Layout";
 import ChatSidebarContent from "./ChatSidebar";
 import ChatLog from "./ChatLog";
+import ChatLogGroup from "./ChatLogGroup";
 import ReceiverSidebar from "./receiverProfile";
 import UserSidebar from "./UserSidebar";
 import "../../../assets/scss/pages/app-chat.scss";
@@ -11,7 +12,8 @@ import {
   getAllDataGroup,
   saveGroupChat,
   getMessageIdGroup,
-  setContact
+  setContact,
+  setDataJoin
 } from "../../../redux/actions/chatProQ/index";
 import { connect } from "react-redux";
 const mql = window.matchMedia(`(min-width: 992px)`);
@@ -75,20 +77,18 @@ class Chat extends React.Component {
         });
   };
   setContactUser = (value) => {
-    console.log(value)
     this.props.setContact(value)
     this.setState({ ...this.state, contactUserChat: value });
   };
   joinFriend = (value) => {
-    this.setState({ ...this.state, activeChatID: value });
     this.props.joinFriend(value);
     this.props.saveGroupChat(null)
-
 
   };
   getIdGroup =(value)=>{
     this.props.saveGroupChat(value)
     this.props.getMessageIdGroup(value)
+    this.props.setDataJoin()
   }
   handleUserSidebar = (status) => {
     status === "open"
@@ -101,6 +101,7 @@ class Chat extends React.Component {
   };
 
   render() {
+    console.log(this.props.SaveIdGroup)
     return (
       <div className="chat-application position-relative">
         <div
@@ -147,11 +148,19 @@ class Chat extends React.Component {
           userProfile={this.state.userSidebar}
           handleUserSidebar={this.handleUserSidebar}
         />
+        {this.props.SaveIdGroup ? 
+        <ChatLogGroup
+          idGroupChat = {this.props.SaveIdGroup}
+          handleReceiverSidebar={this.handleReceiverSidebar}
+          mainSidebar={this.onSetSidebarOpen}
+          mql={mql}
+          handleActiveChat={this.handleActiveChat}
+        />
+        :
         <ChatLog
           contactUserChat={this.state.contactUserChat}
           saveGroupChat ={this.props.saveGroupChat}
           activeChatID={this.props.chatGroup}
-          idGroupChat = {this.props.SaveIdGroup}
           activeChat={this.state.activeChat}
           activeUser={this.state.activeUser}
           handleReceiverSidebar={this.handleReceiverSidebar}
@@ -159,7 +168,9 @@ class Chat extends React.Component {
           mql={mql}
           handleActiveChat={this.handleActiveChat}
         />
+        }
         <ReceiverSidebar
+        profile = {this.props.profile}
           activeUser={this.state.activeUser}
           receiverProfile={this.state.receiverProfile}
           handleReceiverSidebar={this.handleReceiverSidebar}
@@ -171,7 +182,9 @@ class Chat extends React.Component {
 const mapStateToProps = (state) => {
   return {
     chatGroup: state.chatProq.dataJoin,
-    SaveIdGroup:state.chatProq.SaveIdGroup
+    SaveIdGroup:state.chatProq.SaveIdGroup,
+    profile: state.auth.login.values.loggedInUser,
+
   };
 };
-export default connect(mapStateToProps, {setContact, joinFriend, getAllDataGroup,saveGroupChat,getMessageIdGroup})(Chat);
+export default connect(mapStateToProps, {setContact, joinFriend,setDataJoin, getAllDataGroup,saveGroupChat,getMessageIdGroup})(Chat);

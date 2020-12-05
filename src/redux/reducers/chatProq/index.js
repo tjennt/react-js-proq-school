@@ -41,6 +41,14 @@ const rootChat = (state = initialState, action) => {
         // contentMessageIdGroup: state.contentMessageIdGroup.concat(data),
       };
     }
+    case chatType.RECEIEVE_CHAT_SOCKET_GROUP: {
+      const { data } = action;
+      state.contentMessageIdGroup.push(data);
+      return {
+        ...state,
+        // contentMessageIdGroup: state.contentMessageIdGroup.concat(data),
+      };
+    }
     case chatType.GET_ALL_DATA_GROUP: {
       return {
         ...state,
@@ -77,6 +85,12 @@ const rootChat = (state = initialState, action) => {
       return{
         ...state,
         contact:value
+      }
+    }
+    case chatType.SET_DATA_JOIN:{
+      return{
+        ...state,
+        dataJoin:null
       }
     }
     default:

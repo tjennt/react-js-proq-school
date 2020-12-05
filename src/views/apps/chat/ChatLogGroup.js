@@ -8,8 +8,8 @@ import { togglePinned, sendMessage } from "../../../redux/actions/chat/index";
 import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg";
 import {
   getMessageIdGroup,
-  sendChat,
-  receiveChatSocket,
+  sendChatGroup,
+  receiveChatGroupSocket,
 } from "../../../redux/actions/chatProQ";
 import io from "socket.io-client";
 import ReactEmoji from "react-emoji";
@@ -18,31 +18,24 @@ import {API_ENDPOINT_IMG_TEACHER} from "../../../redux/constants/index"
 import { Picker } from "emoji-mart";
 
 let socket;
-class ChatLog extends React.Component {
+class ChatLogGroup extends React.Component {
   state = {
     idGroupID: null,
     idGroupChat:null,
     msg: "",
     contactName: null,
     avatar: null,
-    activeUser: null,
-    activeChat: null,
     showEmojis: false,
     chatContent: [],
   };
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.props.activeChatID)
-    if (this.props.activeChatID !== null ) {
-      if (this.props.activeChatID._id !== prevState.idGroupID) {
-        this.setState({ idGroupID: this.props.activeChatID._id });
-        this.props.getMessageIdGroup(this.props.activeChatID._id);
-        }
-      if(this.props.activeChatID.avatar !== prevState.avatar){
-        this.setState({avatar:this.props.activeChatID.avatar })
+    if (this.props.idGroupChat !== null  ) {
+      if (this.props.idGroupChat !== prevState.idGroupChat) {
+        this.setState({idGroupChat: this.props.idGroupChat});
       }
-      }
-      this.scrollToBottom();
     }
+    this.scrollToBottom();
+  }
   showEmojis = (e) => {
     this.setState(
       {
@@ -58,12 +51,12 @@ class ChatLog extends React.Component {
   };
   componentDidMount() {
     socket = io(`https://server-dev.asia`);
-    this.props.receiveChatSocket(socket);
+    this.props.receiveChatGroupSocket(socket);
     this.scrollToBottom();
   }
-  componentWillUnmount(){
+componentWillUnmount(){
     try { socket.disconnect(); } catch (error) { }
-
+    
   }
   handleTime = (time_to, time_from) => {
     const date_time_to = new Date(Date.parse(time_to));
@@ -81,11 +74,13 @@ class ChatLog extends React.Component {
   };
   handlleMessage = (e) => {
     e.preventDefault();
-      this.props.sendChat(this.state.idGroupID, this.state.msg);
+    if(this.state.idGroupChat){
+      this.props.sendChatGroup(this.state.idGroupChat, this.state.msg);
       this.setState({
         ...this.state,
         msg: "",
       });
+    }
   };
   changeInput = (e) => {
     this.setState({
@@ -100,11 +95,13 @@ class ChatLog extends React.Component {
   };
   render() {
     const { chatContent, idUserMe,contact} = this.props;
-    const { idGroupID } = this.state;
+    console.log(contact)
+    const {idGroupChat } = this.state;
+    console.log(chatContent)
     return (
       <div className="content-right">
         <div className="chat-app-window ">
-          <div className={`start-chat-area ${idGroupID  ? "d-none" : "d-flex"}`}>
+          <div className={`start-chat-area ${idGroupChat ? "d-none" : "d-flex"}`}>
             <span className="mb-1 start-chat-icon">
               <MessageSquare size={50} />
             </span>
@@ -112,7 +109,7 @@ class ChatLog extends React.Component {
               Vui lòng chọn trò chuyện
             </h4>
           </div>
-          <div className={` active-chat ${idGroupID  ? "d-block" : "d-none"}`}>
+          <div className={` active-chat ${idGroupChat ? "d-block" : "d-none"}`}>
             <div className="chat_navbar">
               <header className="chat_header d-flex justify-content-between align-items-center p-1">
                 <div className="d-flex align-items-center">
@@ -126,17 +123,23 @@ class ChatLog extends React.Component {
                     className="avatar user-profile-toggle m-0 m-0 mr-1"
                     onClick={() => this.props.handleReceiverSidebar("open")}
                   >
-                
-                        <img
+                  {contact&& contact.type ==="group" ?
+                          <img
+                          src={`${API_ENDPOINT_IMG_TEACHER}/${contact.avatarGroup.name}`}
+                          alt={ contact.avatarGroup.name}
+                          height="38"
+                          width="38"
+                        />
+                       : <img
                           src={ contact && contact.avatar ?` ${API_ENDPOINT_IMG_TEACHER}/${contact.avatar}`:""}
                           alt={ contact ? contact.avatar:""}
                           height="38"
                           width="38"
-                        /> 
+                        /> }
                         
                     <span className={"avatar-status-online"} />
                   </div>
-                 <div>{contact?contact.user.fullName:""}</div> 
+                  {contact&& contact.type ==="group" ?<h6 className="mb-0">{contact.name}</h6> :<div>{contact?contact.user.fullName:""}</div>   }  
                 </div>
               </header>
             </div>
@@ -156,7 +159,7 @@ class ChatLog extends React.Component {
                     ? chatContent.map((content) => (
                         <div key={content._id}>
                           {
-                           idGroupID ===content.group ? (
+                           idGroupChat === content.group   ? (
                               <div
                                 className={`${
                                   content.from === idUserMe 
@@ -167,7 +170,7 @@ class ChatLog extends React.Component {
                                 <div className="chat-avatar">
                                   <div className="avatar m-0">
                                     <img
-                                      src={`${API_ENDPOINT_IMG_TEACHER}/${this.state.avatar}`}
+                                    src={`${API_ENDPOINT_IMG_TEACHER}/${contact.avatarGroup.name}`}
                                       alt="chat avatar"
                                       height="40"
                                       width="40"
@@ -249,6 +252,6 @@ export default connect(mapStateToProps, {
   togglePinned,
   sendMessage,
   getMessageIdGroup,
-  sendChat,
-  receiveChatSocket,
-})(ChatLog);
+  sendChatGroup,
+  receiveChatGroupSocket,
+})(ChatLogGroup);
