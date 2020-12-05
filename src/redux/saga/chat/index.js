@@ -74,12 +74,12 @@ export function* searchUserSaga({ payload }) {
 }
 
 export  function* addChatGroupSaga({payload}){
-  const {data} =payload
+  const {data,nameGroup} =payload
   console.log(data)
   const arrData =data.map(item=>item.value)
   const dataReq={
     mems:arrData,
-    name: "Angular",
+    name: nameGroup||"Không tên",
     avatar: {
     name: "777314_x_1606829650199.png",
     large: "777314_x_1606829650199.png",

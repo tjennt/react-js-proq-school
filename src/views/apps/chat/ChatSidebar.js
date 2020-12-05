@@ -23,6 +23,7 @@ class ChatSidebar extends React.Component {
     messages: [],
     status: null,
     value: "",
+    nameGroup:"",
     inputValue: [],
     isModalVisible: false,
   };
@@ -45,7 +46,7 @@ class ChatSidebar extends React.Component {
     this.props.searchChatUser(this.state.value);
   };
   handleOk = () => {
-    this.props.addChatGroup(this.state.inputValue)
+    this.props.addChatGroup(this.state.inputValue,this.state.nameGroup)
     this.setState({
       ...this.state,
       isModalVisible:false
@@ -121,7 +122,12 @@ class ChatSidebar extends React.Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
+        <Input
+          onChange={e=>this.setState({nameGroup:e.target.value})}
+          placeholder="Vui lòng nhập tên nhóm"
+        />
           <AsyncSelect
+          className="mt-2"
             isMulti
             // labelKey={"fullName"}
             // valueKey={"_id"}

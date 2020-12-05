@@ -76,10 +76,12 @@ export const searchChatUserSuccess = (data) => ({
   },
 });
 
-export const addChatGroup =(data,params)=>({
+export const addChatGroup =(data,nameGroup,params)=>({
   type:chatType.ADD_CHAT_GROUP,
   payload:{
-    data,params
+    data,
+    nameGroup,
+    params
   }
 })
 export const saveGroupChat =(id)=>({
