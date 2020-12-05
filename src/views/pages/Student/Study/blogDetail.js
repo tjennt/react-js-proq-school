@@ -3,19 +3,18 @@ import { Row, Col, Container } from "reactstrap";
 import Breadcrumbs from "../../../../components/@vuexy/breadCrumbs/BreadCrumb";
 import { getBlogDetail } from "../../../../redux/actions/blog/index";
 import { connect } from "react-redux";
-import createDOMPurify from "dompurify";
-import { JSDOM } from "jsdom";
 
-const window = new JSDOM("").window;
-const DOMPurify = createDOMPurify(window);
 class BlogDetail extends React.Component {
   componentDidMount() {
     let id = this.props.match.params.id;
     this.props.getBlogDetail(id);
   }
+  createMarkup(){
+    const {blogDetail} = this.props
+    return{__html:blogDetail ? blogDetail.description : ""}
+  }
   render() {
     const { blogDetail } = this.props;
-    const rawHTML = `${blogDetail ? blogDetail.description : ""}`;
     return (
       <React.Fragment>
         <Breadcrumbs
@@ -29,9 +28,7 @@ class BlogDetail extends React.Component {
               {" "}
               {
                 <div
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(rawHTML),
-                  }}
+                  dangerouslySetInnerHTML={this.createMarkup()}
                 />
               }
             </Container>
