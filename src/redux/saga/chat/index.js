@@ -4,6 +4,7 @@ import {
   getMessageIdGroupSuccess,
   joinFriendSuccss,
   searchChatUserSuccess,
+  getAllDataGroup
 } from "../../actions/chatProQ";
 import {
   joinFriendApi,
@@ -11,11 +12,12 @@ import {
   sendChat,
   getAllGroupApi,
   searchUserApi,
+  addChatGroupApi
 } from "../../api/chat";
 export function* joinFriend({ payload }) {
   const { idFriend } = payload;
   try {
-    const res = yield call(joinFriendApi, idFriend);
+    const res = yield call(joinFriendApi, idFriend||"");
     const { data } = res;
     if (data.success) {
       yield put(joinFriendSuccss(data.payload));
@@ -23,9 +25,10 @@ export function* joinFriend({ payload }) {
   } catch (error) {}
 }
 export function* getMessageGroupByIdSaga({ payload }) {
-  const { idGroup } = payload;
+  const { idGroup } = payload;   
+  console.log(idGroup)
   try {
-    const res = yield call(getMessageGroupByIdApi, idGroup);
+    const res = yield call(getMessageGroupByIdApi, idGroup||"");
     const { data } = res;
     if (data.success) {
       yield put(getMessageIdGroupSuccess(data.payload.reverse()));
@@ -68,4 +71,30 @@ export function* searchUserSaga({ payload }) {
       yield put(searchChatUserSuccess(data.payload));
     }
   } catch (error) {}
+}
+
+export  function* addChatGroupSaga({payload}){
+  const {data} =payload
+  console.log(data)
+  const arrData =data.map(item=>item.value)
+  const dataReq={
+    mems:arrData,
+    name: "Angular",
+    avatar: {
+    name: "777314_x_1606829650199.png",
+    large: "777314_x_1606829650199.png",
+    medium: "400x225_777314_x_1606829650199.png",
+    small: "200x113_777314_x_1606829650199.png"
+  },
+  }
+  const params={}
+  try {
+    const res = yield call(addChatGroupApi,dataReq)
+    const {data} =res
+    if(data.success){
+      yield put(getAllDataGroup(params))
+    }
+  } catch (error) {
+    
+  }
 }

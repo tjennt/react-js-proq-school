@@ -1,16 +1,21 @@
 import React from "react";
 import { Card, FormGroup, Input, Badge } from "reactstrap";
-import { X, Search } from "react-feather";
+import { X, PlusCircle } from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { connect } from "react-redux";
 import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg";
 import { newDate } from "../../../utility/config";
-import { searchChatUser } from "../../../redux/actions/chatProQ";
+import { searchChatUser,addChatGroup } from "../../../redux/actions/chatProQ";
+import AsyncSelect from "react-select/async";
 import {
   API_ENDPOINT_IMG,
-  // API_ENDPOINT_IMG_TEACHER,
+  API_ENDPOINT_IMG_TEACHER,
 } from "../../../redux/constants";
-
+import { Modal } from "antd";
+import "antd/dist/antd.css";
+import Axios from "axios";
+import { getToken } from "../../../utility/auth/setAuthToken";
+let config
 class ChatSidebar extends React.Component {
   state = {
     chatsContacts: [],
@@ -18,10 +23,19 @@ class ChatSidebar extends React.Component {
     messages: [],
     status: null,
     value: "",
+    inputValue: [],
+    isModalVisible: false,
   };
 
   componentDidMount() {
     this.props.getAllDataGroup();
+    let  token = getToken()
+    config = {
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      authorization: `Bearer ${token}`,
+    },
+  };
   }
   handleOnChange = (e) => {
     this.setState({ value: e.target.value });
@@ -30,20 +44,93 @@ class ChatSidebar extends React.Component {
   searchChatUser = () => {
     this.props.searchChatUser(this.state.value);
   };
+  handleOk = () => {
+    this.props.addChatGroup(this.state.inputValue)
+    this.setState({
+      ...this.state,
+      isModalVisible:false
+    })
+  };
+  handleCancel = () => {
+    this.setState({
+      ...this.state,
+      isModalVisible: false,
+    });
+  };
   joinFriendSearch = (item) => {
     const value = "";
     this.props.searchChatUser(value);
     this.props.joinFriend(item.idUser);
   };
   joinFriend = (item) => {
-    this.props.joinFriend(item.user._id);
+    if(item.info){
+      console.log("group")
+      this.props.getIdGroup(item._id);
+    }else{
+      console.log("single")
+      this.props.joinFriend(item.user._id);
+    }
     this.props.setContactUser(item);
   };
+  showModal = () => {
+    this.setState({
+      ...this.state,
+      isModalVisible: true,
+    });
+  };
+  
+  handleChangeSearch = (selectedOption) => {
+    this.setState({
+      ...this.state,
+      inputValue: selectedOption,
+    });
+    
+  };
+  fetchData = (inputValue, callback) => {
+    if (!inputValue) {
+      callback([]);
+    } else {
+      setTimeout(() => {
+        Axios.get(
+          `https://server-dev.asia/v1/users/search?text=${inputValue}`,config
+        )
+          .then((data) => {
+            const tempArray = [];
+            data.data.payload.forEach((element) => {
+              tempArray.push({
+                label: `${element.fullName}`,
+                value: element.idUser,
+              });
+            });
+            callback(tempArray);
+          })
+          .catch((error) => {
+            console.log(error, "catch the hoop");
+          });
+      });
+    }
+  };
   render() {
-    const { status, value } = this.state;
+    const { status, value, isModalVisible } = this.state;
     const { chatGroup, dataUserSearch } = this.props;
     return (
       <Card className="sidebar-content h-100">
+        <Modal
+          title="Taọ nhóm chat"
+          visible={isModalVisible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <AsyncSelect
+            isMulti
+            // labelKey={"fullName"}
+            // valueKey={"_id"}
+            // options={optionUser}
+            onChange={this.handleChangeSearch}
+            defaultOptions={false}
+            loadOptions={this.fetchData}
+          />
+        </Modal>
         <span
           className="sidebar-close-icon"
           onClick={() => this.props.mainSidebar(false)}
@@ -74,6 +161,7 @@ class ChatSidebar extends React.Component {
             <FormGroup className="position-relative  mx-1 my-0 w-100">
               <Input
                 className="round"
+                style={{ width: "80%" }}
                 type="text"
                 placeholder="Tìm kiếm"
                 onChange={(e) => this.handleOnChange(e)}
@@ -84,12 +172,19 @@ class ChatSidebar extends React.Component {
                   }
                 }}
               />
-              <div
+              {/* <div
                 onClick={this.searchChatUser}
                 className="form-control-position"
                 style={{ cursor: "pointer" }}
               >
                 <Search size={15} />
+              </div> */}
+              <div
+                onClick={this.showModal}
+                className="form-control-position"
+                style={{ cursor: "pointer" }}
+              >
+                <PlusCircle size={20} />
               </div>
             </FormGroup>
           </div>
@@ -113,7 +208,7 @@ class ChatSidebar extends React.Component {
                     <div className="pr-1">
                       <span className="avatar avatar-md m-0">
                         <img
-                          src={`${API_ENDPOINT_IMG}/${item.avatar}`}
+                          src={ item.avatar ?` ${API_ENDPOINT_IMG}/${item.avatar}`:"" }
                           alt={userImg}
                           height="38"
                           width="38"
@@ -130,7 +225,6 @@ class ChatSidebar extends React.Component {
               ))}
             </div>
           ) : null}
-
           <h3 className="primary p-1 mb-0">Trò truyện </h3>
           {chatGroup
             ? chatGroup.map((item) => (
@@ -142,17 +236,26 @@ class ChatSidebar extends React.Component {
                   <li>
                     <div className="pr-1">
                       <span className="avatar avatar-md m-0">
-                        <img
-                          src={`${API_ENDPOINT_IMG}/${item.user.avatar}`}
-                          alt={userImg}
+                      {item.type ==="group" ?
+                          <img
+                          src={`${API_ENDPOINT_IMG_TEACHER}/${item.avatarGroup.name}`}
+                          alt={item.avatarGroup.name}
                           height="38"
                           width="38"
                         />
+                       : <img
+                          src={ item.avatar ?` ${API_ENDPOINT_IMG_TEACHER}/${item.avatar}`:""}
+                          alt={userImg}
+                          height="38"
+                          width="38"
+                        /> }
+                        
                       </span>
                     </div>
                     <div className="user-chat-info">
                       <div className="contact-info">
-                        <div>{item.user.fullName}</div>
+                      {item.user ? <div> {item.user.fullName}</div> : <div>Nhóm {item.name}</div>  }
+                       
                         <p className="truncate"> {item.lastMessage}</p>
                       </div>
                       <div className="contact-meta d-flex- flex-column">
@@ -191,4 +294,5 @@ const mapStateToProps = (state) => {
 };
 export default connect(mapStateToProps, {
   searchChatUser,
+  addChatGroup
 })(ChatSidebar);
