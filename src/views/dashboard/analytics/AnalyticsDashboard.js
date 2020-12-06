@@ -86,10 +86,9 @@ class AnalyticsDashboard extends React.Component {
     const { loadings } = this.state;
     return (
       <React.Fragment>
-        <Row className="match-height">
-          <Col lg="12" md="6" sm="12" className="mb-2">
+            <Col lg="12" md="6" sm="12" className="mb-2">
             <Row>
-              <Col lg="3" md="6" sm="12">
+              <Col lg="3" md="8" sm="8">
                 <Space direction="vertical" size={12}>
                   <RangePicker
                     ranges={{
@@ -109,7 +108,7 @@ class AnalyticsDashboard extends React.Component {
                   />
                 </Space>
               </Col>
-              <Col lg="4" md="6" sm="12">
+              <Col lg="4" md="4" sm="4">
                 <Button
                   color="primary"
                   loading={loadings[0]}
@@ -120,6 +119,7 @@ class AnalyticsDashboard extends React.Component {
               </Col>
             </Row>
           </Col>
+        <Row className="match-height">
           <Col lg="3" md="6" sm="12">
             <OrdersReceived
               dataPubCommission={this.props.dataTotalPubCommission}

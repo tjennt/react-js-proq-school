@@ -5,7 +5,6 @@ import { Menu, MessageSquare, Send, Smile } from "react-feather";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { connect } from "react-redux";
 import { togglePinned, sendMessage } from "../../../redux/actions/chat/index";
-import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg";
 import {
   getMessageIdGroup,
   sendChat,

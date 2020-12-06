@@ -25,6 +25,12 @@ export function* loginActionSaga({ payload }) {
         case "admin":
           history.push("/");
           break;
+        case "master":
+          history.push("/")
+          break;
+        case "staff":
+          history.push("/")
+          break;
         default:
           return false;
       }

@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import { logoutWithJWT } from "./../../../redux/actions/auth/loginActions";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import NotificationItem from "./NotificationItem";
-import { toastSuccess } from "../../../utility/toast/toastHelper";
 import socket from "socket.io-client";
 import { getnotiSocket, checkUserSeenNoti } from "../../../redux/actions/blog";
 import {receiveChatSocket,getAllDataGroup} from "../../../redux/actions/chatProQ"
