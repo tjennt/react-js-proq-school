@@ -12,9 +12,9 @@ import { connect } from "react-redux";
 import { logoutWithJWT } from "./../../../redux/actions/auth/loginActions";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import NotificationItem from "./NotificationItem";
-import { toastSuccess } from "../../../utility/toast/toastHelper";
 import socket from "socket.io-client";
 import { getnotiSocket, checkUserSeenNoti } from "../../../redux/actions/blog";
+import {receiveChatSocket,getAllDataGroup} from "../../../redux/actions/chatProQ"
 import NoNotificationItem from "./NoNotificationItem";
 
 let io;
@@ -46,16 +46,13 @@ class NavbarUser extends React.PureComponent {
     text: "",
   };
   componentDidMount() {
+    try { socket.disconnect(); } catch (error) { }
     io = socket(`https://server-dev.asia`);
-    io.on("SEND_MESSAGE_CHAT", (data) => {
-      if (this.props.role === "student" || this.props.role === "teacher") {
-        if (data.from !== this.props.idUser) {
-          toastSuccess("Bạn có tin nhắn mới");
-        } else {
-          return false;
-        }
-      }
-    });
+    // console.log(this.props.dataGroup)
+    this.props.getAllDataGroup()
+    if (this.props.role === "student" || this.props.role === "teacher") {
+      // this.props.receiveChatSocket(io,this.props.dataGroup)
+    }
     if (this.props.role === "student" || this.props.role === "teacher") {
       this.props.getnotiSocket(io, this.props.role);
     }
@@ -77,7 +74,6 @@ class NavbarUser extends React.PureComponent {
   // };
   render() {
     const { allNotiSocket } = this.props;
-    console.log(allNotiSocket);
     return (
       <ul className="nav navbar-nav navbar-nav-user float-right">
         {/* <Input onChange={(e) => this.setState({ text: e.target.value })} /> */}
@@ -164,10 +160,13 @@ const mapStateToProps = (state) => {
     token: state.auth.login.values.loggedInUser.token,
     idUser: state.auth.login.values.loggedInUser._id,
     allNotiSocket: state.dataBlog.allNotiSocket,
+    dataGroup:state.chatProq
   };
 };
 export default connect(mapStateToProps, {
   logoutWithJWT,
   getnotiSocket,
   checkUserSeenNoti,
+  receiveChatSocket,
+  getAllDataGroup
 })(NavbarUser);

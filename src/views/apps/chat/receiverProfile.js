@@ -1,6 +1,9 @@
 import React from "react"
 import { X } from "react-feather"
 import PerfectScrollbar from "react-perfect-scrollbar"
+import {
+  API_ENDPOINT_IMG,
+} from "../../../redux/constants";
 class ReceiverProfile extends React.Component {
   static getDerivedStateFromProps(props, state) {
     if (props.activeUser !== state.activeUser) {
@@ -33,8 +36,8 @@ class ReceiverProfile extends React.Component {
           <div className="header-profile-sidebar">
             <div className="avatar">
               <img
-                src={activeUser !== null ? activeUser.photoURL : null}
-                alt={activeUser !== null ? activeUser.displayName : null}
+                src={`${API_ENDPOINT_IMG}/${this.props.profile.studentId?this.props.profile.studentId.avatar:this.props.profile.teacherId.avatar}`}             
+                alt="noavatar"
                 height="66"
                 width="66"
               />

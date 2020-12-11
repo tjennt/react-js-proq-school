@@ -39,7 +39,9 @@ class ManagerProfile extends Component {
               </p>
               <hr className="my-2" />
               <ManagerItem data={dataProfile} />
+                  
             </CardBody>
+
           </Card>
         </Col>
       </div>

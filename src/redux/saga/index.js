@@ -85,7 +85,8 @@ import {
   joinFriend,
   searchUserSaga,
   sendChatSaga,
-  addChatGroupSaga
+  addChatGroupSaga,
+  sendChatGroupSaga
 } from "./chat";
 import {
   addBlogSaga,
@@ -198,6 +199,7 @@ function* rootSaga() {
   yield takeLatest(chatType.GET_ALL_DATA_GROUP, getAllGroupSaga);
   yield takeLatest(chatType.SEARCH_USER_CHAT, searchUserSaga);
   yield takeLatest(chatType.ADD_CHAT_GROUP,addChatGroupSaga)
+  yield takeLatest(chatType.SEND_CHAT_GROUP,sendChatGroupSaga)
   /**
    * notify
    */

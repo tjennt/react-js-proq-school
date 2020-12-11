@@ -44,6 +44,15 @@ export function* sendChatSaga({ payload }) {
     yield call(sendChat, idGroup, data);
   } catch (error) {}
 }
+export function* sendChatGroupSaga({ payload }) {
+  const { idGroup, msg } = payload;
+  const data = {
+    content: msg,
+  };
+  try {
+    yield call(sendChat, idGroup, data);
+  } catch (error) {}
+}
 export function* getAllGroupSaga() {
   try {
     const res = yield call(getAllGroupApi);
@@ -80,12 +89,6 @@ export  function* addChatGroupSaga({payload}){
   const dataReq={
     mems:arrData,
     name: nameGroup||"Không tên",
-    avatar: {
-    name: "777314_x_1606829650199.png",
-    large: "777314_x_1606829650199.png",
-    medium: "400x225_777314_x_1606829650199.png",
-    small: "200x113_777314_x_1606829650199.png"
-  },
   }
   const params={}
   try {

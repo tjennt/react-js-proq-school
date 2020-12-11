@@ -5,7 +5,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { connect } from "react-redux";
 import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg";
 import { newDate } from "../../../utility/config";
-import { searchChatUser,addChatGroup } from "../../../redux/actions/chatProQ";
+import { searchChatUser,addChatGroup ,setContact} from "../../../redux/actions/chatProQ";
 import AsyncSelect from "react-select/async";
 import {
   API_ENDPOINT_IMG,
@@ -29,7 +29,7 @@ class ChatSidebar extends React.Component {
   };
 
   componentDidMount() {
-    this.props.getAllDataGroup();
+    // this.props.getAllDataGroup();
     let  token = getToken()
     config = {
     headers: {
@@ -59,16 +59,21 @@ class ChatSidebar extends React.Component {
     });
   };
   joinFriendSearch = (item) => {
-    const value = "";
-    this.props.searchChatUser(value);
+    const valueContact={
+      id:item._id,
+      avatar: `uploads/user-avatar/${item.avatar}`,
+      user:{
+        fullName:item.fullName
+      }
+    }
     this.props.joinFriend(item.idUser);
+    this.props.setContact(valueContact)
   };
   joinFriend = (item) => {
     if(item.info){
       console.log("group")
       this.props.getIdGroup(item._id);
     }else{
-      console.log("single")
       this.props.joinFriend(item.user._id);
     }
     this.props.setContactUser(item);
@@ -150,7 +155,7 @@ class ChatSidebar extends React.Component {
                 className="avatar"
                 onClick={() => this.props.handleUserSidebar("open")}
               >
-                <img src={userImg} alt="User Profile" height="40" width="40" />
+                <img src={`${this.props.profile.studentId? `${API_ENDPOINT_IMG}/${this.props.profile.studentId.avatar}`:`${API_ENDPOINT_IMG_TEACHER}/${this.props.profile.teacherId.avatar}`}`} alt="User Profile" height="40" width="40" />
                 <span
                   className={
                     status === "dnd"
@@ -260,7 +265,7 @@ class ChatSidebar extends React.Component {
                     </div>
                     <div className="user-chat-info">
                       <div className="contact-info">
-                      {item.user ? <div> {item.user.fullName}</div> : <div>Nhóm {item.name}</div>  }
+                      {item.user ? <div> {item.user.fullName}</div> : <div>{item.name}</div>  }
                        
                         <p className="truncate"> {item.lastMessage}</p>
                       </div>
@@ -295,10 +300,12 @@ const mapStateToProps = (state) => {
     chat: state.chatApp.chats,
     chatGroup: state.chatProq.dataGroup,
     idUserMe: state.auth.login.values.loggedInUser._id,
+    profile: state.auth.login.values.loggedInUser,
     dataUserSearch: state.chatProq.dataSearch,
   };
 };
 export default connect(mapStateToProps, {
   searchChatUser,
-  addChatGroup
+  addChatGroup,
+  setContact
 })(ChatSidebar);
