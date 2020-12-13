@@ -10,7 +10,10 @@ const ItemLearning = (props) => {
     <Col lg="3" className="mt-2">
       <Card style={{ height: "380px" }}>
         <CardHeader>
-          <CardTitle className="text-uppercase " style={{ width: "270px" }}>{item.title} </CardTitle>
+          <CardTitle className="text-uppercase " style={{ width: "270px" }}>
+            {" "}
+            <Link to={`/student/news/${item._id}`}>{item.title} </Link>
+          </CardTitle>
           <MoreHorizontal size={15} className="cursor-pointer" />
         </CardHeader>
         <CardBody>
@@ -24,9 +27,7 @@ const ItemLearning = (props) => {
             <h6 className="mb-0"> Thời gian cập nhật:</h6>
             <p> {newDate(item.updatedAt)} </p>
           </div>
-          <div className="float-right">
-            <Link to={`/student/news/${item._id}`}>Xem thêm</Link>
-          </div>
+         
         </CardBody>
       </Card>
     </Col>
