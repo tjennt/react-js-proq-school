@@ -280,14 +280,14 @@ const navigationConfig = [
   {
     type: "groupHeader",
     groupTitle: "Trò truyện",
-    permissions: ["admin", "student", "teacher"],
+    permissions: [ "student", "teacher"],
   },
   {
     id: "Hội họp",
     title: "chat",
     type: "item",
     icon: <Icon.MessageCircle size={15} />,
-    permissions: ["admin", "student", "Chat", "teacher"],
+    permissions: [ "student", "Chat", "teacher"],
     navLink: "/chat",
   },
   // {

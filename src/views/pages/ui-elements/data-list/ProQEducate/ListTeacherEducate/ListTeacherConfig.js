@@ -385,7 +385,7 @@ class ListTeacherConfig extends Component {
                     this.props.parsedFilter.limit
                       ? this.props.parsedFilter.limit
                       : 10
-                  } of ${this.state.totalRecords}`}</span>
+                  } trong tổng ${this.state.totalRecords}`}</span>
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>

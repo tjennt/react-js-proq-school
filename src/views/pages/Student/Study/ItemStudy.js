@@ -11,7 +11,7 @@ const ItemStudy = (props) => {
       <Card style={{ height: "350px" }}>
         <CardHeader>
           <CardTitle className="text-uppercase" style={{ width: "270px" }}>
-            {item.title}{" "}
+            <Link to={`/student/news/${item._id}`}>{item.title} </Link>
           </CardTitle>
           <MoreHorizontal size={15} className="cursor-pointer" />
         </CardHeader>
@@ -25,9 +25,6 @@ const ItemStudy = (props) => {
           <div className="mt-1">
             <h6 className="mb-0"> Thời gian cập nhật:</h6>
             <p> {newDate(item.updatedAt)} </p>
-          </div>
-          <div className="mt-1 float-right">
-            <Link to={`/student/news/${item._id}`}>Xem thêm</Link>
           </div>
         </CardBody>
       </Card>
