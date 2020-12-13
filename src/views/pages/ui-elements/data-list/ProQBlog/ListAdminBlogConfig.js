@@ -25,7 +25,7 @@ import {
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
-import { message, Popconfirm } from "antd";
+import { message, Popconfirm, Tooltip } from "antd";
 import {
   getCategory,
   addBlog,
@@ -95,18 +95,20 @@ class ListAdminBlogConfig extends Component {
         name: "Tiêu đề ",
         selector: "title",
         sortable: true,
-        minWidth: "200px",
+        minWidth: "450px",
         cell: (row) => (
-          <p title={row.title} className="text-truncate text-bold-500 mb-0">
-            {row.title}
-          </p>
+          <Tooltip placement="bottomLeft" title={row.title}>
+            <p title={row.title} className="text-truncate text-bold-500 mb-0">
+              {row.title}
+            </p>
+          </Tooltip>
         ),
       },
       {
         name: "Cơ sở",
         selector: "place",
         sortable: true,
-        // minWidth: "300px",
+        maxWidth: "180px",
         cell: (row) => (
           <p title={row.place} className="text-truncate text-bold-500 mb-0">
             {row.place}
@@ -173,13 +175,20 @@ class ListAdminBlogConfig extends Component {
     this.setState({ currentData: obj });
     this.handleSidebar(true);
   };
+  handleRowsPerPage = (value) => {
+    let { parsedFilter, getNotifyAll } = this.props;
 
+    let page = parsedFilter.page !== undefined ? parsedFilter.page : 1;
+    history.push(`/admin/blog?page=${page}&limit=${value}`);
+    this.setState({ rowsPerPage: value });
+    getNotifyAll({ page: parsedFilter.page, limit: value });
+  };
   handlePagination = (page) => {
-    let { parsedFilter, getData } = this.props;
-    let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 4;
+    let { parsedFilter, getNotifyAll } = this.props;
+    let perPage = parsedFilter.perPage !== undefined ? parsedFilter.perPage : 10;
 
     history.push(`/admin/blog?page=${page.selected + 1}&limit=${perPage}`);
-    getData({ page: page.selected + 1, perPage: perPage });
+    getNotifyAll({ page: page.selected + 1, perPage: perPage });
     this.setState({ currentPage: page.selected });
   };
 
@@ -218,10 +227,12 @@ class ListAdminBlogConfig extends Component {
                     </span>
                   ) : (
                     <span className="align-middle mx-50">{`${
+                      this.state.totalRecords
+                    } của ${
                       this.props.parsedFilter.page
                         ? this.props.parsedFilter.page
                         : 1
-                    } of ${this.state.totalRecords}`}</span>
+                    }`}</span>
                   )}
                   <ChevronDown size={15} />
                 </DropdownToggle>
@@ -265,6 +276,8 @@ class ListAdminBlogConfig extends Component {
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
+          fixedHeader
+          fixedHeaderScrollHeight="55vh"
           noHeader={true}
           noDataComponent="Không có dữ liệu "
         />

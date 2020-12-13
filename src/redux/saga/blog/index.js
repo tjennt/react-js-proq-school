@@ -103,7 +103,7 @@ export function* getDataNotiFeeSaga({ payload }) {
   yield put(showLoading());
   const param = {
     page: params ? params.page : "",
-    limit: params ? params.limit : "",
+    limit: params ? params.limit : 4,
   };
   try {
     const res = yield call(getDataFeeNoti, param);
@@ -124,7 +124,7 @@ export function* getDataNotiActivitySaga({ payload }) {
 
   const param = {
     page: params ? params.page : "",
-    limit: params ? params.limit : "",
+    limit: params ? params.limit : 4,
   };
   try {
     const res = yield call(getDataActivityNoti, param);
@@ -145,7 +145,7 @@ export function* getDataNotiLearningSaga({ payload }) {
 
   const param = {
     page: params ? params.page : "",
-    limit: params ? params.limit : "",
+    limit: params ? params.limit : 4,
   };
   try {
     const res = yield call(getDataLearningNoti, param);

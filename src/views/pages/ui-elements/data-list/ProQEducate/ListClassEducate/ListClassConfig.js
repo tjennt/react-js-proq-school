@@ -271,9 +271,9 @@ class ListClassEducateConfig extends Component {
                     </span>
                   ) : (
                     <span className="align-middle mx-50">{`${
-                      this.props.parsedFilter.page
-                        ? this.props.parsedFilter.page
-                        : 1
+                      this.props.parsedFilter.limit
+                        ? this.props.parsedFilter.limit
+                        : 10
                     } of ${this.state.totalRecords}`}</span>
                   )}
                   <ChevronDown size={15} />
@@ -319,6 +319,8 @@ class ListClassEducateConfig extends Component {
           data={value.length ? "" : data}
           columns={columns}
           noHeader
+          fixedHeader
+          fixedHeaderScrollHeight="55vh"
           noDataComponent="Không có lớp"
           subHeader
         />

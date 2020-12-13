@@ -16,15 +16,15 @@ function FormBlog(props) {
   const optionCategory = [
     {
       value: dataCategory ? dataCategory.fee : "",
-      label: dataCategory ? dataCategory.fee : "",
+      label: dataCategory ? "Học phí" : "",
     },
     {
       value: dataCategory ? dataCategory.activity : "",
-      label: dataCategory ? dataCategory.activity : "",
+      label: dataCategory ? "Hoạt động" : "",
     },
     {
       value: dataCategory ? dataCategory.learning : "",
-      label: dataCategory ? dataCategory.learning : "",
+      label: dataCategory ? "Học tập" : "",
     },
   ];
   return (
@@ -35,7 +35,7 @@ function FormBlog(props) {
       onSubmit={props.onSubmitForm}
     >
       {(formikProps) => {
-        const { isValid, resetForm } = formikProps;
+        const { isValid } = formikProps;
         return (
           <Form>
             <Row>
@@ -89,7 +89,7 @@ function FormBlog(props) {
                 Lưu
               </Button>
               <Button
-                onClick={() => resetForm({})}
+                onClick={()=>props.handleSidebar(false,true)}
                 className="ml-2 mt-1"
                 color="danger"
               >

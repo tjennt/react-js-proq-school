@@ -8,11 +8,13 @@ import { getData } from "./../../../redux/actions/dataListAssistance/index";
 import "./../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../assets/scss/pages/data-list.scss";
 import "./../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import { Button, Col, Row } from "reactstrap";
-import { Modal, Upload } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
+import { Button, Col, Input, Row } from "reactstrap";
+import { Modal, 
+  // Upload
+ } from "antd";
+// import { InboxOutlined } from "@ant-design/icons";
 
-const { Dragger } = Upload;
+// const { Dragger } = Upload;
 
 const CustomHeader = (props) => {
   const showModal = () => {
@@ -167,22 +169,13 @@ class TableTotal extends Component {
       <div className="data-list">
         <Modal
           destroyOnClose={true}
-          title="Thêm dữ liệu từ file excel"
+          title="Xuất file excel"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <Dragger
-            onChange={this.onChangeExcel}
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-          >
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-hint">
-              Click vào đây để chọn file excel hoặc kéo thả từ máy tính của bạn
-            </p>
-          </Dragger>
+                    <Input placeholder="Vui lòng nhập tên file excel"/>
+
         </Modal>
         <DataTable
           data={data}

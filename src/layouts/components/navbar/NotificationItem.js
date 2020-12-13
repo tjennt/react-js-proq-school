@@ -2,15 +2,16 @@ import React from "react";
 import { Media } from "reactstrap";
 import * as Icon from "react-feather";
 import "../../../assets/scss/components/notification.scss";
-
+import {history} from "../../../history"
 function NotificationItem(props) {
-  const notificationItem = () => {
+  const notificationItem = (id) => {
     props.checkUserSeen();
+    history.push(`/student/news/${id}`)
   };
   return (
     <div className="d-flex justify-content-between">
       <Media
-        onClick={notificationItem}
+        onClick={()=>notificationItem(props.allNotiSocket._id)}
         className="d-flex align-items-start customNotificationActive"
       >
         <Media left href="#">

@@ -220,14 +220,14 @@ const navigationConfig = [
     permissions: ["admin", "student"],
     navLink: "/student/news",
   },
-  {
-    id: "scoreStudent",
-    title: "Điểm học",
-    type: "item",
-    icon: <Icon.Circle size={12} />,
-    permissions: ["student"],
-    navLink: "/student/score",
-  },
+  // {
+  //   id: "scoreStudent",
+  //   title: "Điểm học",
+  //   type: "item",
+  //   icon: <Icon.Circle size={12} />,
+  //   permissions: ["student"],
+  //   navLink: "/student/score",
+  // },
   {
     id: "scheduleStudent",
     title: "Lịch học theo kì",

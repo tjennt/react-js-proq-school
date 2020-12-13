@@ -1,10 +1,14 @@
 import React from "react";
-import { Row, Col, Button } from "reactstrap";
+import { Row, Col, 
+  // Button
+ } from "reactstrap";
 import OrdersReceived from "../../pages/ui-elements/cards/statistics/OrdersReceived";
 import MoneyReceivedCard from "../../pages/ui-elements/cards/statistics/MoneyReceived";
 import "../../../assets/scss/pages/dashboard-analytics.scss";
-import { DatePicker, Space } from "antd";
-import moment from "moment";
+// import { DatePicker, 
+  // Space
+//  } from "antd";
+// import moment from "moment";
 import "../../../assets/scss/plugins/extensions/recharts.scss";
 import "../../../assets/scss/plugins/charts/apex-charts.scss";
 import { connect } from "react-redux";
@@ -23,7 +27,7 @@ import { getToken } from "../../../utility/auth/setAuthToken";
 import TableTotal from "./Table";
 import { logoutWithJWT } from "../../../redux/actions/auth/loginActions";
 import Revenue from "./Revenue";
-const { RangePicker } = DatePicker;
+// const { RangePicker } = DatePicker;
 let $primary = "#7367F0",
   $danger = "#EA5455",
   $warning = "#FF9F43",
@@ -83,10 +87,10 @@ class AnalyticsDashboard extends React.Component {
     });
   };
   render() {
-    const { loadings } = this.state;
+    // const { loadings } = this.state;
     return (
       <React.Fragment>
-            <Col lg="12" md="6" sm="12" className="mb-2">
+            {/* <Col lg="12" md="6" sm="12" className="mb-2">
             <Row>
               <Col lg="3" md="8" sm="8">
                 <Space direction="vertical" size={12}>
@@ -118,7 +122,7 @@ class AnalyticsDashboard extends React.Component {
                 </Button>
               </Col>
             </Row>
-          </Col>
+          </Col> */}
         <Row className="match-height">
           <Col lg="3" md="6" sm="12">
             <OrdersReceived

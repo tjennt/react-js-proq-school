@@ -8,9 +8,9 @@ const ItemLearning = (props) => {
   const { item } = props;
   return (
     <Col lg="3" className="mt-2">
-      <Card>
+      <Card style={{ height: "380px" }}>
         <CardHeader>
-          <CardTitle>{item.title} </CardTitle>
+          <CardTitle className="text-uppercase " style={{ width: "270px" }}>{item.title} </CardTitle>
           <MoreHorizontal size={15} className="cursor-pointer" />
         </CardHeader>
         <CardBody>
@@ -24,7 +24,7 @@ const ItemLearning = (props) => {
             <h6 className="mb-0"> Thời gian cập nhật:</h6>
             <p> {newDate(item.updatedAt)} </p>
           </div>
-          <div className="mt-1 float-right">
+          <div className="float-right">
             <Link to={`/student/news/${item._id}`}>Xem thêm</Link>
           </div>
         </CardBody>

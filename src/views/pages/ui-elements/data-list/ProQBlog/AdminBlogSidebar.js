@@ -56,7 +56,7 @@ class AdminBlogSidebar extends Component {
             dataCategory={this.props.dataCategory}
             initialValues={dataId ? dataInititalEdit : this.initialValues}
             onSubmitForm={this.handleSubmit}
-            handleSidebar={this.handleSidebar}
+            handleSidebar={this.props.handleSidebar}
           />
         </PerfectScrollbar>
       </div>
