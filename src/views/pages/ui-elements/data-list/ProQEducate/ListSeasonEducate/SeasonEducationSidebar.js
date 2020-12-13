@@ -60,6 +60,7 @@ class SeasonEducationSidebar extends Component {
           <FormSeason
             onSubmitForm={this.handleSubmit}
             initialValues={id ? taskEditSeason : this.initialState}
+            handleSidebar={handleSidebar}
           />
         </PerfectScrollbar>
       </div>

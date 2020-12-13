@@ -39,6 +39,7 @@ class StageEducationSidebar extends Component {
           <FormStage
             onSubmitForm={this.handleSubmit}
             initialValues={this.initialState}
+            handleSidebar={handleSidebar}
           />
         </PerfectScrollbar>
       </div>

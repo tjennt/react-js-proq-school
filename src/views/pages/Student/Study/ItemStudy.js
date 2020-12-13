@@ -8,9 +8,11 @@ const ItemStudy = (props) => {
   const { item } = props;
   return (
     <Col lg="3" className="mt-2">
-      <Card>
+      <Card style={{ height: "350px" }}>
         <CardHeader>
-          <CardTitle>{item.title} </CardTitle>
+          <CardTitle className="text-uppercase" style={{ width: "270px" }}>
+            {item.title}{" "}
+          </CardTitle>
           <MoreHorizontal size={15} className="cursor-pointer" />
         </CardHeader>
         <CardBody>
