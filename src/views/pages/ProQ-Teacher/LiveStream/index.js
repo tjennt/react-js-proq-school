@@ -149,7 +149,7 @@ const Room = (props) => {
       <Row>
         <Col log="12"> 
             <Button onClick={outStream} color="primary">
-                Thoát học online
+                Thoát video cal
             </Button>
          </Col>
         <Col sm="12">
