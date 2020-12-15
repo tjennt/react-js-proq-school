@@ -194,7 +194,7 @@ const navigationConfig = [
     type: "groupHeader",
     groupTitle: "Thông báo",
     permissions: ["admin"],
-  },
+    },
   {
     id: "blog",
     title: "Thông báo",
