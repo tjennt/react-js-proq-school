@@ -55,9 +55,9 @@ const Attendance = lazy(() =>
 // const EmailTeacher = lazy(() =>
 //   import("./views/pages/ProQ-Teacher/EmailTeacher/Email")
 // );
-// const LiveStreamTeacher = lazy(() =>
-//   import("./views/pages/ProQ-Teacher/LiveStream/Chat")
-// );
+const LiveStreamTeacher = lazy(() =>
+  import("./views/pages/ProQ-Teacher/LiveStream/")
+);
 // Educate
 const ClassEducate = lazy(() =>
   import(
@@ -262,7 +262,7 @@ class AppRouter extends React.Component {
             path="/student/scheduleDate"
             component={ScheduleStudentByDate}
           />
-          {/* {/* <AppRoute path="/teacher/email" component={commingSoon} /> */}
+          <AppRoute path="/teacher/liveStream/:id" component={LiveStreamTeacher} />
           <AppRoute path="/student/document" component={commingsoon} />
           {/* student */}
           <AppRoute exact path="/student/news" component={StudyStudent} />

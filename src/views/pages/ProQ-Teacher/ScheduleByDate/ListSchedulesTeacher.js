@@ -8,6 +8,8 @@ import "../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../assets/scss/pages/data-list.scss";
 import "../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import { newDate } from "../../../../utility/config";
+import { Row, Col, Button } from "reactstrap";
+import { v1 as uuid } from "uuid";
 const chipText = {
   0: "Chủ nhật",
   1: "Thứ 2",
@@ -149,17 +151,27 @@ class ListSchedulesTeacher extends Component {
     getData({ page: page.selected + 1, limit: perPage });
     this.setState({ currentPage: page.selected });
   };
-
+  createRoom=()=>{
+    const id = uuid();
+    history.push(`/teacher/liveStream/${id}`);
+  };
   render() {
     let { columns, value, data } = this.state;
     return (
       <div className="data-list">
+        <Row>
+          <Col>
+            <Button onClick={this.createRoom} color="primary">
+              {" "}
+              Dạy online{" "}
+            </Button>
+          </Col>
+        </Row>
         <DataTable
           className="dataTable-custom"
           data={value.length ? "" : data}
           columns={columns}
           noHeader={true}
-          subHeader
           noDataComponent="không có lịch dạy"
         />
         {/*         
