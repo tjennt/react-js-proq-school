@@ -24,11 +24,6 @@ const Video = (props) => {
   return <StyledVideo playsInline autoPlay ref={ref} />;
 };
 
-const StyledButton = styled.div`
-  height: 40px;
-  width: 50px;
-`;
-
 const videoConstraints = {
   height: window.innerHeight / 2,
   width: window.innerWidth / 2,
@@ -41,7 +36,7 @@ const Room = (props) => {
   const peersRef = useRef([]);
   console.log(props);
   const roomID = props.match.params.id;
-
+  const streamRef = useRef();
   const ar = [];
 
   useEffect(() => {
@@ -50,6 +45,7 @@ const Room = (props) => {
       .getUserMedia({ video: videoConstraints, audio: true })
       .then((stream) => {
         userVideo.current.srcObject = stream;
+        streamRef.current=stream
         socketRef.current.emit("join room", roomID);
         socketRef.current.on("all users", (users) => {
           const peers = [];
@@ -137,6 +133,9 @@ const Room = (props) => {
           data:true
       }
       socketRef.current.emit("out-live",(cat))
+      streamRef.current.getTracks().forEach(function (track) {
+        track.stop();
+      });
       history.push("/teacher/schedule");
   }
   return (
@@ -149,10 +148,10 @@ const Room = (props) => {
       <Row>
         <Col log="12"> 
             <Button onClick={outStream} color="primary">
-                Thoát video cal
+                Thoát video call
             </Button>
          </Col>
-        <Col sm="12">
+        <Col sm="12" className="mt-2">
           <div className="chat-app-window ">
           <Container className="user-chats">
             <StyledVideo controls muted ref={userVideo} autoPlay playsInline />
