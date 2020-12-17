@@ -112,7 +112,6 @@ export function* scheduleSaga({ payload }) {
 export function* getProfileTeacherSaga() {
   try {
     const res = yield call(getDataProfileTeacherApi);
-    console.log(res);
     const { data } = res;
     if (data.success) {
       yield put(getProfileTeacherSuccess(data.payload));
@@ -121,16 +120,13 @@ export function* getProfileTeacherSaga() {
 }
 export function* getDataSchedulesAllSaga({ payload }) {
   const { params } = payload;
-  console.log(params);
   const param = {
     page: params ? params.page : "",
     limit: params ? params.limit : "",
   };
   try {
-    const res = yield call(getSchedulesAllApi, params);
-    console.log(res);
+    const res = yield call(getSchedulesAllApi, param);
     const { data } = res;
-    console.log(data);
     if (data.success) {
       const dataRes = data.payload.reduce(
         (arr, curr) => [

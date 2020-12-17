@@ -214,10 +214,10 @@ class ListClassConfig extends Component {
                   }}
                 >
                   <span className="align-middle mx-50">{`${
-                    this.props.parsedFilter.page
-                      ? this.props.parsedFilter.page
-                      : 1
-                  } of ${this.state.totalRecords}`}</span>
+                    this.props.parsedFilter.limit
+                      ? this.props.parsedFilter.limit
+                      : 10
+                  } trong tổng ${this.state.totalRecords}`}</span>
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>

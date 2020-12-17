@@ -41,3 +41,18 @@
 [1125/204100.262:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
 [1126/195720.159:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
 [1127/204958.199:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1128/084108.775:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1129/104433.224:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1129/191320.480:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1129/191320.481:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1129/191320.483:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1129/191320.483:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
+[1129/191320.481:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights. (0xc0000022)
+[1129/191320.483:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights. (0xc0000022)
+[1129/191320.484:ERROR:exception_snapshot_win.cc(99)] thread ID 20384 not found in process
+[1129/191320.485:ERROR:exception_snapshot_win.cc(99)] thread ID 18756 not found in process
+[1130/195632.270:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1201/195714.733:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1202/005458.957:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights. (0xc0000022)
+[1202/005458.960:ERROR:exception_snapshot_win.cc(99)] thread ID 9104 not found in process
+[1202/005458.960:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)

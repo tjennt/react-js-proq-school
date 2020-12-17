@@ -3,6 +3,9 @@ let initialState = {
   dataJoin: null,
   contentMessageIdGroup: [],
   dataGroup: [],
+  dataSearch: [],
+  SaveIdGroup:null,
+  contact:null
 };
 const rootChat = (state = initialState, action) => {
   switch (action.type) {
@@ -35,7 +38,15 @@ const rootChat = (state = initialState, action) => {
       state.contentMessageIdGroup.push(data);
       return {
         ...state,
-        contentMessageIdGroup: state.contentMessageIdGroup,
+        // contentMessageIdGroup: state.contentMessageIdGroup.concat(data),
+      };
+    }
+    case chatType.RECEIEVE_CHAT_SOCKET_GROUP: {
+      const { data } = action;
+      state.contentMessageIdGroup.push(data);
+      return {
+        ...state,
+        // contentMessageIdGroup: state.contentMessageIdGroup.concat(data),
       };
     }
     case chatType.GET_ALL_DATA_GROUP: {
@@ -49,6 +60,38 @@ const rootChat = (state = initialState, action) => {
         ...state,
         dataGroup: data,
       };
+    }
+    case chatType.SEARCH_USER_CHAT: {
+      return {
+        ...state,
+      };
+    }
+    case chatType.SEARCH_CHAT_USER_SUCCESS: {
+      const { data } = action.payload;
+      return {
+        ...state,
+        dataSearch: data,
+      };
+    }
+    case chatType.STORE_SAVE_GROUP_CHAT:{
+      const {id} = action.payload
+      return{
+        ...state,
+        SaveIdGroup:id
+      }
+    }
+    case chatType.SET_CONTACT:{
+      const {value} = action.payload
+      return{
+        ...state,
+        contact:value
+      }
+    }
+    case chatType.SET_DATA_JOIN:{
+      return{
+        ...state,
+        dataJoin:null
+      }
     }
     default:
       return state;

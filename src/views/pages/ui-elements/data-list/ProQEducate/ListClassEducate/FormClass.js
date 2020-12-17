@@ -69,7 +69,7 @@ function FormClass(props) {
               <Button disabled={!isValid} color="primary" type="submit">
                 Lưu
               </Button>
-              <Button onClick={handleCancle} className="ml-2" color="danger">
+              <Button onClick={handleCancle} className="ml-2" color="success">
                 {" "}
                 Huỷ{" "}
               </Button>

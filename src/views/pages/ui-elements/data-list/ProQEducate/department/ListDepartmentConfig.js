@@ -25,7 +25,6 @@ import Sidebar from "./DepartmentSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import Moment from "react-moment";
 import { Button, Col } from "reactstrap";
 import { message, Popconfirm } from "antd";
 import ReactPaginate from "react-paginate";

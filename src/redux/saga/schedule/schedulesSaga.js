@@ -78,7 +78,6 @@ export function* updateSchedulesSaga({ payload }) {
     subject: subject ? subject : "",
     weekDays: days,
   };
-  yield console.log(dataReq);
   try {
     const res = yield call(updateSchedulesApi, id, dataReq);
     const { data } = res;

@@ -13,7 +13,10 @@ import {
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getData } from "../../../../../../redux/actions/dataListAssistance/index";
-import { importExcelStudent } from "../../../../../../redux/actions/education/index";
+import {
+  importExcelStudent,
+  updateSpecialization,
+} from "../../../../../../redux/actions/education/index";
 import Sidebar from "./SpecializationSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
@@ -29,20 +32,21 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 import { Popconfirm, message, Tooltip } from "antd";
-import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
 import {
   getDataSpecialization,
-  updateSpecialization,
   setEditSpecialization,
 } from "../../../../../../redux/actions/schedule/getDataSpecialization";
-import { addSpecialization } from "../../../../../../redux/actions/education/index";
+import {
+  addSpecialization,
+  deleteSpecialization,
+} from "../../../../../../redux/actions/education/index";
 import { getDataSubject } from "../../../../../../redux/actions/dataListAssistance/index";
 import { newDate } from "../../../../../../utility/config";
 
 const ActionsComponent = (props) => {
   function confirm(e) {
-    props.changeStatus(props.row);
+    props.deleteRow(props.row);
   }
   function cancel(e) {
     message.error("Hủy thay đổi trạng thái  !");
@@ -59,8 +63,7 @@ const ActionsComponent = (props) => {
         />
       </Tooltip>
       <Popconfirm
-        disabled={true}
-        title="Bạn có chắc chắn xóa sinh viên?"
+        title="Bạn có chắc chắn xóa chuyên ngành?"
         onConfirm={confirm}
         onCancel={cancel}
         okText="Có "
@@ -120,7 +123,6 @@ class ListSpecializationEducation extends Component {
             parsedFilter={this.props.parsedFilter}
             currentData={this.handleCurrentData}
             deleteRow={this.handleDelete}
-            changeStatus={(row) => this.changeStatus(row)}
           />
         ),
       },
@@ -159,21 +161,21 @@ class ListSpecializationEducation extends Component {
     this.setState({ sidebar: boolean });
     if (addNew === true) this.setState({ currentData: null, addNew: true });
   };
-  // handleDelete = (row) => {
-  //   this.props.deleteData(row);
-  //   this.props.getData(this.props.parsedFilter);
-  //   if (this.state.data.length - 1 === 0) {
-  //     history.push(
-  //       `/education/student?page=${parseInt(
-  //         this.props.parsedFilter.page - 1
-  //       )}&limit=${this.props.parsedFilter.perPage}`
-  //     );
-  //     this.props.getData({
-  //       page: this.props.parsedFilter.page - 1,
-  //       perPage: this.props.parsedFilter.perPage,
-  //     });
-  //   }
-  // };
+  handleDelete = (row) => {
+    this.props.deleteSpecialization(row, this.props.parsedFilter);
+    // this.props.getData(this.props.parsedFilter);
+    // if (this.state.data.length - 1 === 0) {
+    //   history.push(
+    //     `/education/student?page=${parseInt(
+    //       this.props.parsedFilter.page - 1
+    //     )}&limit=${this.props.parsedFilter.perPage}`
+    //   );
+    //   this.props.getData({
+    //     page: this.props.parsedFilter.page - 1,
+    //     perPage: this.props.parsedFilter.perPage,
+    //   });
+    // }
+  };
   handleCurrentData = (obj) => {
     this.props.setEditSpecialization(obj);
     this.setState({ currentData: obj });
@@ -197,9 +199,12 @@ class ListSpecializationEducation extends Component {
     this.setState({ rowsPerPage: value });
     getDataSpecialization({ page: parsedFilter.page, limit: value });
   };
-
+  handleAddData = () => {
+    this.handleSidebar(true, true);
+    this.props.setEditSpecialization(null);
+  };
   render() {
-    let { columns, value, currentData, sidebar, data } = this.state;
+    let { columns, value, sidebar, data } = this.state;
     return (
       <div className="data-list">
         <Col lg="12">
@@ -207,7 +212,7 @@ class ListSpecializationEducation extends Component {
             <Col lg="3">
               <Button
                 color="primary"
-                onClick={() => this.handleSidebar(true, true)}
+                onClick={this.handleAddData}
                 outline={true}
               >
                 <Plus size={15} />
@@ -233,10 +238,10 @@ class ListSpecializationEducation extends Component {
                     </span>
                   ) : (
                     <span className="align-middle mx-50">{`${
-                      this.props.parsedFilter.page
-                        ? this.props.parsedFilter.page
-                        : 1
-                    } of ${this.state.totalRecords}`}</span>
+                      this.props.parsedFilter.limit
+                        ? this.props.parsedFilter.limit
+                        : 10
+                    } trong tổng ${this.state.totalRecords}`}</span>
                   )}
                   <ChevronDown size={15} />
                 </DropdownToggle>
@@ -357,4 +362,5 @@ export default connect(mapStateToProps, {
   addSpecialization,
   setEditSpecialization,
   updateSpecialization,
+  deleteSpecialization,
 })(ListSpecializationEducation);

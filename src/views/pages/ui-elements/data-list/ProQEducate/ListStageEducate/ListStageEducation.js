@@ -6,9 +6,8 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Edit,
+  // Edit,
   Plus,
-  Trash,
 } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
@@ -29,43 +28,43 @@ import {
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
-import { Modal, Upload, Tooltip } from "antd";
+import { Modal, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import ReactPaginate from "react-paginate";
 import { newDate } from "../../../../../../utility/config";
 const { Dragger } = Upload;
 
-const ActionsComponent = (props) => {
-  // function confirm(e) {
-  //   props.changeStatus(props.row);
-  // }
-  // function cancel(e) {
-  //   message.error("Hủy thay đổi trạng thái  !");
-  // }
-  return (
-    <div className="data-list-action">
-      <Tooltip placement="topLeft" title="Chỉnh sửa">
-        <Edit
-          className="cursor-pointer mr-1"
-          size={20}
-          onClick={() => {
-            return props.currentData(props.row);
-          }}
-        />
-      </Tooltip>
+// const ActionsComponent = (props) => {
+//   // function confirm(e) {
+//   //   props.changeStatus(props.row);
+//   // }
+//   // function cancel(e) {
+//   //   message.error("Hủy thay đổi trạng thái  !");
+//   // }
+//   return (
+//     <div className="data-list-action">
+//       <Tooltip placement="topLeft" title="Chỉnh sửa">
+//         <Edit
+//           className="cursor-pointer mr-1"
+//           size={20}
+//           onClick={() => {
+//             return props.currentData(props.row);
+//           }}
+//         />
+//       </Tooltip>
 
-      {/* <Popconfirm
-        title="Bạn có chắc chắn xóa sinh viên?"
-        onConfirm={confirm}
-        onCancel={cancel}
-        okText="Có "
-        cancelText="Không "
-      >
-        <Trash className="cursor-pointer" size={20} />
-      </Popconfirm> */}
-    </div>
-  );
-};
+//       {/* <Popconfirm
+//         title="Bạn có chắc chắn xóa sinh viên?"
+//         onConfirm={confirm}
+//         onCancel={cancel}
+//         okText="Có "
+//         cancelText="Không "
+//       >
+//         <Trash className="cursor-pointer" size={20} />
+//       </Popconfirm> */}
+//     </div>
+//   );
+// };
 class ListStageEducation extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
@@ -94,7 +93,7 @@ class ListStageEducation extends Component {
         name: "Khóa",
         selector: "stage",
         sortable: true,
-        minWidth: "300px",
+        minWidth: "400px",
         cell: (row) => (
           <p title={row.name} className="text-truncate text-bold-500 mb-0">
             {row.name}
@@ -105,30 +104,30 @@ class ListStageEducation extends Component {
         name: " Ngày bắt đầu",
         selector: "date_start",
         sortable: true,
-        minWidth: "300px",
+        minWidth: "400px",
         cell: (row) => <p>{newDate(row.startAt)}</p>,
       },
       {
         name: " Ngày kết thúc",
         selector: "date_end",
         sortable: true,
-        minWidth: "300px",
+        minWidth: "400px",
         cell: (row) => <p>{newDate(row.endAt)}</p>,
       },
-      {
-        name: "Thao tác",
-        sortable: true,
-        cell: (row) => (
-          <ActionsComponent
-            row={row}
-            getData={this.props.getData}
-            parsedFilter={this.props.parsedFilter}
-            currentData={this.handleCurrentData}
-            deleteRow={this.handleDelete}
-            changeStatus={(row) => this.changeStatus(row)}
-          />
-        ),
-      },
+      // {
+      //   name: "Thao tác",
+      //   sortable: true,
+      //   cell: (row) => (
+      //     <ActionsComponent
+      //       row={row}
+      //       getData={this.props.getData}
+      //       parsedFilter={this.props.parsedFilter}
+      //       currentData={this.handleCurrentData}
+      //       deleteRow={this.handleDelete}
+      //       changeStatus={(row) => this.changeStatus(row)}
+      //     />
+      //   ),
+      // },
     ],
     allData: [],
     value: "",
@@ -280,7 +279,7 @@ class ListStageEducation extends Component {
                     this.props.parsedFilter.limit
                       ? this.props.parsedFilter.limit
                       : 10
-                  } of ${this.state.totalRecords}`}</span>
+                  } trong tổng ${this.state.totalRecords}`}</span>
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>

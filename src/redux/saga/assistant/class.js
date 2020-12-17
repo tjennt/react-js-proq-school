@@ -39,7 +39,6 @@ export function* updateDataClassSaga({ payload }) {
   };
   try {
     const res = yield call(updateDataAssClassApi, obj.id, dataReq);
-    console.log(res);
     const { data } = res;
     if (data.success) {
       yield put(getDataClass(params));
@@ -53,7 +52,6 @@ export function* deleteDataClassSaga({ payload }) {
   const { id, params } = payload;
   try {
     const res = yield call(deleteDataAssClassApi, id);
-    console.log(res);
     const { data } = res;
     if (data.success) {
       yield put(getDataClass(params));

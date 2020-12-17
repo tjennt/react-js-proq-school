@@ -18,9 +18,9 @@ class ScheduleTeacherByDate extends React.Component {
     return (
       <React.Fragment>
         <Breadcrumbs
-          breadCrumbTitle="Giảng viên"
-          breadCrumbParent="Lịch dạy "
-          breadCrumbActive="Lịch dạy của giảng viên"
+          breadCrumbTitle="Dạy học"
+          breadCrumbParent="Dạy online"
+          breadCrumbActive="Dạy online trong nhóm"
         />
         <Row>
           <Col sm="12">

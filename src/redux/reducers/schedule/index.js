@@ -11,6 +11,7 @@ const initialState = {
   total_page_special: 0,
   total_record_special: 0,
   total_count_schedule: 0,
+  setTaskSeason: null,
 };
 const scheduleReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -79,6 +80,13 @@ const scheduleReducer = (state = initialState, action) => {
         dataSpecial: data,
         total_page_special: total_page,
         total_record_special: total_record,
+      };
+    }
+    case listScheduleType.SET_TASK_SEASON: {
+      const { task } = action.payload;
+      return {
+        ...state,
+        setTaskSeason: task,
       };
     }
     case scheduleType.SET_TASK_SPECIALIZATION: {

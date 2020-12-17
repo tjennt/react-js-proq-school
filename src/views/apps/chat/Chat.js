@@ -3,12 +3,17 @@ import Sidebar from "react-sidebar";
 import { ContextLayout } from "../../../utility/context/Layout";
 import ChatSidebarContent from "./ChatSidebar";
 import ChatLog from "./ChatLog";
+import ChatLogGroup from "./ChatLogGroup";
 import ReceiverSidebar from "./receiverProfile";
 import UserSidebar from "./UserSidebar";
 import "../../../assets/scss/pages/app-chat.scss";
 import {
   joinFriend,
   getAllDataGroup,
+  saveGroupChat,
+  getMessageIdGroup,
+  setContact,
+  setDataJoin
 } from "../../../redux/actions/chatProQ/index";
 import { connect } from "react-redux";
 const mql = window.matchMedia(`(min-width: 992px)`);
@@ -23,8 +28,9 @@ class Chat extends React.Component {
     activeUser: null,
     receiverProfile: false,
     userSidebar: false,
+    contactUserChat: null,
+    idGroupChat:null
   };
-  // mounted = false
   handleUserSidebar = (status) => {
     if (status === "open") {
       this.setState({
@@ -41,6 +47,7 @@ class Chat extends React.Component {
       activeChatID: id,
       activeUser: user,
       activeChat: chats,
+      
     });
   };
 
@@ -69,10 +76,20 @@ class Chat extends React.Component {
           receiverProfile: false,
         });
   };
-  joinFriend = (value) => {
-    this.setState({ ...this.state, activeChatID: value });
-    this.props.joinFriend(value);
+  setContactUser = (value) => {
+    this.props.setContact(value)
+    this.setState({ ...this.state, contactUserChat: value });
   };
+  joinFriend = (value) => {
+    this.props.joinFriend(value);
+    this.props.saveGroupChat(null)
+
+  };
+  getIdGroup =(value)=>{
+    this.props.saveGroupChat(value)
+    this.props.getMessageIdGroup(value)
+    this.props.setDataJoin()
+  }
   handleUserSidebar = (status) => {
     status === "open"
       ? this.setState({
@@ -84,6 +101,7 @@ class Chat extends React.Component {
   };
 
   render() {
+    console.log(this.props.SaveIdGroup)
     return (
       <div className="chat-application position-relative">
         <div
@@ -107,6 +125,8 @@ class Chat extends React.Component {
                 <ChatSidebarContent
                   getAllDataGroup={this.props.getAllDataGroup}
                   joinFriend={this.joinFriend}
+                  getIdGroup={this.getIdGroup}
+                  setContactUser={this.setContactUser}
                   activeChatID={this.state.activeChatID}
                   handleActiveChat={this.handleActiveChat}
                   handleUserSidebar={this.handleUserSidebar}
@@ -128,7 +148,18 @@ class Chat extends React.Component {
           userProfile={this.state.userSidebar}
           handleUserSidebar={this.handleUserSidebar}
         />
+        {this.props.SaveIdGroup ? 
+        <ChatLogGroup
+          idGroupChat = {this.props.SaveIdGroup}
+          handleReceiverSidebar={this.handleReceiverSidebar}
+          mainSidebar={this.onSetSidebarOpen}
+          mql={mql}
+          handleActiveChat={this.handleActiveChat}
+        />
+        :
         <ChatLog
+          contactUserChat={this.state.contactUserChat}
+          saveGroupChat ={this.props.saveGroupChat}
           activeChatID={this.props.chatGroup}
           activeChat={this.state.activeChat}
           activeUser={this.state.activeUser}
@@ -137,7 +168,9 @@ class Chat extends React.Component {
           mql={mql}
           handleActiveChat={this.handleActiveChat}
         />
+        }
         <ReceiverSidebar
+        profile = {this.props.profile}
           activeUser={this.state.activeUser}
           receiverProfile={this.state.receiverProfile}
           handleReceiverSidebar={this.handleReceiverSidebar}
@@ -149,6 +182,9 @@ class Chat extends React.Component {
 const mapStateToProps = (state) => {
   return {
     chatGroup: state.chatProq.dataJoin,
+    SaveIdGroup:state.chatProq.SaveIdGroup,
+    profile: state.auth.login.values.loggedInUser,
+
   };
 };
-export default connect(mapStateToProps, { joinFriend, getAllDataGroup })(Chat);
+export default connect(mapStateToProps, {setContact, joinFriend,setDataJoin, getAllDataGroup,saveGroupChat,getMessageIdGroup})(Chat);

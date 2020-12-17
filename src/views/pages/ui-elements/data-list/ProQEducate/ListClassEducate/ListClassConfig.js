@@ -236,7 +236,7 @@ class ListClassEducateConfig extends Component {
     getDataClass({ page: parsedFilter.page, limit: value });
   };
   render() {
-    let { columns, data, value, currentData, sidebar } = this.state;
+    let { columns, data, value, sidebar } = this.state;
     return (
       <div className="data-list">
         <Col lg="12">
@@ -271,10 +271,10 @@ class ListClassEducateConfig extends Component {
                     </span>
                   ) : (
                     <span className="align-middle mx-50">{`${
-                      this.props.parsedFilter.page
-                        ? this.props.parsedFilter.page
-                        : 1
-                    } of ${this.state.totalRecords}`}</span>
+                      this.props.parsedFilter.limit
+                        ? this.props.parsedFilter.limit
+                        : 10
+                    } trong tổng ${this.state.totalRecords}`}</span>
                   )}
                   <ChevronDown size={15} />
                 </DropdownToggle>
@@ -319,6 +319,8 @@ class ListClassEducateConfig extends Component {
           data={value.length ? "" : data}
           columns={columns}
           noHeader
+          fixedHeader
+          fixedHeaderScrollHeight="55vh"
           noDataComponent="Không có lớp"
           subHeader
         />

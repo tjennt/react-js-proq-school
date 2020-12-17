@@ -2,15 +2,16 @@ import React from "react";
 import { Media } from "reactstrap";
 import * as Icon from "react-feather";
 import "../../../assets/scss/components/notification.scss";
-
+import {history} from "../../../history"
 function NotificationItem(props) {
-  const notificationItem = () => {
-    props.checkNotification();
+  const notificationItem = (id) => {
+    props.checkUserSeen();
+    history.push(`/student/news/${id}`)
   };
   return (
     <div className="d-flex justify-content-between">
       <Media
-        onClick={notificationItem}
+        onClick={()=>notificationItem(props.allNotiSocket._id)}
         className="d-flex align-items-start customNotificationActive"
       >
         <Media left href="#">
@@ -20,9 +21,7 @@ function NotificationItem(props) {
           <Media heading className=" media-heading" tag="h6">
             Có thông báo mới !
           </Media>
-          <p className="notification-text">
-            Có thông báo mới đến từ phòng đào tạo
-          </p>
+          <p className="notification-text">{props.allNotiSocket.title}</p>
         </Media>
         <small>
           <time className="media-meta" dateTime="2015-06-11T18:29:20+08:00">

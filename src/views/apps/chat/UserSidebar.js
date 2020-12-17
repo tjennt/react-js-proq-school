@@ -5,7 +5,10 @@ import PerfectScrollbar from "react-perfect-scrollbar"
 import { connect } from "react-redux"
 import { changeStatus } from "../../../redux/actions/chat/index"
 import Radio from "../../../components/@vuexy/radio/RadioVuexy"
-import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg"
+import {
+  API_ENDPOINT_IMG,
+  API_ENDPOINT_IMG_TEACHER
+} from "../../../redux/constants";
 class UserSidebar extends React.Component {
   static getDerivedStateFromProps(props, state) {
     if (props.chat.status !== state.status) {
@@ -40,7 +43,7 @@ class UserSidebar extends React.Component {
           </div>
           <div className="header-profile-sidebar">
             <div className="avatar">
-              <img src={userImg} alt="User Profile" height="66" width="66" />
+                <img src={`${this.props.profile.studentId? `${API_ENDPOINT_IMG}/${this.props.profile.studentId.avatar}`:`${API_ENDPOINT_IMG_TEACHER}/${this.props.profile.teacherId.avatar}`}`} alt="avata" width="40px" height="40px" />            
               <span
                 className={`${
                   status === "offline"
@@ -53,7 +56,7 @@ class UserSidebar extends React.Component {
                 } avatar-status-lg`}
               />
             </div>
-            <h4 className="chat-user-name">John Doe</h4>
+            <h4 className="chat-user-name">{this.props.profile.studentId ? this.props.profile.studentId.fullName : this.props.profile.teacherId.fullname }</h4>
           </div>
         </header>
         <div className="profile-sidebar-area">
@@ -125,7 +128,9 @@ class UserSidebar extends React.Component {
 }
 const mapStateToProps = state => {
   return {
-    chat: state.chatApp.chats
+    chat: state.chatApp.chats,
+    profile: state.auth.login.values.loggedInUser,
+
   }
 }
 export default connect(mapStateToProps, { changeStatus })(UserSidebar)

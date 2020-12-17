@@ -205,7 +205,6 @@ class FormDepartment extends Component {
         </Option>
       );
     });
-    console.log(season);
     let optionClassDepart = classDepart.map((item) => {
       return (
         <Option key={item._id} value={item._id}>
@@ -256,7 +255,6 @@ class FormDepartment extends Component {
         )
         .toString();
     }
-    console.log(dateMax);
     return (
       <Form>
         <FormGroup>
@@ -264,7 +262,7 @@ class FormDepartment extends Component {
           <Select
             style={{ width: "100%" }}
             disabled={id ? true : false}
-            placeholder="Vui lòng chọn giáo viên "
+            placeholder="Vui lòng chọn kì học"
             value={this.state.season}
             onChange={this.handleChangeStage}
           >

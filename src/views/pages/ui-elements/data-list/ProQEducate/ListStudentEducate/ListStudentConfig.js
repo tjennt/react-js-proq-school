@@ -33,7 +33,6 @@ import {
   DropdownToggle,
   Input,
   Row,
-  Table,
   UncontrolledDropdown,
 } from "reactstrap";
 import { Popconfirm, message, Modal, Upload, Tooltip } from "antd";
@@ -382,7 +381,11 @@ class ListStudentEducation extends Component {
         <Col lg="12">
           <Row>
             <Col lg="5">
-              <Button onClick={this.showModal} className=" ml-2" color="danger">
+              <Button
+                onClick={this.showModal}
+                className=" ml-2"
+                color="success"
+              >
                 <Download size={15} /> Nhập excel
               </Button>
               <Button
@@ -420,7 +423,7 @@ class ListStudentEducation extends Component {
                       this.props.parsedFilter.limit
                         ? this.props.parsedFilter.limit
                         : 10
-                    } của ${this.state.totalRecords}`}</span>
+                    } trong tổng ${this.state.totalRecords}`}</span>
                   )}
 
                   <ChevronDown size={15} />

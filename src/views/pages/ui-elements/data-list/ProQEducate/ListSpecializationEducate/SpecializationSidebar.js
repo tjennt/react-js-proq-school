@@ -54,6 +54,7 @@ class SpecializationSidebar extends Component {
             subject={this.props.subject}
             initialState={data ? dataEdit : this.initialState}
             onSubmitForm={this.handleSubmit}
+            handleSidebar={handleSidebar}
           />
         </PerfectScrollbar>
       </div>

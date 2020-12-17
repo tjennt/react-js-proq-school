@@ -7,6 +7,7 @@ import * as scheduleType from "../constants/schedule/index";
 import * as teacherType from "../constants/teacher";
 import * as studentType from "../constants/student";
 import * as chatType from "../constants/chat";
+import * as blogType from "../constants/blog";
 import {
   loginActionSaga,
   loginWithGoogleSaga,
@@ -42,9 +43,13 @@ import {
   addSpecializationSaga,
   addStageSaga,
   addSubjectSaga,
+  deleteSeasonSaga,
+  deleteSpecialSaga,
   getSchedulesSaga,
   importExcelStudentEduSaga,
   importExcelTeacherEduSaga,
+  updateSeasonSaga,
+  updateSpecializationSaga,
 } from "./educationSaga";
 import {
   getDataSubjectSaga,
@@ -78,8 +83,23 @@ import {
   getAllGroupSaga,
   getMessageGroupByIdSaga,
   joinFriend,
+  searchUserSaga,
   sendChatSaga,
+  addChatGroupSaga,
+  sendChatGroupSaga
 } from "./chat";
+import {
+  addBlogSaga,
+  checkUserSendNotiSaga,
+  deleteNotifySaga,
+  getBlogDetailSaga,
+  getCategorySaga,
+  getDataNotiActivitySaga,
+  getDataNotiFeeSaga,
+  getDataNotiLearningSaga,
+  getNotifySaga,
+  updateBlogSaga,
+} from "./blog";
 function* rootSaga() {
   //login //auth
   yield takeLatest(authType.LOGIN, loginActionSaga);
@@ -117,12 +137,21 @@ function* rootSaga() {
     educationType.IMPORT_EXCEL_TEACHER,
     importExcelTeacherEduSaga
   );
+
   yield takeLatest(educationType.ADD_CLASS, addClassSaga);
   yield takeLatest(educationType.ADD_SUBJECT, addSubjectSaga);
   yield takeLatest(educationType.CREATE_STAGE, addStageSaga);
   yield takeLatest(educationType.CREATE_SEASON, addSeasonSaga);
+  yield takeLatest(educationType.UPDATE_SEASON, updateSeasonSaga);
+  yield takeLatest(educationType.DELETE_TASK_SEASON, deleteSeasonSaga);
   yield takeLatest(educationType.GET_DATA_SCHEDULES, getSchedulesSaga);
   yield takeLatest(educationType.ADD_SEPCIALIZATION, addSpecializationSaga);
+  yield takeLatest(educationType.DELETE_SEPCIALIZATION, deleteSpecialSaga);
+  yield takeLatest(
+    educationType.UPDATE_SEPCIALIZATION,
+    updateSpecializationSaga
+  );
+
   yield takeLatest(
     scheduleType.UPDATE_DATA_SPECIALIZATION,
     updateDataSpecialSaga
@@ -168,5 +197,21 @@ function* rootSaga() {
   yield takeLatest(chatType.GET_MESSAGE_ID_GROUP, getMessageGroupByIdSaga);
   yield takeLatest(chatType.SEND_CHAT, sendChatSaga);
   yield takeLatest(chatType.GET_ALL_DATA_GROUP, getAllGroupSaga);
+  yield takeLatest(chatType.SEARCH_USER_CHAT, searchUserSaga);
+  yield takeLatest(chatType.ADD_CHAT_GROUP,addChatGroupSaga)
+  yield takeLatest(chatType.SEND_CHAT_GROUP,sendChatGroupSaga)
+  /**
+   * notify
+   */
+  yield takeLatest(blogType.GET_CATEGORY, getCategorySaga);
+  yield takeLatest(blogType.ADD_BLOG, addBlogSaga);
+  yield takeLatest(blogType.GET_ALL_NOTIFY, getNotifySaga);
+  yield takeLatest(blogType.UPDATE_BLOG, updateBlogSaga);
+  yield takeLatest(blogType.DELETE_BLOG, deleteNotifySaga);
+  yield takeLatest(blogType.GET_NOTI_FEE_STUDENT, getDataNotiFeeSaga);
+  yield takeLatest(blogType.GET_NOTI_ACTIVITY_STUDENT, getDataNotiActivitySaga);
+  yield takeLatest(blogType.GET_NOTI_LEARNING_STUDENT, getDataNotiLearningSaga);
+  yield takeLatest(blogType.CHECK_USER_SEEN_NOTI, checkUserSendNotiSaga);
+  yield takeLatest(blogType.GET_NOTI_DETAIL, getBlogDetailSaga);
 }
 export default rootSaga;

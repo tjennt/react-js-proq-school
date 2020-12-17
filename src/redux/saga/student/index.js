@@ -16,7 +16,6 @@ export function* getDataSchedulesIdSaga({ payload }) {
   const { id, params } = payload;
   try {
     const res = yield call(getDataScheduleStudentId, id, params);
-    console.log(res);
     const { data } = res;
     if (data.success) {
       const dataRes = data.payload.reduce(
@@ -47,7 +46,6 @@ export function* getDataSchedulesDetailIdSaga({ payload }) {
   const { id, params } = payload;
   try {
     const res = yield call(getDataScheduleStudentDetail, id, params);
-    console.log(res);
     const { data } = res;
     if (data.success) {
       const dataRes = data.payload.days.reduce(
@@ -61,7 +59,6 @@ export function* getDataSchedulesDetailIdSaga({ payload }) {
         ],
         []
       );
-      console.log(dataRes);
       yield put(
         getDataScheduleDetailIdSuccess(
           dataRes
@@ -78,10 +75,9 @@ export function* getDataScheduleStudentSaga({ payload }) {
   const { params } = payload;
   try {
     const res = yield call(getDataScheduleStudent, params);
-    console.log(res);
     const { data } = res;
     if (data.success) {
-      const dataRes = data.payload[1].reduce(
+      const dataRes = data.payload.reduce(
         (arr, curr) => [
           ...arr,
           {

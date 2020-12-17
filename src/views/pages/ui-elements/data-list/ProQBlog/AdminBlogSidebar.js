@@ -7,32 +7,37 @@ class AdminBlogSidebar extends Component {
   initialValues = {
     id: "",
     title: "",
-    author: "",
     content: "",
-    location: null,
-    timeUpdate: "",
-    description: "",
+    location: "",
     category: null,
   };
 
   handleSubmit = (values, { resetForm }) => {
-    const { handleSidebar, data } = this.props;
-    if (!data) {
-      // addData(values);
-      // handleSidebar(false, true);
+    const { handleSidebar, data, addData, dataParams, updateData } = this.props;
+    if (data !== null) {
+      updateData(dataParams, values);
+      handleSidebar(false, true);
       resetForm({});
     } else {
-      // updateData(values);
+      addData(dataParams, values);
       handleSidebar(false, true);
+      resetForm({});
     }
   };
   render() {
     let { show, handleSidebar, data } = this.props;
-    // let dataId = "";
-    // if (data) {
-    //   dataId = data.id;
-    // }
-    // let dataInititalEdit = [];
+    let dataId = "";
+    let dataInititalEdit = [];
+    if (data) {
+      dataId = data._id;
+      dataInititalEdit = {
+        id: data._id,
+        title: data.title,
+        content: data.description,
+        location: data.place,
+        category: data.type,
+      };
+    }
     return (
       <div
         className={classnames("data-list-sidebarBlog", {
@@ -48,9 +53,10 @@ class AdminBlogSidebar extends Component {
           options={{ wheelPropagation: false }}
         >
           <FormBlog
-            initialValues={this.initialValues}
+            dataCategory={this.props.dataCategory}
+            initialValues={dataId ? dataInititalEdit : this.initialValues}
             onSubmitForm={this.handleSubmit}
-            handleSidebar={this.handleSidebar}
+            handleSidebar={this.props.handleSidebar}
           />
         </PerfectScrollbar>
       </div>

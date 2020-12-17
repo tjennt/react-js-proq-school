@@ -12,7 +12,6 @@ class ManagerProfile extends Component {
   }
   render() {
     const { dataProfile } = this.props.profile;
-    console.log(dataProfile);
     return (
       <div>
         <Breadcrumbs
@@ -40,7 +39,9 @@ class ManagerProfile extends Component {
               </p>
               <hr className="my-2" />
               <ManagerItem data={dataProfile} />
+                  
             </CardBody>
+
           </Card>
         </Col>
       </div>

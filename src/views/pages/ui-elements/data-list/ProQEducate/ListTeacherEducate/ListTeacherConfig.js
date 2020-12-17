@@ -37,7 +37,6 @@ import {
 import { message, Modal, Popconfirm, Tooltip, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import ReactPaginate from "react-paginate";
-import Moment from "react-moment";
 import { API_ENDPOINT_IMG_TEACHER } from "../../../../../../redux/constants";
 import { newDate } from "../../../../../../utility/config";
 const { Dragger } = Upload;
@@ -355,7 +354,11 @@ class ListTeacherConfig extends Component {
                 <Plus size={15} />
                 <span className="align-middle">Tạo mới</span>
               </Button> */}
-              <Button onClick={this.showModal} className=" ml-2" color="danger">
+              <Button
+                onClick={this.showModal}
+                className=" ml-2"
+                color="success"
+              >
                 <Download size={15} /> Nhập excel
               </Button>
               <Button
@@ -382,7 +385,7 @@ class ListTeacherConfig extends Component {
                     this.props.parsedFilter.limit
                       ? this.props.parsedFilter.limit
                       : 10
-                  } of ${this.state.totalRecords}`}</span>
+                  } trong tổng ${this.state.totalRecords}`}</span>
                   <ChevronDown size={15} />
                 </DropdownToggle>
                 <DropdownMenu tag="div" right>

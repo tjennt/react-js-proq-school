@@ -20,7 +20,7 @@ function FormSeason(props) {
       onSubmit={props.onSubmitForm}
     >
       {(formikProps) => {
-        const { isValid, resetForm } = formikProps;
+        const { isValid } = formikProps;
         return (
           <Form>
             <Field
@@ -50,7 +50,7 @@ function FormSeason(props) {
                 Lưu
               </Button>
               <Button
-                onClick={() => resetForm({})}
+                onClick={() => props.handleSidebar(false,true)}
                 className="ml-2"
                 color="danger"
               >
