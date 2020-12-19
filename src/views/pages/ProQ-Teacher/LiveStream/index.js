@@ -10,6 +10,8 @@ import { history } from "../../../../history";
 const StyledVideo = styled.video`
   height: 40%;
   width: 50%;
+  border-radius: 20px;
+  box-shadow: 0 0 6px #ff3c00e8;
 `;
 
 const Video = (props) => {
@@ -45,7 +47,7 @@ const Room = (props) => {
       .getUserMedia({ video: videoConstraints, audio: true })
       .then((stream) => {
         userVideo.current.srcObject = stream;
-        streamRef.current=stream
+        streamRef.current = stream;
         socketRef.current.emit("join room", roomID);
         socketRef.current.on("all users", (users) => {
           const peers = [];
@@ -128,16 +130,16 @@ const Room = (props) => {
 
     return peer;
   }
-  const outStream =()=>{
-      const cat ={
-          data:true
-      }
-      socketRef.current.emit("out-live",(cat))
-      streamRef.current.getTracks().forEach(function (track) {
-        track.stop();
-      });
-      history.push("/teacher/schedule");
-  }
+  const outStream = () => {
+    const cat = {
+      data: true,
+    };
+    socketRef.current.emit("out-live", cat);
+    streamRef.current.getTracks().forEach(function (track) {
+      track.stop();
+    });
+    history.push("/teacher/schedule");
+  };
   return (
     <React.Fragment>
       <BreadCrumbs
@@ -146,23 +148,28 @@ const Room = (props) => {
         breadCrumbActive="Lịch dạy của giảng viên"
       />
       <Row>
-        <Col log="12"> 
-            <Button onClick={outStream} color="primary">
-                Thoát video call
-            </Button>
-         </Col>
+        <Col lg="12">
+          <Button onClick={outStream} color="primary">
+            Thoát video call
+          </Button>
+        </Col>
         <Col sm="12" className="mt-2">
           <div className="chat-app-window ">
-          <Container className="user-chats">
-            <StyledVideo controls muted ref={userVideo} autoPlay playsInline />
-            {peers.map((peer) => {
-              if (!ar.includes(peer.peerID)) {
-                ar.push(peer.peerID);
-                return <Video key={peer.peerID} peer={peer.peer} />;
-              }
-            })}
-
-          </Container>
+            <Container className="user-chats">
+              <StyledVideo
+                controls
+                muted
+                ref={userVideo}
+                autoPlay
+                playsInline
+              />
+              {peers.map((peer) => {
+                if (!ar.includes(peer.peerID)) {
+                  ar.push(peer.peerID);
+                  return <Video key={peer.peerID} peer={peer.peer} />;
+                }
+              })}
+            </Container>
           </div>
         </Col>
       </Row>
