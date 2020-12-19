@@ -23,7 +23,7 @@ import {
   getDataDashboard,
   getDataTotalUserLogin,
 } from "./../../../redux/actions/dataListDashboard/index";
-import MoneyReceivedUser from "../../pages/ui-elements/cards/statistics/MoneyReceivedUser";
+// import MoneyReceivedUser from "../../pages/ui-elements/cards/statistics/MoneyReceivedUser";
 import { getToken } from "../../../utility/auth/setAuthToken";
 import TableTotal from "./Table";
 import { logoutWithJWT } from "../../../redux/actions/auth/loginActions";
@@ -31,11 +31,12 @@ import Revenue from "./Revenue";
 import MoneyReceivedUser2 from "../../pages/ui-elements/cards/statistics/MoneyReceivedUser2";
 import MoneyReceivedUser3 from "../../pages/ui-elements/cards/statistics/MoneyReceivedUser3";
 // const { RangePicker } = DatePicker;
-let $primary = "#7367F0",
-  $danger = "#EA5455",
-  $warning = "#FF9F43",
-  $primary_light = "#9c8cfc",
-  $warning_light = "#FFC085",
+let 
+  // $primary = "#7367F0",
+  // $danger = "#EA5455",
+  // $warning = "#FF9F43",
+  // $primary_light = "#9c8cfc",
+  // $warning_light = "#FFC085",
   $danger_light = "#f29292",
   $stroke_color = "#b9c3cd",
   $label_color = "#e7eef7";

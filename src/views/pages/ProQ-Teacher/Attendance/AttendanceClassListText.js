@@ -10,12 +10,9 @@ import "../../../../assets/scss/pages/data-list.scss";
 import "../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import ReactPaginate from "react-paginate";
 import Moment from "react-moment";
-<<<<<<< HEAD
 import { Card, CardBody } from 'reactstrap';
-=======
 import { toastWarning } from "../../../../utility/toast/toastHelper";
 import { CONFIG_TIME_ATTENDANCE } from "../../../../utility/config";
->>>>>>> 7143386a2426ea50343495f631f1c8d213964e4a
 // import { Popconfirm, message } from "antd";
 const selectedStyle = {
   rows: {
