@@ -10,7 +10,12 @@ import "../../../../assets/scss/pages/data-list.scss";
 import "../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import ReactPaginate from "react-paginate";
 import Moment from "react-moment";
+<<<<<<< HEAD
 import { Card, CardBody } from 'reactstrap';
+=======
+import { toastWarning } from "../../../../utility/toast/toastHelper";
+import { CONFIG_TIME_ATTENDANCE } from "../../../../utility/config";
+>>>>>>> 7143386a2426ea50343495f631f1c8d213964e4a
 // import { Popconfirm, message } from "antd";
 const selectedStyle = {
   rows: {
@@ -187,7 +192,14 @@ class AttendanceClassListText extends Component {
   };
   handleCurrentData = (obj) => {
     this.setState({ currentData: obj });
-    history.push(`/teacher/attendance/${obj.id}`);
+    let hour = new Date().getHours();
+    let hourSubjectClass = CONFIG_TIME_ATTENDANCE[obj.shift];
+    if (hour >= hourSubjectClass.from && hour <= hourSubjectClass.to) {
+      history.push(`/teacher/attendance/${obj.id}`);
+      return true;
+    } else {
+      toastWarning("Đã hết thời gian điểm danh !!!!");
+    }
   };
 
   handlePagination = (page) => {
@@ -204,7 +216,15 @@ class AttendanceClassListText extends Component {
     this.setState({ selectedRows: state.selectedRows }); // triggers MyComponent to re-render with new state
   };
   onRowClicked = (state) => {
-    history.push(`/teacher/attendance/${state.id}`);
+    let hour = new Date().getHours();
+    // let h = hour.getHours();
+    let hourSubjectClass = CONFIG_TIME_ATTENDANCE[state.shift];
+    if (hour >= hourSubjectClass.from && hour <= hourSubjectClass.to) {
+      history.push(`/teacher/attendance/${state.id}`);
+      return true;
+    } else {
+      toastWarning("Đã hết thời gian điểm danh !!!!");
+    }
   };
   render() {
     let { columns, value, data } = this.state;
