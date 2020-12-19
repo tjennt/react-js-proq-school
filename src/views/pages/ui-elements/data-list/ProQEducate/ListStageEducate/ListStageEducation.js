@@ -27,6 +27,8 @@ import {
   DropdownToggle,
   Row,
   UncontrolledDropdown,
+  Card,
+  CardBody
 } from "reactstrap";
 import { Modal, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
@@ -90,10 +92,10 @@ class ListStageEducation extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Khóa",
+        name: "Khóa học",
         selector: "stage",
         sortable: true,
-        minWidth: "400px",
+        minWidth: "300px",
         cell: (row) => (
           <p title={row.name} className="text-truncate text-bold-500 mb-0">
             {row.name}
@@ -104,14 +106,14 @@ class ListStageEducation extends Component {
         name: " Ngày bắt đầu",
         selector: "date_start",
         sortable: true,
-        minWidth: "400px",
+        minWidth: "200px",
         cell: (row) => <p>{newDate(row.startAt)}</p>,
       },
       {
         name: " Ngày kết thúc",
         selector: "date_end",
         sortable: true,
-        minWidth: "400px",
+        minWidth: "200px",
         cell: (row) => <p>{newDate(row.endAt)}</p>,
       },
       // {
@@ -231,132 +233,140 @@ class ListStageEducation extends Component {
   render() {
     let { columns, value, currentData, sidebar, data } = this.state;
     return (
-      <div className="data-list">
-        <Modal
-          destroyOnClose={true}
-          title="Thêm dữ liệu từ file excel"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-        >
-          <Dragger
-            onChange={this.onChangeExcel}
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+      <Card>
+        <CardBody className="data-list">
+          <Modal
+            destroyOnClose={true}
+            title="Thêm dữ liệu từ file excel"
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
           >
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-hint">
-              Click vào đây để chọn file excel hoặc kéo thả từ máy tính của bạn
-            </p>
-          </Dragger>
-        </Modal>
-        <Col lg="12">
-          <Row>
-            <Col lg="3">
-              <Button
-                color="primary"
-                onClick={() => this.handleSidebar(true, true)}
-                outline={true}
-              >
-                <Plus size={15} />
-                <span className="align-middle">Tạo mới</span>
-              </Button>
-            </Col>
-            <Col lg="9">
-              <UncontrolledDropdown
-                style={{ backgroundColor: "#fff", borderRadius: "20px" }}
-                className="data-list-rows-dropdown  d-md-block d-none"
-              >
-                <DropdownToggle
-                  className="sort-dropdown"
-                  style={{
-                    float: "right",
-                    borderRadius: "20px",
-                  }}
+            <Dragger
+              onChange={this.onChangeExcel}
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            >
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p className="ant-upload-hint">
+                Click vào đây để chọn file excel hoặc kéo thả từ máy tính của bạn
+              </p>
+            </Dragger>
+          </Modal>
+          <Col lg="12">
+            <Row>
+              <Col lg="3">
+                <Button
+                  color="primary"
+                  onClick={() => this.handleSidebar(true, true)}
+                  outline={true}
                 >
-                  <span className="align-middle mx-50">{`${
-                    this.props.parsedFilter.limit
+                  <Plus size={15} />
+                  <span className="align-middle">Tạo mới</span>
+                </Button>
+              </Col>
+              <Col lg="9">
+                <UncontrolledDropdown
+                  style={{ backgroundColor: "#fff", borderRadius: "20px" }}
+                  className="data-list-rows-dropdown  d-md-block d-none"
+                >
+                  <DropdownToggle
+                    className="sort-dropdown"
+                    style={{
+                      float: "right",
+                      borderRadius: "20px",
+                    }}
+                  >
+                    <span className="align-middle mx-50">{`Hiển thị: ${this.props.parsedFilter.limit
                       ? this.props.parsedFilter.limit
                       : 10
-                  } trong tổng ${this.state.totalRecords}`}</span>
-                  <ChevronDown size={15} />
-                </DropdownToggle>
-                <DropdownMenu tag="div" right>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(10)}
-                  >
-                    10
-                  </DropdownItem>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(20)}
-                  >
-                    20
-                  </DropdownItem>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(30)}
-                  >
-                    30
-                  </DropdownItem>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(50)}
-                  >
-                    50
-                  </DropdownItem>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(100)}
-                  >
-                    100
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </Col>
-          </Row>
-        </Col>
-        <DataTable
-          className="dataTable-custom"
-          data={value.length ? "" : data}
-          columns={columns}
-          noHeader={true}
-          fixedHeader
-          fixedHeaderScrollHeight={"55vh"}
-          noDataComponent="Không có kì học"
-        />
-        <ReactPaginate
-          previousLabel={<ChevronLeft size={15} />}
-          nextLabel={<ChevronRight size={15} />}
-          breakLabel="..."
-          breakClassName="break-me"
-          pageCount={this.state.totalPages}
-          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
-          activeClassName="active"
-          forcePage={
-            this.props.parsedFilter.page
-              ? parseInt(this.props.parsedFilter.page - 1)
-              : 0
-          }
-          onPageChange={(page) => this.handlePagination(page)}
-        />
-        <Sidebar
-          show={sidebar}
-          data={currentData}
-          updateData={this.props.updateData}
-          addData={this.props.addStage}
-          handleSidebar={this.handleSidebar}
-          parsedFilter={this.props.parsedFilter}
-        />
-        <div
-          className={classnames("data-list-overlay", {
-            show: sidebar,
-          })}
-          onClick={() => this.handleSidebar(false, true)}
-        />
-      </div>
+                      }`}</span>
+                    {/* <span className="align-middle mx-50">{`${
+                      this.props.parsedFilter.limit
+                        ? this.props.parsedFilter.limit
+                        : 10
+                    } trong tổng ${this.state.totalRecords}`}</span> */}
+                    <ChevronDown size={15} />
+                  </DropdownToggle>
+                  <DropdownMenu tag="div" right>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(10)}
+                    >
+                      10
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(20)}
+                    >
+                      20
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(30)}
+                    >
+                      30
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(50)}
+                    >
+                      50
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(100)}
+                    >
+                      100
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                <span className="btn btn-outline-primary btn-rounded float-right mr-2">
+                  Tổng {this.state.totalRecords}</span>
+              </Col>
+            </Row>
+          </Col>
+          <DataTable
+            className="dataTable-custom"
+            data={value.length ? "" : data}
+            columns={columns}
+            noHeader={true}
+            fixedHeader
+            fixedHeaderScrollHeight={"50vh"}
+            noDataComponent="Không có kì học"
+          />
+          <ReactPaginate
+            previousLabel={<ChevronLeft size={15} />}
+            nextLabel={<ChevronRight size={15} />}
+            breakLabel="..."
+            breakClassName="break-me"
+            pageCount={this.state.totalPages}
+            containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+            activeClassName="active"
+            forcePage={
+              this.props.parsedFilter.page
+                ? parseInt(this.props.parsedFilter.page - 1)
+                : 0
+            }
+            onPageChange={(page) => this.handlePagination(page)}
+          />
+          <Sidebar
+            show={sidebar}
+            data={currentData}
+            updateData={this.props.updateData}
+            addData={this.props.addStage}
+            handleSidebar={this.handleSidebar}
+            parsedFilter={this.props.parsedFilter}
+          />
+          <div
+            className={classnames("data-list-overlay", {
+              show: sidebar,
+            })}
+            onClick={() => this.handleSidebar(false, true)}
+          />
+        </CardBody>
+      </Card>
     );
   }
 }

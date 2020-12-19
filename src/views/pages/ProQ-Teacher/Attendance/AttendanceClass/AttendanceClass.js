@@ -16,6 +16,8 @@ import Moment from "react-moment";
 import { API_ENDPOINT_IMG } from "../../../../../redux/constants";
 import { Button, Col, Row } from "reactstrap";
 import BreadCrumbs from "../../../../../components/@vuexy/breadCrumbs/BreadCrumb";
+import Card from "reactstrap/lib/Card";
+import CardBody from "reactstrap/lib/CardBody";
 // import { Popconfirm, message } from "antd";
 const selectedStyle = {
   rows: {
@@ -42,6 +44,7 @@ const ActionsComponent = (props) => {
         onChange={onChange}
         className="cursor-pointer mr-1"
         size={20}
+        style={{backgroundColor: row.status ? '#ff3c00e8' : '#ccc', outline: 'none', boxShadow: 'none'}}
         onClick={() => {
           return props.currentData(props.row);
         }}
@@ -68,13 +71,16 @@ class ListStudentEducation extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Ảnh",
-        selector: "img",
-        minWidth: "220px",
+        name: "",
+        selector: "name",
+        sortable: true,
+        minWidth: "50px",
+        maxWidth: "70px",
         cell: (row) => (
           <img
+            style={{ borderRadius: '50%', marginLeft: 'auto' }}
+            height="50px"
             src={`${API_ENDPOINT_IMG}/${row.avatar}`}
-            height="100"
             alt={row.avatar}
           />
         ),
@@ -91,14 +97,14 @@ class ListStudentEducation extends Component {
         ),
       },
       {
-        name: "Ngày",
+        name: "Ngày học",
         selector: "date",
         sortable: true,
         // minWidth: "300px",
         cell: (row) => <Moment format="DD/MM/YYYY">{row.date}</Moment>,
       },
       {
-        name: "Thao tác",
+        name: "Điểm danh",
         sortable: true,
         cell: (row) => (
           <ActionsComponent
@@ -180,7 +186,7 @@ class ListStudentEducation extends Component {
     this.setState({ currentPage: page.selected });
   };
 
-  
+
   backHome = () => {
     history.goBack();
   };
@@ -188,33 +194,35 @@ class ListStudentEducation extends Component {
     let { columns, value, data } = this.state;
 
     return (
-      <div className="data-list">
-        <BreadCrumbs
-          breadCrumbTitle="Giáo viên"
-          breadCrumbParent="Danh sách"
-          breadCrumbActive="Điểm danh "
-        />
-        <Row>
-          <Col lg="6">
-            <Button color="primary" onClick={this.backHome}>
-              {" "}
-              Quay lại
-            </Button>
-          </Col>
-        </Row>
-        <DataTable
-          className="dataTable-custom"
-          data={value.length ? "" : data}
-          columns={columns}
-          noHeader={true}
-          noDataComponent="Không có sinh viên"
-          pointerOnHover
-          selectableRowsHighlight
-          onSelectedRowsChange={this.onSelectedRowsChange}
-          highlightOnHover
-          customStyles={selectedStyle}
-        />
-      </div>
+      <Card> 
+        <CardBody  className="data-list">
+          <BreadCrumbs
+            breadCrumbTitle="Giáo viên"
+            breadCrumbParent="Danh sách"
+            breadCrumbActive="Điểm danh "
+          />
+          <Row>
+            <Col lg="6">
+              <Button color="primary" onClick={this.backHome}>
+                {" "}
+                Quay lại
+              </Button>
+            </Col>
+          </Row>
+          <DataTable
+            className="dataTable-custom"
+            data={value.length ? "" : data}
+            columns={columns}
+            noHeader={true}
+            noDataComponent="Không có sinh viên"
+            pointerOnHover
+            selectableRowsHighlight
+            onSelectedRowsChange={this.onSelectedRowsChange}
+            highlightOnHover
+            customStyles={selectedStyle}
+          />
+        </CardBody>
+      </Card>
     );
   }
 }

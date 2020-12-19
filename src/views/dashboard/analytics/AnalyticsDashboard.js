@@ -1,12 +1,13 @@
 import React from "react";
-import { Row, Col, 
+import {
+  Row, Col,
   // Button
- } from "reactstrap";
+} from "reactstrap";
 import OrdersReceived from "../../pages/ui-elements/cards/statistics/OrdersReceived";
 import MoneyReceivedCard from "../../pages/ui-elements/cards/statistics/MoneyReceived";
 import "../../../assets/scss/pages/dashboard-analytics.scss";
 // import { DatePicker, 
-  // Space
+// Space
 //  } from "antd";
 // import moment from "moment";
 import "../../../assets/scss/plugins/extensions/recharts.scss";
@@ -27,6 +28,8 @@ import { getToken } from "../../../utility/auth/setAuthToken";
 import TableTotal from "./Table";
 import { logoutWithJWT } from "../../../redux/actions/auth/loginActions";
 import Revenue from "./Revenue";
+import MoneyReceivedUser2 from "../../pages/ui-elements/cards/statistics/MoneyReceivedUser2";
+import MoneyReceivedUser3 from "../../pages/ui-elements/cards/statistics/MoneyReceivedUser3";
 // const { RangePicker } = DatePicker;
 let $primary = "#7367F0",
   $danger = "#EA5455",
@@ -90,7 +93,7 @@ class AnalyticsDashboard extends React.Component {
     // const { loadings } = this.state;
     return (
       <React.Fragment>
-            {/* <Col lg="12" md="6" sm="12" className="mb-2">
+        {/* <Col lg="12" md="6" sm="12" className="mb-2">
             <Row>
               <Col lg="3" md="8" sm="8">
                 <Space direction="vertical" size={12}>
@@ -125,6 +128,10 @@ class AnalyticsDashboard extends React.Component {
           </Col> */}
         <Row className="match-height">
           <Col lg="3" md="6" sm="12">
+            <MoneyReceivedUser2
+              UserCommission={this.props.user_commission} />
+          </Col>
+          <Col lg="3" md="6" sm="12">
             <OrdersReceived
               dataPubCommission={this.props.dataTotalPubCommission}
             />
@@ -134,27 +141,25 @@ class AnalyticsDashboard extends React.Component {
               catbackCommission={this.props.catback_commission}
             />
           </Col>
+
           <Col lg="3" md="6" sm="12">
-            <MoneyReceivedUser UserCommission={this.props.user_commission} />
-          </Col>
-          <Col lg="3" md="6" sm="12">
-            <MoneyReceivedUser UserCommission={this.props.user_commission} />
+            <MoneyReceivedUser3 UserCommission={this.props.user_commission} />
           </Col>
         </Row>
         <Row className="match-height">
           <Col lg="5">
             <CustomersChart
-              primary={$primary}
-              warning={$warning}
-              danger={$danger}
-              primaryLight={$primary_light}
-              warningLight={$warning_light}
-              dangerLight={$danger_light}
+              color1="#2892fd"
+              color2="#5ad092"
+              color3="#ff6535"
+              colorLight1="#d8ebff"
+              colorLight2="#e1f7eb"
+              colorLight3="#ffa68a"
             />
           </Col>
           <Col lg="7">
             <Revenue
-              primary={$primary}
+              primary="#ff6535"
               dangerLight={$danger_light}
               strokeColor={$stroke_color}
               labelColor={$label_color}

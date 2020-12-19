@@ -8,7 +8,7 @@ import { getData } from "./../../../redux/actions/dataListAssistance/index";
 import "./../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../assets/scss/pages/data-list.scss";
 import "./../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import { Button, Col, Input, Row } from "reactstrap";
+import { Button, Col, Input, Row, Card, CardBody } from "reactstrap";
 import { Modal, 
   // Upload
  } from "antd";
@@ -22,14 +22,14 @@ const CustomHeader = (props) => {
   };
   return (
     <Row>
-      <Col lg="3">
-        <h2>Thôn tin lớp </h2>
+      <Col lg="9">
+        <h2>Danh sách lớp học mới </h2>
       </Col>
-      <Col lg="3">
+      {/* <Col lg="3">
         <Button onClick={showModal} className=" ml-2" color="danger">
           <Download size={15} /> Export Excel
         </Button>
-      </Col>
+      </Col> */}
     </Row>
   );
 };
@@ -52,17 +52,6 @@ class TableTotal extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Môn",
-        selector: "subject",
-        sortable: true,
-        minWidth: "200px",
-        cell: (row) => (
-          <p title={row.subject} className="text-truncate text-bold-500 mb-0">
-            PHP
-          </p>
-        ),
-      },
-      {
         name: "Lớp",
         selector: "class",
         sortable: true,
@@ -77,7 +66,7 @@ class TableTotal extends Component {
         name: "Số lượng SV Vắng",
         selector: "studentFail",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "200px",
         cell: (row) => (
           <p
             title={row.studentFail}
@@ -102,7 +91,7 @@ class TableTotal extends Component {
         name: "Giảng viên ",
         selector: "teacher",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "200px",
         cell: (row) => (
           <p title={row.teacher} className="text-truncate text-bold-500 mb-0">
             {/* {row.created_at} */}
@@ -111,8 +100,9 @@ class TableTotal extends Component {
         ),
       },
       {
-        name: "Ngày",
+        name: "Ngày bắt đầu",
         selector: "date",
+        minWidth: "130px",
         cell: (row) => (
           <p title={row.dae} className="text-truncate text-bold-500 mb-0">
             {/* {row.created_at} */}
@@ -177,22 +167,28 @@ class TableTotal extends Component {
                     <Input placeholder="Vui lòng nhập tên file excel"/>
 
         </Modal>
-        <DataTable
-          data={data}
-          columns={columns}
-          noHeader
-          fixedHeader
-          fixedHeaderScrollHeight={"55vh"}
-          subHeader
-          subHeaderComponent={
-            <CustomHeader
-              handleSidebar={this.handleSidebar}
-              showModal={this.showModal}
-              handleFilter={this.handleFilter}
-              handleRowsPerPage={this.handleRowsPerPage}
+
+        <Card>
+          <CardBody>
+            <DataTable
+              data={data}
+              columns={columns}
+              noHeader
+              fixedHeader
+              fixedHeaderScrollHeight={"55vh"}
+              subHeader
+              subHeaderComponent={
+                <CustomHeader
+                  handleSidebar={this.handleSidebar}
+                  showModal={this.showModal}
+                  handleFilter={this.handleFilter}
+                  handleRowsPerPage={this.handleRowsPerPage}
+                />
+              }
             />
-          }
-        />
+          </CardBody>
+        </Card>
+
       </div>
     );
   }

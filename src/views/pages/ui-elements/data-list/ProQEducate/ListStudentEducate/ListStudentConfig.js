@@ -34,12 +34,15 @@ import {
   Input,
   Row,
   UncontrolledDropdown,
+  Card,
+  CardBody,
 } from "reactstrap";
 import { Popconfirm, message, Modal, Upload, Tooltip } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
 import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
+import Spinner from "reactstrap/lib/Spinner";
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
@@ -99,13 +102,15 @@ class ListStudentEducation extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Hình đại diện",
-        selector: "avatar",
+        name: "",
+        selector: "name",
         sortable: true,
-        minWidth: "200px",
+        minWidth: "50px",
+        maxWidth: "70px",
         cell: (row) => (
           <img
-            height="60px"
+            style={{ borderRadius: '50%', marginLeft: 'auto' }}
+            height="50px"
             src={`${API_ENDPOINT_IMG}/${row.studentId.avatar}`}
             alt={row.avatar}
           />
@@ -143,7 +148,7 @@ class ListStudentEducation extends Component {
         name: "Email",
         selector: "email",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "240px",
         cell: (row) => (
           <p title={row.email} className="text-truncate text-bold-500 mb-0">
             {row.email}
@@ -165,7 +170,7 @@ class ListStudentEducation extends Component {
         ),
       },
       {
-        name: "Identity number",
+        name: "Số CMND",
         selector: "dob",
         sortable: true,
         // minWidth: "300px",
@@ -338,175 +343,184 @@ class ListStudentEducation extends Component {
           []
         )
       : [];
-    return (
-      <div className="data-list">
-        <Modal
-          destroyOnClose={true}
-          title="Thêm dữ liệu từ file excel"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-        >
-          <Dragger
-            onChange={this.onChangeExcel}
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+    return data ? (
+      <Card>
+        <CardBody className="data-list">
+          <Modal
+            destroyOnClose={true}
+            title="Thêm dữ liệu từ file excel"
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
           >
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-hint">
-              Click vào đây để chọn file excel hoặc kéo thả từ máy tính của bạn
-            </p>
-          </Dragger>
-        </Modal>
-        <Modal
-          destroyOnClose={true}
-          title="Xuất excel"
-          visible={this.state.visibleExport}
-          onOk={this.handleOkStudent}
-          onCancel={this.handleCancelStudent}
-        >
-          <Select
-            placeholder="Vui lòng chọn lớp"
-            value={this.state.classArr}
-            onChange={this.handleChangeClass}
-            options={arrDataClass}
-          />
-          <Input
-            onChange={(e) => this.setState({ nameFile: e.target.value })}
-            className="mt-2"
-            placeholder="Bạn có thể đặt tên file excel"
-          />
-        </Modal>
-        <Col lg="12">
-          <Row>
-            <Col lg="5">
-              <Button
-                onClick={this.showModal}
-                className=" ml-2"
-                color="success"
-              >
-                <Download size={15} /> Nhập excel
-              </Button>
-              <Button
-                onClick={this.showModalExportExcel}
-                className=" ml-2"
-                color="primary"
-              >
-                <Download size={15} /> Xuất excel
-              </Button>
-            </Col>
-            <Col lg="4">
-              <Select
-                options={arrDataClass}
-                styles={{ width: "20px", float: "left" }}
-              ></Select>
-            </Col>
-            <Col lg="3">
-              <UncontrolledDropdown
-                style={{ backgroundColor: "#fff", borderRadius: "20px" }}
-                className="data-list-rows-dropdown  d-md-block d-none"
-              >
-                <DropdownToggle
-                  className="sort-dropdown"
-                  style={{
-                    float: "right",
-                    borderRadius: "20px",
-                  }}
+            <Dragger
+              onChange={this.onChangeExcel}
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            >
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p className="ant-upload-hint">
+                Click vào đây để chọn file excel hoặc kéo thả từ máy tính của bạn
+              </p>
+            </Dragger>
+          </Modal>
+          <Modal
+            destroyOnClose={true}
+            title="Xuất excel"
+            visible={this.state.visibleExport}
+            onOk={this.handleOkStudent}
+            onCancel={this.handleCancelStudent}
+          >
+            <Select
+              placeholder="Vui lòng chọn lớp"
+              value={this.state.classArr}
+              onChange={this.handleChangeClass}
+              options={arrDataClass}
+            />
+            <Input
+              onChange={(e) => this.setState({ nameFile: e.target.value })}
+              className="mt-2"
+              placeholder="Bạn có thể đặt tên file excel"
+            />
+          </Modal>
+          <Col lg="12">
+            <Row>
+              <Col lg="4">
+                <Button
+                  onClick={this.showModal}
+                  className=" ml-2"
+                  color="success"
                 >
-                  {this.state.totalRecords < 10 ? (
-                    <span className="align-middle mx-50">
-                      {this.state.totalRecords}
-                    </span>
-                  ) : (
-                    <span className="align-middle mx-50">{`${
-                      this.props.parsedFilter.limit
+                  <Download size={15} /> Nhập excel
+                </Button>
+                <Button
+                  onClick={this.showModalExportExcel}
+                  className=" ml-2"
+                  color="primary"
+                >
+                  <Download size={15} /> Xuất excel
+                </Button>
+              </Col>
+              <Col lg="3">
+                <Select
+                  placeholder="Chọn lớp..."
+                  options={arrDataClass}
+                  styles={{ maxWidth: "100px" }}
+                />
+              </Col>
+              <Col lg="5">
+                <UncontrolledDropdown
+                  style={{ backgroundColor: "#fff", borderRadius: "20px" }}
+                  className="data-list-rows-dropdown  d-md-block d-none"
+                >
+                  <DropdownToggle
+                    className="sort-dropdown"
+                    style={{
+                      float: "right",
+                      borderRadius: "20px",
+                    }}
+                  >
+                    {this.state.totalRecords < 10 ? (
+                      <span className="align-middle mx-50">
+                        {this.state.totalRecords}
+                      </span>
+                    ) : (
+                      <span className="align-middle mx-50">{`Hiển thị: ${this.props.parsedFilter.limit
                         ? this.props.parsedFilter.limit
                         : 10
-                    } trong tổng ${this.state.totalRecords}`}</span>
-                  )}
+                        }`}</span>
+                      // <span className="align-middle mx-50">{`${
+                      //   this.props.parsedFilter.limit
+                      //     ? this.props.parsedFilter.limit
+                      //     : 10
+                      // } trong tổng ${this.state.totalRecords}`}</span>
+                    )}
 
-                  <ChevronDown size={15} />
-                </DropdownToggle>
-                <DropdownMenu tag="div" right>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(10)}
-                  >
-                    10
-                  </DropdownItem>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(20)}
-                  >
-                    20
-                  </DropdownItem>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(30)}
-                  >
-                    30
-                  </DropdownItem>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(50)}
-                  >
-                    50
-                  </DropdownItem>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(100)}
-                  >
-                    100
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </Col>
-          </Row>
-        </Col>
-        <DataTable
-          className="dataTable-custom"
-          data={value.length ? "" : data}
-          columns={columns}
-          noHeader={true}
-          fixedHeader
-          fixedHeaderScrollHeight={"55vh"}
-          noDataComponent="Không có dữ liệu học sinh"
-        />
-        <ReactPaginate
-          previousLabel={<ChevronLeft size={15} />}
-          nextLabel={<ChevronRight size={15} />}
-          breakLabel="..."
-          breakClassName="break-me"
-          pageCount={this.state.totalPages}
-          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
-          activeClassName="active"
-          forcePage={
-            this.props.parsedFilter.page
-              ? parseInt(this.props.parsedFilter.page - 1)
-              : 0
-          }
-          onPageChange={(page) => this.handlePagination(page)}
-        />
-        <Sidebar
-          show={sidebar}
-          data={currentData}
-          updateData={this.props.updateDataStudent}
-          // addData={this.props.addData}
-          handleSidebar={this.handleSidebar}
-          thumbView={this.props.thumbView}
-          getData={this.props.getData}
-          dataParams={this.props.parsedFilter}
-          addNew={this.state.addNew}
-        />
-        <div
-          className={classnames("data-list-overlay", {
-            show: sidebar,
-          })}
-          onClick={() => this.handleSidebar(false, true)}
-        />
-      </div>
-    );
+                    <ChevronDown size={15} />
+                  </DropdownToggle>
+                  <DropdownMenu tag="div" right>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(10)}
+                    >
+                      10
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(20)}
+                    >
+                      20
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(30)}
+                    >
+                      30
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(50)}
+                    >
+                      50
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(100)}
+                    >
+                      100
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                <span className="btn btn-outline-primary btn-rounded float-right mr-2">
+                  Tổng {this.state.totalRecords}</span> 
+              </Col>
+            </Row>
+          </Col>
+          <DataTable
+            className="dataTable-custom"
+            data={value.length ? "" : data}
+            columns={columns}
+            noHeader={true}
+            fixedHeader
+            fixedHeaderScrollHeight={"49vh"}
+            noDataComponent="Không có dữ liệu học sinh"
+          />
+          <ReactPaginate
+            previousLabel={<ChevronLeft size={15} />}
+            nextLabel={<ChevronRight size={15} />}
+            breakLabel="..."
+            breakClassName="break-me"
+            pageCount={this.state.totalPages}
+            containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+            activeClassName="active"
+            forcePage={
+              this.props.parsedFilter.page
+                ? parseInt(this.props.parsedFilter.page - 1)
+                : 0
+            }
+            onPageChange={(page) => this.handlePagination(page)}
+          />
+          <Sidebar
+            show={sidebar}
+            data={currentData}
+            updateData={this.props.updateDataStudent}
+            // addData={this.props.addData}
+            handleSidebar={this.handleSidebar}
+            thumbView={this.props.thumbView}
+            getData={this.props.getData}
+            dataParams={this.props.parsedFilter}
+            addNew={this.state.addNew}
+          />
+          <div
+            className={classnames("data-list-overlay", {
+              show: sidebar,
+            })}
+            onClick={() => this.handleSidebar(false, true)}
+          />
+        </CardBody>
+      </Card>
+    ) : <div className="text-center"> <Spinner color="primary" /> </div>;
   }
 }
 const mapStateToProps = (state) => {
