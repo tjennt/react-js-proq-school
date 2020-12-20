@@ -5,11 +5,12 @@ import { ordersReceived, ordersReceivedSeries } from "./StatisticsData";
 
 class OrdersReceived extends React.Component {
   render() {
+    const { dataPubCommission } = this.props;
     return (
       <StatisticsCard
         icon={<User className="success" size={22} />}
         iconBg="success"
-        stat="1000"
+        stat={dataPubCommission ? dataPubCommission : 0}
         statTitle="Giảng viên"
         options={ordersReceived}
         series={ordersReceivedSeries}
