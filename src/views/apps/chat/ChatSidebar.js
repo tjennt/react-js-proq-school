@@ -5,17 +5,18 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { connect } from "react-redux";
 import userImg from "../../../assets/img/portrait/small/avatar-s-11.jpg";
 import { newDate } from "../../../utility/config";
-import { searchChatUser,addChatGroup ,setContact} from "../../../redux/actions/chatProQ";
-import AsyncSelect from "react-select/async";
 import {
-  API_ENDPOINT_IMG,
-  API_ENDPOINT_IMG_TEACHER,
-} from "../../../redux/constants";
+  searchChatUser,
+  addChatGroup,
+  setContact,
+} from "../../../redux/actions/chatProQ";
+import AsyncSelect from "react-select/async";
 import { Modal } from "antd";
 import "antd/dist/antd.css";
 import Axios from "axios";
 import { getToken } from "../../../utility/auth/setAuthToken";
-let config
+import img from "../../../assets/img/default.jpg";
+let config;
 class ChatSidebar extends React.Component {
   state = {
     chatsContacts: [],
@@ -23,20 +24,20 @@ class ChatSidebar extends React.Component {
     messages: [],
     status: null,
     value: "",
-    nameGroup:"",
+    nameGroup: "",
     inputValue: [],
     isModalVisible: false,
   };
 
   componentDidMount() {
     // this.props.getAllDataGroup();
-    let  token = getToken()
+    let token = getToken();
     config = {
-    headers: {
-      "content-type": "application/json; charset=utf-8",
-      authorization: `Bearer ${token}`,
-    },
-  };
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+        authorization: `Bearer ${token}`,
+      },
+    };
   }
   handleOnChange = (e) => {
     this.setState({ value: e.target.value });
@@ -46,11 +47,11 @@ class ChatSidebar extends React.Component {
     this.props.searchChatUser(this.state.value);
   };
   handleOk = () => {
-    this.props.addChatGroup(this.state.inputValue,this.state.nameGroup)
+    this.props.addChatGroup(this.state.inputValue, this.state.nameGroup);
     this.setState({
       ...this.state,
-      isModalVisible:false
-    })
+      isModalVisible: false,
+    });
   };
   handleCancel = () => {
     this.setState({
@@ -59,21 +60,21 @@ class ChatSidebar extends React.Component {
     });
   };
   joinFriendSearch = (item) => {
-    const valueContact={
-      id:item._id,
+    const valueContact = {
+      id: item._id,
       avatar: `uploads/user-avatar/${item.avatar}`,
-      user:{
-        fullName:item.fullName
-      }
-    }
+      user: {
+        fullName: item.fullName,
+      },
+    };
     this.props.joinFriend(item.idUser);
-    this.props.setContact(valueContact)
+    this.props.setContact(valueContact);
   };
   joinFriend = (item) => {
-    if(item.info){
-      console.log("group")
+    if (item.info) {
+      console.log("group");
       this.props.getIdGroup(item._id);
-    }else{
+    } else {
       this.props.joinFriend(item.user._id);
     }
     this.props.setContactUser(item);
@@ -84,13 +85,12 @@ class ChatSidebar extends React.Component {
       isModalVisible: true,
     });
   };
-  
+
   handleChangeSearch = (selectedOption) => {
     this.setState({
       ...this.state,
       inputValue: selectedOption,
     });
-    
   };
   fetchData = (inputValue, callback) => {
     if (!inputValue) {
@@ -98,7 +98,8 @@ class ChatSidebar extends React.Component {
     } else {
       setTimeout(() => {
         Axios.get(
-          `https://server-dev.asia/v1/users/search?text=${inputValue}`,config
+          `https://server-dev.asia/v1/users/search?text=${inputValue}`,
+          config
         )
           .then((data) => {
             const tempArray = [];
@@ -127,12 +128,12 @@ class ChatSidebar extends React.Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-        <Input
-          onChange={e=>this.setState({nameGroup:e.target.value})}
-          placeholder="Vui lòng nhập tên nhóm"
-        />
+          <Input
+            onChange={(e) => this.setState({ nameGroup: e.target.value })}
+            placeholder="Vui lòng nhập tên nhóm"
+          />
           <AsyncSelect
-          className="mt-2"
+            className="mt-2"
             isMulti
             // labelKey={"fullName"}
             // valueKey={"_id"}
@@ -155,7 +156,7 @@ class ChatSidebar extends React.Component {
                 className="avatar"
                 onClick={() => this.props.handleUserSidebar("open")}
               >
-                <img src={`${this.props.profile.studentId? `${API_ENDPOINT_IMG}/${this.props.profile.studentId.avatar}`:`${API_ENDPOINT_IMG_TEACHER}/${this.props.profile.teacherId.avatar}`}`} alt="User Profile" height="40" width="40" />
+                <img src={img} alt="User Profile" height="40" width="40" />
                 <span
                   className={
                     status === "dnd"
@@ -218,12 +219,7 @@ class ChatSidebar extends React.Component {
                   <li>
                     <div className="pr-1">
                       <span className="avatar avatar-md m-0">
-                        <img
-                          src={ item.avatar ?` ${API_ENDPOINT_IMG}/${item.avatar}`:"" }
-                          alt={userImg}
-                          height="38"
-                          width="38"
-                        />
+                        <img src={img} alt={userImg} height="38" width="38" />
                       </span>
                     </div>
                     <div className="user-chat-info">
@@ -247,26 +243,26 @@ class ChatSidebar extends React.Component {
                   <li>
                     <div className="pr-1">
                       <span className="avatar avatar-md m-0">
-                      {item.type ==="group" ?
+                        {item.type === "group" ? (
                           <img
-                          src={`${API_ENDPOINT_IMG_TEACHER}/${item.avatarGroup.name}`}
-                          alt={item.avatarGroup.name}
-                          height="38"
-                          width="38"
-                        />
-                       : <img
-                          src={ item.avatar ?` ${API_ENDPOINT_IMG_TEACHER}/${item.avatar}`:""}
-                          alt={userImg}
-                          height="38"
-                          width="38"
-                        /> }
-                        
+                            src={img}
+                            alt={item.avatarGroup.name}
+                            height="38"
+                            width="38"
+                          />
+                        ) : (
+                          <img src={img} alt={userImg} height="38" width="38" />
+                        )}
                       </span>
                     </div>
                     <div className="user-chat-info">
                       <div className="contact-info">
-                      {item.user ? <div> {item.user.fullName}</div> : <div>{item.name}</div>  }
-                       
+                        {item.user ? (
+                          <div> {item.user.fullName}</div>
+                        ) : (
+                          <div>{item.name}</div>
+                        )}
+
                         <p className="truncate"> {item.lastMessage}</p>
                       </div>
                       <div className="contact-meta d-flex- flex-column">
@@ -307,5 +303,5 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   searchChatUser,
   addChatGroup,
-  setContact
+  setContact,
 })(ChatSidebar);

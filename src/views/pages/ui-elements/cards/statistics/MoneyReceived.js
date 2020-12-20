@@ -1,6 +1,6 @@
 import React from "react";
 import StatisticsCard from "../../../../../components/@vuexy/statisticsCard/StatisticsCard";
-import { User, Aperture } from "react-feather";
+import { Aperture } from "react-feather";
 import { MoneyReceived, ordersReceivedSeries } from "./StatisticsData";
 class MoneyReceivedCard extends React.Component {
   render() {
