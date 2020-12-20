@@ -168,6 +168,7 @@ const Room = (props) => {
                   ar.push(peer.peerID);
                   return <Video key={peer.peerID} peer={peer.peer} />;
                 }
+                return null;
               })}
             </Container>
           </div>

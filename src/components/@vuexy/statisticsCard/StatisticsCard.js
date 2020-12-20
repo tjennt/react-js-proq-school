@@ -21,6 +21,7 @@ class StatisticsCards extends React.Component {
         >
           <div className="icon-section">
             <div
+              style={{ backgroundColor: `${this.props.iconBgStyle}` }}
               className={`avatar avatar-stats p-50 m-0 ${
                 this.props.iconBg
                   ? `bg-rgba-${this.props.iconBg}`

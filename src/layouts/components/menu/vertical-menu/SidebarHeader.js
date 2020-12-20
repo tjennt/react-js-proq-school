@@ -15,7 +15,8 @@ class SidebarHeader extends Component {
       menuShadow,
     } = this.props;
     return (
-      <div className="navbar-header">
+      <div className="navbar-header"
+      style={{ height: '5.4rem'}}>
         <ul className="nav navbar-nav flex-row">
           <li className="nav-item mr-auto">
             <NavLink to="/" className="navbar-brand">

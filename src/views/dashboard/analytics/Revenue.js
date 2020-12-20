@@ -55,7 +55,7 @@ class Revenue extends React.Component {
         axisTicks: {
           show: false,
         },
-        categories: ["01", "05", "09", "13", "17", "21", "26", "31"],
+        categories: ["2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"],
         axisBorder: {
           show: false,
         },
@@ -67,9 +67,6 @@ class Revenue extends React.Component {
           style: {
             color: this.props.strokeColor,
           },
-          formatter: (val) => {
-            return val > 999 ? (val / 1000).toFixed(1) + "k" : val;
-          },
         },
       },
       tooltip: {
@@ -78,8 +75,15 @@ class Revenue extends React.Component {
     },
     series: [
       {
-        name: "This Month",
-        data: [450, 470, 440, 475, 455, 480, 465, 486],
+        name: "Số lượng",
+        data: [ Math.ceil(Math.random() * 999),
+          Math.ceil(Math.random() * 999),
+          Math.ceil(Math.random() * 999),
+          Math.ceil(Math.random() * 999),
+          Math.ceil(Math.random() * 999),
+          Math.ceil(Math.random() * 999),
+          Math.ceil(Math.random() * 999),
+          Math.ceil(Math.random() * 999)],
       },
     ],
   };
@@ -87,18 +91,15 @@ class Revenue extends React.Component {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Biểu đồ thẻ hiện theo tháng</CardTitle>
-          <Settings size={20} className="cursor-pointer text-muted" />
+          <CardTitle>Biểu đồ Sinh viên mới </CardTitle>
+          {/* <Settings size={20} className="cursor-pointer text-muted" /> */}
         </CardHeader>
-        <CardBody>
-          <div className="d-flex justify-content-start mb-1">
-            <div className="mr-2">
-              <p className="mb-50 text-bold-600">This Month</p>
-              <h2 className="text-bold-400">
-                {/* <sup className="font-medium-1 mr-50">$</sup> */}
-                <span className="text-success">1000</span>
-              </h2>
-            </div>
+        <CardBody className="mt-4">
+          <div className="mr-2 d-flex justify-content-around align-items-center ">
+            <p className="mb-50 text-bold-600">Số lượng học sinh mới</p>
+            <h2 className="text-bold-400">
+              <span className="text-danger"> {this.state.series[0].data[this.state.series[0].data.length-1]} </span>
+            </h2>
           </div>
           <Chart
             options={this.state.options}

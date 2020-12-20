@@ -8,7 +8,7 @@ import { getData } from "./../../../redux/actions/dataListAssistance/index";
 import "./../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../assets/scss/pages/data-list.scss";
 import "./../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import { Button, Col, Input, Row } from "reactstrap";
+import { Button, Col, Input, Row, Card, CardBody } from "reactstrap";
 import { Modal, 
   // Upload 
 } from "antd";
@@ -22,14 +22,14 @@ const CustomHeader = (props) => {
   };
   return (
     <Row>
-      <Col lg="3">
+      <Col lg="9">
         <h2>Nhận xét của giáo viên</h2>
       </Col>
-      <Col lg="3">
+      {/* <Col lg="3">
         <Button onClick={showModal} className=" ml-2" color="danger">
           <Download size={15} /> Export Excel
         </Button>
-      </Col>
+      </Col> */}
     </Row>
   );
 };
@@ -139,22 +139,26 @@ class Comment extends Component {
         >
           <Input placeholder="Vui lòng nhập tên file excel" />
         </Modal>
-        <DataTable
-          data={data}
-          columns={columns}
-          noHeader
-          fixedHeader
-          fixedHeaderScrollHeight={"55vh"}
-          subHeader
-          subHeaderComponent={
-            <CustomHeader
-              handleSidebar={this.handleSidebar}
-              showModal={this.showModal}
-              handleFilter={this.handleFilter}
-              handleRowsPerPage={this.handleRowsPerPage}
+        <Card> 
+          <CardBody>
+            <DataTable
+              data={data}
+              columns={columns}
+              noHeader
+              fixedHeader
+              fixedHeaderScrollHeight={"55vh"}
+              subHeader
+              subHeaderComponent={
+                <CustomHeader
+                  handleSidebar={this.handleSidebar}
+                  showModal={this.showModal}
+                  handleFilter={this.handleFilter}
+                  handleRowsPerPage={this.handleRowsPerPage}
+                />
+              }
             />
-          }
-        />
+          </CardBody>
+        </Card>
       </div>
     );
   }

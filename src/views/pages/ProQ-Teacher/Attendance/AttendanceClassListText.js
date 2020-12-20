@@ -10,6 +10,7 @@ import "../../../../assets/scss/pages/data-list.scss";
 import "../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import ReactPaginate from "react-paginate";
 import Moment from "react-moment";
+import { Card, CardBody } from 'reactstrap';
 import { toastWarning } from "../../../../utility/toast/toastHelper";
 import { CONFIG_TIME_ATTENDANCE } from "../../../../utility/config";
 // import { Popconfirm, message } from "antd";
@@ -38,11 +39,13 @@ const ActionDay = (props) => {
   const { row } = props;
   let weekDays = row.weekDays;
   return (
-    <div style={{ display: "inline-flex" }}>
+    <>
       {weekDays.map((item) => (
-        <p key={item}> {chipText[item]}, </p>
+        <span key={item} 
+        style={{ marginLeft: 5 }}
+        className="badge badge-primary"> {chipText[item]} </span>
       ))}
-    </div>
+    </>
   );
 };
 const ActionsComponent = (props) => {
@@ -91,7 +94,7 @@ class AttendanceClassListText extends Component {
         name: "Môn",
         selector: "subjects",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "150px",
         cell: (row) => (
           <p title={row.subject} className="text-truncate text-bold-500 mb-0">
             {row.subject}
@@ -114,7 +117,7 @@ class AttendanceClassListText extends Component {
         name: "Học kì",
         selector: "season",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "200px",
         cell: (row) => (
           <p title={row.season} className="text-truncate text-bold-500 mb-0">
             {row.season}
@@ -129,15 +132,16 @@ class AttendanceClassListText extends Component {
         cell: (row) => <ActionDay row={row} />,
       },
       {
-        name: "Ngày",
+        name: "Ngày bắt đầu",
         selector: "startAt",
         sortable: true,
-        // maxWidth: "300px",
+        minWidth: "200px",
         cell: (row) => <Moment format="DD/MM/YYYY">{row.startAt}</Moment>,
       },
       {
         name: "Thao tác",
         sortable: true,
+        minWidth: "150px",
         cell: (row) => (
           <ActionsComponent
             row={row}
@@ -222,29 +226,32 @@ class AttendanceClassListText extends Component {
   render() {
     let { columns, value, data } = this.state;
     return (
-      <div className="data-list">
-        <DataTable
-          className="dataTable-custom"
-          data={value.length ? "" : data}
-          columns={columns}
-          noHeader={true}
-          subHeader
-          pointerOnHover
-          onRowClicked={this.onRowClicked}
-          highlightOnHover
-          customStyles={selectedStyle}
-        />
-        <ReactPaginate
-          previousLabel={<ChevronLeft size={15} />}
-          nextLabel={<ChevronRight size={15} />}
-          breakLabel="..."
-          breakClassName="break-me"
-          pageCount={this.state.totalPages}
-          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
-          activeClassName="active"
-          onPageChange={(page) => this.handlePagination(page)}
-        />
-      </div>
+      <Card>
+        <CardBody className="data-list">
+          <DataTable
+            className="dataTable-custom"
+            data={value.length ? "" : data}
+            columns={columns}
+            noHeader={true}
+            fixedHeader
+            fixedHeaderScrollHeight={"50vh"}
+            pointerOnHover
+            onRowClicked={this.onRowClicked}
+            highlightOnHover
+            customStyles={selectedStyle}
+          />
+          <ReactPaginate
+            previousLabel={<ChevronLeft size={15} />}
+            nextLabel={<ChevronRight size={15} />}
+            breakLabel="..."
+            breakClassName="break-me"
+            pageCount={this.state.totalPages}
+            containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+            activeClassName="active"
+            onPageChange={(page) => this.handlePagination(page)}
+          />
+        </CardBody>
+      </Card>
     );
   }
 }

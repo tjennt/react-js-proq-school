@@ -8,6 +8,7 @@ import "../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../assets/scss/pages/data-list.scss";
 import "../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
 import { newDate } from "../../../../utility/config";
+import { Card, CardBody } from 'reactstrap';
 const chipText = {
   0: "Chủ nhật",
   1: "Thứ 2",
@@ -21,11 +22,13 @@ const ActionDay = (props) => {
   const { row } = props;
   let weekDays = row.days;
   return (
-    <div style={{ display: "inline-flex" }}>
+    <>
       {weekDays.map((item) => (
-        <p key={item}> {chipText[item]}, </p>
+        <span key={item} 
+        style={{ marginLeft: 5 }}
+        className="badge badge-primary"> {chipText[item]} </span>
       ))}
-    </div>
+    </>
   );
 };
 class ListSchedulesDate extends Component {
@@ -82,7 +85,7 @@ class ListSchedulesDate extends Component {
         name: "Học kì",
         selector: "season",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "200px",
         cell: (row) => (
           <p title={row.season} className="text-truncate text-bold-500 mb-0">
             {row.season}
@@ -100,14 +103,14 @@ class ListSchedulesDate extends Component {
         name: "Ngày bắt đầu",
         selector: "startAt",
         sortable: true,
-        // maxWidth: "300px",
+        minWidth: "200px",
         cell: (row) => <p>{newDate(row.startAt)}</p>,
       },
       {
         name: "Ngày kết thúc",
         selector: "endAt",
         sortable: true,
-        // maxWidth: "300px",
+        minWidth: "200px",
         cell: (row) => <p>{newDate(row.endAt)}</p>,
       },
     ],
@@ -147,26 +150,29 @@ class ListSchedulesDate extends Component {
   render() {
     let { columns, value, data } = this.state;
     return (
-      <div className="data-list">
-        <DataTable
-          className="dataTable-custom"
-          data={value.length ? "" : data}
-          columns={columns}
-          noHeader={true}
-          subHeader
-        />
-        {/*         
-        <ReactPaginate
-          previousLabel={<ChevronLeft size={15} />}
-          nextLabel={<ChevronRight size={15} />}
-          breakLabel="..."
-          breakClassName="break-me"
-          pageCount={this.state.totalPages}
-          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
-          activeClassName="active"
-          onPageChange={(page) => this.handlePagination(page)}
-        /> */}
-      </div>
+      <Card>
+        <CardBody className="data-list">
+          <DataTable
+            className="dataTable-custom"
+            data={value.length ? "" : data}
+            columns={columns}
+            noHeader={true}
+            fixedHeader
+            fixedHeaderScrollHeight={"50vh"}
+          />
+          {/*         
+          <ReactPaginate
+            previousLabel={<ChevronLeft size={15} />}
+            nextLabel={<ChevronRight size={15} />}
+            breakLabel="..."
+            breakClassName="break-me"
+            pageCount={this.state.totalPages}
+            containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+            activeClassName="active"
+            onPageChange={(page) => this.handlePagination(page)}
+          /> */}
+        </CardBody>
+      </Card>
     );
   }
 }

@@ -3,7 +3,7 @@ import DataTable from "react-data-table-component";
 import { history } from "../../../../../../history";
 import { ChevronLeft, ChevronRight } from "react-feather";
 import { connect } from "react-redux";
-import { Row, Col, Button } from "reactstrap";
+import { Row, Col, Button, Card, CardBody } from "reactstrap";
 import "antd/dist/antd.css";
 import { getDataScheduleDetailId } from "../../../../../../redux/actions/student";
 import "../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
@@ -138,39 +138,43 @@ class ListSchedulesDetail extends Component {
   render() {
     let { columns, value, data } = this.state;
     return (
-      <div className="data-list">
-        <BreadCrumbs
-          breadCrumbTitle="Sinh viên "
-          breadCrumbParent="Thông báo "
-          breadCrumbActive="Lịch học của sinh viên"
-        />
-        <Row>
-          <Col lg="6">
-            <Button onClick={this.goBack}> Quay lại </Button>
-          </Col>
-        </Row>
-        <DataTable
-          className="dataTable-custom"
-          data={value.length ? "" : data}
-          columns={columns}
-          noHeader={true}
-          noDataComponent="Không có lịch học"
-          pointerOnHover
-          onRowClicked={this.onRowClicked}
-          highlightOnHover
-          customStyles={selectedStyle}
-        />
-        <ReactPaginate
-          previousLabel={<ChevronLeft size={15} />}
-          nextLabel={<ChevronRight size={15} />}
-          breakLabel="..."
-          breakClassName="break-me"
-          pageCount={this.state.totalPages}
-          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
-          activeClassName="active"
-          onPageChange={(page) => this.handlePagination(page)}
-        />
-      </div>
+      <Card>
+        <CardBody className="data-list">
+          <BreadCrumbs
+            breadCrumbTitle="Sinh viên "
+            breadCrumbParent="Thông báo "
+            breadCrumbActive="Lịch học của sinh viên"
+          />
+          <Row>
+            <Col lg="6">
+              <Button onClick={this.goBack}> Quay lại </Button>
+            </Col>
+          </Row>
+          <DataTable
+            className="dataTable-custom"
+            data={value.length ? "" : data}
+            columns={columns}
+            noHeader={true}
+            // fixedHeader
+            // fixedHeaderScrollHeight={"50vh"}
+            noDataComponent="Không có lịch học"
+            pointerOnHover
+            onRowClicked={this.onRowClicked}
+            highlightOnHover
+            customStyles={selectedStyle}
+          />
+          {/* <ReactPaginate
+            previousLabel={<ChevronLeft size={15} />}
+            nextLabel={<ChevronRight size={15} />}
+            breakLabel="..."
+            breakClassName="break-me"
+            pageCount={this.state.totalPages}
+            containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+            activeClassName="active"
+            onPageChange={(page) => this.handlePagination(page)}
+          /> */}
+        </CardBody>
+      </Card>
     );
   }
 }

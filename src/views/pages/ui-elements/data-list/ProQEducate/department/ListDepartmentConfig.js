@@ -25,7 +25,7 @@ import Sidebar from "./DepartmentSidebar";
 import "./../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import { Button, Col } from "reactstrap";
+import { Button, Col, Card, CardBody } from "reactstrap";
 import { message, Popconfirm } from "antd";
 import ReactPaginate from "react-paginate";
 import { newDate } from "../../../../../../utility/config";
@@ -42,11 +42,13 @@ const ActionDay = (props) => {
   const { row } = props;
   let weekDays = row.weekDays;
   return (
-    <div style={{ display: "inline-flex" }}>
+    <>
       {weekDays.map((item) => (
-        <p key={item}> {chipText[item]}, </p>
+        <span key={item} 
+        style={{ marginLeft: 5 }}
+        className="badge badge-primary"> {chipText[item]} </span>
       ))}
-    </div>
+    </>
   );
 };
 const ActionsComponent = (props) => {
@@ -91,11 +93,14 @@ const CustomHeader = (props) => {
           <span className="align-middle">Tạo mới</span>
         </Button>
       </div>
+      <span className="btn btn-outline-primary btn-rounded float-right mr-2">
+                  Tổng {props.totalRecords}</span> 
     </div>
   );
 };
 class ListDepartmentConfig extends Component {
   static getDerivedStateFromProps(props, state) {
+    console.log(props.dataList)
     if (
       props.schedules.dataSchedules !== state.data.length ||
       state.currentPage !== props.parsedFilter.page
@@ -103,6 +108,7 @@ class ListDepartmentConfig extends Component {
       return {
         data: props.schedules.dataSchedules,
         totalPages: props.schedules.total_page_schedule,
+        totalRecords: props.dataList.total_record_class,
       };
     }
 
@@ -129,7 +135,7 @@ class ListDepartmentConfig extends Component {
         name: "Môn",
         selector: "subjects",
         sortable: true,
-        // minWidth: "300px",
+        minWidth: "150px",
         cell: (row) => (
           <p title={row.subject} className="text-truncate text-bold-500 mb-0">
             {row.subject}
@@ -152,7 +158,7 @@ class ListDepartmentConfig extends Component {
         name: "Học kì",
         selector: "season",
         sortable: true,
-        minWidth: "200px",
+        minWidth: "150px",
         cell: (row) => (
           <p title={row.season} className="text-truncate text-bold-500 mb-0">
             {row.season}
@@ -208,7 +214,7 @@ class ListDepartmentConfig extends Component {
       {
         name: "Thao tác",
         sortable: true,
-        minWidth: "200px",
+        minWidth: "100px",
         cell: (row) => (
           <ActionsComponent
             row={row}
@@ -322,62 +328,67 @@ class ListDepartmentConfig extends Component {
   render() {
     let { columns, data, value, currentData, sidebar, dataClass } = this.state;
     return (
-      <div className="data-list">
-        <Col lg="12">
-          <CustomHeader
-            handleSidebar={this.handleSidebar}
-            showModal={this.showModal}
-            handleFilter={this.handleFilter}
-            handleRowsPerPage={this.handleRowsPerPage}
+      <Card> 
+        <CardBody className="data-list">
+          <Col lg="12">
+            <CustomHeader
+              handleSidebar={this.handleSidebar}
+              showModal={this.showModal}
+              handleFilter={this.handleFilter}
+              handleRowsPerPage={this.handleRowsPerPage}
+              totalRecords={this.state.totalRecords}
+            />
+            
+          </Col>
+          <DataTable
+            className="dataTable-custom"
+            data={value.length ? "" : data}
+            columns={columns}
+            fixedHeader
+            fixedHeaderScrollHeight={"48vh"}
+            noHeader
+            noDataComponent="Không có dữ liệu "
           />
-        </Col>
-        <DataTable
-          className="dataTable-custom"
-          data={value.length ? "" : data}
-          columns={columns}
-          noHeader
-          noDataComponent="Không có dữ liệu "
-          subHeader
-        />
-        <ReactPaginate
-          previousLabel={<ChevronLeft size={15} />}
-          nextLabel={<ChevronRight size={15} />}
-          breakLabel="..."
-          breakClassName="break-me"
-          pageCount={this.state.totalPages}
-          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
-          activeClassName="active"
-          forcePage={
-            this.props.parsedFilter.page
-              ? parseInt(this.props.parsedFilter.page - 1)
-              : 0
-          }
-          onPageChange={(page) => this.handlePagination(page)}
-        />
-        <Sidebar
-          params={this.props.parsedFilter}
-          season={this.props.season}
-          shift={this.props.shift}
-          teacher={this.props.teacher}
-          classDepart={this.props.class}
-          subjectClass={this.props.subjectClass}
-          getDataSubject={this.props.getDataSubject}
-          getDataSubjectUpdate={this.props.getDataSubjectUpdate}
-          getDataBothStudy={this.props.getDataBothStudy}
-          dataClass={dataClass}
-          show={sidebar}
-          data={currentData}
-          updateData={this.props.updateSchedules}
-          addData={this.props.addSchedules}
-          handleSidebar={this.handleSidebar}
-        />
-        <div
-          className={classnames("data-list-overlay", {
-            show: sidebar,
-          })}
-          onClick={() => this.handleSidebar(false, true)}
-        />
-      </div>
+          <ReactPaginate
+            previousLabel={<ChevronLeft size={15} />}
+            nextLabel={<ChevronRight size={15} />}
+            breakLabel="..."
+            breakClassName="break-me"
+            pageCount={this.state.totalPages}
+            containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+            activeClassName="active"
+            forcePage={
+              this.props.parsedFilter.page
+                ? parseInt(this.props.parsedFilter.page - 1)
+                : 0
+            }
+            onPageChange={(page) => this.handlePagination(page)}
+          />
+          <Sidebar
+            params={this.props.parsedFilter}
+            season={this.props.season}
+            shift={this.props.shift}
+            teacher={this.props.teacher}
+            classDepart={this.props.class}
+            subjectClass={this.props.subjectClass}
+            getDataSubject={this.props.getDataSubject}
+            getDataSubjectUpdate={this.props.getDataSubjectUpdate}
+            getDataBothStudy={this.props.getDataBothStudy}
+            dataClass={dataClass}
+            show={sidebar}
+            data={currentData}
+            updateData={this.props.updateSchedules}
+            addData={this.props.addSchedules}
+            handleSidebar={this.handleSidebar}
+          />
+          <div
+            className={classnames("data-list-overlay", {
+              show: sidebar,
+            })}
+            onClick={() => this.handleSidebar(false, true)}
+          />
+        </CardBody>
+      </Card>
     );
   }
 }
