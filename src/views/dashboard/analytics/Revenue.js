@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardBody } from "reactstrap";
 import Chart from "react-apexcharts";
-import { Settings } from "react-feather";
 
 class Revenue extends React.Component {
   state = {
@@ -55,7 +54,16 @@ class Revenue extends React.Component {
         axisTicks: {
           show: false,
         },
-        categories: ["2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"],
+        categories: [
+          "2013",
+          "2014",
+          "2015",
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2020",
+        ],
         axisBorder: {
           show: false,
         },
@@ -76,14 +84,16 @@ class Revenue extends React.Component {
     series: [
       {
         name: "Số lượng",
-        data: [ Math.ceil(Math.random() * 999),
-          Math.ceil(Math.random() * 999),
-          Math.ceil(Math.random() * 999),
-          Math.ceil(Math.random() * 999),
-          Math.ceil(Math.random() * 999),
-          Math.ceil(Math.random() * 999),
-          Math.ceil(Math.random() * 999),
-          Math.ceil(Math.random() * 999)],
+        data: [
+          Math.ceil(Math.random() * 5),
+          Math.ceil(Math.random() * 7),
+          Math.ceil(Math.random() * 9),
+          Math.ceil(Math.random() * 6),
+          Math.ceil(Math.random() * 4),
+          Math.ceil(Math.random() * 8),
+          Math.ceil(Math.random() * 9),
+          Math.ceil(Math.random() * 9),
+        ],
       },
     ],
   };
@@ -98,7 +108,14 @@ class Revenue extends React.Component {
           <div className="mr-2 d-flex justify-content-around align-items-center ">
             <p className="mb-50 text-bold-600">Số lượng học sinh mới</p>
             <h2 className="text-bold-400">
-              <span className="text-danger"> {this.state.series[0].data[this.state.series[0].data.length-1]} </span>
+              <span className="text-danger">
+                {" "}
+                {
+                  this.state.series[0].data[
+                    this.state.series[0].data.length - 1
+                  ]
+                }{" "}
+              </span>
             </h2>
           </div>
           <Chart

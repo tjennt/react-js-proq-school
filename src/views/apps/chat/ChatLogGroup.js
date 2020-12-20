@@ -13,14 +13,14 @@ import {
 import io from "socket.io-client";
 import ReactEmoji from "react-emoji";
 import "emoji-mart/css/emoji-mart.css";
-import {API_ENDPOINT_IMG_TEACHER} from "../../../redux/constants/index"
+import img from "../../../assets/img/default.jpg";
 import { Picker } from "emoji-mart";
 
 let socket;
 class ChatLogGroup extends React.Component {
   state = {
     idGroupID: null,
-    idGroupChat:null,
+    idGroupChat: null,
     msg: "",
     contactName: null,
     avatar: null,
@@ -28,9 +28,9 @@ class ChatLogGroup extends React.Component {
     chatContent: [],
   };
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.idGroupChat !== null  ) {
+    if (this.props.idGroupChat !== null) {
       if (this.props.idGroupChat !== prevState.idGroupChat) {
-        this.setState({idGroupChat: this.props.idGroupChat});
+        this.setState({ idGroupChat: this.props.idGroupChat });
       }
     }
     this.scrollToBottom();
@@ -53,9 +53,10 @@ class ChatLogGroup extends React.Component {
     this.props.receiveChatGroupSocket(socket);
     this.scrollToBottom();
   }
-componentWillUnmount(){
-    try { socket.disconnect(); } catch (error) { }
-    
+  componentWillUnmount() {
+    try {
+      socket.disconnect();
+    } catch (error) {}
   }
   handleTime = (time_to, time_from) => {
     const date_time_to = new Date(Date.parse(time_to));
@@ -73,7 +74,7 @@ componentWillUnmount(){
   };
   handlleMessage = (e) => {
     e.preventDefault();
-    if(this.state.idGroupChat){
+    if (this.state.idGroupChat) {
       this.props.sendChatGroup(this.state.idGroupChat, this.state.msg);
       this.setState({
         ...this.state,
@@ -93,14 +94,16 @@ componentWillUnmount(){
     });
   };
   render() {
-    const { chatContent, idUserMe,contact} = this.props;
-    console.log(contact)
-    const {idGroupChat } = this.state;
-    console.log(chatContent)
+    const { chatContent, idUserMe, contact } = this.props;
+    console.log(contact);
+    const { idGroupChat } = this.state;
+    console.log(chatContent);
     return (
       <div className="content-right">
         <div className="chat-app-window ">
-          <div className={`start-chat-area ${idGroupChat ? "d-none" : "d-flex"}`}>
+          <div
+            className={`start-chat-area ${idGroupChat ? "d-none" : "d-flex"}`}
+          >
             <span className="mb-1 start-chat-icon">
               <MessageSquare size={50} />
             </span>
@@ -122,23 +125,29 @@ componentWillUnmount(){
                     className="avatar user-profile-toggle m-0 m-0 mr-1"
                     onClick={() => this.props.handleReceiverSidebar("open")}
                   >
-                  {contact&& contact.type ==="group" ?
-                          <img
-                          src={`${API_ENDPOINT_IMG_TEACHER}/${contact.avatarGroup.name}`}
-                          alt={ contact.avatarGroup.name}
-                          height="38"
-                          width="38"
-                        />
-                       : <img
-                          src={ contact && contact.avatar ?` ${API_ENDPOINT_IMG_TEACHER}/${contact.avatar}`:""}
-                          alt={ contact ? contact.avatar:""}
-                          height="38"
-                          width="38"
-                        /> }
-                        
+                    {contact && contact.type === "group" ? (
+                      <img
+                        src={img}
+                        alt={contact.avatarGroup.name}
+                        height="38"
+                        width="38"
+                      />
+                    ) : (
+                      <img
+                        src={img}
+                        alt={contact ? contact.avatar : ""}
+                        height="38"
+                        width="38"
+                      />
+                    )}
+
                     <span className={"avatar-status-online"} />
                   </div>
-                  {contact&& contact.type ==="group" ?<h6 className="mb-0">{contact.name}</h6> :<div>{contact?contact.user.fullName:""}</div>   }  
+                  {contact && contact.type === "group" ? (
+                    <h6 className="mb-0">{contact.name}</h6>
+                  ) : (
+                    <div>{contact ? contact.user.fullName : ""}</div>
+                  )}
                 </div>
               </header>
             </div>
@@ -157,33 +166,31 @@ componentWillUnmount(){
                   {chatContent
                     ? chatContent.map((content) => (
                         <div key={content._id}>
-                          {
-                           idGroupChat === content.group   ? (
-                              <div
-                                className={`${
-                                  content.from === idUserMe 
-                                    ? "chat  chat-right"
-                                    : "chat chat-left"
-                                }`}
-                              >
-                                <div className="chat-avatar">
-                                  <div className="avatar m-0">
-                                    <img
-                                    src={`${API_ENDPOINT_IMG_TEACHER}/${contact.avatarGroup.name}`}
-                                      alt="chat avatar"
-                                      height="40"
-                                      width="40"
-                                    />
-                                  </div>
-                                </div>
-                                <div className="chat-body">
-                                  <div className="chat-content">
-                                    {ReactEmoji.emojify(content.content)}
-                                  </div>
+                          {idGroupChat === content.group ? (
+                            <div
+                              className={`${
+                                content.from === idUserMe
+                                  ? "chat  chat-right"
+                                  : "chat chat-left"
+                              }`}
+                            >
+                              <div className="chat-avatar">
+                                <div className="avatar m-0">
+                                  <img
+                                    src={img}
+                                    alt="chat avatar"
+                                    height="40"
+                                    width="40"
+                                  />
                                 </div>
                               </div>
-                    ): null}
-                          
+                              <div className="chat-body">
+                                <div className="chat-content">
+                                  {ReactEmoji.emojify(content.content)}
+                                </div>
+                              </div>
+                            </div>
+                          ) : null}
                         </div>
                       ))
                     : "Không có tin nhắn"}
@@ -242,9 +249,8 @@ const mapStateToProps = (state) => {
     chat: state.chatApp.chats,
     chatContent: state.chatProq.contentMessageIdGroup,
     idUserMe: state.auth.login.values.loggedInUser._id,
-    contact:state.chatProq.contact,
-    dataGroup:state.chatProq.dataGroup
-
+    contact: state.chatProq.contact,
+    dataGroup: state.chatProq.dataGroup,
   };
 };
 export default connect(mapStateToProps, {

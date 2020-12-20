@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import { history } from "../../../../../../history";
-import { ChevronLeft, ChevronRight } from "react-feather";
 import { connect } from "react-redux";
 import { Row, Col, Button, Card, CardBody } from "reactstrap";
 import "antd/dist/antd.css";
@@ -9,7 +8,6 @@ import { getDataScheduleDetailId } from "../../../../../../redux/actions/student
 import "../../../../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "../../../../../../assets/scss/pages/data-list.scss";
 import "../../../../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import ReactPaginate from "react-paginate";
 import BreadCrumbs from "../../../../../../components/@vuexy/breadCrumbs/BreadCrumb";
 import { newDate } from "../../../../../../utility/config";
 // import { Popconfirm, message } from "antd";

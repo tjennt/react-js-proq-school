@@ -4,20 +4,16 @@ import { baseUrl } from "../../../utility/config";
 const baseUrlTotalProduct = `${baseUrl}/web/admin/dashboard/billing`;
 const baseUrlToTalMoney = `${baseUrl}/web/admin/dashboard/revenue`;
 const baseUrlTotalUser = `${baseUrl}/web/admin/dashboard/user`;
-const baseUrlDashboard = `${baseUrl}/web/admin/dashboard`;
+const baseUrlDashboard = `${process.env.REACT_APP_API_ENDPOINT}/staff/statistic`;
 const baseUrlTotalUserLogin = `${baseUrl}/web/admin/dashboard/user/pieChart`;
 export const getDataDashboard = (dateStart, dateEnd) => async (dispatch) => {
   setAuthToken(getToken());
   try {
-    const res = await axios.get(`${baseUrlDashboard}`, {
-      params: {
-        start_time: dateStart,
-        end_time: dateEnd,
-      },
-    });
+    const res = await axios.get(`${baseUrlDashboard}`);
+    console.log(res);
     dispatch({
       type: "GET_DATA_TOTAL_DASHBOARD",
-      data: res.data.data,
+      data: res.data.payload,
     });
   } catch (error) {}
 };

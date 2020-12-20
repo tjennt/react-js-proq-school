@@ -4,7 +4,6 @@ import classnames from "classnames";
 import { history } from "../../../../../../history";
 // import { Plus } from "react-feather";
 import { connect } from "react-redux";
-import { API_ENDPOINT_IMG_TEACHER } from "../../../../../../redux/constants/index";
 import "antd/dist/antd.css";
 import {
   getDataTeacher,
@@ -35,7 +34,7 @@ import {
 } from "reactstrap";
 import Moment from "react-moment";
 import Modal from "antd/lib/modal/Modal";
-
+import img from "../../../../../../assets/img/default.jpg";
 class ListTeacherConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
@@ -67,9 +66,9 @@ class ListTeacherConfig extends Component {
         maxWidth: "70px",
         cell: (row) => (
           <img
-            style={{ borderRadius: '50%', marginLeft: 'auto' }}
+            style={{ borderRadius: "50%", marginLeft: "auto" }}
             height="50px"
-            src={`${API_ENDPOINT_IMG_TEACHER}/${row.teacherId.avatar}`}
+            src={img}
             alt={row.avatar}
           />
         ),
@@ -249,7 +248,11 @@ class ListTeacherConfig extends Component {
           <Col lg="12">
             <Row>
               <Col lg="3">
-                <Button onClick={this.showModal} className=" ml-2" color="danger">
+                <Button
+                  onClick={this.showModal}
+                  className=" ml-2"
+                  color="danger"
+                >
                   <Download size={15} /> Xuất excel
                 </Button>
               </Col>
@@ -265,10 +268,11 @@ class ListTeacherConfig extends Component {
                       borderRadius: "20px",
                     }}
                   >
-                    <span className="align-middle mx-50">{`Hiển thị: ${this.props.parsedFilter.limit
+                    <span className="align-middle mx-50">{`Hiển thị: ${
+                      this.props.parsedFilter.limit
                         ? this.props.parsedFilter.limit
                         : 10
-                      }`}</span>
+                    }`}</span>
                     {/* <span className="align-middle mx-50">{`${this.props.parsedFilter.limit
                         ? this.props.parsedFilter.limit
                         : 10
@@ -309,11 +313,12 @@ class ListTeacherConfig extends Component {
                   </DropdownMenu>
                 </UncontrolledDropdown>
                 <span className="btn btn-outline-primary btn-rounded float-right mr-2">
-                  Tổng {this.state.totalRecords}</span> 
+                  Tổng {this.state.totalRecords}
+                </span>
               </Col>
             </Row>
           </Col>
-          
+
           <DataTable
             className="dataTable-custom"
             data={value.length ? "" : data}
@@ -323,7 +328,7 @@ class ListTeacherConfig extends Component {
             fixedHeader
             fixedHeaderScrollHeight={"50vh"}
             noDataComponent="Không có dữ liệu"
-          // expandOnRowClicked
+            // expandOnRowClicked
           />
           <ReactPaginate
             previousLabel={<ChevronLeft size={15} />}

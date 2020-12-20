@@ -9,14 +9,28 @@ import {
 } from "reactstrap";
 import Chart from "react-apexcharts";
 
-const SUBJECT = ['Java', 'DotNet', 'Angular']
 class Productorders extends React.Component {
   state = {
-    series: [Math.ceil(Math.random() * 30),
-    Math.ceil(Math.random() * 50),
-    Math.ceil(Math.random() * 20)],
+    series: [
+      Math.ceil(Math.random() * 10),
+      Math.ceil(Math.random() * 5),
+      Math.ceil(Math.random() * 2),
+      // Math.ceil(Math.random() * 3),
+      // Math.ceil(Math.random() * 4),
+    ],
   };
+
   render() {
+    const { totalSubjectFail } = this.props;
+    const SUBJECT = totalSubjectFail
+      ? totalSubjectFail.reduce((arr, curr) => [...arr, curr.name], [])
+      : [];
+    // const num = totalSubjectFail
+    //   ? totalSubjectFail.reduce(
+    //       (arr, curr) => [...arr, curr.lessonAbsence + 30],
+    //       []
+    //     )
+    //   : [];
     return (
       <Card>
         <CardHeader>

@@ -18,6 +18,7 @@ import {
   updateDataTeacher,
   deleteDataTeacher,
 } from "../../../../../../redux/actions/dataListAssistance/index";
+import img from "../../../../../../assets/img/default.jpg";
 import { importExcelTeacer } from "../../../../../../redux/actions/education/index";
 
 import Sidebar from "./DataListTeachertSidebar";
@@ -34,12 +35,11 @@ import {
   Row,
   UncontrolledDropdown,
   Card,
-  CardBody
+  CardBody,
 } from "reactstrap";
 import { message, Modal, Popconfirm, Tooltip, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import ReactPaginate from "react-paginate";
-import { API_ENDPOINT_IMG_TEACHER } from "../../../../../../redux/constants";
 import { newDate } from "../../../../../../utility/config";
 const { Dragger } = Upload;
 
@@ -100,14 +100,16 @@ class ListTeacherConfig extends Component {
     currentPage: 0,
     columns: [
       {
-        name: "Hình đại diện",
+        name: "",
         selector: "name",
         sortable: true,
-        minWidth: "200px",
+        minWidth: "50px",
+        maxWidth: "70px",
         cell: (row) => (
           <img
-            height="70px"
-            src={`${API_ENDPOINT_IMG_TEACHER}/${row.teacherId.avatar}`}
+            style={{ borderRadius: "50%", marginLeft: "auto" }}
+            height="50px"
+            src={img}
             alt={row.teacherId.avatar}
           />
         ),
@@ -329,7 +331,8 @@ class ListTeacherConfig extends Component {
                 <InboxOutlined />
               </p>
               <p className="ant-upload-hint">
-                Click vào đây để chọn file excel hoặc kéo thả từ máy tính của bạn
+                Click vào đây để chọn file excel hoặc kéo thả từ máy tính của
+                bạn
               </p>
             </Dragger>
           </Modal>
@@ -384,10 +387,11 @@ class ListTeacherConfig extends Component {
                       borderRadius: "20px",
                     }}
                   >
-                    <span className="align-middle mx-50">{`Hiển thị: ${this.props.parsedFilter.limit
-                      ? this.props.parsedFilter.limit
-                      : 10
-                      }`}</span>
+                    <span className="align-middle mx-50">{`Hiển thị: ${
+                      this.props.parsedFilter.limit
+                        ? this.props.parsedFilter.limit
+                        : 10
+                    }`}</span>
                     {/* <span className="align-middle mx-50">{`${
                       this.props.parsedFilter.limit
                         ? this.props.parsedFilter.limit
@@ -430,7 +434,8 @@ class ListTeacherConfig extends Component {
                 </UncontrolledDropdown>
 
                 <span className="btn btn-outline-primary btn-rounded float-right mr-2">
-                  Tổng {this.state.totalRecords}</span> 
+                  Tổng {this.state.totalRecords}
+                </span>
               </Col>
             </Row>
           </Col>

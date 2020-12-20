@@ -1,25 +1,22 @@
 import React, { Component } from "react";
 import DataTable from "react-data-table-component";
 import { history } from "./../../../history";
-import { Download } from "react-feather";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { getData } from "./../../../redux/actions/dataListAssistance/index";
 import "./../../../assets/scss/plugins/extensions/react-paginate.scss";
 import "./../../../assets/scss/pages/data-list.scss";
 import "./../../../assets/scss/plugins/extensions/sweet-alerts.scss";
-import { Button, Col, Input, Row, Card, CardBody } from "reactstrap";
-import { Modal, 
-  // Upload 
+import { Col, Input, Row, Card, CardBody } from "reactstrap";
+import {
+  Modal,
+  // Upload
 } from "antd";
 // import { InboxOutlined } from "@ant-design/icons";
 
 // const { Dragger } = Upload;
 
 const CustomHeader = (props) => {
-  const showModal = () => {
-    props.showModal();
-  };
   return (
     <Row>
       <Col lg="9">
@@ -139,7 +136,7 @@ class Comment extends Component {
         >
           <Input placeholder="Vui lòng nhập tên file excel" />
         </Modal>
-        <Card> 
+        <Card>
           <CardBody>
             <DataTable
               data={data}
