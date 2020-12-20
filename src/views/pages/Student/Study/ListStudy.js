@@ -32,9 +32,9 @@ class ListStudy extends React.Component {
     imageFound: [{ id: "0" }, { id: "1" }, { id: "2" }],
   };
   componentDidMount() {
-    this.props.getDataNotiFee();
-    this.props.getDataNotiLearning();
-    this.props.getDataNotiActivity();
+    this.props.getDataNotiFee({ page: 1, limit: 3 });
+    this.props.getDataNotiLearning({ page: 1, limit: 3 });
+    this.props.getDataNotiActivity({ page: 1, limit: 3 });
   }
   handleSelectedOptionChange = (value) => {
     this.setState({
@@ -45,25 +45,25 @@ class ListStudy extends React.Component {
 
   handlePaginationStudy = (page) => {
     let { getDataNotiLearning } = this.props;
-    getDataNotiLearning({ page: page.selected + 1, limit: 4 });
+    getDataNotiLearning({ page: page.selected + 1, limit: 3 });
     this.setState({ currentPage: page.selected });
   };
   handlePaginationActivity = (page) => {
     let { getDataNotiActivity } = this.props;
-    getDataNotiActivity({ page: page.selected + 1, limit: 4 });
+    getDataNotiActivity({ page: page.selected + 1, limit: 3 });
     this.setState({ currentPage: page.selected });
   };
   handlePaginationFee= (page) => {
     let { getDataNotiFee } = this.props;
-    getDataNotiFee({ page: page.selected + 1, limit: 4 });
+    getDataNotiFee({ page: page.selected + 1, limit: 3 });
     this.setState({ currentPage: page.selected });
   };
   render() {
+    console.log(this.props.dataLearning)
     return (
       <Row>
         <Col lg="12">
-          <Badge className="mt-1" style={{ fontSize: "12pt" }} color="success">
-            {" "}
+          <Badge className="mt-1" style={{ fontSize: "1rem" }} color="success">
             Thông tin học tập
           </Badge>
 
@@ -99,7 +99,7 @@ class ListStudy extends React.Component {
           />
         </Col>
         <Col lg="12">
-          <Badge className="mt-1" style={{ fontSize: "12pt" }} color="primary">
+          <Badge className="mt-1" style={{ fontSize: "1rem" }} color="primary">
             Thông tin hoạt động{" "}
           </Badge>
           <Row>
@@ -132,7 +132,7 @@ class ListStudy extends React.Component {
           />
         </Col>
         <Col lg="12">
-          <Badge className="mt-1" style={{ fontSize: "12pt" }} color="info">
+          <Badge className="mt-1" style={{ fontSize: "1rem" }} color="info">
             Thông tin học phí
           </Badge>
           <Row>

@@ -179,7 +179,7 @@ export const ordersReceived = {
   grid: {
     show: false,
   },
-  colors: ["#8BC34A"],
+  colors: ["#5ad092"],
   dataLabels: {
     enabled: false,
   },
@@ -217,8 +217,38 @@ export const ordersReceived = {
 //doanh thu
 export const ordersReceivedSeries = [
   {
-    name: "Doanh thu",
+    name: "Số lượng",
     data: [10, 23, 8, 16, 8, 12, 20, 8, 9, 20],
+  },
+];
+export const totalStudentData = [
+  {
+    name: "Số lượng học sinh",
+    data: [Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99)],
+  },
+];
+export const totalTeacherData = [
+  {
+    name: "Số lượng",
+    data: [Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99),
+      Math.ceil(Math.random()*99)],
   },
 ];
 export const totalProDuct = {
@@ -282,7 +312,103 @@ export const MoneyReceived = {
   grid: {
     show: false,
   },
-  colors: ["#F44336"],
+  colors: ["#ff6535"],
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    curve: "smooth",
+    width: 2.5,
+  },
+  fill: {
+    type: "gradient",
+    gradient: {
+      shadeIntensity: 0.9,
+      opacityFrom: 0.7,
+      opacityTo: 0.5,
+      stops: [0, 80, 100],
+    },
+  },
+
+  xaxis: {
+    labels: {
+      show: false,
+    },
+    axisBorder: {
+      show: false,
+    },
+  },
+  yaxis: {
+    labels: {
+      show: false,
+    },
+  },
+  tooltip: {
+    x: { show: false },
+  },
+};
+export const TotalStudent = {
+  chart: {
+    id: "TotalStudent",
+    toolbar: {
+      show: false,
+    },
+    sparkline: {
+      enabled: true,
+    },
+  },
+  grid: {
+    show: false,
+  },
+  colors: ["#2892fd"],
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    curve: "smooth",
+    width: 2.5,
+  },
+  fill: {
+    type: "gradient",
+    gradient: {
+      shadeIntensity: 0.9,
+      opacityFrom: 0.7,
+      opacityTo: 0.5,
+      stops: [0, 80, 100],
+    },
+  },
+
+  xaxis: {
+    labels: {
+      show: false,
+    },
+    axisBorder: {
+      show: false,
+    },
+  },
+  yaxis: {
+    labels: {
+      show: false,
+    },
+  },
+  tooltip: {
+    x: { show: false },
+  },
+};
+export const TotalTeacher = {
+  chart: {
+    id: "TotalTeacher",
+    toolbar: {
+      show: false,
+    },
+    sparkline: {
+      enabled: true,
+    },
+  },
+  grid: {
+    show: false,
+  },
+  colors: ["#fdc45e"],
   dataLabels: {
     enabled: false,
   },

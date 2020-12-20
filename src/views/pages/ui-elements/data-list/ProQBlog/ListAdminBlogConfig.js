@@ -24,6 +24,8 @@ import {
   DropdownToggle,
   Row,
   UncontrolledDropdown,
+  Card,
+  CardBody,
 } from "reactstrap";
 import { message, Popconfirm, Tooltip } from "antd";
 import {
@@ -98,7 +100,7 @@ class ListAdminBlogConfig extends Component {
         minWidth: "450px",
         cell: (row) => (
           <Tooltip placement="bottomLeft" title={row.title}>
-            <p title={row.title} className="text-truncate text-bold-500 mb-0">
+            <p title={row.title} className="text-truncate text-capitalize text-bold-500 mb-0">
               {row.title}
             </p>
           </Tooltip>
@@ -195,126 +197,127 @@ class ListAdminBlogConfig extends Component {
   render() {
     let { columns, data, value, sidebar } = this.state;
     return (
-      <div className="data-list">
-        <Col lg="12">
-          <Row>
-            <Col lg="3">
-              <Button
-                color="primary"
-                onClick={this.handleAddData}
-                outline={true}
-              >
-                <Plus size={15} />
-                <span className="align-middle">Tạo mới</span>
-              </Button>
-            </Col>
-            <Col lg="9">
-              <UncontrolledDropdown
-                style={{ backgroundColor: "#fff", borderRadius: "20px" }}
-                className="data-list-rows-dropdown  d-md-block d-none"
-              >
-                <DropdownToggle
-                  disabled={this.state.totalRecords < 10 ? true : false}
-                  className="sort-dropdown"
-                  style={{
-                    float: "right",
-                    borderRadius: "20px",
-                  }}
+      <Card>
+        <CardBody className="data-list">
+          <Col lg="12">
+            <Row>
+              <Col lg="3">
+                <Button
+                  color="primary"
+                  onClick={this.handleAddData}
+                  outline={true}
                 >
-                  {this.state.totalRecords < 10 ? (
-                    <span className="align-middle mx-50">
-                      {this.state.totalRecords}
-                    </span>
-                  ) : (
-                    <span className="align-middle mx-50">{`${
-                      this.state.totalRecords
-                    } của ${
-                      this.props.parsedFilter.page
-                        ? this.props.parsedFilter.page
-                        : 1
-                    }`}</span>
-                  )}
-                  <ChevronDown size={15} />
-                </DropdownToggle>
-                <DropdownMenu tag="div" right>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(10)}
+                  <Plus size={15} />
+                  <span className="align-middle">Tạo mới</span>
+                </Button>
+              </Col>
+              <Col lg="9">
+                <UncontrolledDropdown
+                  style={{ backgroundColor: "#fff", borderRadius: "20px" }}
+                  className="data-list-rows-dropdown  d-md-block d-none"
+                >
+                  <DropdownToggle
+                    disabled={this.state.totalRecords < 10 ? true : false}
+                    className="sort-dropdown"
+                    style={{
+                      float: "right",
+                      borderRadius: "20px",
+                    }}
                   >
-                    10
-                  </DropdownItem>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(20)}
-                  >
-                    20
-                  </DropdownItem>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(30)}
-                  >
-                    30
-                  </DropdownItem>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(50)}
-                  >
-                    50
-                  </DropdownItem>
-                  <DropdownItem
-                    tag="a"
-                    onClick={() => this.handleRowsPerPage(100)}
-                  >
-                    100
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </Col>
-          </Row>
-        </Col>
-        <DataTable
-          className="dataTable-custom"
-          data={value.length ? "" : data}
-          columns={columns}
-          fixedHeader
-          fixedHeaderScrollHeight="55vh"
-          noHeader={true}
-          noDataComponent="Không có dữ liệu "
-        />
-        <ReactPaginate
-          previousLabel={<ChevronLeft size={15} />}
-          nextLabel={<ChevronRight size={15} />}
-          breakLabel="..."
-          breakClassName="break-me"
-          pageCount={this.state.totalPages}
-          containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
-          activeClassName="active"
-          forcePage={
-            this.props.parsedFilter.page
-              ? parseInt(this.props.parsedFilter.page - 1)
-              : 0
-          }
-          onPageChange={(page) => this.handlePagination(page)}
-        />
-        <Sidebar
-          show={sidebar}
-          dataCategory={this.props.dataCategory}
-          data={this.props.taskEdit}
-          updateData={this.props.updateBlog}
-          addData={this.props.addBlog}
-          handleSidebar={this.handleSidebar}
-          thumbView={this.props.thumbView}
-          getData={this.props.getData}
-          dataParams={this.props.parsedFilter}
-          addNew={this.state.addNew}
-        />
-        <div
-          className={classnames("data-list-overlay", {
-            show: sidebar,
-          })}
-          onClick={() => this.handleSidebar(false, true)}
-        />
-      </div>
+                    <span className="align-middle mx-50">{`Hiển thị: ${this.props.parsedFilter.limit
+                      ? this.props.parsedFilter.limit
+                      : 10
+                      }`}</span>
+                    {/* <span className="align-middle mx-50">{`${this.state.totalRecords
+                          } của ${this.props.parsedFilter.page
+                            ? this.props.parsedFilter.page
+                            : 1
+                          }`}</span> */}
+
+                    <ChevronDown size={15} />
+                  </DropdownToggle>
+                  <DropdownMenu tag="div" right>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(10)}
+                    >
+                      10
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(20)}
+                    >
+                      20
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(30)}
+                    >
+                      30
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(50)}
+                    >
+                      50
+                    </DropdownItem>
+                    <DropdownItem
+                      tag="a"
+                      onClick={() => this.handleRowsPerPage(100)}
+                    >
+                      100
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                <span className="btn btn-outline-primary btn-rounded float-right mr-2">
+                  Tổng {this.state.totalRecords}</span>
+              </Col>
+            </Row>
+          </Col>
+          <DataTable
+            className="dataTable-custom"
+            data={value.length ? "" : data}
+            columns={columns}
+            fixedHeader
+            fixedHeaderScrollHeight="49vh"
+            noHeader={true}
+            noDataComponent="Không có dữ liệu "
+          />
+          <ReactPaginate
+            previousLabel={<ChevronLeft size={15} />}
+            nextLabel={<ChevronRight size={15} />}
+            breakLabel="..."
+            breakClassName="break-me"
+            pageCount={this.state.totalPages}
+            containerClassName="vx-pagination separated-pagination pagination-end pagination-sm mb-0 mt-2"
+            activeClassName="active"
+            forcePage={
+              this.props.parsedFilter.page
+                ? parseInt(this.props.parsedFilter.page - 1)
+                : 0
+            }
+            onPageChange={(page) => this.handlePagination(page)}
+          />
+          <Sidebar
+            show={sidebar}
+            dataCategory={this.props.dataCategory}
+            data={this.props.taskEdit}
+            updateData={this.props.updateBlog}
+            addData={this.props.addBlog}
+            handleSidebar={this.handleSidebar}
+            thumbView={this.props.thumbView}
+            getData={this.props.getData}
+            dataParams={this.props.parsedFilter}
+            addNew={this.state.addNew}
+          />
+          <div
+            className={classnames("data-list-overlay", {
+              show: sidebar,
+            })}
+            onClick={() => this.handleSidebar(false, true)}
+          />
+        </CardBody>
+      </Card>
     );
   }
 }

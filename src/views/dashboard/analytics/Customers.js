@@ -9,9 +9,12 @@ import {
 } from "reactstrap";
 import Chart from "react-apexcharts";
 
+const SUBJECT = ['Java', 'DotNet', 'Angular']
 class Productorders extends React.Component {
   state = {
-    series: [23, 68, 56, 46, 32],
+    series: [Math.ceil(Math.random() * 30),
+    Math.ceil(Math.random() * 50),
+    Math.ceil(Math.random() * 20)],
   };
   render() {
     return (
@@ -35,21 +38,21 @@ class Productorders extends React.Component {
                 },
               },
               colors: [
-                this.props.primary,
-                this.props.warning,
-                this.props.danger,
-                this.props.dangerLight,
-                this.props.dangerLight,
+                this.props.color1,
+                this.props.color2,
+                this.props.color3,
+                this.props.color4,
+                this.props.color5,
               ],
               fill: {
                 type: "gradient",
                 gradient: {
                   gradientToColors: [
-                    this.props.primaryLight,
-                    this.props.warningLight,
-                    this.props.dangerLight,
-                    this.props.dangerLight,
-                    this.props.dangerLight,
+                    this.props.colorLight1,
+                    this.props.colorLight2,
+                    this.props.colorLight3,
+                    this.props.colorLight4,
+                    this.props.colorLight5,
                   ],
                 },
               },
@@ -60,13 +63,7 @@ class Productorders extends React.Component {
               stroke: {
                 width: 5,
               },
-              labels: [
-                "Javascript",
-                "PHP",
-                "Wordpress",
-                "C++",
-                "Khởi sự danh nghiệp",
-              ],
+              labels: SUBJECT,
             }}
             series={this.state.series}
             type="pie"
@@ -74,60 +71,26 @@ class Productorders extends React.Component {
           />
         </CardBody>
         <ListGroup flush>
-          <ListGroupItem className="d-flex justify-content-between">
-            <div className="item-info">
-              <div
-                className="bg-primary"
-                style={{
-                  height: "10px",
-                  width: "10px",
-                  borderRadius: "50%",
-                  display: "inline-block",
-                  margin: "0 5px",
-                }}
-              />
-              <span className="text-bold-600">Javascript</span>
-            </div>
-            <div className="product-result">
-              <span>23</span>
-            </div>
-          </ListGroupItem>
-          <ListGroupItem className="d-flex justify-content-between">
-            <div className="item-info">
-              <div
-                className="bg-warning"
-                style={{
-                  height: "10px",
-                  width: "10px",
-                  borderRadius: "50%",
-                  display: "inline-block",
-                  margin: "0 5px",
-                }}
-              />
-              <span className="text-bold-600">PHP</span>
-            </div>
-            <div className="product-result">
-              <span>68</span>
-            </div>
-          </ListGroupItem>
-          <ListGroupItem className="d-flex justify-content-between">
-            <div className="item-info">
-              <div
-                className="bg-danger"
-                style={{
-                  height: "10px",
-                  width: "10px",
-                  borderRadius: "50%",
-                  display: "inline-block",
-                  margin: "0 5px",
-                }}
-              />
-              <span className="text-bold-600">Wordpress</span>
-            </div>
-            <div className="product-result">
-              <span>46</span>
-            </div>
-          </ListGroupItem>
+          {this.state.series.map((item, index) => (
+            <ListGroupItem className="d-flex justify-content-between">
+              <div className="item-info">
+                <div
+                  className="bg-primary"
+                  style={{
+                    height: "10px",
+                    width: "10px",
+                    borderRadius: "50%",
+                    display: "inline-block",
+                    margin: "0 5px",
+                  }}
+                />
+                <span className="text-bold-600"> {SUBJECT[index]} </span>
+              </div>
+              <div className="product-result">
+                <span> {item} </span>
+              </div>
+            </ListGroupItem>
+          ))}
         </ListGroup>
       </Card>
     );
