@@ -43,6 +43,8 @@ import Moment from "react-moment";
 import ReactPaginate from "react-paginate";
 import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
 import Spinner from "reactstrap/lib/Spinner";
+import img from "../../../../../../assets/img/default.jpg";
+
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
@@ -111,7 +113,7 @@ class ListStudentEducation extends Component {
           <img
             style={{ borderRadius: "50%", marginLeft: "auto" }}
             height="50px"
-            src={`${API_ENDPOINT_IMG}/md/${row.studentId.avatar.medium}`}
+            src={img}
             alt={row.avatar}
           />
         ),
@@ -380,7 +382,7 @@ class ListStudentEducation extends Component {
           </Modal>
           <Col lg="12">
             <Row>
-              <Col lg="4">
+              <Col lg="7">
                 <Button
                   onClick={this.showModal}
                   className=" ml-2"
@@ -396,13 +398,13 @@ class ListStudentEducation extends Component {
                   <Download size={15} /> Xuất excel
                 </Button>
               </Col>
-              <Col lg="3">
+              {/* <Col lg="3">
                 <Select
                   placeholder="Chọn lớp..."
                   options={arrDataClass}
                   styles={{ maxWidth: "100px" }}
                 />
-              </Col>
+              </Col> */}
               <Col lg="5">
                 <UncontrolledDropdown
                   style={{ backgroundColor: "#fff", borderRadius: "20px" }}

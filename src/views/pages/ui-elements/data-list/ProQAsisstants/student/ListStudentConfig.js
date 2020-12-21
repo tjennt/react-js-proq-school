@@ -36,7 +36,8 @@ import {
 import { Modal } from "antd";
 import Select from "react-select";
 import Moment from "react-moment";
-import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
+import img from "../../../../../../assets/img/default.jpg";
+
 class ListStudentConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
@@ -71,7 +72,7 @@ class ListStudentConfig extends Component {
           <img
             style={{ borderRadius: "50%", marginLeft: "auto" }}
             height="50px"
-            src={`${API_ENDPOINT_IMG}/md/${row.studentId.avatar.medium}`}
+            src={img}
             alt={row.avatar}
           />
         ),
