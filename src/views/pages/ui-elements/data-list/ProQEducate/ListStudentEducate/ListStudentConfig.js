@@ -109,14 +109,19 @@ class ListStudentEducation extends Component {
         sortable: true,
         minWidth: "50px",
         maxWidth: "70px",
-        cell: (row) => (
-          <img
-            style={{ borderRadius: "50%", marginLeft: "auto" }}
-            height="50px"
-            src={img}
-            alt={row.avatar}
-          />
-        ),
+        cell: (row, i) => {
+          let img = i + 1;
+          img = i >= 10 ? (img % 10) : img;
+          img = img === 0 ? img + 1 : img;
+          return (
+            <img
+              style={{ borderRadius: "50%", marginLeft: "auto" }}
+              height="50px"
+              src={`/assets/img/profile/user-uploads/user-${img < 10 ? `0${img}` : `${img}`}.jpg`}
+              alt={row.avatar}
+            />
+          )
+        },
       },
       {
         name: "Tên",

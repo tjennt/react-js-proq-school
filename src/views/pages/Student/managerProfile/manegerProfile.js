@@ -24,9 +24,7 @@ class ManagerProfile extends Component {
             <CardHeader className="mx-auto">
               <div className="avatar mr-1 avatar-xl">
                 <img
-                  src={`${API_ENDPOINT_IMG}/${
-                    dataProfile ? dataProfile.studentId.avatar : ""
-                  }`}
+                  src={`/assets/img/default.jpg`}
                   alt="avatarImg"
                 />
               </div>
