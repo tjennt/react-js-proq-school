@@ -69,9 +69,9 @@ class ListStudentConfig extends Component {
         maxWidth: "70px",
         cell: (row) => (
           <img
-            style={{ borderRadius: '50%', marginLeft: 'auto' }}
+            style={{ borderRadius: "50%", marginLeft: "auto" }}
             height="50px"
-            src={`${API_ENDPOINT_IMG}/${row.studentId.avatar}`}
+            src={`${API_ENDPOINT_IMG}/md/${row.studentId.avatar.medium}`}
             alt={row.avatar}
           />
         ),
@@ -246,9 +246,9 @@ class ListStudentConfig extends Component {
     let { classOption } = this.props;
     const arrDataClass = classOption
       ? classOption.reduce(
-        (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
-        []
-      )
+          (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
+          []
+        )
       : [];
     return (
       <Card>
@@ -275,9 +275,13 @@ class ListStudentConfig extends Component {
           <Col lg="12">
             <Row>
               <Col lg="3">
-                <Button onClick={this.showModal} className=" ml-2" color="danger">
+                <Button
+                  onClick={this.showModal}
+                  className=" ml-2"
+                  color="danger"
+                >
                   <Download size={15} /> Xuất excel
-              </Button>
+                </Button>
               </Col>
               <Col lg="9">
                 <UncontrolledDropdown
@@ -291,10 +295,11 @@ class ListStudentConfig extends Component {
                       borderRadius: "20px",
                     }}
                   >
-                    <span className="align-middle mx-50">{`Hiển thị: ${this.props.parsedFilter.limit
-                      ? this.props.parsedFilter.limit
-                      : 10
-                      }`}</span>
+                    <span className="align-middle mx-50">{`Hiển thị: ${
+                      this.props.parsedFilter.limit
+                        ? this.props.parsedFilter.limit
+                        : 10
+                    }`}</span>
                     {/* <span className="align-middle mx-50">{`${
                     this.props.parsedFilter.limit
                       ? this.props.parsedFilter.limit
@@ -336,7 +341,8 @@ class ListStudentConfig extends Component {
                   </DropdownMenu>
                 </UncontrolledDropdown>
                 <span className="btn btn-outline-primary btn-rounded float-right mr-2">
-                  Tổng {this.state.totalRecords}</span> 
+                  Tổng {this.state.totalRecords}
+                </span>
               </Col>
             </Row>
           </Col>
@@ -395,8 +401,7 @@ class ListStudentConfig extends Component {
 }
 const ExpandableTable = ({ data }) => {
   return (
-    <Table responsive striped
-      className="mb-4 ">
+    <Table responsive striped className="mb-4 ">
       <thead>
         <tr>
           <th>Số điện thoại </th>

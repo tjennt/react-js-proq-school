@@ -17,15 +17,7 @@ const Footer = (props) => {
     >
       <p className="mb-0 clearfix">
         <span className="float-md-left d-block d-md-inline-block mt-25">
-          COPYRIGHT © {new Date().getFullYear()}
-          <a
-            href="https://themeforest.net/user/pixinvent/portfolio?ref=pixinvent"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            PROQ,
-          </a>
-          All rights reserved
+          COPYRIGHT © {new Date().getFullYear()}, All rights reserved
         </span>
         <span className="float-md-right d-none d-md-block">
           <span className="align-middle">System-School & Made with</span>{" "}

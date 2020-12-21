@@ -76,7 +76,7 @@ export function* updateDataTeacherSaga({ payload }) {
     address: obj.address,
   };
   try {
-     yield call(updateDataTeacherApi, obj.id, dataReq);
+    yield call(updateDataTeacherApi, obj.id, dataReq);
     yield put(getDataTeacher(params));
     toastSuccess("Cập nhật thành công !");
   } catch (error) {}
@@ -84,7 +84,7 @@ export function* updateDataTeacherSaga({ payload }) {
 export function* deleteDataTeacherSaga({ payload }) {
   const { id, params } = payload;
   try {
-     yield call(deleteDataUpdateApi, id);
+    yield call(deleteDataUpdateApi, id);
     yield put(getDataTeacher(params));
     message.success("Xóa thành công !");
   } catch (error) {}
