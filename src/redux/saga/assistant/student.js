@@ -47,7 +47,7 @@ export function* exportExcelStudentSaga({ payload }) {
     document.body.appendChild(link);
     link.click();
   } catch (error) {
-    toastError(`Export không thành công vui lòng thử lại ! : ${error}`);
+    toastError(`Hiện tại lớp học không có sinh viên `);
   }
 }
 
@@ -72,7 +72,7 @@ export function* updateDataStudentSaga({ payload }) {
 export function* deleteDataStudentSaga({ payload }) {
   const { id, params } = payload;
   try {
-     yield call(deleteDataStudentApi, id);
+    yield call(deleteDataStudentApi, id);
     yield put(getData(params));
     message.success("Xóa thành công !");
   } catch (error) {}

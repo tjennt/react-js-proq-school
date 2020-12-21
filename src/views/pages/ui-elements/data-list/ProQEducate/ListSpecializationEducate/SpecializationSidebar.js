@@ -11,7 +11,7 @@ class SpecializationSidebar extends Component {
     nameSpecialization: "",
     subject: [],
   };
-  handleSubmit = (obj) => {
+  handleSubmit = (obj, { resetForm }) => {
     const { parsedFilter } = this.props;
     let paginate = {
       page: 1,
@@ -21,8 +21,11 @@ class SpecializationSidebar extends Component {
     if (this.props.data !== null) {
       this.props.updateData(obj, params);
       this.props.handleSidebar(false, true);
+      resetForm({});
     } else {
       this.props.addData(obj, params);
+      resetForm({});
+
       this.props.handleSidebar(false, true);
     }
   };

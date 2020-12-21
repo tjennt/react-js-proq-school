@@ -109,9 +109,9 @@ class ListStudentEducation extends Component {
         maxWidth: "70px",
         cell: (row) => (
           <img
-            style={{ borderRadius: '50%', marginLeft: 'auto' }}
+            style={{ borderRadius: "50%", marginLeft: "auto" }}
             height="50px"
-            src={`${API_ENDPOINT_IMG}/${row.studentId.avatar}`}
+            src={`${API_ENDPOINT_IMG}/md/${row.studentId.avatar.medium}`}
             alt={row.avatar}
           />
         ),
@@ -160,14 +160,7 @@ class ListStudentEducation extends Component {
         selector: "dob",
         sortable: true,
         // minWidth: "300px",
-        cell: (row) => (
-          <p
-            title={row.studentId.dob}
-            className="text-truncate text-bold-500 mb-0"
-          >
-            {row.studentId.dob}
-          </p>
-        ),
+        cell: (row) => <Moment format="DD/MM/YYYY">{row.studentId.dob}</Moment>,
       },
       {
         name: "Số CMND",
@@ -361,7 +354,8 @@ class ListStudentEducation extends Component {
                 <InboxOutlined />
               </p>
               <p className="ant-upload-hint">
-                Click vào đây để chọn file excel hoặc kéo thả từ máy tính của bạn
+                Click vào đây để chọn file excel hoặc kéo thả từ máy tính của
+                bạn
               </p>
             </Dragger>
           </Modal>
@@ -426,10 +420,11 @@ class ListStudentEducation extends Component {
                         {this.state.totalRecords}
                       </span>
                     ) : (
-                      <span className="align-middle mx-50">{`Hiển thị: ${this.props.parsedFilter.limit
-                        ? this.props.parsedFilter.limit
-                        : 10
-                        }`}</span>
+                      <span className="align-middle mx-50">{`Hiển thị: ${
+                        this.props.parsedFilter.limit
+                          ? this.props.parsedFilter.limit
+                          : 10
+                      }`}</span>
                       // <span className="align-middle mx-50">{`${
                       //   this.props.parsedFilter.limit
                       //     ? this.props.parsedFilter.limit
@@ -473,7 +468,8 @@ class ListStudentEducation extends Component {
                   </DropdownMenu>
                 </UncontrolledDropdown>
                 <span className="btn btn-outline-primary btn-rounded float-right mr-2">
-                  Tổng {this.state.totalRecords}</span> 
+                  Tổng {this.state.totalRecords}
+                </span>
               </Col>
             </Row>
           </Col>
@@ -520,7 +516,12 @@ class ListStudentEducation extends Component {
           />
         </CardBody>
       </Card>
-    ) : <div className="text-center"> <Spinner color="primary" /> </div>;
+    ) : (
+      <div className="text-center">
+        {" "}
+        <Spinner color="primary" />{" "}
+      </div>
+    );
   }
 }
 const mapStateToProps = (state) => {
