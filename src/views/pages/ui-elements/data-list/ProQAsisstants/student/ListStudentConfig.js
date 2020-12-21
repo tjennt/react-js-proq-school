@@ -36,7 +36,8 @@ import {
 import { Modal } from "antd";
 import Select from "react-select";
 import Moment from "react-moment";
-import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
+import img from "../../../../../../assets/img/default.jpg";
+
 class ListStudentConfig extends Component {
   static getDerivedStateFromProps(props, state) {
     if (
@@ -67,14 +68,19 @@ class ListStudentConfig extends Component {
         sortable: true,
         minWidth: "50px",
         maxWidth: "70px",
-        cell: (row) => (
-          <img
-            style={{ borderRadius: "50%", marginLeft: "auto" }}
-            height="50px"
-            src={`${API_ENDPOINT_IMG}/md/${row.studentId.avatar.medium}`}
-            alt={row.avatar}
-          />
-        ),
+        cell: (row, i) => {
+          let img = i + 1;
+          img = i >= 10 ? (img % 10) : img;
+          img = img === 0 ? img + 1 : img;
+          return (
+            <img
+              style={{ borderRadius: "50%", marginLeft: "auto" }}
+              height="50px"
+              src={`/assets/img/profile/user-uploads/user-${img < 10 ? `0${img}` : `${img}`}.jpg`}
+              alt={row.avatar}
+            />
+          )
+        },
       },
       {
         name: "Tên Sinh viên",
@@ -246,9 +252,9 @@ class ListStudentConfig extends Component {
     let { classOption } = this.props;
     const arrDataClass = classOption
       ? classOption.reduce(
-          (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
-          []
-        )
+        (arr, curr) => [...arr, { label: curr.name, value: curr._id }],
+        []
+      )
       : [];
     return (
       <Card>
@@ -295,11 +301,10 @@ class ListStudentConfig extends Component {
                       borderRadius: "20px",
                     }}
                   >
-                    <span className="align-middle mx-50">{`Hiển thị: ${
-                      this.props.parsedFilter.limit
+                    <span className="align-middle mx-50">{`Hiển thị: ${this.props.parsedFilter.limit
                         ? this.props.parsedFilter.limit
                         : 10
-                    }`}</span>
+                      }`}</span>
                     {/* <span className="align-middle mx-50">{`${
                     this.props.parsedFilter.limit
                       ? this.props.parsedFilter.limit

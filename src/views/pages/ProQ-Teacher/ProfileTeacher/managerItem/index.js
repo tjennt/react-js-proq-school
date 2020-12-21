@@ -24,6 +24,8 @@ export default function ManagerItem(props) {
   const handleCancel = () => {
     setVisible(false);
   };
+
+  const date = data ? (new Date(data.dob)).toLocaleDateString('zh-HK') : "";
   return (
     <React.Fragment>
       <Modal
@@ -63,7 +65,7 @@ export default function ManagerItem(props) {
                 <ListGroupItem>Email : {data ? data.email : ""}</ListGroupItem>
                 <ListGroupItem>
                   {" "}
-                  Ngày sinh: {data ? data.dob : ""}{" "}
+                  Ngày sinh: {date}
                 </ListGroupItem>
                 <ListGroupItem>
                   Địa chỉ : {data ? data.address : ""}{" "}

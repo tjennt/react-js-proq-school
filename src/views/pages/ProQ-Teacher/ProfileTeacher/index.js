@@ -11,7 +11,9 @@ class ManagerProfileTeacher extends Component {
     getProfileTeacher();
   }
   render() {
+    
     const { dataProfile } = this.props.profile;
+
     return (
       <div>
         <Breadcrumbs
@@ -24,9 +26,7 @@ class ManagerProfileTeacher extends Component {
             <CardHeader className="mx-auto">
               <div className="avatar mr-1 avatar-xl">
                 <img
-                  src={`${API_ENDPOINT_IMG_TEACHER}/${
-                    dataProfile ? dataProfile.avatar : ""
-                  }`}
+                  src={`/assets/img/default.jpg`}
                   alt="avatarImg"
                 />
               </div>
