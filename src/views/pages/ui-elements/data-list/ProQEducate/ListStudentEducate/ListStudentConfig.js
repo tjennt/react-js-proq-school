@@ -18,6 +18,7 @@ import {
   exportExcelStudent,
   updateDataStudent,
   deleteDataStudent,
+  uploadFile,
 } from "../../../../../../redux/actions/dataListAssistance/index";
 import { importExcelStudent } from "../../../../../../redux/actions/education/index";
 import Sidebar from "./DataListStudentSidebar";
@@ -44,6 +45,8 @@ import ReactPaginate from "react-paginate";
 import { API_ENDPOINT_IMG } from "../../../../../../redux/constants";
 import Spinner from "reactstrap/lib/Spinner";
 import img from "../../../../../../assets/img/default.jpg";
+import { uploadFileApi, changeAvatarApi } from "../../../../../../redux/api/assistant/student";
+import { toastSuccess } from "../../../../../../utility/toast/toastHelper";
 
 const { Dragger } = Upload;
 
@@ -109,17 +112,19 @@ class ListStudentEducation extends Component {
         sortable: true,
         minWidth: "50px",
         maxWidth: "70px",
-        cell: (row, i) => {
-          let img = i + 1;
-          img = i >= 10 ? (img % 10) : img;
-          img = img === 0 ? img + 1 : img;
+        cell: (row) => {
           return (
-            <img
-              style={{ borderRadius: "50%", marginLeft: "auto" }}
-              height="50px"
-              src={`/assets/img/profile/user-uploads/user-${img < 10 ? `0${img}` : `${img}`}.jpg`}
-              alt={row.avatar}
-            />
+            <div style={{ height: "38px", width: "40px", overflow: 'hidden', borderRadius: "50%", position: 'relative' }}>
+              <img
+                style={{  transform: 'translate(-50%, -50%)', top: '50%', left: '50%', position: 'absolute' }}
+                height="40px"
+                width="auto"
+                src={row.studentId.avatar.name 
+                  ? `https://upload-service-proq.herokuapp.com/md/${row.studentId.avatar.medium}` 
+                  : '/assets/img/default.jpg'}
+                alt={row.avatar}
+              />
+            </div>
           )
         },
       },
@@ -334,6 +339,29 @@ class ListStudentEducation extends Component {
     getData({ page: parsedFilter.page, limit: value });
   };
 
+
+
+  onUploadFile = async (e, id) => {
+    console.log(e.target.files[0])
+    const file = e.target.files[0];
+    const formdata = new FormData();
+    formdata.append('image', file);
+    try {
+      const res = await uploadFileApi(formdata);
+      console.log(res)
+      const changeAvatar = {
+        avatar: res.data.images[0],
+        targetId: this.state.currentData.studentId._id
+      }
+      console.log(changeAvatar)
+      const res2 = await changeAvatarApi('student', changeAvatar)
+      console.log(res2)
+      toastSuccess("Cập nhật thành công !");
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   render() {
     let { columns, value, currentData, sidebar, data } = this.state;
     let { classOption } = this.props;
@@ -343,6 +371,8 @@ class ListStudentEducation extends Component {
           []
         )
       : [];
+
+      console.log(this.state?.currentData )
     return data ? (
       <Card>
         <CardBody className="data-list">
@@ -514,6 +544,7 @@ class ListStudentEducation extends Component {
             getData={this.props.getData}
             dataParams={this.props.parsedFilter}
             addNew={this.state.addNew}
+            uploadFile={this.onUploadFile}
           />
           <div
             className={classnames("data-list-overlay", {
@@ -545,4 +576,5 @@ export default connect(mapStateToProps, {
   exportExcelStudent,
   updateDataStudent,
   deleteDataStudent,
+  uploadFile,
 })(ListStudentEducation);

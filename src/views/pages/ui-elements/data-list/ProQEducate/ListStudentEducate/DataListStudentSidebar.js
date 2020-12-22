@@ -83,6 +83,7 @@ class StudentEducationSidebar extends Component {
       dob: dateString,
     });
   };
+
   render() {
     let { show, handleSidebar, data } = this.props;
     let { identityNumber, fullname, dob, email, phone, address } = this.state;
@@ -162,6 +163,10 @@ class StudentEducationSidebar extends Component {
               placeholder="Vui lòng nhập địa chỉ"
               onChange={(e) => this.setState({ address: e.target.value })}
             />
+          </FormGroup>
+          <FormGroup>
+            <Label for="exampleFile">File</Label>
+            <Input type="file" name="file" id="exampleFile" onChange={this.props.uploadFile} />
           </FormGroup>
         </PerfectScrollbar>
         <div className="data-list-sidebar-footer px-2 d-flex justify-content-start align-items-center mt-1">

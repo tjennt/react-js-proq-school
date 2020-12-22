@@ -8,6 +8,7 @@ export const getData = (params) => ({
     params,
   },
 });
+
 export const getDataSuccess = (data, total_page, total_record) => ({
   type: assisType.GET_DATA_STUDENT_ASS_SUCCE,
   payload: {
@@ -36,6 +37,12 @@ export const updateDataStudent = (params, obj) => ({
     obj,
   },
 });
+
+export const uploadFile = (file) => ({
+  type: "UPLOAD_FILE",
+  payload: file,
+});
+
 export const deleteDataStudent = (id, params) => ({
   type: assisType.DELETE_DATA_STUDENT,
   payload: {
