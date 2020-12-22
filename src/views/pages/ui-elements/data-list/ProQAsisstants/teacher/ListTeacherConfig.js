@@ -74,7 +74,7 @@ class ListTeacherConfig extends Component {
                 style={{ transform: 'translate(-50%, -50%)', top: '50%', left: '50%', position: 'absolute' }}
                 height="40px"
                 width="auto"
-                src={row.studentId.avatar.name
+                src={row.teacherId.avatar.name
                   ? `https://upload-service-proq.herokuapp.com/md/${row.teacherId.avatar.medium}`
                   : '/assets/img/default.jpg'}
                 alt={row.avatar}
