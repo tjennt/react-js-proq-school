@@ -69,12 +69,17 @@ class ListTeacherConfig extends Component {
           img = i >= 10 ? (img % 10) : img;
           img = img === 0 ? img + 1 : img;
           return (
-            <img
-              style={{ borderRadius: "50%", marginLeft: "auto" }}
-              height="50px"
-              src={`/assets/img/profile/user-uploads/user-${img < 10 ? `0${img}` : `${img}`}.jpg`}
-              alt={row.avatar}
-            />
+            <div style={{ height: "38px", width: "40px", overflow: 'hidden', borderRadius: "50%", position: 'relative' }}>
+              <img
+                style={{ transform: 'translate(-50%, -50%)', top: '50%', left: '50%', position: 'absolute' }}
+                height="40px"
+                width="auto"
+                src={row.studentId.avatar.name
+                  ? `https://upload-service-proq.herokuapp.com/md/${row.teacherId.avatar.medium}`
+                  : '/assets/img/default.jpg'}
+                alt={row.avatar}
+              />
+            </div>
           )
         },
       },
@@ -274,8 +279,8 @@ class ListTeacherConfig extends Component {
                     }}
                   >
                     <span className="align-middle mx-50">{`Hiển thị: ${this.props.parsedFilter.limit
-                        ? this.props.parsedFilter.limit
-                        : 10
+                      ? this.props.parsedFilter.limit
+                      : 10
                       }`}</span>
                     {/* <span className="align-middle mx-50">{`${this.props.parsedFilter.limit
                         ? this.props.parsedFilter.limit

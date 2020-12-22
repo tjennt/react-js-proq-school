@@ -5,6 +5,7 @@ import {
   exportExcelStudentApi,
   getDataStudentApi,
   updateDataStudentApi,
+  uploadFileApi,
 } from "../../api/assistant/student";
 import {
   getData,
@@ -69,6 +70,17 @@ export function* updateDataStudentSaga({ payload }) {
     toastError(`Đã có lỗi xảy ra vui lòng thử lại !!! ${error}`);
   }
 }
+
+export function* uploadFileSaga({ payload }) {
+  try {
+    const res = yield call(uploadFileApi, payload);
+    yield put({ type: "API_CALL_SUCCESS", res });
+    toastSuccess("Cập nhật thành công !");
+  } catch (error) {
+    toastError(`Đã có lỗi xảy ra vui lòng thử lại !!! ${error}`);
+  }
+}
+
 export function* deleteDataStudentSaga({ payload }) {
   const { id, params } = payload;
   try {

@@ -23,6 +23,7 @@ import {
   exportExcelStudentSaga,
   getStudentActionSaga,
   updateDataStudentSaga,
+  uploadFileSaga,
 } from "./assistant/student";
 import {
   exportExcelTeacherSaga,
@@ -122,6 +123,7 @@ function* rootSaga() {
   yield takeLatest(assType.EXPORT_EXCEL_STUDENT, exportExcelStudentSaga);
   yield takeLatest(assType.EXPORT_EXCEL_TEACHER, exportExcelTeacherSaga);
   yield takeLatest(assType.UPDATE_DATA_STUDENT, updateDataStudentSaga);
+  yield takeLatest("UPLOAD_FILE", uploadFileSaga);
   yield takeLatest(assType.DELETE_DATA_STUDENT, deleteDataStudentSaga);
   yield takeLatest(assType.UPDATE_DATA_TEACHER, updateDataTeacherSaga);
   yield takeLatest(assType.DELETE_DATA_TEACHER, deleteDataTeacherSaga);
