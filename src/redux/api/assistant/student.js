@@ -12,6 +12,18 @@ export const updateDataStudentApi = (id, data) => {
     data
   );
 };
+export const uploadFileApi = (data) => {
+  return axiosService.post(
+    `https://upload-service-proq.herokuapp.com/v1/files/images`,
+    data
+  );
+};
+export const changeAvatarApi = (type,data) => {
+  return axiosService.put(
+    `${process.env.REACT_APP_API_ENDPOINT}/staff/change-avatar/${type}`,
+    data
+  );
+};
 export const deleteDataStudentApi = (id) => {
   return axiosService.delete(
     `${process.env.REACT_APP_API_ENDPOINT}/${url}/${id}`

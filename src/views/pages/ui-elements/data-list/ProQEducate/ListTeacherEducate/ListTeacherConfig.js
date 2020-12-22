@@ -41,6 +41,8 @@ import { message, Modal, Popconfirm, Tooltip, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import ReactPaginate from "react-paginate";
 import { newDate } from "../../../../../../utility/config";
+import { changeAvatarApi, uploadFileApi } from "../../../../../../redux/api/assistant/student";
+import { toastSuccess } from "../../../../../../utility/toast/toastHelper";
 const { Dragger } = Upload;
 
 const ActionsComponent = (props) => {
@@ -110,12 +112,17 @@ class ListTeacherConfig extends Component {
           img = i >= 10 ? (img % 10) : img;
           img = img === 0 ? img + 1 : img;
           return (
+            <div style={{ height: "38px", width: "40px", overflow: 'hidden', borderRadius: "50%", position: 'relative' }}>
             <img
-              style={{ borderRadius: "50%", marginLeft: "auto" }}
-              height="50px"
-              src={`/assets/img/profile/user-uploads/user-${img < 10 ? `0${img}` : `${img}`}.jpg`}
+              style={{ transform: 'translate(-50%, -50%)', top: '50%', left: '50%', position: 'absolute' }}
+              height="40px"
+              width="auto"
+              src={row.teacherId.avatar.name
+                ? `https://upload-service-proq.herokuapp.com/md/${row.teacherId.avatar.medium}`
+                : '/assets/img/default.jpg'}
               alt={row.avatar}
             />
+          </div>
           )
         },
       },
@@ -316,6 +323,27 @@ class ListTeacherConfig extends Component {
     this.setState({ currentPage: page.selected });
   };
 
+  onUploadFile = async (e, id) => {
+    console.log(e.target.files[0])
+    const file = e.target.files[0];
+    const formdata = new FormData();
+    formdata.append('image', file);
+    try {
+      const res = await uploadFileApi(formdata);
+      console.log(res)
+      const changeAvatar = {
+        avatar: res.data.images[0],
+        targetId: this.state.currentData.teacherId._id
+      }
+      console.log(changeAvatar)
+      const res2 = await changeAvatarApi('teacher ', changeAvatar)
+      console.log(res2)
+      toastSuccess("Cập nhật thành công !");
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   render() {
     let { columns, data, value, currentData, sidebar } = this.state;
     return (
@@ -479,6 +507,7 @@ class ListTeacherConfig extends Component {
             getData={this.props.getData}
             dataParams={this.props.parsedFilter}
             addNew={this.state.addNew}
+            uploadFile={this.onUploadFile}
           />
           <div
             className={classnames("data-list-overlay", {
